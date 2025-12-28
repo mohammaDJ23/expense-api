@@ -39,14 +39,6 @@ if [ -z "$STAGED_FILES" ]; then
 fi
 print_success "Found $(echo "$STAGED_FILES" | wc -l | tr -d ' ') staged file(s)"
 
-# 2. Validate branch name
-print_header "Validating branch name"
-if node "$SCRIPTS_DIR/branch-validator.js"; then
-  print_success "Branch name is valid"
-else
-  handle_error "Branch name validation failed"
-fi
-
 # 3. Validate commit message
 print_header "Validating commit message"
 if node "$SCRIPTS_DIR/commit-validator.js"; then
