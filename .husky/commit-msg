@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/husky.sh"
+
+echo "🚀 Running commit-msg checks..."
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+
+if [ -f "$COMMIT_MSG_FILE" ]; then
+  echo "📋 Validating commit message..."
+  npx --no-install commitlint --edit "$COMMIT_MSG_FILE"
+fi
+
+echo "✅ All commit-msg checks passed!"
