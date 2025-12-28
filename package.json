@@ -18,7 +18,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "prepare": "husky",
-    "generate-branch-id": "node ./scripts/generate-branch-id.js"
+    "generate:branch:id": "node ./scripts/generateBranchId.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
