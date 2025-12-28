@@ -17,8 +17,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "pre-commit": "bash ./scripts/hooks/pre-commit.sh",
-    "prepare": "husky install",
+    "prepare": "husky",
     "generate-branch-id": "node ./scripts/generate-branch-id.js"
   },
   "dependencies": {
