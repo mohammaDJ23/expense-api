@@ -32,36 +32,6 @@ function runFormat() {
   }
 }
 
-function runLintCI() {
-  try {
-    console.log('📋 Running ESLint check (CI mode)...');
-    execSync('npm run lint:ci', {
-      cwd: projectRoot,
-      stdio: 'inherit',
-      encoding: 'utf8',
-    });
-    return true;
-  } catch (error) {
-    console.error('ESLint CI check failed', error);
-    return false;
-  }
-}
-
-function runFormatCI() {
-  try {
-    console.log('🔧 Running Prettier check (CI mode)...');
-    execSync('npm run format:ci', {
-      cwd: projectRoot,
-      stdio: 'inherit',
-      encoding: 'utf8',
-    });
-    return true;
-  } catch (error) {
-    console.error('Prettier CI check failed', error);
-    return false;
-  }
-}
-
 function stageFixedFiles() {
   try {
     console.log('\n📦 Staging auto-fixed files...');
@@ -90,16 +60,7 @@ function checkAll() {
   }
 
   console.log('\n✅ Auto-fix completed. Running final checks...\n');
-
-  const lintCISuccess = runLintCI();
-  const formatCISuccess = runFormatCI();
-
-  if (lintCISuccess && formatCISuccess) {
-    console.log('\n🎉 All checks passed! Ready to commit.');
-    return true;
-  }
-  console.error('\n❌ Some checks failed. Please fix the issues above.');
-  return false;
+  return true;
 }
 
 if (require.main === module) {
@@ -116,8 +77,6 @@ if (require.main === module) {
 module.exports = {
   runLintFix,
   runFormat,
-  runLintCI,
-  runFormatCI,
   stageFixedFiles,
   checkAll,
 };

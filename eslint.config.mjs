@@ -112,7 +112,6 @@ export default defineConfig([
     },
   },
 
-
   // Import plugin configuration
   {
     plugins: {
@@ -210,7 +209,7 @@ export default defineConfig([
       'sonarjs/prefer-immediate-return': 'error',
       'sonarjs/prefer-single-boolean-return': 'error',
       'sonarjs/no-os-command-from-path': 'off',
-      'sonarjs/no-ignored-exceptions': 'off'
+      'sonarjs/no-ignored-exceptions': 'off',
     },
   },
 
@@ -348,7 +347,7 @@ export default defineConfig([
 
   {
     files: ['**/*.ts', '**/*.js'],
-    rules: {  
+    rules: {
       // Best Practices
       'no-console': ['error', { allow: ['warn', 'error', 'log', 'info'] }],
       'no-debugger': 'error',
