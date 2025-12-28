@@ -3,7 +3,9 @@
   "include": [
     "src/**/*.ts",
     "test/**/*.ts",
-    "eslint.config.mjs"
+    "eslint.config.mjs",
+    "**/*.js",
+    "**/*.ts"
   ],
   "exclude": ["node_modules", "dist", "coverage"]
 }

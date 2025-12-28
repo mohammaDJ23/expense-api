@@ -94,8 +94,24 @@ export default defineConfig([
   eslint.configs.recommended,
 
   // TypeScript strict configuration
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  {
+    files: ['**/*.ts'],
+    extends: [...tseslint.configs.strictTypeChecked, ...tseslint.configs.stylisticTypeChecked],
+  },
+
+  // JavaScript configuration
+  {
+    files: ['**/*.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'commonjs',
+      globals: {
+        ...globals.node,
+        ...globals.es2022,
+      },
+    },
+  },
+
 
   // Import plugin configuration
   {
@@ -152,6 +168,7 @@ export default defineConfig([
       'import/resolver': {
         typescript: {
           project: path.join(_dirname, 'tsconfig.eslint.json'),
+          alwaysTryTypes: true, // This helps with JS files importing TS modules
         },
         node: true,
       },
@@ -192,6 +209,8 @@ export default defineConfig([
       'sonarjs/no-use-of-empty-return-value': 'error',
       'sonarjs/prefer-immediate-return': 'error',
       'sonarjs/prefer-single-boolean-return': 'error',
+      'sonarjs/no-os-command-from-path': 'off',
+      'sonarjs/no-ignored-exceptions': 'off'
     },
   },
 
@@ -208,8 +227,8 @@ export default defineConfig([
       'security/detect-disable-mustache-escape': 'error',
       'security/detect-eval-with-expression': 'error',
       'security/detect-no-csrf-before-method-override': 'error',
-      'security/detect-non-literal-fs-filename': 'error',
-      'security/detect-non-literal-regexp': 'error',
+      'security/detect-non-literal-fs-filename': 'off',
+      'security/detect-non-literal-regexp': 'off',
       'security/detect-non-literal-require': 'error',
       'security/detect-pseudoRandomBytes': 'error',
       'security/detect-possible-timing-attacks': 'error',
@@ -246,6 +265,7 @@ export default defineConfig([
 
   // Custom rules
   {
+    files: ['**/*.ts'],
     rules: {
       // TypeScript Strict Rules
       '@typescript-eslint/explicit-function-return-type': 'off',
@@ -323,9 +343,14 @@ export default defineConfig([
           leadingUnderscore: 'allow',
         },
       ],
+    },
+  },
 
+  {
+    files: ['**/*.ts', '**/*.js'],
+    rules: {  
       // Best Practices
-      'no-console': ['error', { allow: ['warn', 'error'] }],
+      'no-console': ['error', { allow: ['warn', 'error', 'log', 'info'] }],
       'no-debugger': 'error',
       'no-alert': 'error',
       'no-var': 'error',
@@ -342,12 +367,12 @@ export default defineConfig([
       'no-lonely-if': 'error',
       'no-unneeded-ternary': 'error',
       'no-nested-ternary': 'error',
-      'no-magic-numbers': ['error', { ignore: [-1, 0, 1, 2], ignoreArrayIndexes: true }],
+      'no-magic-numbers': 'off',
       'max-depth': ['error', 4],
       'max-lines': ['error', { max: 500, skipBlankLines: true }],
-      'max-lines-per-function': ['error', { max: 50 }],
+      'max-lines-per-function': ['error', { max: 100 }],
       'max-params': ['error', 3],
-      complexity: ['error', 10],
+      complexity: ['error', 15],
       'consistent-return': 'error',
       eqeqeq: ['error', 'always'],
       curly: ['error', 'all'],

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Run the pre-commit script
+bash scripts/hooks/pre-commit.sh
+
+# Capture the exit code
+EXIT_CODE=$?
+
+# If pre-commit failed, exit with the error code
+if [ $EXIT_CODE -ne 0 ]; then
+  echo "Pre-commit checks failed. Commit aborted."
+  exit $EXIT_CODE
+fi
