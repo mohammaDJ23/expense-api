@@ -33,7 +33,7 @@ RUN npm install --ignore-scripts --only=development
 
 USER expense-api
 
-EXPOSE 3000 9229
+EXPOSE 4000 9229
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
