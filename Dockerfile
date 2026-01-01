@@ -11,8 +11,8 @@ RUN apk add --no-cache \
 ENV NODE_ENV=production \
   TZ=UTC
 
-RUN addgroup -g 1001 -S nodejs && \
-  adduser -S expense-api -u 1001 -G nodejs && \
+RUN addgroup -g 10001 -S nodejs && \
+  adduser -S expense-api -u 10001 -G nodejs && \
   mkdir -p /usr/src/app && \
   chown -R expense-api:nodejs /usr/src/app
 
@@ -58,8 +58,8 @@ RUN npm install --ignore-scripts --only=development && \
 FROM node:18-alpine AS production
 
 RUN apk add --no-cache tini curl && \
-  addgroup -g 1001 -S nodejs && \
-  adduser -S expense-api -u 1001 -G nodejs && \
+  addgroup -g 10001 -S nodejs && \
+  adduser -S expense-api -u 10001 -G nodejs && \
   rm -rf /var/cache/apk/*
 
 WORKDIR /usr/src/app
