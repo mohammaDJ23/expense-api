@@ -37,7 +37,7 @@ EXPOSE 4000 9229
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
-CMD ["npm", "run", "start:debug"]
+CMD ["sh", "-c", "[ ! -f /tmp/package.md5 ] || md5sum -c /tmp/package.md5 2>/dev/null || npm install; md5sum package.json > /tmp/package.md5 2>/dev/null; npm run start:debug"]
 
 FROM base AS production-build
 
