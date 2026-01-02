@@ -65,3 +65,5 @@ Dockerfile*
 nest-cli.json
 tsconfig.json
 tsconfig.*.json
+
+secrets
