@@ -15,7 +15,7 @@
     "check:ci": "npm run lint:ci && npm run format:ci",
     "start": "nest start",
     "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
+    "start:debug": "nest start --debug=0.0.0.0:9229 --watch",
     "start:prod": "node dist/main",
     "prepare": "husky",
     "generate:branch:id": "node ./scripts/generateBranchId.js"
