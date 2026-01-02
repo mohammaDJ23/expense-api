@@ -1,8 +1,6 @@
 version: '3.8'
 
 x-common-variables: &common-variables
-  NODE_ENV: ${NODE_ENV:-production}
-  PORT: ${PORT:-3000}
   TZ: UTC
 
 x-common-config: &common-config
@@ -30,7 +28,7 @@ x-readonly-filesystem: &readonly-filesystem
 
 x-health-check: &health-check
   healthcheck:
-    test: ["CMD", "node", "-e", "const http = require('http'); const req = http.request({ hostname: 'localhost', port: process.env.PORT || 3000, path: '/health', timeout: 5000 }, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on('error', () => process.exit(1)); req.end();"]
+    test: ["CMD", "node", "-e", "const http = require('http'); const req = http.request({ hostname: 'localhost', port: process.env.PORT, path: '/health', timeout: 5000 }, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on('error', () => process.exit(1)); req.end();"]
     interval: 30s
     timeout: 10s
     start_period: ${HEALTH_START_PERIOD:-60s}
@@ -46,12 +44,7 @@ services:
     <<: *security-config
     <<: *readonly-filesystem
     <<: *health-check
-    container_name: expense-api
     hostname: expense-api
-    domainname: ${DOMAIN_NAME:-api.internal}
-    image: ${REGISTRY:-expense-api}:${TAG:-latest}
-    ports:
-      - "${PORT:-3000}:${PORT:-3000}"
     environment:
       <<: *common-variables
     networks:
