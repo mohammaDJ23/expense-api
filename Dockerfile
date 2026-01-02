@@ -1,11 +1,10 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 RUN apk add --no-cache \
   python3 \
   make \
   g++ \
   curl \
-  tini \
   && rm -rf /var/cache/apk/*
 
 ENV NODE_ENV=production \
@@ -20,7 +19,7 @@ WORKDIR /usr/src/app
 
 COPY --chown=expense-api:nodejs package*.json ./
 
-RUN npm ci --ignore-scripts && \
+RUN npm install --omit=dev --ignore-scripts && \
   npm cache clean --force
 
 FROM base AS development
@@ -29,49 +28,26 @@ ENV NODE_ENV=development
 
 COPY --chown=expense-api:nodejs . .
 
-RUN npm install --ignore-scripts --only=development
+RUN npm install --ignore-scripts --include=dev
 
 USER expense-api
 
 EXPOSE 4000 9229
 
-ENTRYPOINT ["/sbin/tini", "--"]
-
-CMD ["sh", "-c", "\
-  echo '🚀 Starting development container...';\
-  \
-  if [ ! -f /tmp/package.md5 ] || ! md5sum -c /tmp/package.md5 >/dev/null 2>&1; then\
-    echo '📦 Installing/updating dependencies...';\
-    npm install;\
-    md5sum package.json > /tmp/package.md5;\
-    echo '✅ Dependencies ready';\
-  else\
-    echo '✅ Dependencies up to date';\
-  fi;\
-  \
-  echo '🚀 Starting development server...';\
-  npm run start:debug\
-"]
+CMD ["npm", "run", "start:debug"]
 
 FROM base AS production-build
 
 COPY --chown=expense-api:nodejs . .
 
-RUN npm install --ignore-scripts --only=development && \
+RUN npm install --ignore-scripts --include=dev && \
   npm run build && \
   npm prune --production && \
   rm -rf src
 
-# TODO: if you need the test commands:
-# RUN npm install --ignore-scripts --only=development && \
-#   npm run test:ci && \
-#   npm run build && \
-#   npm prune --production && \
-#   rm -rf src test
+FROM node:20-alpine AS production
 
-FROM node:18-alpine AS production
-
-RUN apk add --no-cache tini curl && \
+RUN apk add --no-cache curl && \
   addgroup -g 10001 -S nodejs && \
   adduser -S expense-api -u 10001 -G nodejs && \
   rm -rf /var/cache/apk/*
@@ -93,7 +69,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
   CMD curl -f http://localhost:3000/health || exit 1
 
 EXPOSE 3000
-
-ENTRYPOINT ["/sbin/tini", "--"]
 
 CMD ["node", "dist/main"]
