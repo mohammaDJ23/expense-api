@@ -1,5 +1,3 @@
-version: '3.8'
-
 x-common-variables: &common-variables
   TZ: UTC
 
@@ -40,10 +38,7 @@ networks:
 
 services:
   expense-api:
-    <<: *common-config
-    <<: *security-config
-    <<: *readonly-filesystem
-    <<: *health-check
+    <<: [*common-config, *security-config, *readonly-filesystem, *health-check]
     hostname: expense-api
     environment:
       <<: *common-variables
