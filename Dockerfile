@@ -37,7 +37,21 @@ EXPOSE 4000 9229
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
-CMD ["sh", "-c", "[ ! -f /tmp/package.md5 ] || md5sum -c /tmp/package.md5 2>/dev/null || npm install; md5sum package.json > /tmp/package.md5 2>/dev/null; npm run start:debug"]
+CMD ["sh", "-c", "\
+  echo '🚀 Starting development container...';\
+  \
+  if [ ! -f /tmp/package.md5 ] || ! md5sum -c /tmp/package.md5 >/dev/null 2>&1; then\
+    echo '📦 Installing/updating dependencies...';\
+    npm install;\
+    md5sum package.json > /tmp/package.md5;\
+    echo '✅ Dependencies ready';\
+  else\
+    echo '✅ Dependencies up to date';\
+  fi;\
+  \
+  echo '🚀 Starting development server...';\
+  npm run start:debug\
+"]
 
 FROM base AS production-build
 
