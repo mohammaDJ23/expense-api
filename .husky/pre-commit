@@ -6,7 +6,7 @@ set -e  # Exit immediately if a command fails
 echo "🚀 Running pre-commit checks..."
 
 echo "📋 Validating branch name..."
-npx --no-install branch-name-lint
+npx --no-install branch-name-lint .branch.namerc.json
 
 echo "🔧 Running lint-staged..."
 npx --no-install lint-staged
