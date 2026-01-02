@@ -18,7 +18,8 @@
     "start:debug": "nest start --debug=0.0.0.0:9229 --watch",
     "start:prod": "node dist/main",
     "prepare": "husky",
-    "generate:branch:id": "node ./scripts/generateBranchId.js"
+    "generate:branch:id": "node ./scripts/generateBranchId.js",
+    "docker:compose:development": "sh ./scripts/docker/entrypoint.development.sh"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
