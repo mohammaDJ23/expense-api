@@ -1,0 +1,52 @@
+services:
+  expense-api:
+    container_name: expense-api-development
+    domainname: ${DOMAIN_NAME:-development.internal}
+    image: expense-api-development:latest
+    restart: "no"
+    env_file:
+      - ./.env.development
+    build:
+      context: .
+      target: development
+      dockerfile: Dockerfile
+      cache_from:
+        - expense-api-development:latest
+    ports:
+      - "${PORT:-4000}:4000"
+      - "9229:9229"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    read_only: false
+    security_opt: []
+    cap_drop: []
+    secrets:
+      - source: database_password
+        target: database_password
+        mode: 0440
+      - source: redis_password
+        target: redis_password
+        mode: 0440
+      - source: jwt_secret
+        target: jwt_secret
+        mode: 0440
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /usr/src/app/src
+          ignore:
+            - node_modules/
+            - test/
+            - dist/
+        - action: sync
+          path: ./package.json
+          target: /usr/src/app/package.json
+
+secrets:
+  database_password:
+    file: ./secrets/databasePassword.txt
+  redis_password:
+    file: ./secrets/redisPassword.txt
+  jwt_secret:
+    file: ./secrets/jwtSecret.txt
