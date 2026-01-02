@@ -74,9 +74,43 @@ services:
       retries: 5
       start_period: 30s
       start_interval: 5s
+  
+  redis:
+    container_name: redis-development
+    hostname: redis
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: >
+      redis-server
+      --requirepass file:/run/secrets/redis_password
+      --appendonly yes
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --protected-mode yes
+    secrets:
+      - source: redis_password
+        target: redis_password
+        mode: 0440
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - expense-api-network
+    read_only: false
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "$$(cat /run/secrets/redis_password)", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
 volumes:
   postgres-data:
+  redis-data:
 
 secrets:
   database_password:
