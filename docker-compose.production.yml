@@ -1,0 +1,168 @@
+version: '3.8'
+
+services:
+  expense-api:
+    extends:
+      file: docker-compose.base.yml
+      service: expense-api
+    container_name: expense-api-production
+    domainname: ${DOMAIN_NAME:-production.internal}
+    build:
+      context: .
+      target: production
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+        - BUILDKIT_PROGRESS=plain
+      cache_from:
+        - expense-api-production:latest
+    ports:
+      - target: 3000
+        published: ${HOST_PORT:-3000}
+        protocol: tcp
+        mode: host
+    environment:
+      <<: *common-variables
+      NODE_ENV: production
+      PORT: 3000
+      UV_THREADPOOL_SIZE: 4
+      NODE_OPTIONS: "--max-old-space-size=1536 --enable-source-maps"
+    secrets:
+      - source: db_password_prod
+        target: db_password
+        mode: 0400
+      - source: jwt_secret_prod
+        target: jwt_secret
+        mode: 0400
+      - source: api_key_prod
+        target: api_key
+        mode: 0400
+      - source: redis_password_prod
+        target: redis_password
+        mode: 0400
+      - source: encryption_key_prod
+        target: encryption_key
+        mode: 0400
+    volumes:
+      - type: volume
+        source: expense-api-logs-prod
+        target: /usr/src/app/logs
+        read_only: false
+      - type: volume
+        source: expense-api-uploads-prod
+        target: /usr/src/app/uploads
+        read_only: false
+      - type: volume
+        source: expense-api-temp-prod
+        target: /usr/src/app/temp
+        read_only: false
+      - type: bind
+        source: /etc/timezone
+        target: /etc/timezone
+        read_only: true
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    deploy:
+      mode: replicated
+      replicas: ${REPLICAS:-2}
+      update_config:
+        parallelism: 1
+        delay: 30s
+        order: stop-first
+        failure_action: rollback
+        monitor: 60s
+      rollback_config:
+        parallelism: 0
+        delay: 10s
+        order: stop-first
+        failure_action: pause
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.role == worker
+          - node.labels.environment == production
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.expense-api.rule=Host(`${DOMAIN_NAME:-api.example.com}`)"
+      - "traefik.http.routers.expense-api.entrypoints=websecure"
+      - "traefik.http.routers.expense-api.tls.certresolver=le"
+      - "traefik.http.services.expense-api.loadbalancer.server.port=3000"
+      - "traefik.http.routers.expense-api.middlewares=auth,compression,ratelimit"
+      - "com.docker.compose.project=expense-api-production"
+      - "environment=production"
+      - "maintainer=${MAINTAINER:-devops@company.com}"
+      - "prometheus.scrape=true"
+      - "prometheus.port=3000"
+      - "prometheus.path=/metrics"
+    logging:
+      driver: "loki"
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-external-labels: "job=docker-logs,container_name={{.Name}},image={{.ImageName}}"
+
+volumes:
+  expense-api-logs-prod:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/docker/volumes/expense-api/logs
+  expense-api-uploads-prod:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/docker/volumes/expense-api/uploads
+  expense-api-temp-prod:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/docker/volumes/expense-api/temp
+  postgres-data-prod:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/docker/volumes/expense-api/postgres
+  redis-data-prod:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/docker/volumes/expense-api/redis
+
+secrets:
+  db_password_prod:
+    external: true
+    name: expense-db-password-prod
+  jwt_secret_prod:
+    external: true
+    name: expense-jwt-secret-prod
+  api_key_prod:
+    external: true
+    name: expense-api-key-prod
+  redis_password_prod:
+    external: true
+    name: expense-redis-password-prod
+  encryption_key_prod:
+    external: true
+    name: expense-encryption-key-prod
+
+networks:
+  expense-api-network:
+    external: true
+    name: expense-api-network-prod
