@@ -63,7 +63,5 @@ Dockerfile*
 
 # NestJS specific
 nest-cli.json
-tsconfig.json
-tsconfig.*.json
 
 secrets
