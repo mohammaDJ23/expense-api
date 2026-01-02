@@ -15,7 +15,8 @@ echo "📦 Installing dependencies..."
 docker exec --user root $CONTAINER_NAME npm install
 
 echo "🚀 Restarting container..."
-docker restart $CONTAINER_NAME
+docker-compose -f docker-compose.base.yml -f docker-compose.development.yml down
+docker-compose -f docker-compose.base.yml -f docker-compose.development.yml up --watch
 
 echo "⏳ Waiting for container to restart..."
 for i in {1..10}; do
