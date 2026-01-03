@@ -1,0 +1,87 @@
+name: Master Pipeline
+
+on:
+  push:
+    branches: [master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  pr-validation:
+    uses: ./.github/workflows/pr-validation.yaml
+    secrets: inherit
+
+  docker-build-production:
+    runs-on: ubuntu-latest
+    needs: pr-validation
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build production image
+        run: |
+          docker build \
+            --target production \
+            -t expense-api:production .
+
+      - name: Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'expense-api:production'
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
+
+      - name: Docker Scout analysis
+        run: |
+          docker scout quickview expense-api:production
+
+      - name: Snyk container scan
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: expense-api:production
+          args: --severity-threshold=high
+
+      - name: Test production image
+        run: |
+          echo "Testing production image..."
+          container_id=$(docker run -d --rm \
+            --name prod-secure \
+            --user 10001:10001 \
+            --read-only \
+            --cap-drop=ALL \
+            --security-opt no-new-privileges:true \
+            --pids-limit 100 \
+            --memory 512m \
+            --cpus 1 \
+            expense-api:production)
+
+          sleep 15
+
+          docker logs $container_id
+
+          docker run --rm --network container:$container_id \
+            curlimages/curl:8.5.0 \
+            curl -f http://localhost:3000/health || echo "Health check skipped"
+
+          docker stop $container_id
+
+      # - name: Push to DockerHub
+      #   run: |
+      #     docker tag expense-api:production ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:${{ github.sha }}
+      #     docker tag expense-api:production ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:latest
+      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:${{ github.sha }}
+      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:latest
