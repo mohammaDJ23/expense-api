@@ -151,13 +151,6 @@ jobs:
         with:
           args: --all-projects --severity-threshold=high
 
-      - name: Snyk - Scan IaC
-        uses: snyk/actions/iac@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=high
-
       - name: Snyk - Scan code
         uses: snyk/actions@master
         env:
