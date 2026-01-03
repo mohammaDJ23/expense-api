@@ -19,7 +19,7 @@ WORKDIR /usr/src/app
 
 COPY --chown=expense-api:nodejs package*.json ./
 
-RUN npm install --omit=dev --ignore-scripts && \
+RUN RUN npm ci --ignore-scripts && \
   npm cache clean --force
 
 FROM base AS development
@@ -27,8 +27,6 @@ FROM base AS development
 ENV NODE_ENV=development
 
 COPY --chown=expense-api:nodejs . .
-
-RUN npm install --ignore-scripts --include=dev
 
 USER expense-api
 
@@ -40,9 +38,7 @@ FROM base AS production-build
 
 COPY --chown=expense-api:nodejs . .
 
-RUN npm install --ignore-scripts --include=dev && \
-  npm run build && \
-  npm prune --production && \
+RUN npm run build && \
   rm -rf src
 
 FROM node:20-alpine AS production
@@ -55,8 +51,9 @@ RUN apk add --no-cache curl && \
 WORKDIR /usr/src/app
 
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/package*.json ./
-COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/dist ./dist
+
+RUN npm ci --only=production --ignore-scripts
 
 RUN mkdir -p logs uploads temp && \
   chown -R expense-api:nodejs logs uploads temp && \
