@@ -1,0 +1,7 @@
+version: v1.25.0
+exclude:
+  iac:
+    - "**/node_modules/**"
+    - "**/*.spec.json"
+    - "**/test/**"
+    - "**/__tests__/**"
