@@ -144,8 +144,15 @@ jobs:
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --all-projects --severity-threshold=high
+        run: |
+          echo "📦 Scanning npm dependencies..."
+          snyk test --all-projects --severity-threshold=high
+
+          echo "📁 Scanning configuration files..."
+          snyk iac test . --severity-threshold=high
+
+          echo "🔍 Scanning code for secrets..."
+          snyk code test --severity-threshold=high
 
       - name: Secret detection
         uses: trufflesecurity/trufflehog@main
