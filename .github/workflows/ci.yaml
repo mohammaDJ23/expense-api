@@ -165,6 +165,14 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Restore cached node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+
       - name: Build project
         run: npm run build
 
