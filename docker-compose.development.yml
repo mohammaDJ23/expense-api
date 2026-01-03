@@ -3,7 +3,7 @@ services:
     container_name: expense-api-development
     domainname: ${DOMAIN_NAME:-development.internal}
     image: expense-api-development:latest
-    restart: "no"
+    restart: 'no'
     env_file:
       - ./.env
     build:
@@ -13,10 +13,10 @@ services:
       cache_from:
         - expense-api-development:latest
     ports:
-      - "${PORT:-4000}:4000"
-      - "9229:9229"
+      - '${PORT:-4000}:4000'
+      - '9229:9229'
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - 'host.docker.internal:host-gateway'
     read_only: false
     security_opt: []
     cap_drop: []
@@ -54,7 +54,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD_FILE: /run/secrets/database_password
-      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
     secrets:
       - source: database_password
@@ -63,18 +63,18 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - '5432:5432'
     networks:
       - expense-api-network
     read_only: false
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 30s
       start_interval: 5s
-  
+
   redis:
     container_name: redis-development
     hostname: redis
@@ -97,12 +97,13 @@ services:
     volumes:
       - redis-data:/data
     ports:
-      - "6379:6379"
+      - '6379:6379'
     networks:
       - expense-api-network
     read_only: false
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "$$(cat /run/secrets/redis_password)", "--raw", "incr", "ping"]
+      test:
+        ['CMD', 'redis-cli', '-a', '$$(cat /run/secrets/redis_password)', '--raw', 'incr', 'ping']
       interval: 30s
       timeout: 10s
       retries: 5

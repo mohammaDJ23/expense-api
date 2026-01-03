@@ -2,18 +2,18 @@ x-common-variables: &common-variables
   TZ: UTC
 
 x-common-config: &common-config
-  user: "10001:10001"
+  user: '10001:10001'
   init: true
   stop_signal: SIGTERM
   stop_grace_period: 30s
   logging:
-    driver: "json-file"
+    driver: 'json-file'
     options:
-      max-size: "10m"
-      max-file: "3"
-      mode: "non-blocking"
-      max-buffer-size: "4m"
-      tag: "{{.Name}}/{{.ID}}"
+      max-size: '10m'
+      max-file: '3'
+      mode: 'non-blocking'
+      max-buffer-size: '4m'
+      tag: '{{.Name}}/{{.ID}}'
 
 x-security-config: &security-config
   security_opt:
@@ -26,7 +26,13 @@ x-readonly-filesystem: &readonly-filesystem
 
 x-health-check: &health-check
   healthcheck:
-    test: ["CMD", "node", "-e", "const http = require('http'); const req = http.request({ hostname: 'localhost', port: process.env.PORT, path: '/health', timeout: 5000 }, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on('error', () => process.exit(1)); req.end();"]
+    test:
+      [
+        'CMD',
+        'node',
+        '-e',
+        "const http = require('http'); const req = http.request({ hostname: 'localhost', port: process.env.PORT, path: '/health', timeout: 5000 }, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on('error', () => process.exit(1)); req.end();",
+      ]
     interval: 30s
     timeout: 10s
     start_period: ${HEALTH_START_PERIOD:-60s}
