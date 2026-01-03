@@ -137,22 +137,34 @@ jobs:
           restore-keys: |
             deps-${{ runner.os }}-
 
+      - name: Install dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: npm ci
+
       - name: Security audit
         run: npm audit --audit-level=moderate
 
-      - name: Snyk security scan
+      - name: Snyk - Scan dependencies
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: |
-          echo "📦 Scanning npm dependencies..."
-          snyk test --all-projects --severity-threshold=high
+        with:
+          args: --all-projects --severity-threshold=high
 
-          echo "📁 Scanning configuration files..."
-          snyk iac test . --severity-threshold=high
+      - name: Snyk - Scan IaC
+        uses: snyk/actions/iac@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
 
-          echo "🔍 Scanning code for secrets..."
-          snyk code test --severity-threshold=high
+      - name: Snyk - Scan code
+        uses: snyk/actions@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: code
+          args: --severity-threshold=high
 
       - name: Secret detection
         uses: trufflesecurity/trufflehog@main
