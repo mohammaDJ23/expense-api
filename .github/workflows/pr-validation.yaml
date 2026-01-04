@@ -5,7 +5,6 @@ on:
     types: [opened, synchronize, reopened]
 
 concurrency:
-  group: ${{ github.workflow }}-pr-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
