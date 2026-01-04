@@ -14,67 +14,7 @@ jobs:
   install-dependencies:
     runs-on: ubuntu-latest
     outputs:
-      cache-hit: ${{ steps.cache-deps.outputs.cache-hit }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Cache node_modules
-        id: cache-node-modules-deps
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        if: steps.cache-node-modules-deps.outputs.cache-hit != 'true'
-        run: npm ci
-
-  validate-branch-name:
-    if: github.ref != 'refs/heads/master'
-    runs-on: ubuntu-latest
-    needs: install-dependencies
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Determine branch name
-        id: branch
-        run: |
-          if [ -n "${{ github.head_ref }}" ]; then
-            BRANCH_NAME="${{ github.head_ref }}"
-            echo "PR from branch: $BRANCH_NAME"
-          else
-            BRANCH_NAME="${{ github.ref }}"
-            BRANCH_NAME="${BRANCH_NAME#refs/heads/}"
-            echo "Push to branch: $BRANCH_NAME"
-          fi
-
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
-
-      - name: Validate branch name
-        run: |
-          BRANCH="${{ steps.branch.outputs.BRANCH_NAME }}"
-          if [ -z "$BRANCH" ]; then
-            echo "❌ Branch name is empty"
-            exit 1
-          fi
-          npx branch-name-lint .branch.namerc.json --branch="${{ steps.branch.outputs.BRANCH_NAME }}"
-
-  validate-commits:
-    if: github.ref != 'refs/heads/master'
-    runs-on: ubuntu-latest
-    needs: install-dependencies
+      cache-key: ${{ steps.cache-deps.outputs.cache-hit  }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -84,38 +24,85 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+
+      - name: Cache node_modules
+        id: cache-deps
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: npm ci
+
+  validate:
+    runs-on: ubuntu-latest
+    needs: install-dependencies
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Restore cached dependencies
+        if: needs.install-dependencies.outputs.cache-hit == 'true'
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies if cache missed
+        if: needs.install-dependencies.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Validate branch name (non-master only)
+        if: github.ref != 'refs/heads/master'
+        id: branch-validation
+        run: |
+          if [ -n "${{ github.head_ref }}" ]; then
+            BRANCH_NAME="${{ github.head_ref }}"
+            echo "PR from branch: $BRANCH_NAME"
+          else
+            BRANCH_NAME="${{ github.ref }}"
+            BRANCH_NAME="${BRANCH_NAME#refs/heads/}"
+            echo "Push to branch: $BRANCH_NAME"
+          fi
+          npx branch-name-lint .branch.namerc.json --branch="$BRANCH_NAME"
 
       - name: Validate commit messages
+        id: commit-validation
         uses: wagoid/commitlint-github-action@v5
         with:
           configFile: commitlint.config.js
           firstParent: false
 
   lint-and-format:
-    needs: [install-dependencies, validate-branch-name, validate-commits]
-    if: |
-      (github.ref == 'refs/heads/master' && needs.install-dependencies.result == 'success') ||
-      (github.ref != 'refs/heads/master' && 
-        needs.install-dependencies.result == 'success' &&
-        needs.validate-branch-name.result == 'success' &&
-        needs.validate-commits.result == 'success')
+    needs: [install-dependencies, validate]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js with cache
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Restore cached node_modules
-        id: cache-node-modules
+      - name: Restore cached dependencies
+        if: needs.install-dependencies.outputs.cache-hit == 'true'
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-${{ github.ref == 'refs/heads/master' && 'master' || 'other' }}
-          restore-keys: |
-            deps-${{ runner.os }}-
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies if cache missed
+        if: needs.install-dependencies.outputs.cache-hit != 'true'
+        run: npm ci
 
       - name: Run linting
         run: npm run lint:ci
@@ -125,26 +112,25 @@ jobs:
 
   security-checks:
     runs-on: ubuntu-latest
-    needs: lint-and-format
+    needs: [install-dependencies, lint-and-format]
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js with cache
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Restore cached node_modules
-        id: cache-node-modules-security-checks
+      - name: Restore cached dependencies
+        if: needs.install-dependencies.outputs.cache-hit == 'true'
         uses: actions/cache@v4
         with:
           path: node_modules
           key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            deps-${{ runner.os }}-
 
-      - name: Install dependencies
-        if: steps.cache-node-modules-security-checks.outputs.cache-hit != 'true'
+      - name: Install dependencies if cache missed
+        if: needs.install-dependencies.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Security audit
@@ -186,24 +172,26 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: [security-checks, docker-security]
+    needs: [install-dependencies, security-checks, docker-security]
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js with cache
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      - name: Restore cached node_modules
-        id: cache-node-modules-build
+      - name: Restore cached dependencies
+        if: needs.install-dependencies.outputs.cache-hit == 'true'
         uses: actions/cache@v4
         with:
           path: node_modules
           key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            deps-${{ runner.os }}-
+
+      - name: Install dependencies if cache missed
+        if: needs.install-dependencies.outputs.cache-hit != 'true'
+        run: npm ci
 
       - name: Build project
         run: npm run build
