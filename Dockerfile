@@ -19,7 +19,7 @@ WORKDIR /usr/src/app
 
 COPY --chown=expense-api:nodejs package*.json ./
 
-RUN npm ci --omit=dev --ignore-scripts && \
+RUN npm ci --ignore-scripts && \
   npm cache clean --force
 
 FROM base AS development
@@ -27,8 +27,6 @@ FROM base AS development
 ENV NODE_ENV=development
 
 COPY --chown=expense-api:nodejs . .
-
-RUN npm ci --include=dev --ignore-scripts
 
 USER expense-api
 
