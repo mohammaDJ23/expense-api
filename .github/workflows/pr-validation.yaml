@@ -82,7 +82,7 @@ jobs:
           firstParent: false
 
   lint-and-format:
-    needs: [install-dependencies, branch-commit-validation]
+    needs: [install-dependencies, branch-and-commit-validation]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
