@@ -91,39 +91,41 @@ jobs:
           configFile: commitlint.config.js
           firstParent: false
 
-  lint-and-format-master:
-    if: github.ref == 'refs/heads/master'
-    needs: install-dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: ./.github/actions/lint-and-format
-        with:
-          cache-key: master
-
   lint-and-format:
-    if: github.ref != 'refs/heads/master'
-    needs: [install-dependencies, validate-branch-name, validate-commits]
+    needs: ${{ fromJSON(github.ref != 'refs/heads/master' && '["install-dependencies", "validate-branch-name", "validate-commits"]' || '["install-dependencies"]') }}
+    if: |
+      (github.ref == 'refs/heads/master' && needs.install-dependencies.result == 'success') ||
+        (github.ref != 'refs/heads/master' && 
+          needs.install-dependencies.result == 'success' &&
+          needs.validate-branch-name.result == 'success' &&
+          needs.validate-commits.result == 'success')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/lint-and-format
+      - name: Setup Node.js with cache
+        uses: actions/setup-node@v4
         with:
-          cache-key: other
+          node-version: '20'
 
-  lint-and-format-completed:
-    runs-on: ubuntu-latest
-    needs: [lint-and-format-master, lint-and-format]
-    if: always() && (needs.lint-and-format-master.result == 'success' || needs.lint-and-format.result == 'success')
-    steps:
-      - name: Lint completed
-        run: echo "✅ Lint passed for ${{ github.ref }}"
+      - name: Restore cached node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-${{ github.ref == 'refs/heads/master' && 'master' || 'other' }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+
+      - name: Run linting
+        run: npm run lint:ci
+
+      - name: Check formatting
+        run: npm run format:ci
 
   security-checks:
     runs-on: ubuntu-latest
-    needs: lint-and-format-completed
+    needs: lint-and-format
     steps:
       - uses: actions/checkout@v4
 
@@ -171,7 +173,7 @@ jobs:
 
   docker-security:
     runs-on: ubuntu-latest
-    needs: lint-and-format-completed
+    needs: lint-and-format
     steps:
       - uses: actions/checkout@v4
 
