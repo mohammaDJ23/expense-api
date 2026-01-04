@@ -7,8 +7,34 @@ on:
     branches: [master]
 
 concurrency:
-  group: pr-validation-${{ github.event.pull_request.number }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
+
+.job-templates:
+  lint-and-format: &lint-and-format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js with cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Restore cached node_modules
+        id: cache-node-modules-format
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+
+      - name: Run linting
+        run: npm run lint:ci
+
+      - name: Check formatting
+        run: npm run format:ci
 
 jobs:
   install-dependencies:
@@ -24,7 +50,7 @@ jobs:
           node-version: '20'
 
       - name: Cache node_modules
-        id: cache-deps
+        id: cache-node-modules-deps
         uses: actions/cache@v4
         with:
           path: node_modules
@@ -33,10 +59,11 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        if: steps.cache-deps.outputs.cache-hit != 'true'
+        if: steps.cache-node-modules-deps.outputs.cache-hit != 'true'
         run: npm ci
 
   validate-branch-name:
+    if: github.ref != 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: install-dependencies
     steps:
@@ -50,21 +77,28 @@ jobs:
       - name: Determine branch name
         id: branch
         run: |
-          echo "BRANCH_NAME=${{ github.head_ref }}" >> $GITHUB_OUTPUT
-          echo "Determined branch: ${{ steps.branch.outputs.BRANCH_NAME }}"
+          if [ -n "${{ github.head_ref }}" ]; then
+            BRANCH_NAME="${{ github.head_ref }}"
+            echo "PR from branch: $BRANCH_NAME"
+          else
+            BRANCH_NAME="${{ github.ref }}"
+            BRANCH_NAME="${BRANCH_NAME#refs/heads/}"
+            echo "Push to branch: $BRANCH_NAME"
+          fi
+
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
       - name: Validate branch name
         run: |
           BRANCH="${{ steps.branch.outputs.BRANCH_NAME }}"
-
-          if [[ -z "$BRANCH" ]]; then
-            echo "Failed branch validation"
-            exit 1
-          fi
-
-          npx branch-name-lint .branch.namerc.json --branch="$BRANCH"
+            if [ -z "$BRANCH" ]; then
+              echo "❌ Branch name is empty"
+              exit 1
+            fi
+          npx branch-name-lint .branch.namerc.json --branch="${{ steps.branch.outputs.BRANCH_NAME }}"
 
   validate-commits:
+    if: github.ref != 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: install-dependencies
     steps:
@@ -83,34 +117,27 @@ jobs:
           configFile: commitlint.config.js
           firstParent: false
 
+  lint-and-format-master:
+    if: github.ref == 'refs/heads/master'
+    needs: install-dependencies
+    <<: *lint-and-format
+
   lint-and-format:
-    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/master'
     needs: [install-dependencies, validate-branch-name, validate-commits]
+    <<: *lint-and-format
+
+  lint-and-format-completed:
+    runs-on: ubuntu-latest
+    needs: [lint-and-format-master, lint-and-format]
+    if: always() && (needs.lint-and-format-master.result == 'success' || needs.lint-and-format.result == 'success')
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js with cache
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Restore cached node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            deps-${{ runner.os }}-
-
-      - name: Run linting
-        run: npm run lint:ci
-
-      - name: Check formatting
-        run: npm run format:ci
+      - name: Lint completed
+        run: echo "✅ Lint passed for ${{ github.ref }}"
 
   security-checks:
     runs-on: ubuntu-latest
-    needs: lint-and-format
+    needs: lint-and-format-completed
     steps:
       - uses: actions/checkout@v4
 
@@ -120,6 +147,7 @@ jobs:
           node-version: '20'
 
       - name: Restore cached node_modules
+        id: cache-node-modules-security-checks
         uses: actions/cache@v4
         with:
           path: node_modules
@@ -128,7 +156,7 @@ jobs:
             deps-${{ runner.os }}-
 
       - name: Install dependencies
-        if: steps.cache-deps.outputs.cache-hit != 'true'
+        if: steps.cache-node-modules-security-checks.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Security audit
@@ -157,7 +185,7 @@ jobs:
 
   docker-security:
     runs-on: ubuntu-latest
-    needs: lint-and-format
+    needs: lint-and-format-completed
     steps:
       - uses: actions/checkout@v4
 
@@ -170,7 +198,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: [security-checks, docker-Security]
+    needs: [security-checks, docker-security]
     steps:
       - uses: actions/checkout@v4
 
@@ -181,6 +209,7 @@ jobs:
           cache: 'npm'
 
       - name: Restore cached node_modules
+        id: cache-node-modules-build
         uses: actions/cache@v4
         with:
           path: node_modules
