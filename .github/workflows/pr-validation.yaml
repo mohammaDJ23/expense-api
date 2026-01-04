@@ -92,10 +92,7 @@ jobs:
           firstParent: false
 
   lint-and-format:
-    needs:
-      - install-dependencies
-      - ${{ github.ref != 'refs/heads/master' && 'validate-branch-name' || '' }}
-      - ${{ github.ref != 'refs/heads/master' && 'validate-commits' || '' }}
+    needs: [install-dependencies, validate-branch-name, validate-commits]
     if: |
       (github.ref == 'refs/heads/master' && needs.install-dependencies.result == 'success') ||
       (github.ref != 'refs/heads/master' && 
