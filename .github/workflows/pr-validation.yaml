@@ -92,13 +92,16 @@ jobs:
           firstParent: false
 
   lint-and-format:
-    needs: ${{ fromJSON(github.ref != 'refs/heads/master' && '["install-dependencies", "validate-branch-name", "validate-commits"]' || '["install-dependencies"]') }}
+    needs:
+      - install-dependencies
+      - ${{ github.ref != 'refs/heads/master' && 'validate-branch-name' || '' }}
+      - ${{ github.ref != 'refs/heads/master' && 'validate-commits' || '' }}
     if: |
       (github.ref == 'refs/heads/master' && needs.install-dependencies.result == 'success') ||
-        (github.ref != 'refs/heads/master' && 
-          needs.install-dependencies.result == 'success' &&
-          needs.validate-branch-name.result == 'success' &&
-          needs.validate-commits.result == 'success')
+      (github.ref != 'refs/heads/master' && 
+        needs.install-dependencies.result == 'success' &&
+        needs.validate-branch-name.result == 'success' &&
+        needs.validate-commits.result == 'success')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
