@@ -5,6 +5,7 @@ on:
     branches: [master]
 
 concurrency:
+  group: master-pipeline-${{ github.sha }}
   cancel-in-progress: true
 
 jobs:
