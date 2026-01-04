@@ -1,8 +1,12 @@
 name: Master Pipeline
 
 on:
-  push:
-    branches: [master]
+  workflow_run:
+    workflows: ['PR Validation']
+    types:
+      - completed
+    branches:
+      - master
 
 concurrency:
   group: master-pipeline-${{ github.sha }}
@@ -10,9 +14,20 @@ concurrency:
 
 jobs:
   docker-build-production:
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+        ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Show commit info
+        run: |
+          echo "Deploying SHA: ${{ github.event.workflow_run.head_sha }}"
+          echo "From workflow: ${{ github.event.workflow_run.name }}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
