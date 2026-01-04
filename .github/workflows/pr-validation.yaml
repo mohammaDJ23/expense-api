@@ -74,6 +74,38 @@ jobs:
           fi
           npx branch-name-lint .branch.namerc.json --branch="$BRANCH_NAME"
 
+      - name: Display commit messages
+        run: |
+          echo ""
+          echo "🚀 COMMITS TO VALIDATE"
+          echo "════════════════════════════════════════"
+
+          # Function to display commits nicely
+          display_commits() {
+            local range="$1"
+            echo ""
+            echo "📋 Commit Messages:"
+            echo "────────────────────"
+            git log --format="  📝 %s%n    👤 %an | 📅 %ad | 🆔 %h" --date=short $range 2>/dev/null || return 1
+            echo "────────────────────"
+          }
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "PR: #${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}"
+            display_commits "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}" || \
+            echo "  ℹ️  Could not get specific commit range"
+          else
+            echo "Push to: ${GITHUB_REF#refs/heads/}"
+            if [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+              display_commits "${{ github.event.before }}..${{ github.event.after }}" || \
+              echo "  ℹ️  Could not get specific commit range"
+            else
+              display_commits "-1"  # Just show the last commit
+            fi
+          fi
+          echo "════════════════════════════════════════"
+          echo ""
+
       - name: Validate commit messages
         id: commit-validation
         uses: wagoid/commitlint-github-action@v5
