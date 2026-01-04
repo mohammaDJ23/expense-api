@@ -7,9 +7,6 @@ RUN apk add --no-cache \
   curl \
   && rm -rf /var/cache/apk/*
 
-ENV NODE_ENV=production \
-  TZ=UTC
-
 RUN addgroup -g 10001 -S nodejs && \
   adduser -S expense-api -u 10001 -G nodejs && \
   mkdir -p /usr/src/app && \
@@ -35,6 +32,8 @@ EXPOSE 4000 9229
 CMD ["npm", "run", "start:debug"]
 
 FROM base AS production-build
+
+ENV NODE_ENV=production
 
 COPY --chown=expense-api:nodejs . .
 
