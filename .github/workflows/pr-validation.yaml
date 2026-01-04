@@ -74,12 +74,34 @@ jobs:
           fi
           npx branch-name-lint .branch.namerc.json --branch="$BRANCH_NAME"
 
-      - name: Validate commit messages
+      - name: Validate new commit messages
         id: commit-validation
-        uses: wagoid/commitlint-github-action@v5
-        with:
-          configFile: commitlint.config.js
-          firstParent: false
+        run: |
+          # Determine which commits to validate
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "🔍 Validating PR commits..."
+            FROM="${{ github.event.pull_request.base.sha }}"
+            TO="${{ github.event.pull_request.head.sha }}"
+          else
+            echo "🔍 Validating push commits..."
+            FROM="${{ github.event.before }}"
+            TO="${{ github.event.after }}"
+            
+            # Handle initial commit
+            if [ "$FROM" = "0000000000000000000000000000000000000000" ]; then
+              FROM="HEAD"
+              TO="HEAD"
+            fi
+          fi
+
+          # Show what we're validating
+          echo "📋 Commits to validate ($FROM..$TO):"
+          git log --oneline $FROM..$TO 2>/dev/null || git log --oneline -1
+          echo ""
+
+          # Run commitlint on new commits only
+          echo "Running commitlint..."
+          npx commitlint --from="$FROM" --to="$TO" --verbose --config commitlint.config.js
 
   lint-and-format:
     needs: [install-dependencies, branch-and-commit-validation]
