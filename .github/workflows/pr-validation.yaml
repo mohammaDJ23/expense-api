@@ -10,32 +10,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
-.job-templates:
-  lint-and-format: &lint-and-format
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js with cache
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Restore cached node_modules
-        id: cache-node-modules-format
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            deps-${{ runner.os }}-
-
-      - name: Run linting
-        run: npm run lint:ci
-
-      - name: Check formatting
-        run: npm run format:ci
-
 jobs:
   install-dependencies:
     runs-on: ubuntu-latest
@@ -116,6 +90,31 @@ jobs:
         with:
           configFile: commitlint.config.js
           firstParent: false
+
+  .lint-and-format: &lint-and-format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js with cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Restore cached node_modules
+        id: cache-node-modules-format
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+
+      - name: Run linting
+        run: npm run lint:ci
+
+      - name: Check formatting
+        run: npm run format:ci
 
   lint-and-format-master:
     if: github.ref == 'refs/heads/master'
