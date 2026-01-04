@@ -74,37 +74,66 @@ jobs:
           fi
           npx branch-name-lint .branch.namerc.json --branch="$BRANCH_NAME"
 
-      - name: Display commit messages
+      - name: Display new commits being merged
         run: |
           echo ""
-          echo "🚀 COMMITS TO VALIDATE"
-          echo "════════════════════════════════════════"
+          echo "🎯 VALIDATING NEW COMMITS ONLY"
+          echo "═══════════════════════════════"
 
-          # Function to display commits nicely
-          display_commits() {
-            local range="$1"
-            echo ""
-            echo "📋 Commit Messages:"
-            echo "────────────────────"
-            git log --format="  📝 %s%n    👤 %an | 📅 %ad | 🆔 %h" --date=short $range 2>/dev/null || return 1
-            echo "────────────────────"
-          }
-
+          # For PRs (including PRs targeting master)
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "PR: #${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}"
-            display_commits "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}" || \
-            echo "  ℹ️  Could not get specific commit range"
-          else
-            echo "Push to: ${GITHUB_REF#refs/heads/}"
-            if [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
-              display_commits "${{ github.event.before }}..${{ github.event.after }}" || \
-              echo "  ℹ️  Could not get specific commit range"
+            BASE_BRANCH="${{ github.event.pull_request.base.ref }}"
+            PR_BRANCH="${{ github.event.pull_request.head.ref }}"
+            
+            echo "📌 PR #${{ github.event.pull_request.number }}"
+            echo "From: $PR_BRANCH → To: $BASE_BRANCH"
+            echo ""
+            
+            # Get commits that are unique to this PR
+            # The syntax `HEAD ^origin/main` means: commits in HEAD but NOT in origin/main
+            echo "🔍 Commits being merged (not in $BASE_BRANCH):"
+            echo "----------------------------------------------"
+            
+            # Fetch the base branch
+            git fetch origin $BASE_BRANCH
+            
+            # Show commits in PR but not in base
+            NEW_COMMITS=$(git log --oneline --no-merges HEAD ^origin/$BASE_BRANCH 2>/dev/null | wc -l || echo 0)
+            
+            if [ "$NEW_COMMITS" -gt 0 ]; then
+              git log --format="  • %s%n    Author: %an | Date: %ad" --date=short \
+                --no-merges HEAD ^origin/$BASE_BRANCH
+              echo ""
+              echo "✅ Total new commits: $NEW_COMMITS"
             else
-              display_commits "-1"  # Just show the last commit
+              echo "  ⚠️  No new commits found (might be merge commits only)"
+              git log --format="  • %s (merge)" --merges -${{ github.event.pull_request.commits }}
+            fi
+            
+          else
+            # For direct pushes (e.g., push to master)
+            BRANCH="${GITHUB_REF#refs/heads/}"
+            
+            echo "📌 Direct push to: $BRANCH"
+            echo ""
+            
+            # Show exactly what was pushed
+            if [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+              echo "🔍 Commits in this push:"
+              echo "----------------------------------------------"
+              git log --format="  • %s%n    Author: %an | Date: %ad" --date=short \
+                ${{ github.event.before }}..${{ github.event.after }}
+              
+              COUNT=$(git rev-list --count ${{ github.event.before }}..${{ github.event.after }} 2>/dev/null || echo 1)
+              echo ""
+              echo "✅ Total pushed commits: $COUNT"
+            else
+              echo "🔍 Initial/force push:"
+              echo "----------------------------------------------"
+              git log --format="  • %s%n    Author: %an | Date: %ad" --date=short -1
             fi
           fi
-          echo "════════════════════════════════════════"
-          echo ""
+          echo "═══════════════════════════════"
 
       - name: Validate commit messages
         id: commit-validation
