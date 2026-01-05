@@ -1,6 +1,7 @@
 services:
   expense-api:
     container_name: expense-api-development
+    hostname: expense-api
     domainname: ${DOMAIN_NAME:-development.internal}
     image: expense-api-development:latest
     restart: 'no'
@@ -15,11 +16,16 @@ services:
     ports:
       - '${PORT:-4000}:4000'
       - '9229:9229'
+    networks:
+      - expense-api-network
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    read_only: false
-    security_opt: []
-    cap_drop: []
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
     secrets:
       - source: database_password
         target: database_password
@@ -120,3 +126,7 @@ secrets:
     file: ./secrets/redisPassword.txt
   jwt_secret:
     file: ./secrets/jwtSecret.txt
+
+networks:
+  expense-api-network:
+    driver: bridge
