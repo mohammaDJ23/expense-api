@@ -43,6 +43,14 @@ jobs:
             --target production \
             -t expense-api:production .
 
+      - name: Debug - Check packages in production image
+        run: |
+          docker run --rm expense-api:production sh -c "npm list --all --depth=0 2>/dev/null | grep -E 'cross-spawn|glob' || echo 'Not found in production image'"
+
+          # Also check node_modules directly
+          docker run --rm expense-api:production sh -c "find /usr/src/app/node_modules -name 'cross-spawn' -type d 2>/dev/null || true"
+          docker run --rm expense-api:production sh -c "find /usr/src/app/node_modules -name 'glob' -type d 2>/dev/null || true"
+
       - name: Trivy vulnerability scan
         uses: aquasecurity/trivy-action@master
         with:
