@@ -66,6 +66,3 @@ if (require.main === module) {
 }
 
 module.exports = { generateUniqueId };
-
-
-
