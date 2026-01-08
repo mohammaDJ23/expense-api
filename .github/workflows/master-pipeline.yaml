@@ -41,12 +41,12 @@ jobs:
         run: |
           docker build \
             --target production \
-            -t expense-api:production .
+            -t expense-api-production .
 
       - name: Trivy vulnerability scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'expense-api:production'
+          image-ref: 'expense-api-production'
           format: 'table'
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
@@ -57,7 +57,7 @@ jobs:
         uses: docker/scout-action@v1
         with:
           command: cves
-          image: expense-api:production
+          image: expense-api-production
           exit-code: true
           only-severities: critical,high
           ignore-base: true
@@ -67,38 +67,87 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: expense-api:production
+          image: expense-api-production
           args: |
             --severity-threshold=high
             --exclude=/usr/local/lib/node_modules/npm
 
       - name: Test production image
         run: |
-          echo "Testing production image..."
-          container_id=$(docker run -d --rm \
-            --name prod-secure \
-            --user 10001:10001 \
+          set -euo pipefail
+
+          IMAGE="expense-api-production"
+          CONTAINER="${IMAGE}-$(date +%s)"
+          PORT=$(grep -E '^PORT=' .env.production | cut -d'=' -f2 || echo "3000")
+
+          cleanup() { 
+            echo "Cleaning up container: $CONTAINER"
+            docker stop "$CONTAINER" 2>/dev/null || true
+            docker rm -f "$CONTAINER" 2>/dev/null || true
+          }
+
+          trap cleanup EXIT INT TERM
+
+          echo "Starting $IMAGE..."
+          docker run -d \
+            --rm \
+            --name "$CONTAINER" \
+            --user "10001:10001" \
             --read-only \
             --cap-drop=ALL \
-            --security-opt no-new-privileges:true \
-            --pids-limit 100 \
-            --memory 512m \
-            --cpus 1 \
-            expense-api:production)
+            --security-opt no-new-privileges=true \
+            --memory="512m" \
+            --cpus="1.0" \
+            --pids-limit=100 \
+            --log-driver=json-file \
+            --log-opt max-size=10m \
+            --log-opt max-file=3 \
+            --env-file .env.production \
+            -e "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" \
+            -e "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
+            -e "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" \
+            "$IMAGE"
 
-          sleep 15
+          sleep 10
 
-          docker logs $container_id
+          HEALTH_CHECK_TIMER=60
+          HEALTH_OK=false
+          echo "Waiting for health check (${HEALTH_CHECK_TIMER}s max)..."
 
-          docker run --rm --network container:$container_id \
-            curlimages/curl:8.5.0 \
-            curl -f http://localhost:3000/health || echo "Health check skipped"
+          for ((i=1; i<=HEALTH_CHECK_TIMER; i++)); do
+            echo -ne "⏳ Checking... ${i}/${HEALTH_CHECK_TIMER}s\r"
 
-          docker stop $container_id
+            if ! docker ps --filter "name=$CONTAINER" --format "{{.Names}}" | grep -q "^$CONTAINER$"; then
+              echo "❌ Container stopped unexpectedly"
+              docker logs "$CONTAINER"
+              HEALTH_OK=false
+              break
+            fi
+            
+            if docker exec "$CONTAINER" \
+              sh -c "curl -f -s --max-time 3 http://localhost:$PORT/health >/dev/null"; then
+              echo "✅ Health OK after ${i}s"
+              HEALTH_OK=true
+              break
+            fi
+            
+            sleep 1
+          done
+
+          echo ""
+
+          if [ "$HEALTH_OK" = "true" ]; then
+            echo "✓ Test passed"
+          else
+            echo "✗ Health check failed"
+            echo "Container logs:"
+            docker logs "$CONTAINER" || true
+            exit 1
+          fi
 
       # - name: Push to DockerHub
       #   run: |
-      #     docker tag expense-api:production ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:${{ github.sha }}
-      #     docker tag expense-api:production ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:latest
+      #     docker tag expense-api-production ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:${{ github.sha }}
+      #     docker tag expense-api-production ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:latest
       #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:${{ github.sha }}
       #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:latest
