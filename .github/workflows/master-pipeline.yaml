@@ -139,15 +139,8 @@ jobs:
           if [ "$HEALTH_OK" = "true" ]; then
             echo "✓ Test passed"
           else
-            echo "✗ Health check failed"
+            echo "❌ Health check failed"
             echo "Container logs:"
             docker logs "$CONTAINER" || true
             exit 1
           fi
-
-      # - name: Push to DockerHub
-      #   run: |
-      #     docker tag expense-api-production ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:${{ github.sha }}
-      #     docker tag expense-api-production ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:latest
-      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:${{ github.sha }}
-      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/expense-api:latest
