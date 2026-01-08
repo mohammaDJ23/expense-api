@@ -53,9 +53,13 @@ jobs:
           ignore-unfixed: true
           skip-dirs: '/usr/local/lib/node_modules/npm'
 
-      - name: Docker Scout analysis
-        run: |
-          docker scout quickview expense-api:production
+      - name: Docker Scout
+        uses: docker/scout-action@v1
+        with:
+          command: cves
+          image: expense-api:production
+          exit-code: true
+          only-severities: critical,high
 
       - name: Snyk container scan
         uses: snyk/actions/docker@master
