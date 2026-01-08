@@ -38,8 +38,7 @@ ENV NODE_ENV=production
 COPY --chown=expense-api:nodejs . .
 
 RUN npm run build && \
-  rm -rf node_modules && \
-  npm ci --omit-dev --ignore-scripts && \
+  npm prune --production && \
   rm -rf src
 
 FROM node:20-alpine AS production
