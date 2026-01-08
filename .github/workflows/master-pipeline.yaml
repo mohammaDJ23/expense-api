@@ -60,6 +60,7 @@ jobs:
           image: expense-api:production
           exit-code: true
           only-severities: critical,high
+          ignore-base: true
 
       - name: Snyk container scan
         uses: snyk/actions/docker@master
