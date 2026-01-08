@@ -51,6 +51,7 @@ jobs:
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
+          skip-dirs: '/usr/local/lib/node_modules/npm'
 
       - name: Docker Scout analysis
         run: |
