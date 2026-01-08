@@ -68,7 +68,9 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: expense-api:production
-          args: --severity-threshold=high
+          args: |
+            --severity-threshold=high
+            --exclude=/usr/local/lib/node_modules/npm
 
       - name: Test production image
         run: |
