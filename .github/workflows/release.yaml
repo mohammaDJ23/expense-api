@@ -12,6 +12,10 @@ concurrency:
   group: release-${{ github.event.workflow_run.head_sha }}
   cancel-in-progress: true
 
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/expense-api
+
 jobs:
   release:
     if: github.event.workflow_run.conclusion == 'success'
@@ -20,6 +24,10 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
+    outputs:
+      release_version: ${{ steps.get-version.outputs.version }}
+      new_release_created: ${{ steps.get-version.outputs.new_release_created }}
+      commit_sha: ${{ steps.get-version.outputs.commit_sha }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -42,3 +50,112 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CI: true
         run: npx semantic-release
+
+      - name: Get release version
+        id: get-version
+        run: |
+          if [ -f "package.json" ]; then
+            VERSION=$(node -p "require('./package.json').version")
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+            LATEST_SHA=$(git rev-parse HEAD)
+            echo "commit_sha=$LATEST_SHA" >> $GITHUB_OUTPUT 
+            
+            PREVIOUS_VERSION=$(git show HEAD~1:package.json 2>/dev/null | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version" 2>/dev/null || echo "")
+            
+            if [ "$VERSION" != "$PREVIOUS_VERSION" ]; then
+              echo "new_release_created=true" >> $GITHUB_OUTPUT
+              echo "✅ New release version: $VERSION"
+            else
+              echo "new_release_created=false" >> $GITHUB_OUTPUT
+              echo "ℹ️ No new release (version unchanged)"
+            fi
+          else
+            echo "new_release_created=false" >> $GITHUB_OUTPUT
+            echo "❌ package.json not found"
+          fi
+
+      - name: Show release info
+        if: steps.get-version.outputs.new_release_created == 'true'
+        run: |
+          echo "Version: ${{ steps.get-version.outputs.version }}"
+          echo "Commit: ${{ github.event.workflow_run.head_sha }}"
+          echo "Image name: ${{ env.IMAGE_NAME }}"
+
+  build-and-push-to-dockerhub:
+    needs: release
+    if: needs.release.outputs.new_release_created == 'true' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.commit_sha }}
+          fetch-depth: 0
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build production image with version tag
+        run: |
+          VERSION="${{ needs.release.outputs.release_version }}"
+          COMMIT_SHA="${{ needs.release.outputs.commit_sha }}"
+
+          APP_NAME=$(node -p "require('./package.json').name || 'expense-api'")
+          APP_DESCRIPTION=$(node -p "require('./package.json').description || 'NestJS Expense API'")
+
+          echo "🏗️ Building Docker image version: $VERSION"
+
+          docker build \
+            --target production \
+            --label "org.opencontainers.image.version=$VERSION" \
+            --label "org.opencontainers.image.created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            --label "org.opencontainers.image.revision=$COMMIT_SHA" \
+            --label "org.opencontainers.image.title=$APP_NAME" \
+            --label "org.opencontainers.image.description=$APP_DESCRIPTION" \
+            --label "com.company.environment=production" \
+            --label "com.company.release.version=$VERSION" \
+            -t ${{ env.IMAGE_NAME }}:$VERSION \
+            .
+
+      - name: Push immutable version tag to DockerHub
+        run: |
+          VERSION="${{ needs.release.outputs.release_version }}"
+
+          echo "📤 Pushing immutable version tag to DockerHub..."
+          echo "Image: ${{ env.IMAGE_NAME }}:$VERSION"
+
+          docker push ${{ env.IMAGE_NAME }}:$VERSION
+
+          echo "✅ Successfully pushed: ${{ env.IMAGE_NAME }}:$VERSION"
+          echo "🎉 Image published!"
+
+  release-summary:
+    needs: [release, build-and-push-to-dockerhub]
+    if: needs.release.outputs.new_release_created == 'true' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release Summary
+        run: |
+          echo "🚀 RELEASE WORKFLOW SUMMARY"
+          echo "==========================="
+          echo ""
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Triggered by: Master Pipeline #${{ github.event.workflow_run.run_number }}"
+          echo "Original SHA: ${{ github.event.workflow_run.head_sha }}"
+          echo "Updated SHA: ${{ needs.release.outputs.commit_sha }}"
+          echo ""
+
+          VERSION="${{ needs.release.outputs.release_version }}"
+          echo "✅ NEW RELEASE CREATED!"
+          echo "Version: v$VERSION"
+          echo ""
+          echo "📦 Docker Image Published:"
+          echo "   ${{ env.IMAGE_NAME }}:$VERSION"
+          echo ""
