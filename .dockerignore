@@ -9,9 +9,9 @@ dist
 build
 
 # Environment files
-*.env
-.env.*
-.env
+# *.env
+# .env.*
+# .env
 
 # Logs
 logs
