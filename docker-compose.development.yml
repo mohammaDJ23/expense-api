@@ -1,12 +1,14 @@
 services:
   expense-api:
     container_name: expense-api-development
-    hostname: expense-api
-    domainname: ${DOMAIN_NAME:-development.internal}
     image: expense-api-development:latest
     restart: 'no'
     env_file:
       - ./.env
+    environment:
+      DATABASE_PASSWORD_FILE: /run/secrets/database_password
+      REDIS_PASSWORD_FILE: /run/secrets/redis_password
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
     build:
       context: .
       target: development
@@ -21,21 +23,19 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:4000/health']
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:${PORT}/api/v1/health || exit 1"
+        ]
       interval: 10s
       timeout: 5s
       start_period: 30s
       retries: 3
     secrets:
-      - source: database_password
-        target: database_password
-        mode: 0440
-      - source: redis_password
-        target: redis_password
-        mode: 0440
-      - source: jwt_secret
-        target: jwt_secret
-        mode: 0440
+      - database_password
+      - redis_password
+      - jwt_secret
     develop:
       watch:
         - action: sync
@@ -48,24 +48,26 @@ services:
         - action: sync
           path: ./package.json
           target: /usr/src/app/package.json
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   postgres:
     container_name: postgres-development
-    hostname: postgres
     image: postgres:16-alpine
     restart: unless-stopped
     env_file:
       - ./.env
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD_FILE: /run/secrets/database_password
       POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
     secrets:
-      - source: database_password
-        target: database_password
-        mode: 0440
+      - database_password
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
@@ -74,7 +76,7 @@ services:
       - expense-api-network
     read_only: false
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER}']
       interval: 30s
       timeout: 10s
       retries: 5
@@ -83,23 +85,20 @@ services:
 
   redis:
     container_name: redis-development
-    hostname: redis
     image: redis:7-alpine
     restart: unless-stopped
     command: >
       redis-server
-      --requirepass file:/run/secrets/redis_password
-      --appendonly yes
-      --save 900 1
-      --save 300 10
-      --save 60 10000
-      --maxmemory 256mb
-      --maxmemory-policy allkeys-lru
-      --protected-mode yes
+        --requirepass file:/run/secrets/redis_password
+        --appendonly yes
+        --save 900 1
+        --save 300 10
+        --save 60 10000
+        --maxmemory 256mb
+        --maxmemory-policy allkeys-lru
+        --protected-mode yes
     secrets:
-      - source: redis_password
-        target: redis_password
-        mode: 0440
+      - redis_password
     volumes:
       - redis-data:/data
     ports:
@@ -108,8 +107,7 @@ services:
       - expense-api-network
     read_only: false
     healthcheck:
-      test:
-        ['CMD', 'redis-cli', '-a', '$$(cat /run/secrets/redis_password)', '--raw', 'incr', 'ping']
+      test: ["CMD-SHELL", "redis-cli -a \"$$(cat /run/secrets/redis_password)\" --raw incr ping"]
       interval: 30s
       timeout: 10s
       retries: 5
