@@ -48,14 +48,12 @@ jobs:
   create-version:
     needs: manual-approval
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}-${{ env.APP_NAME }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
       version: ${{ steps.get-version.outputs.version }}
-      commit_sha: ${{ steps.get-version.outputs.commit_sha }}
-      image_ref: ${{ steps.get-version.outputs.image_ref }}
-      latest_image: ${{ steps.get-version.outputs.latest_image }}
+      previous_version: ${{ steps.get-previous-version.outputs.previous_version }}
+      commit_sha: ${{ steps.get-commit-sha.outputs.commit_sha }}
+      image_name: ${{ steps.create-image-names.outputs.image_name }}
+      latest_image: ${{ steps.create-image-names.outputs.latest_image }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -65,18 +63,34 @@ jobs:
 
       - uses: ./.github/actions/setup-node/action.yaml
 
-      - name: Create a new version
-        id: get-version
+      - name: Get commit_sha
+        id: get-commit-sha
+        run: |
+          set -euxo pipefail
+
+          echo "Getting commit_sha..."
+
+          COMMIT_SHA=$(git rev-parse HEAD)
+          echo "commit_sha=${COMMIT_SHA}" >> $GITHUB_OUTPUT
+
+          echo "✅ The commit_sha is ${COMMIT_SHA}."
+
+      - name: Get previous version
+        id: get-previous-version
         run: |
           set -euxo pipefail
           
-          echo "🔔 Starting Semantic Release process..."
-          
-          CURRENT_SHA=$(git rev-parse HEAD)
-          echo "commit_sha=${CURRENT_SHA}" >> $GITHUB_OUTPUT
+          echo "Getting previous version..."
 
-          CURRENT_VERSION=$(jq -r '.version' package.json)
-          echo "Current version: ${CURRENT_VERSION}"
+          PREVIOUS_VERSION=$(jq -r '.version' package.json)
+          echo "preivous_version=${PREVIOUS_VERSION}" >> $GITHUB_OUTPUT
+
+          echo "✅ The previous version is ${PREVIOUS_VERSION}."
+
+      - name: Get new version by the dry mode
+        id: get-version
+        run: |
+          set -euxo pipefail
 
           SEMANTIC_OUTPUT=$(npx semantic-release --dry-run 2>&1 || true)
           echo "Semantic-release dry run output:"
@@ -90,25 +104,47 @@ jobs:
             exit 1
           fi
             
-          NEW_VERSION="${LINE#*$PHRASE }"
-          if [[ -z "${NEW_VERSION}" || "${NEW_VERSION}" == "${CURRENT_VERSION}" ]]; then
+          PREVIOUS_VERSION="${{ steps.get-previous-version.outputs.previous_version }}"
+
+          VERSION="${LINE#*$PHRASE }"
+          if [[ -z "${VERSION}" || "${VERSION}" == "${PREVIOUS_VERSION}" ]]; then
             echo "❌ No new version created."
             exit 1
           fi
 
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "✅ The new version exists: ${VERSION}"
+
+      - name: Create a new version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euxo pipefail
+          
+          echo "🔔 Starting Semantic Release process..."
           npx semantic-release
 
-          echo "✅ New version created: ${NEW_VERSION}"
+          echo "✅ Semantic Release was successfull..."
 
-          echo "version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+      - name: Create the docker image names
+        id: create-image-names
+        run: |
+          set -euxo pipefail
 
-          IMAGE_REF="${IMAGE_NAME}:${NEW_VERSION}"
-          echo "image_ref=${IMAGE_REF}" >> $GITHUB_OUTPUT
+          VERSION="${{ steps.get-version.outputs.version }}"
+          NAME="${{ secrets.DOCKERHUB_USERNAME }}-${{ env.APP_NAME }}"
           
-          LATEST_IMAGE="${IMAGE_NAME}:latest"
+          IMAGE_NAME="${NAME}:${VERSION}"
+          echo "image_name=${IMAGE_NAME}" >> $GITHUB_OUTPUT
+
+          echo "✅ The new image with version is ${IMAGE_NAME}"
+          
+          LATEST_IMAGE="${NAME}:latest"
           echo "latest_image=${LATEST_IMAGE}" >> $GITHUB_OUTPUT
 
-  run-and-test:
+          echo "✅ The new image with latest version is ${LATEST_IMAGE}"
+
+  run-test-push:
     needs: create-version
     runs-on: ubuntu-latest
     steps:
@@ -124,7 +160,7 @@ jobs:
         uses: ./.github/actions/run-and-test-docker-image/action.yaml
         with:
           app_name: ${{ env.APP_NAME }}
-          image_name: ${{ needs.create-version.outputs.image_ref }}
+          image_name: ${{ needs.create-version.outputs.image_name }}
 
       - name: Build, run and test the latest image
         uses: ./.github/actions/run-and-test-docker-image/action.yaml
@@ -140,16 +176,16 @@ jobs:
 
       - name: Push the image to DockerHub
         env:
-          IMAGE_REF: ${{ needs.create-version.outputs.image_ref }}
+          IMAGE_NAME: ${{ needs.create-version.outputs.image_name }}
           LATEST_IMAGE: ${{ needs.create-version.outputs.latest_image }}
         run: |
           echo "📤 Pushing to DockerHub..."
-          echo "Images: ${IMAGE_REF} and ${LATEST_IMAGE}"
+          echo "Images: ${IMAGE_NAME} and ${LATEST_IMAGE}"
 
-          docker push ${IMAGE_REF}
+          docker push ${IMAGE_NAME}
           docker push ${LATEST_IMAGE}
 
-          echo "✅ Successfully pushed: ${IMAGE_REF} and ${LATEST_IMAGE}"
+          echo "✅ Successfully pushed: ${IMAGE_NAME} and ${LATEST_IMAGE}"
           echo "🎉 Images published!"
         
       - name: Log out from DockerHub
@@ -162,7 +198,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VERSION: ${{ needs.create-version.outputs.version }}
-      IMAGE_REF: ${{ needs.create-version.outputs.image_ref }}
+      PREVIOUS_VERSION: ${{ needs.create-version.outputs.previous_version }}
+      IMAGE_NAME: ${{ needs.create-version.outputs.image_name }}
       LATEST_IMAGE: ${{ needs.create-version.outputs.latest_image }}
       WORKFLOW: ${{ github.workflow }}
       RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
@@ -181,9 +218,10 @@ jobs:
           echo ""
           
           echo "✅ NEW RELEASE CREATED!"
-          echo "Version: v${VERSION}"
+          echo "Previous Version: v${PREVIOUS_VERSION}"
+          echo "New Version: v${VERSION}"
           echo ""
           echo "📦 Docker Images Published:"
-          echo "   ${IMAGE_REF}"
+          echo "   ${IMAGE_NAME}"
           echo "   ${LATEST_IMAGE}"
           echo ""
