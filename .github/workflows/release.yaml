@@ -61,7 +61,7 @@ jobs:
           ref: ${{ needs.manual-approval.outputs.approved_sha }}
           fetch-depth: 0
 
-      - uses: ./.github/actions/setup-node/action.yaml
+      - uses: ./.github/actions/setup-node
 
       - name: Get commit_sha
         id: get-commit-sha
@@ -157,13 +157,13 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build, run and test the versioned image
-        uses: ./.github/actions/run-and-test-docker-image/action.yaml
+        uses: ./.github/actions/run-and-test-docker-image
         with:
           app_name: ${{ env.APP_NAME }}
           image_name: ${{ needs.create-version.outputs.image_name }}
 
       - name: Build, run and test the latest image
-        uses: ./.github/actions/run-and-test-docker-image/action.yaml
+        uses: ./.github/actions/run-and-test-docker-image
         with:
           app_name: ${{ env.APP_NAME }}
           image_name: ${{ needs.create-version.outputs.latest_image }}
