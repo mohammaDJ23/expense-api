@@ -17,7 +17,7 @@ jobs:
       - name: Checkout the source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.event.pull_request.head_sha || github.sha }}
 
       - uses: ./.github/actions/setup-node/action.yaml
 
@@ -28,7 +28,7 @@ jobs:
       - name: Checkout the source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.event.pull_request.head_sha || github.sha }}
 
       - uses: ./.github/actions/setup-node/action.yaml
 
@@ -60,7 +60,7 @@ jobs:
       - name: Checkout the source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.event.pull_request.head_sha || github.sha }}
 
       - uses: ./.github/actions/setup-node/action.yaml
 
@@ -77,7 +77,7 @@ jobs:
       - name: Checkout the source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.event.pull_request.head_sha || github.sha }}
           fetch-depth: 0
 
       - uses: ./.github/actions/setup-node/action.yaml
@@ -113,7 +113,7 @@ jobs:
       - name: Checkout the source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.event.pull_request.head_sha || github.sha }}
 
       - name: Lint Dockerfile with hadolint
         uses: hadolint/hadolint-action@v3.1.0
@@ -136,7 +136,7 @@ jobs:
       - name: Checkout the source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.event.pull_request.head_sha || github.sha }}
 
       - uses: ./.github/actions/setup-node/action.yaml
 
