@@ -23,11 +23,7 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "curl -f http://localhost:${PORT}/api/v1/health || exit 1"
-        ]
+      test: ['CMD-SHELL', 'curl -f http://localhost:${PORT}/api/v1/health || exit 1']
       interval: 10s
       timeout: 5s
       start_period: 30s
@@ -107,7 +103,7 @@ services:
       - expense-api-network
     read_only: false
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -a \"$$(cat /run/secrets/redis_password)\" --raw incr ping"]
+      test: ['CMD-SHELL', 'redis-cli -a "$$(cat /run/secrets/redis_password)" --raw incr ping']
       interval: 30s
       timeout: 10s
       retries: 5

@@ -22,11 +22,7 @@ services:
     networks:
       - expense-api-network
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "curl -f http://localhost:${PORT}/api/v1/health || exit 1"
-        ]
+      test: ['CMD-SHELL', 'curl -f http://localhost:${PORT}/api/v1/health || exit 1']
       interval: 10s
       timeout: 5s
       start_period: 30s
@@ -55,7 +51,7 @@ services:
     networks:
       - expense-api-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U expense_api"]
+      test: ['CMD-SHELL', 'pg_isready -U expense_api']
       interval: 30s
       timeout: 10s
       retries: 5
@@ -75,7 +71,7 @@ services:
     networks:
       - expense-api-network
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -a \"$$(cat /run/secrets/redis_password)\" ping"]
+      test: ['CMD-SHELL', 'redis-cli -a "$$(cat /run/secrets/redis_password)" ping']
       interval: 30s
       timeout: 10s
       retries: 5

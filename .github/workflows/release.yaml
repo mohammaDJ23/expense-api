@@ -79,7 +79,7 @@ jobs:
         id: get-previous-version
         run: |
           set -euxo pipefail
-          
+
           echo "Getting previous version..."
 
           PREVIOUS_VERSION=$(jq -r '.version' package.json)
@@ -120,7 +120,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euxo pipefail
-          
+
           echo "🔔 Starting Semantic Release process..."
           npx semantic-release
 
@@ -133,12 +133,12 @@ jobs:
 
           VERSION="${{ steps.get-version.outputs.version }}"
           NAME="${{ secrets.DOCKERHUB_USERNAME }}-${{ env.APP_NAME }}"
-          
+
           IMAGE_NAME="${NAME}:${VERSION}"
           echo "image_name=${IMAGE_NAME}" >> $GITHUB_OUTPUT
 
           echo "✅ The new image with version is ${IMAGE_NAME}"
-          
+
           LATEST_IMAGE="${NAME}:latest"
           echo "latest_image=${LATEST_IMAGE}" >> $GITHUB_OUTPUT
 
@@ -187,7 +187,7 @@ jobs:
 
           echo "✅ Successfully pushed: ${IMAGE_NAME} and ${LATEST_IMAGE}"
           echo "🎉 Images published!"
-        
+
       - name: Log out from DockerHub
         if: always()
         run: docker logout
@@ -216,7 +216,7 @@ jobs:
           echo "Original SHA: ${ORIGINAL_SHA}"
           echo "Updated SHA: ${UPDATED_SHA}"
           echo ""
-          
+
           echo "✅ NEW RELEASE CREATED!"
           echo "Previous Version: v${PREVIOUS_VERSION}"
           echo "New Version: v${VERSION}"

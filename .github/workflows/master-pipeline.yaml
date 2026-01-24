@@ -16,7 +16,7 @@ env:
   APP_NAME: expense-api
   HEAD_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
 
-jobs:  
+jobs:
   run-and-test:
     if: github.event.workflow_run.conclusion == 'success'
     timeout-minutes: 30
@@ -31,8 +31,6 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - uses: ./.github/actions/run-and-test-docker-image/action.yaml
-        env:
-          IMAGE_NAME: ${{ env.APP_NAME }}-ci:${{ env.HEAD_SHA }}
         with:
           app_name: ${{ env.APP_NAME }}
           image_name: ${{ env.APP_NAME }}-ci:${{ env.HEAD_SHA }}

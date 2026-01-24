@@ -21,7 +21,7 @@ runs:
       run: |
         mkdir -p .ci-secrets
         chmod 700 .ci-secrets
-        
+
     - name: Write secrets to files
       shell: bash
       env:
@@ -32,9 +32,9 @@ runs:
         echo "${DATABASE_PASSWORD}" > .ci-secrets/database_password
         echo "${REDIS_PASSWORD}" > .ci-secrets/redis_password
         echo "${JWT_SECRET}" > .ci-secrets/jwt_secret
-        
+
         chmod 600 .ci-secrets/*
-        
+
         echo "✓ Secret files created"
 
     - name: Build the image
@@ -125,5 +125,5 @@ runs:
         echo "Cleaning up secrets..."
         rm -rf .ci-secrets 2>/dev/null || true
         echo "✅ The secret file removed."
-        
+
         echo "✅ Cleanup complete."
