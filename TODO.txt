@@ -1,264 +1,40 @@
-CICD setup
-  for any merge request pull and push
-  for master
-  consider commit message and branch name, pre-commit, pre-push.
+1. make commit-msg more robust.
 
-Glob and cross packages are causing error inside master pipeline.
+2. make pre-commit more robust.
 
-Consider when a merge request creates, do not allow merge when ci passed.
+3. update and revise docker entrypoints.
 
-Split the best of the actions
+4. consider to use .sh files for ci for your commands.
 
-Husky for pre-push
+5. use npm ci --ignore-scripts
 
-Rename the docker sh files
+6. replace readme file.
 
-Setup the version
+7. consider to use npx instead of npm if your packages do not need to be install inside node_modules.
+  also consider to use --no-install if packages need to be installed locally.
 
-Setup the version for docker image in action
+8. understand the docker-compose files and update if any changes needed.
 
-DDD file structure
+9. in your github workflows first use the docker images for your steps if it does exist.
+  if it's not use your npm packages with the related packages.
+  then use your .sh custom commands if no one of them exists.
 
-src/
-├── domains/                          # Business domains
-│   ├── identity/                     # Identity bounded context
-│   │   ├── user/                     # User aggregate
-│   │   │   ├── domain/               # Business logic layer
-│   │   │   │   ├── entities/
-│   │   │   │   │   └── user.entity.ts
-│   │   │   │   ├── value-objects/
-│   │   │   │   │   ├── email.vo.ts
-│   │   │   │   │   ├── password.vo.ts
-│   │   │   │   │   └── user-id.vo.ts
-│   │   │   │   ├── events/
-│   │   │   │   │   ├── user-created.event.ts
-│   │   │   │   │   ├── user-updated.event.ts
-│   │   │   │   │   └── user-deleted.event.ts
-│   │   │   │   ├── exceptions/
-│   │   │   │   │   └── user-not-found.exception.ts
-│   │   │   │   └── interfaces/
-│   │   │   │       └── user.repository.interface.ts
-│   │   │   ├── application/          # Application layer
-│   │   │   │   ├── commands/
-│   │   │   │   │   ├── create-user.command.ts
-│   │   │   │   │   ├── update-user.command.ts
-│   │   │   │   │   └── delete-user.command.ts
-│   │   │   │   ├── queries/
-│   │   │   │   │   ├── get-user.query.ts
-│   │   │   │   │   ├── list-users.query.ts
-│   │   │   │   │   └── search-users.query.ts
-│   │   │   │   ├── handlers/
-│   │   │   │   │   ├── create-user.handler.ts
-│   │   │   │   │   ├── update-user.handler.ts
-│   │   │   │   │   ├── delete-user.handler.ts
-│   │   │   │   │   ├── get-user.handler.ts
-│   │   │   │   │   └── list-users.handler.ts
-│   │   │   │   ├── services/
-│   │   │   │   │   ├── user.command.service.ts
-│   │   │   │   │   ├── user.query.service.ts
-│   │   │   │   │   └── user.facade.service.ts
-│   │   │   │   ├── dto/
-│   │   │   │   │   ├── create-user.dto.ts
-│   │   │   │   │   ├── update-user.dto.ts
-│   │   │   │   │   └── user.response.dto.ts
-│   │   │   │   ├── validators/
-│   │   │   │   │   └── create-user.validator.ts
-│   │   │   │   └── transactions/
-│   │   │   │       └── create-user.transaction.ts
-│   │   │   └── infrastructure/       # Infrastructure layer
-│   │   │       ├── persistence/
-│   │   │       │   ├── typeorm/
-│   │   │       │   │   ├── entities/
-│   │   │       │   │   │   └── user.orm-entity.ts
-│   │   │       │   │   ├── repositories/
-│   │   │       │   │   │   └── typeorm-user.repository.ts
-│   │   │       │   │   ├── mappers/
-│   │   │       │   │   │   └── user.mapper.ts
-│   │   │       │   │   └── migrations/
-│   │   │       │   │       ├── 001-create-users-table.ts
-│   │   │       │   │       └── 002-add-user-profile-column.ts
-│   │   │       │   └── seeders/
-│   │   │       │       └── user.seeder.ts
-│   │   │       ├── controllers/
-│   │   │       │   ├── http/
-│   │   │       │   │   └── user.controller.ts
-│   │   │       │   └── graphql/
-│   │   │       │       └── user.resolver.ts
-│   │   │       ├── guards/
-│   │   │       │   └── user-ownership.guard.ts
-│   │   │       ├── interceptors/
-│   │   │       │   └── user-transform.interceptor.ts
-│   │   │       ├── pipes/
-│   │   │       │   └── user-validation.pipe.ts
-│   │   │       └── decorators/
-│   │   │           └── current-user.decorator.ts
-│   │   ├── auth/                     # Auth aggregate
-│   │   │   ├── domain/
-│   │   │   │   ├── entities/
-│   │   │   │   │   └── session.entity.ts
-│   │   │   │   ├── value-objects/
-│   │   │   │   │   └── jwt-token.vo.ts
-│   │   │   │   └── interfaces/
-│   │   │   │       └── token.repository.interface.ts
-│   │   │   ├── application/
-│   │   │   │   ├── commands/
-│   │   │   │   │   ├── login.command.ts
-│   │   │   │   │   ├── logout.command.ts
-│   │   │   │   │   └── refresh-token.command.ts
-│   │   │   │   ├── queries/
-│   │   │   │   │   └── validate-token.query.ts
-│   │   │   │   ├── services/
-│   │   │   │   │   ├── auth.service.ts
-│   │   │   │   │   └── token.service.ts
-│   │   │   │   └── strategies/
-│   │   │   │       ├── jwt.strategy.ts
-│   │   │   │       └── local.strategy.ts
-│   │   │   └── infrastructure/
-│   │   │       ├── controllers/
-│   │   │       │   └── auth.controller.ts
-│   │   │       ├── guards/
-│   │   │       │   ├── jwt-auth.guard.ts
-│   │   │       │   └── roles.guard.ts
-│   │   │       └── decorators/
-│   │   │           └── public.decorator.ts
-│   │   ├── shared/                   # Shared within identity context
-│   │   │   └── domain/
-│   │   │       └── events/
-│   │   │           └── user-logged-in.event.ts
-│   │   └── identity.module.ts
-│   ├── billing/                      # Billing bounded context
-│   │   ├── invoice/                  # Invoice aggregate
-│   │   │   ├── domain/
-│   │   │   │   ├── entities/
-│   │   │   │   │   └── invoice.entity.ts
-│   │   │   │   ├── value-objects/
-│   │   │   │   │   ├── money.vo.ts
-│   │   │   │   │   └── invoice-number.vo.ts
-│   │   │   │   └── events/
-│   │   │   │       └── invoice-created.event.ts
-│   │   │   ├── application/
-│   │   │   │   ├── commands/
-│   │   │   │   │   ├── create-invoice.command.ts
-│   │   │   │   │   └── pay-invoice.command.ts
-│   │   │   │   ├── queries/
-│   │   │   │   │   └── get-invoice.query.ts
-│   │   │   │   └── services/
-│   │   │   │       └── invoice.service.ts
-│   │   │   └── infrastructure/
-│   │   │       ├── controllers/
-│   │   │       │   └── invoice.controller.ts
-│   │   │       └── persistence/
-│   │   │           └── typeorm/
-│   │   │               └── entities/
-│   │   │                   └── invoice.orm-entity.ts
-│   │   ├── payment/                  # Payment aggregate
-│   │   │   ├── domain/
-│   │   │   │   └── entities/
-│   │   │   │       └── payment.entity.ts
-│   │   │   ├── application/
-│   │   │   │   └── commands/
-│   │   │   │       └── process-payment.command.ts
-│   │   │   └── infrastructure/
-│   │   │       └── external/
-│   │   │           ├── stripe/
-│   │   │           │   └── stripe.client.ts
-│   │   │           └── paypal/
-│   │   │               └── paypal.client.ts
-│   │   └── billing.module.ts
-│   ├── notification/                 # Notification bounded context
-│   │   ├── email/                    # Email aggregate
-│   │   │   ├── domain/
-│   │   │   │   ├── entities/
-│   │   │   │   │   └── email-notification.entity.ts
-│   │   │   │   └── value-objects/
-│   │   │   │       └── email-address.vo.ts
-│   │   │   ├── application/
-│   │   │   │   ├── commands/
-│   │   │   │   │   └── send-email.command.ts
-│   │   │   │   └── services/
-│   │   │   │       └── email.service.ts
-│   │   │   └── infrastructure/
-│   │   │       └── external/
-│   │   │           ├── sendgrid/
-│   │   │           │   └── sendgrid.client.ts
-│   │   │           └── ses/
-│   │   │               └── ses.client.ts
-│   │   ├── sms/                      # SMS aggregate
-│   │   │   └── (similar structure)
-│   │   ├── push/                     # Push notification aggregate
-│   │   │   └── (similar structure)
-│   │   └── notification.module.ts
-│   └── shared/                       # Shared across domains
-│       └── domain/
-│           ├── value-objects/
-│           │   ├── id.vo.ts
-│           │   └── timestamp.vo.ts
-│           └── events/
-│               └── domain-event.base.ts
-├── infrastructure/                   # Shared infrastructure
-│   ├── database/
-│   │   ├── database.module.ts
-│   │   ├── database.service.ts
-│   │   └── migrations/
-│   │       └── main-migrations.module.ts
-│   ├── cache/
-│   │   ├── redis.module.ts
-│   │   └── cache.service.ts
-│   ├── messaging/
-│   │   ├── rabbitmq.module.ts
-│   │   └── message-bus.service.ts
-│   ├── monitoring/
-│   │   ├── logging.module.ts
-│   │   └── metrics.service.ts
-│   └── config/
-│       ├── app.config.ts
-│       └── feature-flags.config.ts
-├── api/                              # API composition layer
-│   ├── v1/
-│   │   ├── controllers/              # Thin API controllers
-│   │   │   ├── users.api.controller.ts
-│   │   │   ├── auth.api.controller.ts
-│   │   │   └── billing.api.controller.ts
-│   │   ├── middleware/
-│   │   │   ├── request-logger.middleware.ts
-│   │   │   └── correlation-id.middleware.ts
-│   │   ├── filters/
-│   │   │   └── http-exception.filter.ts
-│   │   └── api.module.ts
-│   └── v2/
-│       └── (future API version)
-├── shared/                           # Cross-cutting concerns
-│   ├── common/
-│   │   ├── decorators/
-│   │   │   ├── transform.decorator.ts
-│   │   │   └── validation.decorator.ts
-│   │   ├── filters/
-│   │   │   └── query-exception.filter.ts
-│   │   ├── guards/
-│   │   │   └── rate-limit.guard.ts
-│   │   ├── interceptors/
-│   │   │   ├── logging.interceptor.ts
-│   │   │   └── transform.interceptor.ts
-│   │   └── pipes/
-│   │       ├── parse-int.pipe.ts
-│   │       └── validation.pipe.ts
-│   ├── kernel/                       # Domain primitives
-│   │   ├── aggregate-root.base.ts
-│   │   ├── entity.base.ts
-│   │   └── value-object.base.ts
-│   └── utils/
-│       ├── helpers/
-│       │   └── date.helper.ts
-│       └── validators/
-│           └── phone.validator.ts
-├── bootstrap/
-│   ├── app.module.ts
-│   ├── app.config.ts
-│   └── app.factory.ts
-└── main.ts
+10. do more usable your actions. understand what is your flow of the workflow.
+  add more thing if you need.
 
-CQRS code design
+11. DDD file structure.
 
-Healtycheck api
+12. consider pre-push commands if you need.
 
-Production docker setup
+13. CQRS design.
+
+14. setup Healtycheck api
+
+15. production docker image.
+
+16. consider to use set command inside bash for better error handling.
+
+17. use a docker image for your custom scripts for a better handling inside cicd and or somewhere else.
+ 
+18. create an auto pipeline to watch a folder for your custom scripts to build a new image and push it to dockerhub.
+  notice to consider security checks for the image.
