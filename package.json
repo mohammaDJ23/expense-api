@@ -20,6 +20,7 @@
     "prepare": "husky",
     "semantic-release": "semantic-release",
     "generate:branch:id": "node ./scripts/generateBranchId.js",
+    "detect:branch:name": "sh ./scripts/detectBranchName/index.sh",
     "validate:branch:name": "sh ./scripts/validateBranchName/index.sh",
     "ci:detector": "sh ./scripts/ciDetector.sh",
     "lint:staged": "sh ./scripts/lintStaged.sh",
