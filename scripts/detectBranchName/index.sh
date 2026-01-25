@@ -7,17 +7,17 @@ detect_branch() {
   
   if [ -n "${BRANCH:-}" ]; then
     detected_branch="$BRANCH"
-    echo "🔍 Using provided BRANCH env var: $detected_branch" >&2
+    echo "✅ Using provided BRANCH env var: $detected_branch" >&2
   elif [ -n "${GITHUB_HEAD_REF:-}" ]; then
     detected_branch="$GITHUB_HEAD_REF"
-    echo "🔍 Using GitHub PR branch: $detected_branch" >&2
+    echo "✅ Using GitHub PR branch: $detected_branch" >&2
   elif [ -n "${GITHUB_REF_NAME:-}" ]; then
     detected_branch="$GITHUB_REF_NAME"
-    echo "🔍 Using GitHub push branch: $detected_branch" >&2
+    echo "✅ Using GitHub push branch: $detected_branch" >&2
   else
     detected_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
     if [ -n "$detected_branch" ]; then
-      echo "🔍 Using git branch: '$detected_branch'" >&2
+      echo "✅ Using git branch: '$detected_branch'" >&2
     else
       echo "🔍 No branch detected" >&2
     fi
@@ -38,4 +38,4 @@ if [ -z "$BRANCH" ]; then
   exit 1
 fi
 
-echo "$BRANCH"
+echo "::set-output name=branch::${BRANCH}"
