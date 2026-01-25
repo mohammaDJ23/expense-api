@@ -6,8 +6,6 @@ set -e
 echo "🚀 Running pre-commit checks..."
 
 npm run validate:branch:name
-
-echo "🔧 Running lint-staged..."
-npx --no-install lint-staged
+npm run lint:staged
 
 echo "✅ All pre-commit checks passed!"
