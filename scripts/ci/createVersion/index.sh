@@ -2,6 +2,19 @@
 
 set -euo pipefail
 
+output_version() {
+  local version="$1"
+  local released="$2"
+
+  if [ -n "${GITHUB_OUTPUT:-}" ]; then
+    echo "version=$version" >> "$GITHUB_OUTPUT"
+    echo "released=$released" >> "$GITHUB_OUTPUT"
+  else
+    echo "version=$version"
+    echo "released=$released"
+  fi
+}
+
 GIT_EMAIL="${GIT_EMAIL:-release-bot@users.noreply.github.com}"
 GIT_NAME="${GIT_NAME:-Automated Release Bot}"
 
@@ -73,6 +86,7 @@ fi
 
 if [[ "${NEXT_VERSION}" == "${PREVIOUS_VERSION}" ]]; then
   echo "✅ Version unchanged (${PREVIOUS_VERSION}). No release needed."
+  output_version "$PREVIOUS_VERSION" false
   exit 0
 fi
 
@@ -81,7 +95,10 @@ echo "✅ New version detected: ${PREVIOUS_VERSION} → ${NEXT_VERSION}"
 echo "🚀 Starting actual Semantic Release process..."
 if ! npx semantic-release --ci; then
   echo "❌ Semantic release failed"
+  output_version "$NEXT_VERSION" false
   exit 1
 fi
 
 echo "✅ Semantic Release successful!"
+
+output_version "$NEXT_VERSION" true
