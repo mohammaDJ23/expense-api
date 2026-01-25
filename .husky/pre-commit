@@ -1,12 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/husky.sh"
 
-set -e  # Exit immediately if a command fails
+set -e
 
 echo "🚀 Running pre-commit checks..."
 
-echo "📋 Validating branch name..."
-npx --no-install branch-name-lint .branch.namerc.json
+npm run validate:branch:name
 
 echo "🔧 Running lint-staged..."
 npx --no-install lint-staged
