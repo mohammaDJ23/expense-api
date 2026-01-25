@@ -20,14 +20,11 @@
     "prepare": "husky",
     "semantic-release": "semantic-release",
     "generate:branch:id": "sh ./scripts/generateBranchId.sh",
-    "detect:branch:name": "sh ./scripts/detectBranchName/index.sh",
     "validate:branch:name": "sh ./scripts/validateBranchName/index.sh",
     "validate:commit:message": "sh ./scripts/validateCommitMessage.sh",
-    "ci:detector": "sh ./scripts/ciDetector.sh",
     "lint:staged": "sh ./scripts/lintStaged.sh",
     "docker:compose:development": "sh ./scripts/docker/development/entrypoint.sh",
-    "docker:restart:development": "sh ./scripts/docker/development/updateDependencies.sh",
-    "get:commit:sha": "sh ./scripts/getCommitSha/index.sh"
+    "docker:restart:development": "sh ./scripts/docker/development/updateDependencies.sh"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
