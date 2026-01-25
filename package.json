@@ -22,6 +22,7 @@
     "generate:branch:id": "node ./scripts/generateBranchId.js",
     "detect:branch:name": "sh ./scripts/detectBranchName/index.sh",
     "validate:branch:name": "sh ./scripts/validateBranchName/index.sh",
+    "validate:commit:message": "sh ./scripts/validateCommitMessage.sh",
     "ci:detector": "sh ./scripts/ciDetector.sh",
     "lint:staged": "sh ./scripts/lintStaged.sh",
     "docker:compose:development": "sh ./scripts/docker/development/entrypoint.sh",
