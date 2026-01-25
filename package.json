@@ -26,7 +26,8 @@
     "ci:detector": "sh ./scripts/ciDetector.sh",
     "lint:staged": "sh ./scripts/lintStaged.sh",
     "docker:compose:development": "sh ./scripts/docker/development/entrypoint.sh",
-    "docker:restart:development": "sh ./scripts/docker/development/updateDependencies.sh"
+    "docker:restart:development": "sh ./scripts/docker/development/updateDependencies.sh",
+    "get:commit:sha": "sh ./scripts/getCommitSha/index.sh"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
