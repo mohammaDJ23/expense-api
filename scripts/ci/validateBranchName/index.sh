@@ -2,19 +2,22 @@
 
 set -euo pipefail
 
-BRANCH="${BRANCH:-$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")}"
+BRANCH="${BRANCH:-}"
 CONFIG_FILE="${CONFIG_FILE:-.branch.namerc.json}"
 
 echo "🚀 Starting branch validation..."
 
 if [ -z "$BRANCH" ]; then
-  echo "❌ Error: Could not determine branch name"
-  echo "   Make sure you're in a git repository"
+  echo "❌ Error: BRANCH environment variable is not set"
   exit 1
 fi
 
 if [ ! -f "$CONFIG_FILE" ]; then
   echo "❌ Error: Config file '$CONFIG_FILE' not found"
+  echo "   Current directory: $(pwd)"
+  echo "   Available files:"
+  ls -la . || true
+  echo ""
   echo "   Either create it or set CONFIG_FILE environment variable"
   exit 1
 fi
@@ -32,7 +35,12 @@ fi
 echo "🔍 Validating branch: $BRANCH"
 echo ""
 
-npx branch-name-lint "$CONFIG_FILE" --branch="$BRANCH"
+if ! npx branch-name-lint "$CONFIG_FILE" --branch="$BRANCH"; then
+  echo ""
+  echo "❌ Branch validation failed!"
+  echo "   Branch '$BRANCH' does not match the pattern in '$CONFIG_FILE'"
+  exit 1
+fi
 
 echo ""
 echo "✅ Branch validation passed!"
