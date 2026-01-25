@@ -22,8 +22,7 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/checkout-source
         with:
           ref: ${{ env.HEAD_SHA }}
 

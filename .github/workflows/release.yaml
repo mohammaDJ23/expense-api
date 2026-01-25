@@ -55,8 +55,7 @@ jobs:
       image_name: ${{ steps.create-image-names.outputs.image_name }}
       latest_image: ${{ steps.create-image-names.outputs.latest_image }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/checkout-source
         with:
           ref: ${{ needs.manual-approval.outputs.approved_sha }}
           fetch-depth: 0
@@ -148,8 +147,7 @@ jobs:
     needs: create-version
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/checkout-source
         with:
           ref: ${{ needs.create-version.outputs.commit_sha }}
 
