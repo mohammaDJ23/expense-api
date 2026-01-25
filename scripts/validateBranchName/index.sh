@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+BRANCH="${BRANCH:-$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")}"
 CONFIG_FILE="${CONFIG_FILE:-.branch.namerc.json}"
 
 echo "🚀 Starting branch validation..."
