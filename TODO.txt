@@ -2,11 +2,11 @@
 
 2. make pre-commit more robust.
 
-3. update and revise docker entrypoints.
+[*] 3. update and revise docker entrypoints.
 
 4. consider to use .sh files for ci for your commands.
 
-5. use npm ci --ignore-scripts
+[*] 5. use npm ci --ignore-scripts
 
 6. replace readme file.
 
