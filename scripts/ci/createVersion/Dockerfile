@@ -1,24 +1,24 @@
-FROM alpine:latest
+FROM node:20-alpine
 
 RUN apk add --no-cache \
   git~=2.38 \
-  && rm -rf /var/cache/apk/*
-
-RUN addgroup -g 10001 -S createVersion && \
+  jq && \
+  rm -rf /var/cache/apk/* && \
+  npm install -g semantic-release && \
+  addgroup -g 10001 -S createVersion && \
   adduser -u 10001 -S user1 -G createVersion -h /home/user1 -D
 
-WORKDIR /usr/src/app
+WORKDIR /github/workspace
 
-COPY ./scripts/createVersion/index.sh .
+COPY ./scripts/createVersion/index.sh /usr/local/bin/index.sh
 
-RUN test -f index.sh
-
-RUN chmod 550 index.sh && \
-  chown user1:createVersion index.sh
+RUN test -f /usr/local/bin/index.sh && \
+  chmod 550 /usr/local/bin/index.sh && \
+  chown user1:createVersion /usr/local/bin/index.sh
 
 USER user1
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD git --version >/dev/null 2>&1
+  CMD git --version >/dev/null 2>&1 && node --version >/dev/null 2>&1
 
-ENTRYPOINT ["./index.sh"]
+ENTRYPOINT ["/usr/local/bin/index.sh"]

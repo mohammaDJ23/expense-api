@@ -2,6 +2,21 @@
 
 set -euo pipefail
 
+GIT_EMAIL="${GIT_EMAIL:-release-bot@users.noreply.github.com}"
+GIT_NAME="${GIT_NAME:-Automated Release Bot}"
+
+echo "⚙️ Configuring git user as: $GIT_NAME <$GIT_EMAIL>"
+git config --global user.email "$GIT_EMAIL"
+git config --global user.name "$GIT_NAME"
+
+if [[ ! -f "package.json" ]]; then
+  echo "❌ ERROR: package.json not found in current directory!"
+  echo "   Current directory: $(pwd)"
+  echo "   Contents:"
+  ls -la . || true
+  exit 1
+fi
+
 echo "🔍 Getting previous version..."
 PREVIOUS_VERSION=$(jq -r '.version' package.json)
 echo "Previous version: ${PREVIOUS_VERSION}"
@@ -25,6 +40,8 @@ PHRASES=(
   "next release version is"
   "would release version"
   "Published release"
+  "Cutting release"
+  "Creating tag"
 )
 
 for PHRASE in "${PHRASES[@]}"; do
@@ -39,6 +56,15 @@ for PHRASE in "${PHRASES[@]}"; do
 done
 
 if [[ -z "${NEXT_VERSION}" ]]; then
+  echo "⚠️  Could not find version with standard phrases, trying pattern search..."
+  VERSION_MATCH=$(echo "${SEMANTIC_OUTPUT}" | tail -20 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+  if [[ -n "${VERSION_MATCH}" ]]; then
+    NEXT_VERSION="${VERSION_MATCH}"
+    echo "📝 Found version via pattern match: ${NEXT_VERSION}"
+  fi
+fi
+
+if [[ -z "${NEXT_VERSION}" ]]; then
   echo "❌ Could not determine next version from semantic-release output"
   echo "Debug: Looking for version patterns in output..."
   echo "${SEMANTIC_OUTPUT}" | grep -E "[0-9]+\.[0-9]+\.[0-9]+|v[0-9]+\.[0-9]+\.[0-9]+" || true
@@ -46,8 +72,8 @@ if [[ -z "${NEXT_VERSION}" ]]; then
 fi
 
 if [[ "${NEXT_VERSION}" == "${PREVIOUS_VERSION}" ]]; then
-  echo "❌ Version unchanged (${PREVIOUS_VERSION}). No release needed."
-  exit 1
+  echo "✅ Version unchanged (${PREVIOUS_VERSION}). No release needed."
+  exit 0
 fi
 
 echo "✅ New version detected: ${PREVIOUS_VERSION} → ${NEXT_VERSION}"
