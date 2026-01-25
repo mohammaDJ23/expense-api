@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-npx --no-install lint-staged
+npx lint-staged
