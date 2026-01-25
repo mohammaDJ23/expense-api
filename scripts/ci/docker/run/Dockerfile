@@ -1,17 +1,17 @@
 FROM docker:cli
 
 RUN apk add --no-cache bash && \
-  addgroup -g 10001 -S buildDockerImage && \
-  adduser -u 10001 -S user1 -G buildDockerImage -h /home/user1 -D && \
+  addgroup -g 10001 -S run && \
+  adduser -u 10001 -S user1 -G run -h /home/user1 -D && \
   addgroup user1 docker
 
 WORKDIR /github/workspace
 
-COPY ./scripts/buildDockerImage/index.sh /usr/local/bin/index.sh
+COPY ./scripts/ci/docker/run/index.sh /usr/local/bin/index.sh
 
 RUN test -f /usr/local/bin/index.sh && \
   chmod 550 /usr/local/bin/index.sh && \
-  chown user1:buildDockerImage /usr/local/bin/index.sh
+  chown user1:run /usr/local/bin/index.sh
 
 USER user1
 
