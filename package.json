@@ -18,10 +18,12 @@
     "start:debug": "nest start --debug=0.0.0.0:9229 --watch",
     "start:prod": "node dist/main",
     "prepare": "husky",
+    "semantic-release": "semantic-release",
     "generate:branch:id": "node ./scripts/generateBranchId.js",
-    "docker:compose:development": "sh ./scripts/docker/entrypoint.sh",
-    "docker:restart:development": "sh ./scripts/docker/updateDependencies.sh",
-    "semantic-release": "semantic-release"
+    "validate:branch:name": "sh ./scripts/validateBranchName/index.sh",
+    "ci:detector": "sh ./scripts/ciDetector.sh",
+    "docker:compose:development": "sh ./scripts/docker/development/entrypoint.sh",
+    "docker:restart:development": "sh ./scripts/docker/development/updateDependencies.sh"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
