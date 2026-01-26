@@ -140,7 +140,7 @@ watch_mode() {
     echo "📝 Viewing logs (30 seconds)..."
     echo ""
     
-    timeout 30 docker service logs -f --tail 50 "${STACK_NAME}_expense-api" 2>/dev/null || true
+    timeout 30 docker service logs -f --tail 50 "${SERVICE_NAME}" 2>/dev/null || true
     
     echo ""
     echo "🔄 Checking for changes..."
@@ -151,7 +151,7 @@ watch_mode() {
       
       if $COMPOSE_CMD -f "$COMPOSE_FILE" build expense-api; then
         echo "✅ Build successful, updating service..."
-        if docker service update --force --image $IMAGE_NAME "${STACK_NAME}_expense-api"; then
+        if docker service update --force --image $IMAGE_NAME "${SERVICE_NAME}"; then
           echo "🎉 Service updated successfully!"
         else
           echo "⚠️  Service update had issues"
