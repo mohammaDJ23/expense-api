@@ -2,14 +2,10 @@
 
 set -euo pipefail
 
-COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.ci.yml}"
+export COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.swarm.ci.yml}"
+export STACK_NAME="${STACK_NAME:-expense-api-ci}"
+export IMAGE_NAME="${IMAGE_NAME:-expense-api-ci:latest}"
+export SECRETS_DIR="${SECRETS_DIR:-./.ci.secrets}"
+export ENVIRONMENT="${ENVIRONMENT:-production}"
 
-echo "🚀 Starting Docker services from $COMPOSE_FILE..."
-
-[ -f "$COMPOSE_FILE" ] || { echo "❌ File not found: $COMPOSE_FILE"; exit 1; }
-
-docker compose -f "$COMPOSE_FILE" up -d
-
-echo ""
-echo "📊 Services status:"
-docker compose -f "$COMPOSE_FILE" ps
+source /usr/local/bin/start.sh
