@@ -10,4 +10,4 @@ export SECRETS_DIR="${SECRETS_DIR:-./secrets}"
 export WATCH_MODE="${WATCH_MODE:-true}"
 export ENVIRONMENT="${ENVIRONMENT:-development}"
 
-source ./scripts/common/startDockerSwarm.sh
+source ./scripts/common/startDocker.sh
