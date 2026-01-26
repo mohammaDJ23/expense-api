@@ -6,15 +6,7 @@ echo "🐳 Docker info:"
 docker version || true
 echo ""
 
-IMAGE_NAME="${IMAGE_NAME:-${1:-}}"
-
-if [ -z "$IMAGE_NAME" ]; then
-  echo "❌ ERROR: IMAGE_NAME is not set"
-  echo "   Usage: $0 <image-name>"
-  echo "   Or set IMAGE_NAME environment variable"
-  echo "   Example: IMAGE_NAME=myorg/myimage:latest"
-  exit 1
-fi
+IMAGE_NAME="${IMAGE_NAME:?ERROR: IMAGE_NAME is required}"
 
 echo "📦 Checking image: $IMAGE_NAME"
 
