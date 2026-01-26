@@ -4,6 +4,7 @@ set -euo pipefail
 
 readonly COMPOSE_FILE="${COMPOSE_FILE:?ERROR: COMPOSE_FILE is required}"
 readonly STACK_NAME="${STACK_NAME:?ERROR: STACK_NAME is required}"
+readonly SERVICE_NAME="${SERVICE_NAME:?ERROR: SERVICE_NAME is required}"
 readonly IMAGE_NAME="${IMAGE_NAME:?ERROR: IMAGE_NAME is required}"
 readonly SECRETS_DIR="${SECRETS_DIR:?ERROR: SECRETS_DIR is required}"
 readonly ENVIRONMENT="${ENVIRONMENT:?ERROR: ENVIRONMENT is required}"
@@ -106,13 +107,11 @@ show_status() {
   echo ""
   echo "📋 Services:"
   docker stack services "$STACK_NAME"
-
-  local -r service_name="${STACK_NAME}_expense-api"
   
   echo ""
-  echo "📝 View logs: docker service logs -f $service_name"
+  echo "📝 View logs: docker service logs -f $SERVICE_NAME"
   echo ""
-  echo "🔧 To rebuild: $COMPOSE_CMD -f $COMPOSE_FILE build && docker service update --force --image $IMAGE_NAME $service_name"
+  echo "🔧 To rebuild: $COMPOSE_CMD -f $COMPOSE_FILE build && docker service update --force --image $IMAGE_NAME $SERVICE_NAME"
 }
 
 watch_mode() {
