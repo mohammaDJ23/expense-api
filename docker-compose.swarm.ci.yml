@@ -1,14 +1,10 @@
 services:
   expense-api:
-    image: ${IMAGE_NAME:-expense-api-ci:latest}
+    image: ${IMAGE_NAME:?ERROR IMAGE_NAME is required}
     environment:
       DATABASE_PASSWORD_FILE: /run/secrets/database_password
       REDIS_PASSWORD_FILE: /run/secrets/redis_password
       JWT_SECRET_FILE: /run/secrets/jwt_secret
-    build:
-      context: .
-      target: production
-      dockerfile: Dockerfile
     networks:
       - expense-api-network
     healthcheck:
