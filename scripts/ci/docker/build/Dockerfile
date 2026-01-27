@@ -7,7 +7,7 @@ RUN apk add --no-cache bash curl && \
 
 WORKDIR /github/workspace
 
-COPY ./scripts/ci/docker/build/index.sh /usr/local/bin/index.sh
+COPY ./index.sh /usr/local/bin/index.sh
 
 RUN test -f /usr/local/bin/index.sh && \
   chmod 550 /usr/local/bin/index.sh && \
