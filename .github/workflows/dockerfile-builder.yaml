@@ -72,6 +72,7 @@ jobs:
               IMAGE_NAME="$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')"
 
               echo "ℹ️ Building: $IMAGE_NAME"
+              echo "ℹ️ Directory: $dir_path"
               
               if docker build \
                 -t ${IMAGE_NAME}:latest \
