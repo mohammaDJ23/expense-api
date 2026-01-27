@@ -76,7 +76,8 @@ jobs:
               if docker build \
                 -t ${IMAGE_NAME}:latest \
                 -t ${IMAGE_NAME}:${{ inputs.sha }} \
-                "$dir_path" 2>&1; then
+                -f "$dir_path/Dockerfile" \
+                "." 2>&1; then
                 
                 echo "✅ Successfully built $IMAGE_NAME"
                 
