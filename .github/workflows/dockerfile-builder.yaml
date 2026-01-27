@@ -41,17 +41,17 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           files: ${{ inputs.directory }}
+          disable_read_only: false
+          git_diff_args: --no-ext-diff --no-verify
 
       - name: Build the docker images
         id: build-images
         run: |
-          echo "Some changes founded"
           ALL_CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}
 
           IMAGES_JSON='[]'
           BUILT_COUNT=0
 
-          echo "checking for no changes"
           if [ -z "${ALL_CHANGED_FILES}" ]; then
             echo "ℹ️ No files were changed"
             echo "images_json=$IMAGES_JSON" >> $GITHUB_OUTPUT
@@ -59,18 +59,14 @@ jobs:
             exit 0
           fi
 
-          echo "parsing the names"
-
           echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' > changed_files.txt
 
-          echo "before loop"
           while IFS= read -r file || [ -n "$file" ]; do
             [ -z "$file" ] && continue
             
             if [ -f "$file" ]; then
               dir_path=$(dirname "$file")
               script_name="$dir_path"
-              
 
               IMAGE_NAME=${{ env.DOCKERHUB_USERNAME }}-${{ env.APP_NAME }}/$script_name
 
