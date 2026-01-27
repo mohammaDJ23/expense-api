@@ -36,9 +36,6 @@ jobs:
   branch-and-commit-validation:
     runs-on: ubuntu-latest
     needs: install-dependencies
-    env:
-      SHA: ${{ env.SHA }}
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
     steps:
       - name: Checkout the source
         uses: actions/checkout@v4
