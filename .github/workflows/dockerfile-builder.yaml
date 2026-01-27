@@ -45,11 +45,13 @@ jobs:
       - name: Build the docker images
         id: build-images
         run: |
+          echo "Some changes founded"
           ALL_CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}
 
           IMAGES_JSON='[]'
           BUILT_COUNT=0
 
+          echo "checking for no changes"
           if [ -z "${ALL_CHANGED_FILES}" ]; then
             echo "ℹ️ No files were changed"
             echo "images_json=$IMAGES_JSON" >> $GITHUB_OUTPUT
@@ -57,8 +59,11 @@ jobs:
             exit 0
           fi
 
+          echo "parsing the names"
+
           echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' > changed_files.txt
 
+          echo "before loop"
           while IFS= read -r file || [ -n "$file" ]; do
             [ -z "$file" ] && continue
             
@@ -93,19 +98,19 @@ jobs:
               echo "⚠️  Warning: '$file' not found"
             fi
           done < changed_files.txt
-          
+
           echo "images_json=$IMAGES_JSON" >> $GITHUB_OUTPUT
           echo "built_count=$BUILT_COUNT" >> $GITHUB_OUTPUT
-        
+
       - name: Save Docker images
         if: steps.build-images.outputs.built_count > 0
         run: |
           echo "💾 Saving Docker images..."
 
           IMAGES_JSON=${{ steps.build-images.outputs.images_json }}
-          
+
           mkdir -p saved-images
-          
+
           echo "${IMAGES_JSON}" | jq -r '.[] | select(true) | .latest + "|" + .sha' | while IFS='|' read -r latest_tag sha_tag; do
             echo "Saving $latest_tag..."
             LATEST_FILENAME=$(echo "$latest_tag" | sed 's|/|_|g' | sed 's|:|-|g').tar
@@ -115,7 +120,7 @@ jobs:
             SHA_FILENAME=$(echo "$sha_tag" | sed 's|/|_|g' | sed 's|:|-|g').tar
             docker save -o "saved-images/${SHA_FILENAME}" "$sha_tag"
           done
-          
+
           echo "✅ Saved all images"
 
           ls -la saved-images/
@@ -127,7 +132,7 @@ jobs:
           name: docker-images
           path: saved-images/
           retention-days: 1
-    
+
   security-scan:
     needs: build
     if: needs.build.outputs.built_count > 0
@@ -155,7 +160,7 @@ jobs:
         uses: ./.github/actions/scan-docker-image
         with:
           image_name: ${{ matrix.image.latest }}
-          
+
   push:
     needs: [build, security-scan]
     if: needs.build.outputs.built_count > 0
@@ -191,7 +196,7 @@ jobs:
       - name: Push images to DockerHub
         run: |
           echo "🚀 Pushing images to DockerHub..."
-          
+
           push_tag() {
             local tag="$1"
             if docker image inspect "$tag" > /dev/null 2>&1; then
@@ -208,8 +213,8 @@ jobs:
               return 2
             fi
           }
-          
+
           push_tag "${{ matrix.image.latest }}"
           push_tag "${{ matrix.image.sha }}"
-          
+
           echo "📊 Push operation completed"

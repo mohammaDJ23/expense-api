@@ -4,7 +4,12 @@ RUN apk add --no-cache \
   git~=2.38 \
   jq && \
   rm -rf /var/cache/apk/* && \
-  npm install -g semantic-release && \
+  npm install -g \
+    semantic-release \
+    @semantic-release/changelog \
+    @semantic-release/git \
+    @semantic-release/github \
+    @semantic-release/npm && \
   addgroup -g 10001 -S createVersion && \
   adduser -u 10001 -S user1 -G createVersion -h /home/user1 -D
 
