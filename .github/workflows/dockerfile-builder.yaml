@@ -57,7 +57,7 @@ jobs:
             exit 0
           fi
 
-          echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | grep "Dockerfile$" > changed_dockerfiles.txt
+          echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | grep "Dockerfile$" > changed_files.txt
 
           while IFS= read -r file || [ -n "$file" ]; do
             [ -z "$file" ] && continue
