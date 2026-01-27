@@ -4,16 +4,16 @@ RUN apk add --no-cache \
   git \
   bash && \
   rm -rf /var/cache/apk/* && \
-  addgroup -g 10001 -S getCommitSha && \
-  adduser -u 10001 -S user1 -G getCommitSha -h /home/user1 -D
+  addgroup -g 10001 -S detectCommitSha && \
+  adduser -u 10001 -S user1 -G detectCommitSha -h /home/user1 -D
 
 WORKDIR /github/workspace
 
-COPY ./scripts/ci/getCommitSha/index.sh /usr/local/bin/index.sh
+COPY ./scripts/ci/detectCommitSha/index.sh /usr/local/bin/index.sh
 
 RUN test -f /usr/local/bin/index.sh && \
   chmod 550 /usr/local/bin/index.sh && \
-  chown user1:getCommitSha /usr/local/bin/index.sh
+  chown user1:detectCommitSha /usr/local/bin/index.sh
 
 USER user1
 
