@@ -69,6 +69,7 @@ jobs:
               script_name="$dir_path"
 
               IMAGE_NAME="${DOCKER_USERNAME}-${APP_NAME}/$script_name"
+              IMAGE_NAME="$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')"
 
               echo "ℹ️ Building: $IMAGE_NAME"
               
