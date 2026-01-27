@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 RUN apk add --no-cache \
-  git~=2.38 \
+  git \
   bash && \
   rm -rf /var/cache/apk/* && \
   addgroup -g 10001 -S getCommitSha && \

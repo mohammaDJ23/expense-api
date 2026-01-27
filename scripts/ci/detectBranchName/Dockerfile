@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 RUN apk add --no-cache \
-  git~=2.38 \
+  git \
   jq \
   bash && \
   rm -rf /var/cache/apk/* && \
