@@ -4,10 +4,9 @@ RUN apk add --no-cache \
   python3 \
   make \
   g++ \
-  curl \
-  && rm -rf /var/cache/apk/*
-
-RUN addgroup -g 10001 -S nodejs && \
+  curl && \
+  rm -rf /var/cache/apk/* && \
+  addgroup -g 10001 -S nodejs && \
   adduser -S expense-api -u 10001 -G nodejs && \
   mkdir -p /usr/src/app && \
   chown -R expense-api:nodejs /usr/src/app
