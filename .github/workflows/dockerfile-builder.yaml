@@ -64,8 +64,8 @@ jobs:
 
             echo ""
             
-            if [ -f "$file" ]; then
-              dir_path=$(dirname "$file")
+            if [[ "$file" == *"Dockerfile" ]]; then
+              dir_path=$(dirname "$file"
               script_name="$dir_path"
 
               IMAGE_NAME="${DOCKER_USERNAME}-${APP_NAME}/$script_name"
