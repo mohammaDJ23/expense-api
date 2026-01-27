@@ -66,7 +66,7 @@ jobs:
               dir_path=$(dirname "$file")
               script_name="$dir_path"
 
-              IMAGE_NAME="${{ env.DOCKERHUB_USERNAME }}-${{ env.APP_NAME }}/$script_name"
+              IMAGE_NAME="${DOCKERHUB_USERNAME}-${APP_NAME}/$script_name"
 
               echo "ℹ️ Building: $IMAGE_NAME"
               
