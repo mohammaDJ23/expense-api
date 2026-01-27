@@ -113,18 +113,18 @@ jobs:
         run: |
           echo "💾 Saving Docker images..."
 
-          IMAGES_JSON=${{ steps.build-images.outputs.images_json }}
+          IMAGES_JSON="${{ steps.build-images.outputs.images_json }}"
 
           mkdir -p saved-images
 
           echo "${IMAGES_JSON}" | jq -r '.[] | select(true) | .latest + "|" + .sha' | while IFS='|' read -r latest_tag sha_tag; do
-            echo "Saving $latest_tag..."
-            LATEST_FILENAME=$(echo "$latest_tag" | sed 's|/|_|g' | sed 's|:|-|g').tar
-            docker save -o "saved-images/${LATEST_FILENAME}" "$latest_tag"
+            echo "Saving ${latest_tag}..."
+            LATEST_FILENAME=$(echo "${latest_tag}" | sed 's|/|_|g' | sed 's|:|-|g').tar
+            docker save -o "saved-images/${LATEST_FILENAME}" "${latest_tag}"
             
-            echo "Saving $sha_tag..."
-            SHA_FILENAME=$(echo "$sha_tag" | sed 's|/|_|g' | sed 's|:|-|g').tar
-            docker save -o "saved-images/${SHA_FILENAME}" "$sha_tag"
+            echo "Saving ${sha_tag}..."
+            SHA_FILENAME=$(echo "${sha_tag}" | sed 's|/|_|g' | sed 's|:|-|g').tar
+            docker save -o "saved-images/${SHA_FILENAME}" "${sha_tag}"
           done
 
           echo "✅ Saved all images"
