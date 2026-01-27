@@ -15,7 +15,7 @@ RUN apk add --no-cache \
 
 WORKDIR /github/workspace
 
-COPY ./scripts/createVersion/index.sh /usr/local/bin/index.sh
+COPY scripts/createVersion/index.sh /usr/local/bin/index.sh
 
 RUN test -f /usr/local/bin/index.sh && \
   chmod 550 /usr/local/bin/index.sh && \
