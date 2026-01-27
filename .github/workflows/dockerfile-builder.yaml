@@ -90,9 +90,11 @@ jobs:
                 ((BUILT_COUNT++))
               else
                 echo "❌ Failed to build $IMAGE_NAME"
+                exit 1
               fi
             else
-              echo "⚠️  Warning: '$file' not found"
+              echo "❌ Warning: '$file' not found"
+              exit 1
             fi
 
             echo ""
