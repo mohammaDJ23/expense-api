@@ -20,11 +20,11 @@ runs:
       run: |
         LATEST_FILENAME=$(echo "${{ inputs.image_latest }}" | sed 's|/|_|g' | sed 's|:|-|g').tar
         SHA_FILENAME=$(echo "${{ inputs.image_sha }}" | sed 's|/|_|g' | sed 's|:|-|g').tar
-        
+
         echo "Looking for saved files:"
         echo "1. ${LATEST_FILENAME}"
         echo "2. ${SHA_FILENAME}"
-        
+
         if [ -f "${{ inputs.artifact_path }}/${LATEST_FILENAME}" ]; then
           echo "Loading from: ${LATEST_FILENAME}"
           docker load -i "${{ inputs.artifact_path }}/${LATEST_FILENAME}"
@@ -37,7 +37,7 @@ runs:
           ls -la "${{ inputs.artifact_path }}/" || true
           exit 1
         fi
-        
+
         echo "Available tags after loading:"
         if docker image inspect "${{ inputs.image_latest }}" > /dev/null 2>&1; then
           echo "✅ ${{ inputs.image_latest }} exists"
@@ -45,7 +45,7 @@ runs:
           echo "❌  ${{ inputs.image_latest }} not found"
           exit 1
         fi
-        
+
         if docker image inspect "${{ inputs.image_sha }}" > /dev/null 2>&1; then
           echo "✅ ${{ inputs.image_sha }} exists"
         else

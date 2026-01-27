@@ -99,7 +99,7 @@ jobs:
         env:
           IMAGE_NAME: ${{ steps.variables.output.IMAGE_NAME }}
           TAG: ${{ env.SHA }}
-  
+
       - name: Scan the docker image
         uses: ./.github/actions/scan-docker-image
         with:
@@ -113,7 +113,7 @@ jobs:
           SERVICE_NAME: ${{ steps.variables.output.SERVICE_NAME }}
           IMAGE_NAME: ${{ steps.build-image.output.IMAGE_LATEST }}
           ENVIRONMENT: ${{ steps.variables.output.ENVIRONMENT }}
-          SECRETS: "database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}"
+          SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
 
       - name: Check the healthy
         uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/checkHealthy:latest
