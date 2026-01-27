@@ -11,17 +11,14 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APP_NAME: ${{ vars.APP_NAME }}
   SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
   dockerfile-builder:
     uses: ./.github/workflows/dockerfile-builder.yaml
     secrets: inherit
-    env:
-      SHA: ${{ env.SHA }}
     with:
-      sha: ${{ env.SHA }}
+      sha: ${{ github.event.pull_request.head.sha || github.sha }}
 
   install-dependencies:
     needs: dockerfile-builder
@@ -52,11 +49,11 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Detect branch name
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/detectBranchName:latest
+        uses: docker://${{ secrets.DOCKER_USERNAME }}-${{ vars.APP_NAME }}/scripts/ci/detectBranchName:latest
 
       - name: Validate branch name (non-master only)
         if: github.ref != 'refs/heads/master'
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/validateBranchName:latest
+        uses: docker://${{ secrets.DOCKER_USERNAME }}-${{ vars.APP_NAME }}/scripts/ci/validateBranchName:latest
 
       - name: Validate commit messages
         id: commit-validation
