@@ -57,15 +57,15 @@ jobs:
             exit 0
           fi
 
-          echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' > changed_files.txt
+          echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | grep "Dockerfile$" > changed_dockerfiles.txt
 
           while IFS= read -r file || [ -n "$file" ]; do
             [ -z "$file" ] && continue
 
             echo ""
             
-            if [[ "$file" == *"Dockerfile" ]]; then
-              dir_path=$(dirname "$file"
+            if [ -f "$file" ]; then
+              dir_path=$(dirname "$file")
               script_name="$dir_path"
 
               IMAGE_NAME="${DOCKER_USERNAME}-${APP_NAME}/$script_name"
