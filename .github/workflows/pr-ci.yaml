@@ -16,6 +16,8 @@ env:
 jobs:
   dockerfile-builder:
     uses: ./.github/workflows/dockerfile-builder.yaml
+    permissions:
+      contents: read
     secrets: inherit
     with:
       sha: ${{ github.event.pull_request.head.sha || github.sha }}
