@@ -6,10 +6,17 @@ readonly COMPOSE_FILE="${COMPOSE_FILE:?ERROR: COMPOSE_FILE is required}"
 readonly STACK_NAME="${STACK_NAME:?ERROR: STACK_NAME is required}"
 readonly SERVICE_NAME="${SERVICE_NAME:?ERROR: SERVICE_NAME is required}"
 readonly IMAGE_NAME="${IMAGE_NAME:?ERROR: IMAGE_NAME is required}"
-readonly SECRETS_DIR="${SECRETS_DIR:?ERROR: SECRETS_DIR is required}"
 readonly ENVIRONMENT="${ENVIRONMENT:?ERROR: ENVIRONMENT is required}"
-readonly WATCH_MODE="${WATCH_MODE:-false}"
+readonly SECRETS="${SECRETS:-}"
 
+if docker info >/dev/null 2>&1; then
+  echo "✅ Docker daemon is running"
+else
+  echo "❌ Docker daemon is not running"
+  exit 1
+fi
+
+echo ""
 echo "🚀 Starting development stack with Docker Swarm..."
 echo "   Stack: $STACK_NAME"
 echo "   Image: $IMAGE_NAME"
@@ -30,27 +37,38 @@ init_swarm() {
     echo "Initializing Docker Swarm..."
     docker swarm init --advertise-addr 127.0.0.1 2>/dev/null || echo "⚠️  Swarm initialization failed or already in progress"
   fi
+  echo ""
 }
 
 setup_secrets() {
   echo "Creating Docker secrets..."
-  for secret in "database_password" "redis_password" "jwt_secret"; do
-    local secret_file="${SECRETS_DIR}/${secret}.txt"
-    if [ ! -f "$secret_file" ]; then
-      echo "❌ $secret_file not found";
-      exit 1;
+  
+  [ -z "${SECRETS:-}" ] && { echo "⚠️  No secrets"; return 0; }
+  
+  echo "$SECRETS" | tr ';' '\n' | while IFS='=' read -r name value; do
+    [ -z "$name" ] && continue
+    
+    if [ -z "$value" ]; then
+      echo "⚠️  $name has empty value, skipping"
+      continue
     fi
-    if docker secret inspect "$secret" >/dev/null 2>&1; then
-      echo "✅ $secret (already exists)"
+    
+    if docker secret inspect "$name" >/dev/null 2>&1; then
+      echo "✅ $name (already exists)"
     else
-      docker secret create "$secret" "$secret_file" >/dev/null && echo "✅ $secret created"
+      if echo "$value" | docker secret create "$name" - >/dev/null 2>&1; then
+        echo "✅ $name created"
+      else
+        echo "❌ Failed to create $name"
+        exit 1
+      fi
     fi
   done
 }
 
 build_all_services() {
   echo ""
-  echo "🏗️  Building Docker images..."
+  echo "🏗️  Building the images of the services..."
   local -r services_to_build=$($COMPOSE_CMD -f "$COMPOSE_FILE" config --services 2>/dev/null || echo "")
   for service in $services_to_build; do
     if $COMPOSE_CMD -f "$COMPOSE_FILE" config --services | grep -q "^${service}$"; then
@@ -109,72 +127,11 @@ show_status() {
   docker stack services "$STACK_NAME"
   
   echo ""
-  echo "📝 View logs: docker service logs -f $SERVICE_NAME"
+  echo "📝 View logs: docker service logs --raw -f $SERVICE_NAME"
   echo ""
-  echo "🔧 To rebuild: $COMPOSE_CMD -f $COMPOSE_FILE build && docker service update --force --image $IMAGE_NAME $SERVICE_NAME"
-}
-
-watch_mode() {
-  [ "$WATCH_MODE" != "true" ] && return
-
-  if [[ "${ENVIRONMENT}" != "development" ]]; then
-    echo "⚠️  Watch mode only available in development environment"
-    return 0
-  fi
-
-  echo ""
-  echo "👀 WATCH MODE ENABLED"
-  echo "   Watching: ./src, ./package.json"
-  echo "   Press Ctrl+C to exit"
-  echo ""
-  
-  local -r timestamp_file="/tmp/swarm_watch_$$"
-  touch "$timestamp_file"
-  
-  cleanup() {
-    rm -f "$timestamp_file" 2>/dev/null || true
-  }
-  trap cleanup EXIT
-  
-  while true; do
-    echo "📝 Viewing logs (30 seconds)..."
-    echo ""
-    
-    timeout 30 docker service logs -f --tail 50 "${SERVICE_NAME}" 2>/dev/null || true
-    
-    echo ""
-    echo "🔄 Checking for changes..."
-    
-    if find ./src ./package.json -type f -newer "$timestamp_file" 2>/dev/null | grep -q .; then
-      echo "📦 Changes detected!"
-      echo "🏗️  Rebuilding..."
-      
-      if $COMPOSE_CMD -f "$COMPOSE_FILE" build expense-api; then
-        echo "✅ Build successful, updating service..."
-        if docker service update --force --image $IMAGE_NAME "${SERVICE_NAME}"; then
-          echo "🎉 Service updated successfully!"
-        else
-          echo "⚠️  Service update had issues"
-        fi
-      else
-        echo "❌ Build failed"
-      fi
-      
-      touch "$timestamp_file"
-    else
-      echo "✅ No changes detected"
-    fi
-    
-    echo ""
-    echo "Next check in 5 seconds..."
-    sleep 5
-  done
 }
 
 main() {
-  export STACK_NAME
-  export IMAGE_NAME
-
   init_swarm
 
   setup_secrets
@@ -186,8 +143,6 @@ main() {
   wait_for_services
 
   show_status
-
-  watch_mode
 }
 
 main "$@"
