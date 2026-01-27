@@ -49,10 +49,9 @@ jobs:
 
       - name: Build the docker images
         id: build-images
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
           ALL_CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
+          DOCKERHUB_USERNAME="${{ secrets.DOCKERHUB_USERNAME }}"
 
           IMAGES_JSON='[]'
           BUILT_COUNT=0
