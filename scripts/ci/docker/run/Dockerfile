@@ -7,7 +7,7 @@ RUN apk add --no-cache bash && \
 
 WORKDIR /github/workspace
 
-COPY ./index.sh /usr/local/bin/index.sh
+COPY ./scripts/ci/docker/run/index.sh /usr/local/bin/index.sh
 COPY ./scripts/common/startDocker.sh /usr/local/bin/start.sh
 
 RUN test -f /usr/local/bin/index.sh && \
