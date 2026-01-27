@@ -18,9 +18,7 @@ jobs:
     uses: ./.github/workflows/dockerfile-builder.yaml
     permissions:
       contents: read
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    secrets: inherit
     with:
       sha: ${{ github.event.pull_request.head.sha || github.sha }}
 
