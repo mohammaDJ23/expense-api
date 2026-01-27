@@ -41,13 +41,11 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           files: ${{ inputs.directory }}
-          disable_read_only: false
-          git_diff_args: --no-ext-diff --no-verify
 
       - name: Build the docker images
         id: build-images
         run: |
-          ALL_CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}
+          ALL_CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
 
           IMAGES_JSON='[]'
           BUILT_COUNT=0
