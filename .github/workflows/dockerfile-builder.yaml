@@ -83,17 +83,12 @@ jobs:
                   --arg name "$IMAGE_NAME" \
                   --arg latest "${IMAGE_NAME}:latest" \
                   --arg sha "${IMAGE_NAME}:${{ inputs.sha }}" \
-                  '{name: $name, latest: $latest, sha: $sha, status: "built"}')
+                  '{name: $name, latest: $latest, sha: $sha}')
                 
                 IMAGES_JSON=$(echo "$IMAGES_JSON" | jq --argjson img "$IMAGE_JSON" '. += [$img]')
                 ((BUILT_COUNT++))
               else
                 echo "❌ Failed to build $IMAGE_NAME"
-                IMAGE_JSON=$(jq -n \
-                  --arg name "$IMAGE_NAME" \
-                  '{name: $name, status: "failed"}')
-                
-                IMAGES_JSON=$(echo "$IMAGES_JSON" | jq --argjson img "$IMAGE_JSON" '. += [$img]')
               fi
             else
               echo "⚠️  Warning: '$file' not found"
@@ -112,7 +107,7 @@ jobs:
           
           mkdir -p saved-images
           
-          echo "${IMAGES_JSON}" | jq -r '.[] | select(.status == "built") | .latest + "|" + .sha' | while IFS='|' read -r latest_tag sha_tag; do
+          echo "${IMAGES_JSON}" | jq -r '.[] | select(true) | .latest + "|" + .sha' | while IFS='|' read -r latest_tag sha_tag; do
             echo "Saving $latest_tag..."
             LATEST_FILENAME=$(echo "$latest_tag" | sed 's|/|_|g' | sed 's|:|-|g').tar
             docker save -o "saved-images/${LATEST_FILENAME}" "$latest_tag"
@@ -141,8 +136,6 @@ jobs:
     strategy:
       matrix:
         image: ${{ fromJson(needs.build.outputs.images_json) }}
-        exclude:
-          - image.status != 'built'
     permissions:
       contents: read
       packages: write
@@ -161,36 +154,11 @@ jobs:
           image_sha: ${{ matrix.image.sha }}
           artifact_path: saved-images
 
-      - name: Trivy vulnerability scan
-        uses: aquasecurity/trivy-action@0.19.0
+      - name: Scan the docker image
+        uses: ./.github/actions/scan-docker-image
         with:
-          image-ref: ${{ matrix.image.latest }}
-          format: table
-          exit-code: 1
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          skip-dirs: /usr/local/lib/node_modules/npm
-
-      - name: Docker Scout scan
-        uses: docker/scout-action@v1.3.1
-        with:
-          command: cves
-          image: ${{ matrix.image.latest }}
-          exit-code: true
-          only-severities: critical,high
-          ignore-base: true
-
-      - name: Snyk container scan
-        if: secrets.SNYK_TOKEN
-        uses: snyk/actions/docker@0.5.0
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ${{ matrix.image.latest }}
-          args: |
-            --severity-threshold=high
-            --exclude=/usr/local/lib/node_modules/npm
-
+          image_name: ${{ matrix.image.latest }}
+          
   push:
     needs: [build, security-scan]
     if: needs.build.outputs.built_count > 0
@@ -198,8 +166,6 @@ jobs:
     strategy:
       matrix:
         image: ${{ fromJson(needs.build.outputs.images_json) }}
-        exclude:
-          - image.status != 'built'
     permissions:
       contents: read
       packages: write
