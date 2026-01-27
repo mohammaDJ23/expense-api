@@ -87,14 +87,14 @@ jobs:
                   '{name: $name, latest: $latest, sha: $sha}')
                 
                 IMAGES_JSON=$(echo "$IMAGES_JSON" | jq --argjson img "$IMAGE_JSON" '. += [$img]')
-                ((BUILT_COUNT++))
+                BUILT_COUNT=$((BUILT_COUNT + 1))
               else
                 echo "❌ Failed to build $IMAGE_NAME"
-             
+                exit 1
               fi
             else
               echo "⚠️ Warning: '$file' not found"
-
+              exit 1
             fi
 
             echo ""
