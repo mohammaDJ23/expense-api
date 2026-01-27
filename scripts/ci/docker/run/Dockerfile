@@ -12,8 +12,7 @@ COPY ./scripts/common/startDocker.sh /usr/local/bin/start.sh
 
 RUN test -f /usr/local/bin/index.sh && \
   test -f /usr/local/bin/start.sh && \
-  chmod 550 /usr/local/bin/index.sh && \
-  chmod 550 /usr/local/bin/start.sh && \
+  chmod 550 /usr/local/bin/index.sh /usr/local/bin/start.sh && \
   chown user1:run /usr/local/bin/index.sh /usr/local/bin/start.sh
 
 USER user1
