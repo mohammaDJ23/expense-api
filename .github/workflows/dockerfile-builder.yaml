@@ -143,7 +143,9 @@ jobs:
             docker save -o "saved-images/${LATEST_FILE}" "${LATEST}"
           done
           
+          echo ""
           echo "✅ Saved all images"
+          echo ""
 
       - name: Upload saved images
         if: steps.build-images.outputs.built_count > 0
