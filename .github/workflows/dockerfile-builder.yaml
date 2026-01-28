@@ -57,12 +57,8 @@ jobs:
             exit 0
           fi
 
-          echo "${IMAGES_JSON}" | jq empty 2>&1 && echo "✅ IMAGES_JSON is valid" || echo "❌ IMAGES_JSON is invalid"
-
           CHANGED_DIRS=$(echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | xargs -I {} dirname {} | sort -u)
           CHANGED_DIRS_COUNT=$(echo "${CHANGED_DIRS}" | wc -l)
-          
-          echo "${CHANGED_DIRS}" | jq empty 2>&1 && echo "✅ CHANGED_DIRS is valid" || echo "❌ CHANGED_DIRS is invalid"
           
           echo "📁 Found ${CHANGED_DIRS_COUNT} unique directories with changes"
           
@@ -180,9 +176,7 @@ jobs:
           echo "First 200 chars of images_json:"
           echo "${{ steps.build-images.outputs.images_json }}" | head -c 200
           echo "..."
-          
-          # Test if it's valid JSON
-          echo "${{ steps.build-images.outputs.images_json }}" | jq empty 2>&1 && echo "✅ Valid JSON" || echo "❌ Invalid JSON"
+          echo '${{ steps.build-images.outputs.images_json }}' | jq empty 2>&1 && echo "✅ Valid JSON" || echo "❌ Invalid JSON"
 
   debug-outputs:
     needs: build
