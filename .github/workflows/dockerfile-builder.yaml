@@ -130,9 +130,11 @@ jobs:
           
           mkdir -p saved-images
 
-          UNMASKED_JSON="${IMAGES_JSON//\*\*\*/$DOCKER_USERNAME}"
+          UNMASKED_JSON=$(echo "$IMAGES_JSON" | sed 's/\*\*\*/"USERNAME"/g')
 
           echo "${UNMASKED_JSON}"
+
+          echo "${UNMASKED_JSON}" | jq 'length'
           
           COUNT=$(echo "${UNMASKED_JSON}" | jq 'length')
 
