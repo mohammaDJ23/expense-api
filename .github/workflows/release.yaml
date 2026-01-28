@@ -19,6 +19,8 @@ env:
   RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
   BY: ${{ github.event.workflow_run.actor.login }}
   WORKFLOW: ${{ github.workflow }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
   manual-approval:
@@ -65,11 +67,11 @@ jobs:
 
       - name: Detect commit_sha
         id: get-commit-sha
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/detectCommitSha:latest
+        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/detectCommitSha:latest
 
       - name: Create version
         id: get-version
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/createVersion:latest
+        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/createVersion:latest
 
   run-test-push:
     needs: create-version
@@ -88,14 +90,14 @@ jobs:
 
       - name: Setup the variables
         id: variables
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/vars:latest
+        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/vars:latest
         env:
           APP_NAME: ${{ env.APP_NAME }}
           MODE: production
 
       - name: Build the docker image
         id: build-image
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/build:latest
+        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/build:latest
         env:
           IMAGE_NAME: ${{ steps.variables.output.IMAGE_NAME }}
           TAG: ${{ env.SHA }}
@@ -106,7 +108,7 @@ jobs:
           image_name: ${{ steps.variables.output.IMAGE_NAME }}
 
       - name: Run the docker image
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/run:latest
+        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/run:latest
         env:
           COMPOSE_FILE: ${{ steps.variables.output.COMPOSE_FILE }}
           STACK_NAME: ${{ steps.variables.output.STACK_NAME }}
@@ -116,28 +118,28 @@ jobs:
           SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
 
       - name: Check the healthy
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/checkHealthy:latest
+        uses: docker://$.DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/checkHealthy:latest
         env:
           SERVICE_NAME: ${{ steps.variables.output.SERVICE_NAME }}
 
       - name: Cleanup
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/cleanup:latest
+        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/cleanup:latest
         env:
           STACK_NAME: ${{ steps.variables.output.STACK_NAME }}
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Push the image, tagged, to DockerHub
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/push:latest
+        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/push:latest
         env:
           IMAGE_TAG: ${{ needs.build-image.outputs.IMAGE_TAG }}
 
       - name: Push the image, latest, to DockerHub
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/push:latest
+        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/push:latest
         env:
           IMAGE_LATEST: ${{ needs.build-image.outputs.IMAGE_LATEST }}
 

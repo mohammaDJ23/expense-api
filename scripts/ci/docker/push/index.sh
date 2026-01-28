@@ -22,7 +22,7 @@ echo "✅ Found image: $IMAGE_NAME"
 echo "🔐 Checking Docker registry login..."
 if ! docker system info | grep -q "Username:"; then
   echo "⚠️  Warning: Not logged in to Docker registry"
-  echo "   Make sure to set DOCKERHUB_USERNAME and DOCKERHUB_TOKEN environment variables"
+  echo "   Make sure to set DOCKER_USERNAME and DOCKER_PASSWORD environment variables"
 fi
 
 echo "📤 Pushing to registry..."
