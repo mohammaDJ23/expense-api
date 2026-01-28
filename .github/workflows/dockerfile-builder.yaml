@@ -56,13 +56,13 @@ jobs:
             echo "built_count=0" >> $GITHUB_OUTPUT
             exit 0
           fi
-          
-          echo "$CHANGED_DIRS" | jq empty 2>&1 && echo "✅ CHANGED_DIRS is valid" || echo "❌ CHANGED_DIRS is invalid"
+
+          echo "${IMAGES_JSON}" | jq empty 2>&1 && echo "✅ IMAGES_JSON is valid" || echo "❌ IMAGES_JSON is invalid"
 
           CHANGED_DIRS=$(echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | xargs -I {} dirname {} | sort -u)
           CHANGED_DIRS_COUNT=$(echo "${CHANGED_DIRS}" | wc -l)
           
-          echo "$CHANGED_DIRS" | jq empty 2>&1 && echo "✅ CHANGED_DIRS is valid" || echo "❌ CHANGED_DIRS is invalid"
+          echo "${CHANGED_DIRS}" | jq empty 2>&1 && echo "✅ CHANGED_DIRS is valid" || echo "❌ CHANGED_DIRS is invalid"
           
           echo "📁 Found ${CHANGED_DIRS_COUNT} unique directories with changes"
           
