@@ -13,6 +13,7 @@ concurrency:
 env:
   APP_NAME: ${{ vars.APP_NAME }}
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
@@ -38,6 +39,12 @@ jobs:
 
       - name: Install node and node_modules
         uses: ./.github/actions/setup-node
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Detect the branch name
         uses: ./.github/actions/run-docker-image
