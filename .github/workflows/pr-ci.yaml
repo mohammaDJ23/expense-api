@@ -40,11 +40,11 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Detect the branch name
-        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/detectbranchname:latest
+        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/detectbranchname:latest
 
       - name: Validate the branch name (non-master only)
         if: github.ref != 'refs/heads/master'
-        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/validatebranchname:latest
+        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/validatebranchname:latest
 
       - name: Validate the commit messages
         id: commit-validation
