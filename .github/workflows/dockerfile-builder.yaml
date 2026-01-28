@@ -184,6 +184,11 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.sha }}
+
       - name: Download saved image names
         uses: actions/download-artifact@v4
         with:
@@ -222,6 +227,11 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
       - name: Download saved image names
         uses: actions/download-artifact@v4
         with:
