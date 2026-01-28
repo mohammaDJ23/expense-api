@@ -130,7 +130,13 @@ jobs:
           
           mkdir -p saved-images
 
-          UNMASKED_JSON=$(echo "$IMAGES_JSON" | sed "s/\*\*\*/USERNAME/g")
+          UNMASKED_JSON=$(echo "${IMAGES_JSON}" | jq --arg username "${DOCKER_USERNAME}" '
+            map(
+              .name = (.name | gsub("\\*\\*\\*"; ${username})) |
+              .sha = (.sha | gsub("\\*\\*\\*"; ${username})) |
+              .latest = (.latest | gsub("\\*\\*\\*"; ${username}))
+            )
+          ')
 
           echo "${UNMASKED_JSON}"
           
