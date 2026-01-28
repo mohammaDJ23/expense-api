@@ -90,7 +90,13 @@ jobs:
                 
                 IMAGES_JSON="${IMAGES_JSON}{\"name\":\"${IMAGE_NAME}\",\"sha\":\"${IMAGE_SHA}\",\"latest\":\"${IMAGE_LATEST}\"}"
                 BUILT_COUNT=$((BUILT_COUNT + 1))
+              else
+                echo "❌ Could not build: ${IMAGE_NAME}"
+                exit 1
               fi
+            else
+              echo "❌ No directory exists: ${file}"
+              exit 1
             fi
           done
           
