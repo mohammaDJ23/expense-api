@@ -118,7 +118,7 @@ jobs:
           echo ""
           echo ""
 
-          echo "images_json=$(echo "${IMAGES_JSON}" | jq -c .)" >> $GITHUB_OUTPUT
+          echo "images_json=${IMAGES_JSON}" >> $GITHUB_OUTPUT
           echo "built_count=${BUILT_COUNT}" >> $GITHUB_OUTPUT
 
       - name: Save Docker images
