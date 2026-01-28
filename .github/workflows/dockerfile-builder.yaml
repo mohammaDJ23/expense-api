@@ -116,6 +116,8 @@ jobs:
           echo ""
           echo ""
 
+          echo "${IMAGES_JSON}" | jq empty 2>&1 && echo "✅ IMAGES_JSON is valid" || echo "❌ IMAGES_JSON is invalid"
+
           echo "images_json=$(echo "${IMAGES_JSON}" | jq -c .)" >> $GITHUB_OUTPUT
           echo "built_count=${BUILT_COUNT}" >> $GITHUB_OUTPUT
 
