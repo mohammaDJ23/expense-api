@@ -99,10 +99,10 @@ jobs:
               if [ "$FIRST" = true ]; then
                 FIRST=false
               else
-                IMAGES_JSON="${IMAGES_JSON},"
+                IMAGES_JSON='${IMAGES_JSON},'
               fi
               
-              IMAGES_JSON="${IMAGES_JSON}{\"name\":\"${IMAGE_NAME}\",\"sha\":\"${IMAGE_SHA}\",\"latest\":\"${IMAGE_LATEST}\"}"
+              IMAGES_JSON='${IMAGES_JSON}{\"name\":\"${IMAGE_NAME}\",\"sha\":\"${IMAGE_SHA}\",\"latest\":\"${IMAGE_LATEST}\"}'
               BUILT_COUNT=$((BUILT_COUNT + 1))
             else
               echo "  ❌ Could not build: ${IMAGE_NAME}"
