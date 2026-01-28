@@ -105,14 +105,14 @@ jobs:
             fi
           done < <(echo "$DOCKERFILES")
 
+          IMAGES_JSON="${IMAGES_JSON}]"
+
           echo ""
           echo ""
           echo "✅ All ${BUILT_COUNT}, from ${DOCKERFILES_COUNT} files, images created."
           echo ""
           echo ""
 
-          IMAGES_JSON="${IMAGES_JSON}]"
-          
           echo "images_json=${IMAGES_JSON}" >> $GITHUB_OUTPUT
           echo "built_count=${BUILT_COUNT}" >> $GITHUB_OUTPUT
 
@@ -124,13 +124,15 @@ jobs:
           IMAGES_JSON="${{ steps.build-images.outputs.images_json }}"
           
           mkdir -p saved-images
+
+          UNMASKED_JSON=$(echo "$IMAGES_JSON" | sed "s/\\\"\\*\\*\\*-/\\\"$DOCKER_USERNAME-/g")
           
-          COUNT=$(echo "${IMAGES_JSON}" | jq 'length')
+          COUNT=$(echo "${UNMASKED_JSON}" | jq 'length')
           
           for ((i=0; i<COUNT; i++)); do
-            NAME=$(echo "${IMAGES_JSON}" | jq -r ".[$i].name")
-            SHA=$(echo "${IMAGES_JSON}" | jq -r ".[$i].sha")
-            LATEST=$(echo "${IMAGES_JSON}" | jq -r ".[$i].latest")
+            NAME=$(echo "${UNMASKED_JSON}" | jq -r ".[$i].name")
+            SHA=$(echo "${UNMASKED_JSON}" | jq -r ".[$i].sha")
+            LATEST=$(echo "${UNMASKED_JSON}" | jq -r ".[$i].latest")
             
             echo "Saving $NAME..."
             
