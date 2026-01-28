@@ -126,7 +126,7 @@ jobs:
         run: |
           echo "💾 Saving Docker images..."
           
-          IMAGES_JSON=${{ steps.build-images.outputs.images_json }}
+          IMAGES_JSON='${{ steps.build-images.outputs.images_json }}'
           
           mkdir -p saved-images
           
