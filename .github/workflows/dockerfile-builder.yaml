@@ -47,7 +47,7 @@ jobs:
         run: |
           ALL_CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
           
-          IMAGES_JSON='['
+          IMAGES_JSON="["
           BUILT_COUNT=0
           FIRST=true
           
@@ -99,10 +99,10 @@ jobs:
               if [ "$FIRST" = true ]; then
                 FIRST=false
               else
-                IMAGES_JSON='${IMAGES_JSON},'
+                IMAGES_JSON="${IMAGES_JSON},"
               fi
               
-              IMAGES_JSON='${IMAGES_JSON}{\"name\":\"${IMAGE_NAME}\",\"sha\":\"${IMAGE_SHA}\",\"latest\":\"${IMAGE_LATEST}\"}'
+              IMAGES_JSON="${IMAGES_JSON}{\"name\":\"${IMAGE_NAME}\",\"sha\":\"${IMAGE_SHA}\",\"latest\":\"${IMAGE_LATEST}\"}"
               BUILT_COUNT=$((BUILT_COUNT + 1))
             else
               echo "  ❌ Could not build: ${IMAGE_NAME}"
@@ -110,7 +110,7 @@ jobs:
             fi
           done <<< "$CHANGED_DIRS"
 
-          IMAGES_JSON='${IMAGES_JSON}]'
+          IMAGES_JSON="${IMAGES_JSON}]"
 
           echo ""
           echo ""
@@ -118,7 +118,7 @@ jobs:
           echo ""
           echo ""
 
-          echo "images_json=${IMAGES_JSON}" >> $GITHUB_OUTPUT
+          echo "images_json=$(echo "${IMAGES_JSON}" | jq -c .)" >> $GITHUB_OUTPUT
           echo "built_count=${BUILT_COUNT}" >> $GITHUB_OUTPUT
 
       - name: Save Docker images
@@ -126,7 +126,7 @@ jobs:
         run: |
           echo "💾 Saving Docker images..."
           
-          IMAGES_JSON='${{ steps.build-images.outputs.images_json }}'
+          IMAGES_JSON=${{ steps.build-images.outputs.images_json }}
           
           mkdir -p saved-images
           
