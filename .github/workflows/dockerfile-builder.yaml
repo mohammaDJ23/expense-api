@@ -60,6 +60,16 @@ jobs:
 
           CHANGED_DIRS=$(echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | xargs -I {} dirname {} | sort -u)
           CHANGED_DIRS_COUNT=$(echo "${CHANGED_DIRS}" | wc -l)
+
+          echo "=== INSIDE BUILD-IMAGES STEP ==="
+          echo "BUILT_COUNT: $BUILT_COUNT"
+          echo "CHANGED_DIRS length: ${#CHANGED_DIRS}"
+          echo "First 200 chars of CHANGED_DIRS:"
+          echo "${CHANGED_DIRS:0:200}"
+          echo "..."
+          
+          # Test if CHANGED_DIRS is valid
+          echo "$CHANGED_DIRS" | jq empty 2>&1 && echo "✅ CHANGED_DIRS is valid" || echo "❌ CHANGED_DIRS is invalid"
           
           echo "📁 Found ${CHANGED_DIRS_COUNT} unique directories with changes"
           
@@ -177,7 +187,7 @@ jobs:
         run: |
           echo "=== BUILD JOB DEBUG ==="
           echo "Step output - built_count: ${{ steps.build-images.outputs.built_count }}"
-          echo "Step output - images_json length: ${#steps.build-images.outputs.images_json}"
+          echo "Step output - images_json length: ${{ steps.build-images.outputs.images_json }}"
           echo "First 200 chars of images_json:"
           echo "${{ steps.build-images.outputs.images_json }}" | head -c 200
           echo "..."
