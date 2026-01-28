@@ -61,6 +61,8 @@ jobs:
           echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | grep "Dockerfile$" | while IFS= read -r file; do
             [ -z "${file}" ] && continue
             
+            echo ""
+            
             if [ -f "${file}" ]; then
               dir_path=$(dirname "${file}")
               
@@ -98,6 +100,8 @@ jobs:
               echo "❌ No directory exists: ${file}"
               exit 1
             fi
+
+            echo ""
           done
           
           IMAGES_JSON="${IMAGES_JSON}]"
