@@ -102,6 +102,10 @@ jobs:
             fi
 
             echo ""
+            echo ""
+            echo "✅ All ${BUILT_COUNT} images created."
+            echo ""
+            echo ""
           done
           
           IMAGES_JSON="${IMAGES_JSON}]"
