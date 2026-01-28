@@ -172,7 +172,7 @@ jobs:
           path: saved-images/
           retention-days: 1
 
-    debug-outputs:
+  debug-outputs:
     needs: build
     runs-on: ubuntu-latest
     steps:
