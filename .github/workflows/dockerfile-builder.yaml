@@ -96,11 +96,11 @@ jobs:
                 IMAGES_JSON="${IMAGES_JSON}{\"name\":\"${IMAGE_NAME}\",\"sha\":\"${IMAGE_SHA}\",\"latest\":\"${IMAGE_LATEST}\"}"
                 BUILT_COUNT=$((BUILT_COUNT + 1))
               else
-                echo "❌ Could not build: ${IMAGE_NAME}"
+                echo "  ❌ Could not build: ${IMAGE_NAME}"
                 exit 1
               fi
             else
-              echo "❌ No directory exists: ${file}"
+              echo "  ❌ No directory exists: ${file}"
               exit 1
             fi
           done < <(echo "$DOCKERFILES")
@@ -125,33 +125,38 @@ jobs:
           
           mkdir -p saved-images
           
-          IMAGES_JSON="${IMAGES_JSON#\[}"
-          IMAGES_JSON="${IMAGES_JSON%\]}"
-          IMAGES_JSON="${IMAGES_JSON//'},{'/|}"
+          COUNT=$(echo "${IMAGES_JSON}" | jq 'length')
           
-          IFS='|' read -ra ENTRIES <<< "$IMAGES_JSON"
-          
-          for ENTRY in "${ENTRIES[@]}"; do
-            NAME="${ENTRY#*'\"name\":\"'}"
-            NAME="${NAME%%'\"'*}"
+          for ((i=0; i<COUNT; i++)); do
+            NAME=$(echo "${IMAGES_JSON}" | jq -r ".[$i].name")
+            SHA=$(echo "${IMAGES_JSON}" | jq -r ".[$i].sha")
+            LATEST=$(echo "${IMAGES_JSON}" | jq -r ".[$i].latest")
             
-            SHA="${ENTRY#*'\"sha\":\"'}"
-            SHA="${SHA%%'\"'*}"
+            echo "Saving $NAME..."
             
-            LATEST="${ENTRY#*'\"latest\":\"'}"
-            LATEST="${LATEST%%'\"'*}"
-            
-            echo "Saving ${NAME}..."
-            
-            SHA_FILE=$(echo "${SHA}" | tr '/' '_' | tr ':' '-').tar
-            LATEST_FILE=$(echo "${LATEST}" | tr '/' '_' | tr ':' '-').tar
-            
-            docker save -o "saved-images/${SHA_FILE}" "${SHA}"
-            docker save -o "saved-images/${LATEST_FILE}" "${LATEST}"
+            SHA_FILE=$(echo "$SHA" | tr '/' '_' | tr ':' '-').tar
+            LATEST_FILE=$(echo "$LATEST" | tr '/' '_' | tr ':' '-').tar
+
+
+            if docker save -o "saved-images/${SHA_FILE}" "${SHA}"; then
+              echo "  ✅ Successfully saved ${SHA}"
+            else
+              echo "  ❌ Failed to save ${SHA}"
+              exit 1
+            fi
+
+            if docker save -o "saved-images/${LATEST_FILE}" "${LATEST}"; then
+              echo "  ✅ Successfully saved ${LATEST}"
+            else
+              echo "  ❌ Failed to save ${LATEST}"
+              exit 1
+            fi
           done
           
           echo ""
+          echo ""
           echo "✅ Saved all images"
+          echo ""
           echo ""
 
       - name: Upload saved images
