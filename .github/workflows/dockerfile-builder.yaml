@@ -188,7 +188,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: image-names
-          path: image-names.json
+          path: .
 
       - name: Read saved image names
         id: read-json
@@ -226,7 +226,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: image-names
-          path: image-names.json
+          path: .
 
       - name: Read saved image names
         id: read-json
