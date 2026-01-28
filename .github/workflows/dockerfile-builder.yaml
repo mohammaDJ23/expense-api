@@ -47,9 +47,8 @@ jobs:
         run: |
           ALL_CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
           
-          IMAGES_JSON="["
+          IMAGES_JSON="[]"
           BUILT_COUNT=0
-          FIRST=true
           
           if [ -z "${ALL_CHANGED_FILES}" ]; then
             echo "ℹ️ No files were changed"
@@ -60,15 +59,7 @@ jobs:
 
           CHANGED_DIRS=$(echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | xargs -I {} dirname {} | sort -u)
           CHANGED_DIRS_COUNT=$(echo "${CHANGED_DIRS}" | wc -l)
-
-          echo "=== INSIDE BUILD-IMAGES STEP ==="
-          echo "BUILT_COUNT: $BUILT_COUNT"
-          echo "CHANGED_DIRS length: ${#CHANGED_DIRS}"
-          echo "First 200 chars of CHANGED_DIRS:"
-          echo "${CHANGED_DIRS:0:200}"
-          echo "..."
           
-          # Test if CHANGED_DIRS is valid
           echo "$CHANGED_DIRS" | jq empty 2>&1 && echo "✅ CHANGED_DIRS is valid" || echo "❌ CHANGED_DIRS is invalid"
           
           echo "📁 Found ${CHANGED_DIRS_COUNT} unique directories with changes"
@@ -106,13 +97,10 @@ jobs:
               echo "      image_sha: ${IMAGE_SHA}"
               echo "      image_latest: ${IMAGE_LATEST}"
               
-              if [ "$FIRST" = true ]; then
-                FIRST=false
-              else
-                IMAGES_JSON="${IMAGES_JSON},"
-              fi
-              
-              IMAGES_JSON="${IMAGES_JSON}{\"name\":\"${IMAGE_NAME}\",\"sha\":\"${IMAGE_SHA}\",\"latest\":\"${IMAGE_LATEST}\"}"
+              IMAGES_JSON=$(echo "${IMAGES_JSON}" | jq \
+                --arg name "${IMAGE_NAME}" \
+                --arg sha "${IMAGE_SHA}" \
+                --arg latest "${IMAGE_LATEST}" '. + [{"name":$name,"sha":$sha,"latest":$latest}]')
               BUILT_COUNT=$((BUILT_COUNT + 1))
             else
               echo "  ❌ Could not build: ${IMAGE_NAME}"
@@ -120,16 +108,13 @@ jobs:
             fi
           done <<< "$CHANGED_DIRS"
 
-          IMAGES_JSON="${IMAGES_JSON}]"
-
           echo ""
           echo ""
           echo "✅ Built ${BUILT_COUNT} images from ${CHANGED_DIRS_COUNT} changed directories"
           echo ""
           echo ""
 
-          # ENCODED_JSON=$(echo "${IMAGES_JSON}" | jq -c . | base64 | tr -d '\n')
-          echo "images_json=${IMAGES_JSON}" >> $GITHUB_OUTPUT
+          echo "images_json=$(echo "${IMAGES_JSON}" | jq -c .)" >> $GITHUB_OUTPUT
           echo "built_count=${BUILT_COUNT}" >> $GITHUB_OUTPUT
 
       - name: Save Docker images
