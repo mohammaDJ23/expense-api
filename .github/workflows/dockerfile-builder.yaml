@@ -130,7 +130,7 @@ jobs:
           
           mkdir -p saved-images
 
-          UNMASKED_JSON=$(echo "$IMAGES_JSON" | sed 's/\\*\\*\\*/"USERNAME"/g')
+          UNMASKED_JSON=$(echo "$IMAGES_JSON" | sed "s/\*\*\*/$DOCKER_USERNAME/g")
 
           echo "${UNMASKED_JSON}"
           
