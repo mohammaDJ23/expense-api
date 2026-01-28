@@ -1,0 +1,14 @@
+name: Pull docker image
+description: Pull docker image from Dockerhub
+
+inputs:
+  image:
+    description: The image name
+    required: true
+    type: string
+
+runs:
+  using: composite
+  steps:
+    - name: Pull the image from Dockerhub
+      uses: ${{ inputs.image }}

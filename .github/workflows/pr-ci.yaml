@@ -40,7 +40,9 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Detect the branch name
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/detectbranchname:latest
+        uses: ./.github/actions/pull-docker-image
+        with:
+          image: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/detectbranchname:latest
 
       - name: Validate the branch name (non-master only)
         if: github.ref != 'refs/heads/master'
