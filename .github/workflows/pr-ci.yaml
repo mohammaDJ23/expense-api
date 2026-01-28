@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: install-dependencies
     env:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
       APP_NAME: ${{ vars.APP_NAME }}
     steps:
       - name: Checkout the source
@@ -51,11 +51,11 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Detect branch name
-        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/detectBranchName:latest
+        uses: docker://$vars.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/detectBranchName:latest
 
       - name: Validate branch name (non-master only)
         if: github.ref != 'refs/heads/master'
-        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/validateBranchName:latest
+        uses: docker://$vars.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/validateBranchName:latest
 
       - name: Validate commit messages
         id: commit-validation

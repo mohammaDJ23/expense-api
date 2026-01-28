@@ -19,7 +19,7 @@ env:
   RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
   BY: ${{ github.event.workflow_run.actor.login }}
   WORKFLOW: ${{ github.workflow }}
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
