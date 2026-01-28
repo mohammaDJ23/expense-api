@@ -181,6 +181,10 @@ jobs:
     needs: build
     if: needs.build.outputs.built_count > 0
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(steps.read-json.outputs.matrix) }}
     permissions:
       contents: read
     steps:
@@ -224,6 +228,10 @@ jobs:
     needs: [build, security-scan]
     if: needs.build.outputs.built_count > 0
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(steps.read-json.outputs.matrix) }}
     permissions:
       contents: read
     steps:
