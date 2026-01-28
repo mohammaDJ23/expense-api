@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       built_count: ${{ steps.build-images.outputs.built_count }}
+      images_json_base64: ${{ steps.build-images.outputs.images_json_base64 }}
     permissions:
       contents: read
     steps:
@@ -112,6 +113,7 @@ jobs:
           echo ""
 
           echo "images_json=$(echo "${IMAGES_JSON}" | jq -c .)" >> $GITHUB_OUTPUT
+          echo "images_json_base64=$(echo "${IMAGES_JSON}" | jq -c . | base64 | tr -d '\n')" >> $GITHUB_OUTPUT
           echo "built_count=${BUILT_COUNT}" >> $GITHUB_OUTPUT
 
       - name: Save image names as a JSON file
@@ -176,6 +178,17 @@ jobs:
           name: docker-images
           path: docker-images/
           retention-days: 1
+
+  debug:
+    needs: build
+    if: needs.build.outputs.built_count > 0
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read base64 images
+        run: |
+          echo '${{ needs.build.outputs.images_json_base64 }}'
+          echo '${{ needs.build.outputs.images_json_base64 }}' | base64 -d
+
 
   security-scan:
     needs: build
