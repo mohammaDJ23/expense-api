@@ -127,8 +127,6 @@ jobs:
           echo "💾 Saving Docker images..."
           
           IMAGES_JSON="${{ steps.build-images.outputs.images_json }}"
-
-          echo "${IMAGES_JSON}"
           
           mkdir -p saved-images
 
@@ -137,6 +135,8 @@ jobs:
           echo "${UNMASKED_JSON}"
           
           COUNT=$(echo "${UNMASKED_JSON}" | jq 'length')
+
+          echo "${COUNT}"
           
           for ((i=0; i<COUNT; i++)); do
             NAME=$(echo "${UNMASKED_JSON}" | jq -r ".[$i].name")
