@@ -184,18 +184,17 @@ jobs:
     steps:
       - name: Check outputs
         run: |
-          echo "=== DEBUG ==="
-          echo "needs.build.outputs.built_count: '${{ needs.build.outputs.built_count }}'"
-          echo "needs.build.outputs.images_json length: ${#needs.build.outputs.images_json}"
-          echo "First 100 chars: '${needs.build.outputs.images_json:0:100}'"
-          echo "=== END DEBUG ==="
-          
           if [ -z "${{ needs.build.outputs.images_json }}" ]; then
             echo "❌ ERROR: images_json is EMPTY!"
             exit 1
           else
             echo "✅ SUCCESS: images_json has content"
           fi
+          echo "=== DEBUG ==="
+          echo "needs.build.outputs.built_count: '${{ needs.build.outputs.built_count }}'"
+          echo "needs.build.outputs.images_json length: '${#needs.build.outputs.images_json}'"
+          echo "First 100 chars: '${needs.build.outputs.images_json:0:100}'"
+          echo "=== END DEBUG ==="
 
   security-scan:
     needs: build
