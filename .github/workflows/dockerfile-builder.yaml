@@ -22,7 +22,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      images_json: ${{ steps.build-images.outputs.images_json }}
       built_count: ${{ steps.build-images.outputs.built_count }}
     permissions:
       contents: read
@@ -112,10 +111,20 @@ jobs:
           echo ""
           echo ""
 
-          echo "${IMAGES_JSON}" | jq empty 2>&1 && echo "✅ IMAGES_JSON is valid" || echo "❌ IMAGES_JSON is invalid"
-
           echo "images_json=$(echo "${IMAGES_JSON}" | jq -c .)" >> $GITHUB_OUTPUT
           echo "built_count=${BUILT_COUNT}" >> $GITHUB_OUTPUT
+
+      - name: Save image names as a JSON file
+        run: |
+          IMAGES_JSON='${{ steps.build-images.outputs.images_json }}'
+          echo "${IMAGES_JSON}" > image-names.json
+          echo "✅ Saved to a JSON file"
+
+      - name: Upload saved image names
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-names
+          path: image-names.json
 
       - name: Save Docker images
         if: steps.build-images.outputs.built_count > 0
@@ -124,7 +133,7 @@ jobs:
           
           IMAGES_JSON='${{ steps.build-images.outputs.images_json }}'
           
-          mkdir -p saved-images
+          mkdir -p docker-images
           
           COUNT=$(echo "${IMAGES_JSON}" | jq 'length')
           
@@ -139,14 +148,14 @@ jobs:
             LATEST_FILE=$(echo "$LATEST" | tr '/' '_' | tr ':' '-').tar
 
 
-            if docker save -o "saved-images/${SHA_FILE}" "${SHA}"; then
+            if docker save -o "docker-images/${SHA_FILE}" "${SHA}"; then
               echo "  ✅ Successfully saved ${SHA}"
             else
               echo "  ❌ Failed to save ${SHA}"
               exit 1
             fi
 
-            if docker save -o "saved-images/${LATEST_FILE}" "${LATEST}"; then
+            if docker save -o "docker-images/${LATEST_FILE}" "${LATEST}"; then
               echo "  ✅ Successfully saved ${LATEST}"
             else
               echo "  ❌ Failed to save ${LATEST}"
@@ -165,53 +174,33 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: docker-images
-          path: saved-images/
+          path: docker-images/
           retention-days: 1
-
-      - name: Verify output was set
-        run: |
-          echo "=== BUILD JOB DEBUG ==="
-          echo "Step output - built_count: ${{ steps.build-images.outputs.built_count }}"
-          echo "Step output - images_json length: ${{ steps.build-images.outputs.images_json }}"
-          echo "First 200 chars of images_json:"
-          echo "${{ steps.build-images.outputs.images_json }}" | head -c 200
-          echo "..."
-          echo '${{ steps.build-images.outputs.images_json }}' | jq empty 2>&1 && echo "✅ Valid JSON" || echo "❌ Invalid JSON"
-
-  debug-outputs:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check outputs
-        run: |
-          if [ -z "${{ needs.build.outputs.images_json }}" ]; then
-            echo "❌ ERROR: images_json is EMPTY!"
-            exit 1
-          else
-            echo "✅ SUCCESS: images_json has content"
-          fi
-          echo "=== DEBUG ==="
-          echo "needs.build.outputs.built_count: '${{ needs.build.outputs.built_count }}'"
-          echo "needs.build.outputs.images_json length: '${#needs.build.outputs.images_json}'"
-          echo "First 100 chars: '${needs.build.outputs.images_json:0:100}'"
-          echo "=== END DEBUG ==="
 
   security-scan:
     needs: build
     if: needs.build.outputs.built_count > 0
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include: ${{ fromJson(needs.build.outputs.images_json) }}
     permissions:
       contents: read
     steps:
+      - name: Download saved image names
+        uses: actions/download-artifact@v4
+        with:
+          name: image-names
+          path: image-names.json
+
+      - name: Read saved image names
+        id: read-json
+        run: |
+          IMAGES_JSON=$(cat image-names.json)
+          echo "matrix=$IMAGES_JSON" >> $GITHUB_OUTPUT
+
       - name: Download saved images
         uses: actions/download-artifact@v4
         with:
           name: docker-images
-          path: saved-images
+          path: docker-images
 
       - name: Load Docker images
         uses: ./.github/actions/load-docker-image
@@ -219,7 +208,7 @@ jobs:
           name: ${{ matrix.name }}
           image_sha: ${{ matrix.sha }}
           image_latest: ${{ matrix.latest }}
-          artifact_path: saved-images
+          artifact_path: docker-images
 
       - name: Scan the docker image
         uses: ./.github/actions/scan-docker-image
@@ -230,25 +219,34 @@ jobs:
     needs: [build, security-scan]
     if: needs.build.outputs.built_count > 0
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        include: ${{ fromJson(needs.build.outputs.images_json) }}
     permissions:
       contents: read
     steps:
+      - name: Download saved image names
+        uses: actions/download-artifact@v4
+        with:
+          name: image-names
+          path: image-names.json
+
+      - name: Read saved image names
+        id: read-json
+        run: |
+          IMAGES_JSON=$(cat image-names.json)
+          echo "matrix=$IMAGES_JSON" >> $GITHUB_OUTPUT
+
       - name: Download saved images
         uses: actions/download-artifact@v4
         with:
           name: docker-images
-          path: saved-images
+          path: docker-images
 
-      - name: Load Docker image
+      - name: Load saved images
         uses: ./.github/actions/load-docker-image
         with:
-          image_latest: ${{ matrix.latest }}
+          name: ${{ matrix.name }}
           image_sha: ${{ matrix.sha }}
-          artifact_path: saved-images
+          image_latest: ${{ matrix.latest }}
+          artifact_path: docker-images
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
