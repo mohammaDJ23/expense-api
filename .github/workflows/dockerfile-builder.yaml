@@ -58,58 +58,63 @@ jobs:
             exit 0
           fi
 
-          DOCKERFILES=$(echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | grep "Dockerfile$")
-          DOCKERFILES_COUNT=$(echo "${DOCKERFILES}" | wc -l)
+          CHANGED_DIRS=$(echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | xargs -I {} dirname {} | sort -u)
+          CHANGED_DIRS_COUNT=$(echo "${CHANGED_DIRS}" | wc -l)
           
-          while IFS= read -r file; do
-            [ -z "${file}" ] && continue
+          echo "📁 Found ${CHANGED_DIRS_COUNT} unique directories with changes"
+          
+          while IFS= read -r dir_path; do
+            [ -z "${dir_path}" ] && continue
             
             echo ""
+            echo "🔍 Checking directory: ${dir_path}"
             
-            if [ -f "${file}" ]; then
-              dir_path=$(dirname "${file}")
+            dockerfile_path="${dir_path}/Dockerfile"
+            
+            if [ ! -f "${dockerfile_path}" ]; then
+              echo "  ⏩ No Dockerfile in this directory, skipping..."
+              continue
+            fi
+            
+            echo "  ✅ Dockerfile found: ${dockerfile_path}"
+            
+            IMAGE_NAME="${DOCKER_USERNAME}-${APP_NAME}/${dir_path}"
+            IMAGE_NAME=$(echo "${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')
+            
+            echo "  🏗️  Building: ${IMAGE_NAME}"
+            
+            IMAGE_SHA="${IMAGE_NAME}:${{ inputs.sha }}"
+            IMAGE_LATEST="${IMAGE_NAME}:latest"
+            
+            if docker build \
+              -t "${IMAGE_SHA}" \
+              -t "${IMAGE_LATEST}" \
+              -f "${dockerfile_path}" \
+              "." 2>&1; then
               
-              IMAGE_NAME="${DOCKER_USERNAME}-${APP_NAME}/${dir_path}"
-              IMAGE_NAME=$(echo "${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')
+              echo "  ✅ Successfully built:"
+              echo "      image_sha: ${IMAGE_SHA}"
+              echo "      image_latest: ${IMAGE_LATEST}"
               
-              echo "ℹ️ Building: ${IMAGE_NAME}"
-              
-              IMAGE_SHA="${IMAGE_NAME}:${{ inputs.sha }}"
-              IMAGE_LATEST="${IMAGE_NAME}:latest"
-              
-              if docker build \
-                -t "${IMAGE_SHA}" \
-                -t "${IMAGE_LATEST}" \
-                -f "${dir_path}/Dockerfile" \
-                "." 2>&1; then
-                
-                echo "✅ Successfully built:"
-                echo "    image_sha: ${IMAGE_SHA}"
-                echo "    image_latest: ${IMAGE_LATEST}"
-                
-                if [ "$FIRST" = true ]; then
-                  FIRST=false
-                else
-                  IMAGES_JSON="${IMAGES_JSON},"
-                fi
-                
-                IMAGES_JSON="${IMAGES_JSON}{\"name\":\"${IMAGE_NAME}\",\"sha\":\"${IMAGE_SHA}\",\"latest\":\"${IMAGE_LATEST}\"}"
-                BUILT_COUNT=$((BUILT_COUNT + 1))
+              if [ "$FIRST" = true ]; then
+                FIRST=false
               else
-                echo "  ❌ Could not build: ${IMAGE_NAME}"
-                exit 1
+                IMAGES_JSON="${IMAGES_JSON},"
               fi
+              
+              IMAGES_JSON="${IMAGES_JSON}{\"name\":\"${IMAGE_NAME}\",\"sha\":\"${IMAGE_SHA}\",\"latest\":\"${IMAGE_LATEST}\"}"
+              BUILT_COUNT=$((BUILT_COUNT + 1))
             else
-              echo "  ❌ No directory exists: ${file}"
+              echo "  ❌ Could not build: ${IMAGE_NAME}"
               exit 1
             fi
-          done < <(echo "$DOCKERFILES")
+          done <<< "$CHANGED_DIRS"
 
           IMAGES_JSON="${IMAGES_JSON}]"
 
           echo ""
           echo ""
-          echo "✅ All ${BUILT_COUNT}, from ${DOCKERFILES_COUNT} files, images created."
+          echo "✅ Built ${BUILT_COUNT} images from ${CHANGED_DIRS_COUNT} changed directories"
           echo ""
           echo ""
 
