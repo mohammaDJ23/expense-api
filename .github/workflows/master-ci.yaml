@@ -41,30 +41,30 @@ jobs:
         id: build-image
         uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/build:latest
         env:
-          IMAGE_NAME: ${{ steps.variables.output.IMAGE_NAME }}
+          IMAGE_NAME: ${{ steps.variables.outputs.IMAGE_NAME }}
           TAG: ${{ env.SHA }}
 
       - name: Scan the docker image
         uses: ./.github/actions/scan-docker-image
         with:
-          image_name: ${{ steps.variables.output.IMAGE_NAME }}
+          image_name: ${{ steps.variables.outputs.IMAGE_NAME }}
 
       - name: Run the docker image
         uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/run:latest
         env:
-          COMPOSE_FILE: ${{ steps.variables.output.COMPOSE_FILE }}
-          STACK_NAME: ${{ steps.variables.output.STACK_NAME }}
-          SERVICE_NAME: ${{ steps.variables.output.SERVICE_NAME }}
-          IMAGE_NAME: ${{ steps.build-image.output.IMAGE_LATEST }}
-          ENVIRONMENT: ${{ steps.variables.output.ENVIRONMENT }}
+          COMPOSE_FILE: ${{ steps.variables.outputs.COMPOSE_FILE }}
+          STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
+          SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
+          IMAGE_NAME: ${{ steps.build-image.outputs.IMAGE_LATEST }}
+          ENVIRONMENT: ${{ steps.variables.outputs.ENVIRONMENT }}
           SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
 
       - name: Check the healthy
         uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/checkhealthy:latest
         env:
-          SERVICE_NAME: ${{ steps.variables.output.SERVICE_NAME }}
+          SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
 
       - name: Cleanup
         uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/cleanup:latest
         env:
-          STACK_NAME: ${{ steps.variables.output.STACK_NAME }}
+          STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
