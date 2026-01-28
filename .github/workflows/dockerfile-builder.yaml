@@ -183,15 +183,16 @@ jobs:
       - name: Scan the docker image
         uses: ./.github/actions/scan-docker-image
         with:
-          image_name: ${{ matrix.image.latest }}
+          image_name: ${{ matrix.latest }}
 
   push:
     needs: [build, security-scan]
     if: needs.build.outputs.built_count > 0
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: true
       matrix:
-        image: ${{ fromJson(needs.build.outputs.images_json) }}
+        include: ${{ fromJson(needs.build.outputs.images_json) }}
     permissions:
       contents: read
     steps:
@@ -204,8 +205,8 @@ jobs:
       - name: Load Docker image
         uses: ./.github/actions/load-docker-image
         with:
-          image_latest: ${{ matrix.image.latest }}
-          image_sha: ${{ matrix.image.sha }}
+          image_latest: ${{ matrix.latest }}
+          image_sha: ${{ matrix.sha }}
           artifact_path: saved-images
 
       - name: Set up Docker Buildx
@@ -238,7 +239,7 @@ jobs:
             fi
           }
 
-          push_tag "${{ matrix.image.latest }}"
-          push_tag "${{ matrix.image.sha }}"
+          push_tag "${{ matrix.latest }}"
+          push_tag "${{ matrix.sha }}"
 
           echo "📊 Push operation completed"
