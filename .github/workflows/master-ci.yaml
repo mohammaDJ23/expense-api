@@ -14,7 +14,7 @@ concurrency:
 
 env:
   APP_NAME: ${{ vars.APP_NAME }}
-  DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
 
 jobs:

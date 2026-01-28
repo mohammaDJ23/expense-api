@@ -15,7 +15,7 @@ on:
 
 env:
   APP_NAME: ${{ vars.APP_NAME }}
-  DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
