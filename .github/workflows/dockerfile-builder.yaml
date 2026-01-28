@@ -57,8 +57,11 @@ jobs:
             echo "built_count=0" >> $GITHUB_OUTPUT
             exit 0
           fi
+
+          DOCKERFILES=$(echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | grep "Dockerfile$")
+          DOCKERFILES_COUNT=$(echo "${DOCKERFILES}" | wc -l)
           
-          echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | grep "Dockerfile$" | while IFS= read -r file; do
+          while IFS= read -r file; do
             [ -z "${file}" ] && continue
             
             echo ""
@@ -100,14 +103,14 @@ jobs:
               echo "❌ No directory exists: ${file}"
               exit 1
             fi
+          done < <(echo "$DOCKERFILES")
 
-            echo ""
-            echo ""
-            echo "✅ All ${BUILT_COUNT} images created."
-            echo ""
-            echo ""
-          done
-          
+          echo ""
+          echo ""
+          echo "✅ All ${BUILT_COUNT}, from ${DOCKERFILES_COUNT} files, images created."
+          echo ""
+          echo ""
+
           IMAGES_JSON="${IMAGES_JSON}]"
           
           echo "images_json=${IMAGES_JSON}" >> $GITHUB_OUTPUT
