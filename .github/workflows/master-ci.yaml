@@ -14,7 +14,6 @@ concurrency:
 
 env:
   APP_NAME: ${{ vars.APP_NAME }}
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
 
 jobs:
@@ -33,14 +32,14 @@ jobs:
 
       - name: Setup the variables
         id: variables
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/vars:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/vars:latest
         env:
           APP_NAME: ${{ env.APP_NAME }}
           MODE: ci
 
       - name: Build the docker image
         id: build-image
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/build:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/build:latest
         env:
           IMAGE_NAME: ${{ steps.variables.output.IMAGE_NAME }}
           TAG: ${{ env.SHA }}
@@ -51,7 +50,7 @@ jobs:
           image_name: ${{ steps.variables.output.IMAGE_NAME }}
 
       - name: Run the docker image
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/run:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/run:latest
         env:
           COMPOSE_FILE: ${{ steps.variables.output.COMPOSE_FILE }}
           STACK_NAME: ${{ steps.variables.output.STACK_NAME }}
@@ -61,11 +60,11 @@ jobs:
           SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
 
       - name: Check the healthy
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/checkHealthy:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/checkhealthy:latest
         env:
           SERVICE_NAME: ${{ steps.variables.output.SERVICE_NAME }}
 
       - name: Cleanup
-        uses: docker://${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/docker/cleanup:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/cleanup:latest
         env:
           STACK_NAME: ${{ steps.variables.output.STACK_NAME }}

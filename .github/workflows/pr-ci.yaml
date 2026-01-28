@@ -14,17 +14,7 @@ env:
   SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
-  dockerfile-builder:
-    uses: ./.github/workflows/dockerfile-builder.yaml
-    permissions:
-      contents: read
-    secrets: inherit
-    with:
-      sha: ${{ github.event.pull_request.head.sha || github.sha }}
-
   install-dependencies:
-    needs: dockerfile-builder
-    if: always() && (needs.dockerfile-builder.result == 'skipped' || needs.dockerfile-builder.result == 'success')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the source
@@ -38,9 +28,6 @@ jobs:
   branch-and-commit-validation:
     runs-on: ubuntu-latest
     needs: install-dependencies
-    env:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      APP_NAME: ${{ vars.APP_NAME }}
     steps:
       - name: Checkout the source
         uses: actions/checkout@v4
@@ -50,14 +37,14 @@ jobs:
       - name: Install node and node_modules
         uses: ./.github/actions/setup-node
 
-      - name: Detect branch name
-        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/detectBranchName:latest
+      - name: Detect the branch name
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/detectbranchname:latest
 
-      - name: Validate branch name (non-master only)
+      - name: Validate the branch name (non-master only)
         if: github.ref != 'refs/heads/master'
-        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/validateBranchName:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/validatebranchname:latest
 
-      - name: Validate commit messages
+      - name: Validate the commit messages
         id: commit-validation
         uses: wagoid/commitlint-github-action@v5
         with:

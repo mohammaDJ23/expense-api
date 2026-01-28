@@ -35,9 +35,9 @@ jobs:
           echo "=========================================="
           echo ""
           echo "✅ Master Pipeline Verification:"
-          echo "   Run #: ${{ env.RUN_NUMBER }}"
-          echo "   SHA: ${{ env.SHA }}"
-          echo "   By: ${{ env.BY }}"
+          echo "   Run #: ${RUN_NUMBER}"
+          echo "   SHA: ${SHA}"
+          echo "   By: ${BY}"
           echo ""
           echo "📋 Before approving, verify:"
           echo "   1. Master Pipeline completed successfully"
@@ -45,7 +45,7 @@ jobs:
           echo "   3. You want to proceed with this release"
           echo ""
           echo "⚠️  This release will use SHA:"
-          echo "   ${{ env.SHA }}"
+          echo "   ${SHA}"
           echo ""
           echo "=========================================="
 
@@ -67,11 +67,11 @@ jobs:
 
       - name: Detect commit_sha
         id: get-commit-sha
-        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/detectCommitSha:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/detectcommitsha:latest
 
-      - name: Create version
+      - name: Create a New version
         id: get-version
-        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/createVersion:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/createversion:latest
 
   run-test-push:
     needs: create-version
@@ -90,14 +90,14 @@ jobs:
 
       - name: Setup the variables
         id: variables
-        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/vars:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/vars:latest
         env:
           APP_NAME: ${{ env.APP_NAME }}
           MODE: production
 
       - name: Build the docker image
         id: build-image
-        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/build:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/build:latest
         env:
           IMAGE_NAME: ${{ steps.variables.output.IMAGE_NAME }}
           TAG: ${{ env.SHA }}
@@ -108,7 +108,7 @@ jobs:
           image_name: ${{ steps.variables.output.IMAGE_NAME }}
 
       - name: Run the docker image
-        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/run:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/run:latest
         env:
           COMPOSE_FILE: ${{ steps.variables.output.COMPOSE_FILE }}
           STACK_NAME: ${{ steps.variables.output.STACK_NAME }}
@@ -118,12 +118,12 @@ jobs:
           SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
 
       - name: Check the healthy
-        uses: docker://$.DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/checkHealthy:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/checkhealthy:latest
         env:
           SERVICE_NAME: ${{ steps.variables.output.SERVICE_NAME }}
 
       - name: Cleanup
-        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/cleanup:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/cleanup:latest
         env:
           STACK_NAME: ${{ steps.variables.output.STACK_NAME }}
 
@@ -134,12 +134,12 @@ jobs:
           password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Push the image, tagged, to DockerHub
-        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/push:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/push:latest
         env:
           IMAGE_TAG: ${{ needs.build-image.outputs.IMAGE_TAG }}
 
       - name: Push the image, latest, to DockerHub
-        uses: docker://$DOCKER_USERNAME-$APP_NAME/scripts/ci/docker/push:latest
+        uses: docker://$secrets.DOCKER_USERNAME-$vars.APP_NAME/scripts/ci/docker/push:latest
         env:
           IMAGE_LATEST: ${{ needs.build-image.outputs.IMAGE_LATEST }}
 
@@ -154,9 +154,6 @@ jobs:
       VERSION: ${{ needs.create-version.outputs.version }}
       IMAGE_TAG: ${{ needs.run-test-push.outputs.IMAGE_TAG }}
       IMAGE_LATEST: ${{ needs.run-test-push.outputs.IMAGE_LATEST }}
-      WORKFLOW: ${{ env.WORKFLOW }}
-      RUN_NUMBER: ${{ env.RUN_NUMBER }}
-      ORIGINAL_SHA: ${{ env.SHA }}
       UPDATED_SHA: ${{ needs.create-version.outputs.commit_sha }}
     steps:
       - name: Release Summary
