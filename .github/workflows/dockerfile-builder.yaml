@@ -110,7 +110,7 @@ jobs:
             fi
           done <<< "$CHANGED_DIRS"
 
-          IMAGES_JSON="${IMAGES_JSON}]"
+          IMAGES_JSON='${IMAGES_JSON}]'
 
           echo ""
           echo ""
