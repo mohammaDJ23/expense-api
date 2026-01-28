@@ -118,6 +118,7 @@ jobs:
           echo ""
           echo ""
 
+          # ENCODED_JSON=$(echo "${IMAGES_JSON}" | jq -c . | base64 | tr -d '\n')
           echo "images_json=${IMAGES_JSON}" >> $GITHUB_OUTPUT
           echo "built_count=${BUILT_COUNT}" >> $GITHUB_OUTPUT
 
@@ -171,6 +172,18 @@ jobs:
           name: docker-images
           path: saved-images/
           retention-days: 1
+
+      - name: Verify output was set
+        run: |
+          echo "=== BUILD JOB DEBUG ==="
+          echo "Step output - built_count: ${{ steps.build-images.outputs.built_count }}"
+          echo "Step output - images_json length: ${#steps.build-images.outputs.images_json}"
+          echo "First 200 chars of images_json:"
+          echo "${{ steps.build-images.outputs.images_json }}" | head -c 200
+          echo "..."
+          
+          # Test if it's valid JSON
+          echo "${{ steps.build-images.outputs.images_json }}" | jq empty 2>&1 && echo "✅ Valid JSON" || echo "❌ Invalid JSON"
 
   debug-outputs:
     needs: build
