@@ -132,9 +132,9 @@ jobs:
 
           UNMASKED_JSON=$(echo "${IMAGES_JSON}" | jq --arg username "${DOCKER_USERNAME}" '
             map(
-              .name = (.name | gsub("\\*\\*\\*"; ${username})) |
-              .sha = (.sha | gsub("\\*\\*\\*"; ${username})) |
-              .latest = (.latest | gsub("\\*\\*\\*"; ${username}))
+              .name = (.name | gsub("\\*\\*\\*"; $username)) |
+              .sha = (.sha | gsub("\\*\\*\\*"; $username)) |
+              .latest = (.latest | gsub("\\*\\*\\*"; $username))
             )
           ')
 
