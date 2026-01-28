@@ -42,94 +42,98 @@ jobs:
         with:
           files: ${{ inputs.directory }}
 
-      - name: Build the docker images
+      - name: Build Docker images
         id: build-images
         run: |
           ALL_CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
-
-          IMAGES_JSON='[]'
+          
+          IMAGES_JSON='['
           BUILT_COUNT=0
-
+          FIRST=true
+          
           if [ -z "${ALL_CHANGED_FILES}" ]; then
             echo "ℹ️ No files were changed"
-            echo "images_json=$IMAGES_JSON" >> $GITHUB_OUTPUT
-            echo "built_count=$BUILT_COUNT" >> $GITHUB_OUTPUT
+            echo "images_json=[]" >> $GITHUB_OUTPUT
+            echo "built_count=0" >> $GITHUB_OUTPUT
             exit 0
           fi
-
-          echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | grep "Dockerfile$" > changed_files.txt
-
-          while IFS= read -r file || [ -n "$file" ]; do
-            [ -z "$file" ] && continue
-
-            echo ""
+          
+          echo "${ALL_CHANGED_FILES}" | tr ' ' '\n' | grep "Dockerfile$" | while IFS= read -r file; do
+            [ -z "${file}" ] && continue
             
-            if [ -f "$file" ]; then
-              dir_path=$(dirname "$file")
-              script_name="$dir_path"
-
-              IMAGE_NAME="${DOCKER_USERNAME}-${APP_NAME}/$script_name"
-              IMAGE_NAME="$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')"
-
-              echo "ℹ️ Building: $IMAGE_NAME"
+            if [ -f "${file}" ]; then
+              dir_path=$(dirname "${file}")
+              
+              IMAGE_NAME="${DOCKER_USERNAME}-${APP_NAME}/${dir_path}"
+              IMAGE_NAME=$(echo "${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')
+              
+              echo "ℹ️ Building: ${IMAGE_NAME}"
+              
+              IMAGE_SHA="${IMAGE_NAME}:${{ inputs.sha }}"
+              IMAGE_LATEST="${IMAGE_NAME}:latest"
               
               if docker build \
-                -t ${IMAGE_NAME}:latest \
-                -t ${IMAGE_NAME}:${{ inputs.sha }} \
-                -f "$dir_path/Dockerfile" \
+                -t "${IMAGE_SHA}" \
+                -t "${IMAGE_LATEST}" \
+                -f "${dir_path}Dockerfile" \
                 "." 2>&1; then
                 
-                echo "✅ Successfully built $IMAGE_NAME"
+                echo "✅ Successfully built:"
+                echo "    image_sha: ${IMAGE_SHA}"
+                echo "    image_latest: ${IMAGE_LATEST}"
                 
-                IMAGE_JSON=$(jq -n \
-                  --arg name "$IMAGE_NAME" \
-                  --arg latest "${IMAGE_NAME}:latest" \
-                  --arg sha "${IMAGE_NAME}:${{ inputs.sha }}" \
-                  '{name: $name, latest: $latest, sha: $sha}')
+                if [ "$FIRST" = true ]; then
+                  FIRST=false
+                else
+                  IMAGES_JSON="${IMAGES_JSON},"
+                fi
                 
-                IMAGES_JSON=$(echo "$IMAGES_JSON" | jq --argjson img "$IMAGE_JSON" '. += [$img]')
+                IMAGES_JSON="${IMAGES_JSON}{\"name\":\"${IMAGE_NAME}\",\"sha\":\"${IMAGE_SHA}\",\"latest\":\"${IMAGE_LATEST}\"}"
                 BUILT_COUNT=$((BUILT_COUNT + 1))
-              else
-                echo "❌ Failed to build $IMAGE_NAME"
-                exit 1
               fi
-            else
-              echo "⚠️ Warning: '$file' not found"
-              exit 1
             fi
-
-            echo ""
-          done < changed_files.txt
-
-          {
-            echo "images_json<<EOF"
-            echo "$IMAGES_JSON"
-            echo "EOF"
-            echo "built_count=$BUILT_COUNT"
-          } >> $GITHUB_OUTPUT
+          done
+          
+          IMAGES_JSON="${IMAGES_JSON}]"
+          
+          echo "images_json=${IMAGES_JSON}" >> $GITHUB_OUTPUT
+          echo "built_count=${BUILT_COUNT}" >> $GITHUB_OUTPUT
 
       - name: Save Docker images
         if: steps.build-images.outputs.built_count > 0
         run: |
           echo "💾 Saving Docker images..."
-
+          
           IMAGES_JSON="${{ steps.build-images.outputs.images_json }}"
-
+          
           mkdir -p saved-images
-
-          echo "${IMAGES_JSON}" | jq -r '.[] | select(true) | .latest + "|" + .sha' | while IFS='|' read -r latest_tag sha_tag; do
-            echo "Saving ${latest_tag}..."
-            LATEST_FILENAME=$(echo "${latest_tag}" | sed 's|/|_|g' | sed 's|:|-|g').tar
-            docker save -o "saved-images/${LATEST_FILENAME}" "${latest_tag}"
+          
+          IMAGES_JSON="${IMAGES_JSON#\[}"
+          IMAGES_JSON="${IMAGES_JSON%\]}"
+          IMAGES_JSON="${IMAGES_JSON//'},{'/|}"
+          
+          IFS='|' read -ra ENTRIES <<< "$IMAGES_JSON"
+          
+          for ENTRY in "${ENTRIES[@]}"; do
+            NAME="${ENTRY#*'\"name\":\"'}"
+            NAME="${NAME%%'\"'*}"
             
-            echo "Saving ${sha_tag}..."
-            SHA_FILENAME=$(echo "${sha_tag}" | sed 's|/|_|g' | sed 's|:|-|g').tar
-            docker save -o "saved-images/${SHA_FILENAME}" "${sha_tag}"
+            SHA="${ENTRY#*'\"sha\":\"'}"
+            SHA="${SHA%%'\"'*}"
+            
+            LATEST="${ENTRY#*'\"latest\":\"'}"
+            LATEST="${LATEST%%'\"'*}"
+            
+            echo "Saving ${NAME}..."
+            
+            SHA_FILE=$(echo "${SHA}" | tr '/' '_' | tr ':' '-').tar
+            LATEST_FILE=$(echo "${LATEST}" | tr '/' '_' | tr ':' '-').tar
+            
+            docker save -o "saved-images/${SHA_FILE}" "${SHA}"
+            docker save -o "saved-images/${LATEST_FILE}" "${LATEST}"
           done
-
+          
           echo "✅ Saved all images"
-
-          ls -la saved-images/
 
       - name: Upload saved images
         if: steps.build-images.outputs.built_count > 0
@@ -144,8 +148,9 @@ jobs:
     if: needs.build.outputs.built_count > 0
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: true
       matrix:
-        image: ${{ fromJson(needs.build.outputs.images_json) }}
+        include: ${{ fromJson(needs.build.outputs.images_json) }}
     permissions:
       contents: read
     steps:
@@ -158,8 +163,9 @@ jobs:
       - name: Load Docker images
         uses: ./.github/actions/load-docker-image
         with:
-          image_latest: ${{ matrix.image.latest }}
-          image_sha: ${{ matrix.image.sha }}
+          name: ${{ matrix.name }}
+          image_sha: ${{ matrix.sha }}
+          image_latest: ${{ matrix.latest }}
           artifact_path: saved-images
 
       - name: Scan the docker image

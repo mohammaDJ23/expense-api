@@ -2,6 +2,9 @@ name: Load Docker Image
 description: Loads a Docker image from saved artifact
 
 inputs:
+  name:
+    description: Name of the image
+    required: true
   image_latest:
     description: Latest image tag
     required: true
@@ -18,12 +21,14 @@ runs:
     - name: Load Docker image
       shell: bash
       run: |
+        echo "📦 Loading: ${{ inputs.name }}"
+
         LATEST_FILENAME=$(echo "${{ inputs.image_latest }}" | sed 's|/|_|g' | sed 's|:|-|g').tar
         SHA_FILENAME=$(echo "${{ inputs.image_sha }}" | sed 's|/|_|g' | sed 's|:|-|g').tar
 
         echo "Looking for saved files:"
-        echo "1. ${LATEST_FILENAME}"
-        echo "2. ${SHA_FILENAME}"
+        echo "  1. ${LATEST_FILENAME}"
+        echo "  2. ${SHA_FILENAME}"
 
         if [ -f "${{ inputs.artifact_path }}/${LATEST_FILENAME}" ]; then
           echo "Loading from: ${LATEST_FILENAME}"
