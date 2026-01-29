@@ -23,7 +23,10 @@
     "validate:branch:name": "sh ./scripts/ci/validateBranchName/index.sh",
     "validate:commit:message": "sh ./scripts/validateCommitMessage.sh",
     "lint:staged": "sh ./scripts/lintStaged.sh",
-    "start:docker:development": "sh ./scripts/startDockerDevelopment.sh"
+    "start:docker:development": "sh ./scripts/startDockerDevelopment.sh",
+    "create:docker:image": "sh ./scripts/createDockerImage.sh",
+    "create:hash": "sh ./scripts/createHash.sh",
+    "app:name": "sh ./scripts/appName.sh"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
