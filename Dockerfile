@@ -4,10 +4,9 @@ RUN apk add --no-cache \
   python3 \
   make \
   g++ \
-  curl \
-  && rm -rf /var/cache/apk/*
-
-RUN addgroup -g 10001 -S nodejs && \
+  curl && \
+  rm -rf /var/cache/apk/* && \
+  addgroup -g 10001 -S nodejs && \
   adduser -S expense-api -u 10001 -G nodejs && \
   mkdir -p /usr/src/app && \
   chown -R expense-api:nodejs /usr/src/app
@@ -22,6 +21,7 @@ RUN npm ci --ignore-scripts && \
 FROM base AS development
 
 ENV NODE_ENV=development
+ENV PORT=4000
 
 COPY --chown=expense-api:nodejs . .
 
@@ -43,6 +43,8 @@ RUN npm run build && \
 
 FROM node:20-alpine AS production
 
+ENV PORT=3000
+
 RUN apk add --no-cache curl && \
   addgroup -g 10001 -S nodejs && \
   adduser -S expense-api -u 10001 -G nodejs && \
@@ -62,7 +64,7 @@ RUN mkdir -p logs uploads temp && \
 USER expense-api
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
+  CMD curl -f http://localhost:3000/api/v1/health || exit 1
 
 EXPOSE 3000
 
