@@ -129,6 +129,7 @@ build_image() {
   docker buildx build \
     -t "${IMAGE_TAG}" \
     -t "${IMAGE_LATEST}" \
+    -f "${BUILD_DIR}/Dockerfile" \
     --load \
     "." 2>&1
   
