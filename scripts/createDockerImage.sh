@@ -33,6 +33,13 @@ validate_args() {
     log_error "Example: $0 myapp ./app-directory"
     return 1
   fi
+
+  if [[ ! "${IMAGE_NAME}" =~ ^[a-z][a-z0-9_.-/]*$ ]]; then
+    log_error "Image name contains invalid characters"
+    log_error "Valid characters: a-z, 0-9, underscore, hyphen, period, forward slash"
+    log_error "Invalid image name: ${IMAGE_NAME}"
+    return 1
+  fi
   
   if [ ! -d "${BUILD_DIR}" ]; then
     log_error "Build directory not found: ${BUILD_DIR}"
@@ -44,8 +51,7 @@ validate_args() {
     log_error "Looking for: ${BUILD_DIR}/Dockerfile"
     return 1
   fi
-  
-  log_success "Arguments validated successfully"
+
   return 0
 }
 
@@ -63,8 +69,8 @@ check_env_vars() {
     log_error "Missing required environment variables: ${missing_vars[*]}"
     return 1
   fi
-  
-  log_success "All required environment variables are set"
+
+  return 0
 }
 
 check_global_vars() {
@@ -120,74 +126,99 @@ build_image() {
   log_info "    ${IMAGE_TAG}"
   log_info "    ${IMAGE_LATEST}"
   
-  docker build \
+  docker buildx build \
     -t "${IMAGE_TAG}" \
     -t "${IMAGE_LATEST}" \
-    "${BUILD_DIR}"
+    --load \
+    "${BUILD_DIR}" 2>&1
   
-  log_success "Image built successfully:"
-  log_success "    ${IMAGE_TAG}"
-  log_success "    ${IMAGE_LATEST}"
+  if [ $? -eq 0 ]; then
+    log_success "Image built successfully:"
+    log_success "    ${IMAGE_TAG}"
+    log_success "    ${IMAGE_LATEST}"
+    return 0
+  fi
+
+  log_error "Failed to build the image"
+  return 1
 }
 
 scan_trivy() {
   log_info "Scanning with Trivy..."
+
+  trivy image \
+    --format table \
+    --exit-code 1 \
+    --severity CRITICAL,HIGH \
+    --ignore-unfixed \
+    --skip-dirs /usr/local/lib/node_modules/npm \
+    "${IMAGE_LATEST}" 2>&1
   
-  if ! trivy image \
-      --format table \
-      --exit-code 1 \
-      --severity CRITICAL,HIGH \
-      --ignore-unfixed \
-      --skip-dirs /usr/local/lib/node_modules/npm \
-      "${IMAGE_LATEST}"; then
-    log_error "Trivy scan found critical/high vulnerabilities"
-    return 1
+  if [ $? -eq 0 ]; then
+    log_success "Trivy scan passed"
+    return 0
   fi
-  
-  log_success "Trivy scan passed"
+
+  log_error "Trivy scan not passed"
+  return 1
 }
 
 scan_docker_scout() {
   log_info "Scanning with Docker Scout..."
+
+  docker scout cves \
+    --exit-code \
+    --only-severity critical,high \
+    --ignore-base \
+    "${IMAGE_LATEST}" 2>&1
   
-  if ! docker scout cves \
-      --exit-code \
-      --only-severity critical,high \
-      --ignore-base \
-      "${IMAGE_LATEST}"; then
-    log_error "Docker Scout scan found some vulnerabilities"
-    return 1
+  if [ $? -eq 0 ]; then
+    log_success "Docker Scout scan passed"
+    return 0
   fi
   
-  log_success "Docker Scout scan passed"
+  log_error "Docker Scout scan not passed"
+  return 1
 }
 
 scan_snyk() {
   log_info "Scanning with Snyk..."
+
+  snyk container test "${IMAGE_LATEST}" \
+    --severity-threshold=high \
+    --exit-code=1 \
+    --exclude=/usr/local/lib/node_modules/npm 2>&1
   
-  if ! snyk container test "${IMAGE_LATEST}" \
-      --severity-threshold=high \
-      --exit-code=1 \
-      --exclude=/usr/local/lib/node_modules/npm; then
-    log_error "Snyk scan found some vulnerabilities"
-    return 1
+  if [ $? -eq 0 ]; then
+    log_success "Snyk scan passed"
+    return 0
   fi
   
-  log_success "Snyk scan passed"
+  log_error "Snyk scan not passed"
+  return 1
 }
 
 push_to_dockerhub() {
   log_info "Logging into Docker Hub..."
   echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
   
-  log_info "Pushing image to Docker Hub:"
+  log_info "Pushing images to Docker Hub:"
   log_info "    ${IMAGE_TAG}"
   log_info "    ${IMAGE_LATEST}"
-
-  docker push "${IMAGE_TAG}"
-  docker push "${IMAGE_LATEST}"
   
-  log_success "Image pushed successfully to Docker Hub"
+  docker push "${IMAGE_TAG}" 2>&1
+  local exit1=$?
+  
+  docker push "${IMAGE_LATEST}" 2>&1
+  local exit2=$?
+  
+  if [ $exit1 -eq 0 ] && [ $exit2 -eq 0 ]; then
+    log_success "Images pushed successfully to Docker Hub"
+    return 0
+  fi
+  
+  log_error "Could not push to Dockerhub"
+  return 1
 }
 
 cleanup() {
