@@ -68,7 +68,7 @@ check_env_vars() {
 }
 
 check_global_vars() {
-  local scripts_dir="./scripts"
+  local scripts_dir="./scripts/common"
   
   if [ ! -d "${scripts_dir}" ]; then
     log_error "Scripts directory not found: ${scripts_dir}"
