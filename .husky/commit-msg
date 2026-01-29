@@ -5,6 +5,6 @@ set -e
 
 echo "🚀 Running commit-msg checks..."
 
-npm run validate:commit:message
+npm run validate:commit:message $1
 
 echo "✅ All commit-msg checks passed!"
