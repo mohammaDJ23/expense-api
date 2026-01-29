@@ -98,6 +98,14 @@ jobs:
       - name: Security audit
         run: npm audit --audit-level=high
 
+      - name: ShellCheck - scan
+        uses: azohra/shellcheck-latest@v1.0.0
+        with:
+          path: '.'
+          severity: 'error'
+          format: 'tty'
+          exclude: 'SC1090,SC1091'
+
       - name: Snyk - Scan dependencies
         uses: snyk/actions/node@master
         env:
