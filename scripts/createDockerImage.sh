@@ -130,7 +130,7 @@ build_image() {
     -t "${IMAGE_TAG}" \
     -t "${IMAGE_LATEST}" \
     --load \
-    "${BUILD_DIR}" 2>&1
+    "." 2>&1
   
   if [ $? -eq 0 ]; then
     log_success "Image built successfully:"
