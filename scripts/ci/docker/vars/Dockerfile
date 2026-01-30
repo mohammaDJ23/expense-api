@@ -1,8 +1,8 @@
 FROM alpine:latest
 
 RUN apk add --no-cache bash && \
-  addgroup -g 10001 -S vars && \
-  adduser -u 10001 -S user1 -G vars -h /home/user1 -D
+  addgroup -g 1001 -S vars && \
+  adduser -u 1001 -S user1 -G vars -h /home/user1 -D
 
 WORKDIR /github/workspace
 

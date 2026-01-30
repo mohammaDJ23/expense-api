@@ -1,8 +1,8 @@
 FROM docker:dind
 
 RUN apk add --no-cache bash && \
-  addgroup -g 10001 -S run && \
-  adduser -u 10001 -S user1 -G run -h /home/user1 -D && \
+  addgroup -g 1001 -S run && \
+  adduser -u 1001 -S user1 -G run -h /home/user1 -D && \
   addgroup user1 docker
 
 WORKDIR /github/workspace

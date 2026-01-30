@@ -1,8 +1,8 @@
 FROM docker:cli
 
 RUN apk add --no-cache bash && \
-  addgroup -g 10001 -S cleanup && \
-  adduser -u 10001 -S user1 -G cleanup -h /home/user1 -D && \
+  addgroup -g 1001 -S cleanup && \
+  adduser -u 1001 -S user1 -G cleanup -h /home/user1 -D && \
   addgroup user1 docker
 
 WORKDIR /github/workspace

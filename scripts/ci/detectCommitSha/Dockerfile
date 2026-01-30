@@ -4,8 +4,8 @@ RUN apk add --no-cache \
   git \
   bash && \
   rm -rf /var/cache/apk/* && \
-  addgroup -g 10001 -S detectCommitSha && \
-  adduser -u 10001 -S user1 -G detectCommitSha -h /home/user1 -D
+  addgroup -g 1001 -S detectCommitSha && \
+  adduser -u 1001 -S user1 -G detectCommitSha -h /home/user1 -D
 
 WORKDIR /github/workspace
 

@@ -4,8 +4,8 @@ RUN apk add --no-cache \
   git \
   jq && \
   rm -rf /var/cache/apk/* && \
-  addgroup -g 10001 -S createVersion && \
-  adduser -u 10001 -S user1 -G createVersion -h /home/user1 -D
+  addgroup -g 1001 -S createVersion && \
+  adduser -u 1001 -S user1 -G createVersion -h /home/user1 -D
 
 WORKDIR /github/workspace
 

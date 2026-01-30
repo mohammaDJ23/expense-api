@@ -6,8 +6,8 @@ RUN apk add --no-cache \
   g++ \
   curl && \
   rm -rf /var/cache/apk/* && \
-  addgroup -g 10001 -S nodejs && \
-  adduser -S expense-api -u 10001 -G nodejs && \
+  addgroup -g 1001 -S nodejs && \
+  adduser -S expense-api -u 1001 -G nodejs && \
   mkdir -p /usr/src/app && \
   chown -R expense-api:nodejs /usr/src/app
 
@@ -46,8 +46,8 @@ FROM node:20-alpine AS production
 ENV PORT=3000
 
 RUN apk add --no-cache curl && \
-  addgroup -g 10001 -S nodejs && \
-  adduser -S expense-api -u 10001 -G nodejs && \
+  addgroup -g 1001 -S nodejs && \
+  adduser -S expense-api -u 1001 -G nodejs && \
   rm -rf /var/cache/apk/*
 
 WORKDIR /usr/src/app
