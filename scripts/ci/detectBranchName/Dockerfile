@@ -5,8 +5,8 @@ RUN apk add --no-cache \
   jq \
   bash && \
   rm -rf /var/cache/apk/* && \
-  addgroup -g 1000 -S detectBranchName && \
-  adduser -u 1000 -S user1 -G detectBranchName -h /home/user1 -D
+  addgroup -g 10001 -S detectBranchName && \
+  adduser -u 10001 -S user1 -G detectBranchName -h /home/user1 -D
 
 WORKDIR /github/workspace
 
@@ -14,11 +14,7 @@ COPY ./scripts/ci/detectBranchName/index.sh /usr/local/bin/index.sh
 
 RUN test -f /usr/local/bin/index.sh && \
   chmod 550 /usr/local/bin/index.sh && \
-  chown user1:detectBranchName /usr/local/bin/index.sh && \
-  mkdir -p /github/file_commands && \
-  chown -R user1:detectBranchName /github && \
-  chmod 755 /github && \
-  chmod 755 /github/file_commands
+  chown user1:detectBranchName /usr/local/bin/index.sh
 
 USER user1
 
