@@ -12,7 +12,4 @@ WORKDIR /github/workspace
 
 USER user1
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD git --version >/dev/null 2>&1
-
 ENTRYPOINT ["/github/workspace/scripts/ci/detectBranchName/index.sh"]
