@@ -6,6 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "prepare": "husky",
+    "preinstall": "npx npm-force-resolutions",
     "build": "nest build",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
@@ -19,7 +21,6 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug=0.0.0.0:9229 --watch",
     "start:prod": "node dist/main",
-    "prepare": "husky",
     "semantic-release": "semantic-release",
     "generate:branch:id": "sh ./scripts/generateBranchId.sh",
     "validate:branch:name": "sh ./scripts/validateBranchName.sh",
@@ -83,6 +84,10 @@
     "tsec": "^0.2.9",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
+  },
+  "resolutions": {
+    "tar": "^7.5.7",
+    "**/tar": "^7.5.7"
   },
   "jest": {
     "moduleFileExtensions": [
