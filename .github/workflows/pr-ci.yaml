@@ -99,11 +99,11 @@ jobs:
             --config eslint.config.mjs \
             --no-eslintrc
 
-      - name: TypeScript compilation scan
-        uses: microsoft/typescript-compile@v1
+      - name: TypeScript security compilation scan
+        uses: docker://node:20-alpine
         with:
-          project: tsconfig.security.json
-          strict: true
+          entrypoint: npx
+          args: tsc --project tsconfig.security.json --noEmit --strict
 
       - name: TypeScript security scan (tsec)
         uses: docker://node:20-alpine
