@@ -89,22 +89,13 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: ESLint security scan
-        uses: docker://node:20-alpine
-        with:
-          entrypoint: sh
-          args: -c 'cd /github/workspace && npx eslint . --ext js,ts --plugin security --config eslint.config.mjs'
+        run: npm run eslint:security:scan
 
       - name: TypeScript security compilation scan
-        uses: docker://node:20-alpine
-        with:
-          entrypoint: npx
-          args: cd /github/workspace && tsc --project tsconfig.security.json --noEmit --strict
+        run: npm run ts:compilation:security:scan
 
       - name: TypeScript security scan (tsec)
-        uses: docker://node:20-alpine
-        with:
-          entrypoint: npx
-          args: tsec --project tsconfig.security.json
+        run: npm run ts:tsec:security:scan
 
       - name: CodeQL Analysis
         uses: github/codeql-action/init@v2
