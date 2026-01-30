@@ -5,7 +5,6 @@ set -e
 
 echo "🚀 Running pre-commit checks..."
 
-export BRANCH=$(git branch --show-current 2>/dev/null || git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
 npm run validate:branch:name
 
 npm run lint:staged

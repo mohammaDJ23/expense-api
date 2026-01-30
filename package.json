@@ -20,7 +20,7 @@
     "prepare": "husky",
     "semantic-release": "semantic-release",
     "generate:branch:id": "sh ./scripts/generateBranchId.sh",
-    "validate:branch:name": "sh ./scripts/ci/validateBranchName.sh",
+    "validate:branch:name": "sh ./scripts/validateBranchName.sh",
     "validate:commit:message": "sh ./scripts/validateCommitMessage.sh",
     "lint:staged": "sh ./scripts/lintStaged.sh",
     "start:docker:development": "sh ./scripts/startDockerDevelopment.sh",
