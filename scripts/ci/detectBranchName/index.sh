@@ -56,4 +56,4 @@ fi
 #   echo "branch=$BRANCH"
 # fi
 
-echo "::set-output name=branch::$BRANCH"
+# echo "::set-output name=branch::$BRANCH"
