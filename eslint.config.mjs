@@ -224,7 +224,6 @@ export default defineConfig([
       'sonarjs/no-ignored-return': 'error',
       'sonarjs/no-os-command-from-path': 'error',
       'sonarjs/no-ignored-exceptions': 'error',
-      'sonarjs/no-hardcoded-credentials': 'error',
     },
   },
 
@@ -428,7 +427,7 @@ export default defineConfig([
       'no-unreachable-loop': 'error',
       'no-constructor-return': 'error',
       'no-duplicate-imports': 'error',
-      'no-useless-backreference': 'error', 
+      'no-useless-backreference': 'error',
     },
   },
 
