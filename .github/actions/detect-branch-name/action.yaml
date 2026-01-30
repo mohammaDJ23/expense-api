@@ -4,6 +4,8 @@ description: Detects current branch name
 runs:
   using: docker
   image: Dockerfile
+  args:
+    - --context=.
 
 branding:
   icon: git-branch
