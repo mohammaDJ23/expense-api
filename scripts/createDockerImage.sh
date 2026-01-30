@@ -34,7 +34,7 @@ validate_args() {
     return 1
   fi
 
-  if [[ ! "${IMAGE_NAME}" =~ ^[a-z][a-z0-9_.-/]*$ ]]; then
+  if [[ ! "${IMAGE_NAME}" =~ ^[a-z]([a-z-]*[a-z])?$ ]]; then
     log_error "Image name contains invalid characters"
     log_error "Valid characters: a-z, 0-9, underscore, hyphen, period, forward slash"
     log_error "Invalid image name: ${IMAGE_NAME}"
@@ -109,7 +109,7 @@ check_global_vars() {
 setup_image_vars() {
   log_info "Setting up image variables..."
   
-  IMAGE="${DOCKER_USERNAME}-${APP_NAME}/${IMAGE_NAME}"
+  IMAGE="${DOCKER_USERNAME}/${APP_NAME}-${IMAGE_NAME}"
   IMAGE_TAG=$(echo "${IMAGE}:${HASH}" | tr '[:upper:]' '[:lower:]')
   IMAGE_LATEST=$(echo "${IMAGE}:latest" | tr '[:upper:]' '[:lower:]')
   
@@ -147,6 +147,11 @@ build_image() {
 push_to_dockerhub() {
   log_info "Logging into Docker Hub..."
   echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+
+  if [ $? -ne 0 ]; then
+    log_error "Docker login failed!"
+    return 1
+  fi
   
   log_info "Pushing images to Docker Hub:"
   log_info "    ${IMAGE_TAG}"
