@@ -5,8 +5,8 @@ RUN apk add --no-cache \
   jq \
   bash && \
   rm -rf /var/cache/apk/* && \
-  addgroup -g 1001 -S detectBranchName && \
-  adduser -u 1001 -S user1 -G detectBranchName -h /home/user1 -D
+  addgroup -g 1000 -S detectBranchName && \
+  adduser -u 1000 -S user1 -G detectBranchName -h /home/user1 -D
 
 WORKDIR /github/workspace
 
