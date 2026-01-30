@@ -1,0 +1,41 @@
+name: Scan docker images
+description: Scan docker images.
+
+inputs:
+  image_name:
+    description: The docker image name
+    required: true
+    type: string
+
+runs:
+  using: composite
+  steps:
+    - name: Trivy vulnerability scan
+      uses: aquasecurity/trivy-action@0.19.0
+      with:
+        image-ref: ${{ inputs.image_name }}
+        format: table
+        exit-code: 1
+        severity: CRITICAL,HIGH
+        ignore-unfixed: true
+        scanners: 'vuln,secret,misconfig'
+        skip-dirs: /usr/local/lib/node_modules/npm
+
+    - name: Docker Scout scan
+      uses: docker/scout-action@v1.3.1
+      with:
+        command: cves
+        image: ${{ inputs.image_name }}
+        exit-code: true
+        only-severities: critical,high
+        ignore-base: true
+
+    - name: Snyk container scan
+      uses: snyk/actions/docker@0.5.0
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        image: ${{ inputs.image_name }}
+        args: |
+          --severity-threshold=high
+          --exclude=/usr/local/lib/node_modules/npm

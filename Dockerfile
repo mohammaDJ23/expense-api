@@ -1,14 +1,13 @@
-FROM node:20-alpine AS base
+FROM node:24-alpine AS base
 
 RUN apk add --no-cache \
   python3 \
   make \
   g++ \
-  curl \
-  && rm -rf /var/cache/apk/*
-
-RUN addgroup -g 10001 -S nodejs && \
-  adduser -S expense-api -u 10001 -G nodejs && \
+  curl && \
+  rm -rf /var/cache/apk/* && \
+  addgroup -g 1001 -S nodejs && \
+  adduser -S expense-api -u 1001 -G nodejs && \
   mkdir -p /usr/src/app && \
   chown -R expense-api:nodejs /usr/src/app
 
@@ -16,12 +15,13 @@ WORKDIR /usr/src/app
 
 COPY --chown=expense-api:nodejs package*.json ./
 
-RUN npm ci --ignore-scripts && \
-  npm cache clean --force
+RUN pnpm ci --ignore-scripts && \
+  pnpm cache clean --force
 
 FROM base AS development
 
 ENV NODE_ENV=development
+ENV PORT=4000
 
 COPY --chown=expense-api:nodejs . .
 
@@ -29,7 +29,7 @@ USER expense-api
 
 EXPOSE 4000 9229
 
-CMD ["npm", "run", "start:debug"]
+CMD ["pnpm", "run", "start:debug"]
 
 FROM base AS production-build
 
@@ -37,15 +37,17 @@ ENV NODE_ENV=production
 
 COPY --chown=expense-api:nodejs . .
 
-RUN npm run build && \
-  npm prune --production && \
+RUN pnpm run build && \
+  pnpm prune --production && \
   rm -rf src
 
-FROM node:20-alpine AS production
+FROM node:24-alpine AS production
+
+ENV PORT=3000
 
 RUN apk add --no-cache curl && \
-  addgroup -g 10001 -S nodejs && \
-  adduser -S expense-api -u 10001 -G nodejs && \
+  addgroup -g 1001 -S nodejs && \
+  adduser -S expense-api -u 1001 -G nodejs && \
   rm -rf /var/cache/apk/*
 
 WORKDIR /usr/src/app
@@ -62,7 +64,7 @@ RUN mkdir -p logs uploads temp && \
 USER expense-api
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
+  CMD curl -f http://localhost:3000/api/v1/health || exit 1
 
 EXPOSE 3000
 
