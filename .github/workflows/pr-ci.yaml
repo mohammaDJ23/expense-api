@@ -112,12 +112,10 @@ jobs:
         run: npm audit --audit-level=high
 
       - name: ShellCheck - scan
-        uses: azohra/shellcheck-latest@v1.0.0
+        uses: docker://koalaman/shellcheck:stable
         with:
-          path: '.'
-          severity: 'error'
-          format: 'tty'
-          exclude: 'SC1090,SC1091'
+          entrypoint: /bin/sh
+          args: -c 'find . -name "*.sh" | xargs shellcheck'
 
       - name: Snyk - Scan dependencies
         uses: snyk/actions/node@master
