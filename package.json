@@ -32,7 +32,7 @@
     "lint:staged": "sh ./scripts/development/lintStaged.sh",
     "start:docker:development": "sh ./scripts/development/startDocker.sh",
     "create:version:ci": "sh ./scripts/ci/createVersion.sh",
-    "detect:branch:name:ci": "sh ./scripts/ci/detectBranchName.sh",
+    "detect:branch:name:ci": "./scripts/ci/detectBranchName.sh",
     "validate:branch:name:ci": "sh ./scripts/ci/validateBranchName.sh",
     "detect:commitsha:ci": "sh ./scripts/ci/detectCommitSha.sh"
   },
