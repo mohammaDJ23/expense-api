@@ -106,9 +106,7 @@ jobs:
         run: pnpm audit --audit-level=high
 
       - name: ShellCheck - scan
-        uses: docker://koalaman/shellcheck:stable
-        with:
-          args: '**/*.sh'
+        uses: ludeeus/action-shellcheck@master
 
       - name: Snyk - Scan dependencies
         uses: snyk/actions/node@master
