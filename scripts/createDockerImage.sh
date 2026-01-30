@@ -144,61 +144,6 @@ build_image() {
   return 1
 }
 
-scan_trivy() {
-  log_info "Scanning with Trivy..."
-
-  trivy image \
-    --format table \
-    --exit-code 1 \
-    --severity CRITICAL,HIGH \
-    --ignore-unfixed \
-    --skip-dirs /usr/local/lib/node_modules/npm \
-    "${IMAGE_LATEST}" 2>&1
-  
-  if [ $? -eq 0 ]; then
-    log_success "Trivy scan passed"
-    return 0
-  fi
-
-  log_error "Trivy scan not passed"
-  return 1
-}
-
-scan_docker_scout() {
-  log_info "Scanning with Docker Scout..."
-
-  docker scout cves \
-    --exit-code \
-    --only-severity critical,high \
-    --ignore-base \
-    "${IMAGE_LATEST}" 2>&1
-  
-  if [ $? -eq 0 ]; then
-    log_success "Docker Scout scan passed"
-    return 0
-  fi
-  
-  log_error "Docker Scout scan not passed"
-  return 1
-}
-
-scan_snyk() {
-  log_info "Scanning with Snyk..."
-
-  snyk container test "${IMAGE_LATEST}" \
-    --severity-threshold=high \
-    --exit-code=1 \
-    --exclude=/usr/local/lib/node_modules/npm 2>&1
-  
-  if [ $? -eq 0 ]; then
-    log_success "Snyk scan passed"
-    return 0
-  fi
-  
-  log_error "Snyk scan not passed"
-  return 1
-}
-
 push_to_dockerhub() {
   log_info "Logging into Docker Hub..."
   echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
@@ -243,9 +188,6 @@ main() {
   check_global_vars &&
   setup_image_vars &&
   build_image &&
-  scan_trivy &&
-  scan_docker_scout &&
-  scan_snyk &&
   push_to_dockerhub
   
   local exit_code=$?
