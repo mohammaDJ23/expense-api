@@ -11,9 +11,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APP_NAME: ${{ vars.APP_NAME }}
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
