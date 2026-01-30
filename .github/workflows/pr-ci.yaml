@@ -99,11 +99,17 @@ jobs:
             --config eslint.config.mjs \
             --no-eslintrc
 
-      - name: TypeScript Security Check
-        uses: microsoft/actions/typescript-compile@v1
+      - name: TypeScript compilation scan
+        uses: microsoft/typescript-compile@v1
         with:
           project: tsconfig.security.json
           strict: true
+
+      - name: TypeScript security scan (tsec)
+        uses: docker://node:20-alpine
+        with:
+          entrypoint: npx
+          args: tsec --project tsconfig.security.json
 
       - name: CodeQL Analysis
         uses: github/codeql-action/init@v2
