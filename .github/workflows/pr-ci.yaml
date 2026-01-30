@@ -94,6 +94,26 @@ jobs:
 
       - name: Install node and node_modules
         uses: ./.github/actions/setup-node
+      
+      - name: ESLint Security Scan
+        uses: eslint/github-action@v1
+        with:
+          extensions: js,ts
+          eslint-args: '--plugin security --config eslint.config.mjs'
+
+      - name: TypeScript Security Check
+        uses: microsoft/actions/typescript-compile@v1
+        with:
+          project: tsconfig.security.json
+          strict: true
+
+      - name: CodeQL Analysis
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript-typescript
+        
+      - name: CodeQL Analyze
+        uses: github/codeql-action/analyze@v2
 
       - name: Security audit
         run: npm audit --audit-level=high
@@ -126,6 +146,14 @@ jobs:
         with:
           path: ./
           base64-entropy: 4.5
+
+      - name: Gitleaks pattern detection
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          config-path: .gitleaks.toml
+          redact: true
+          verbose: true
+          no-git: false
 
   docker-security:
     runs-on: ubuntu-latest
