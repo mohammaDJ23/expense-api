@@ -88,16 +88,12 @@ jobs:
       - name: Install node and node_modules
         uses: ./.github/actions/setup-node
 
-      - name: ESLint Security Scan
-        uses: docker://ghcr.io/eslint/eslint:latest
+      - name: ESLint security scan
+        uses: docker://node:20-alpine
         with:
-          entrypoint: npx
+          entrypoint: sh
           args: |
-            eslint . \
-            --ext js,ts \
-            --plugin security \
-            --config eslint.config.mjs \
-            --no-eslintrc
+            -c 'npx eslint . --ext js,ts --plugin security --config eslint.config.mjs'
 
       - name: TypeScript security compilation scan
         uses: docker://node:20-alpine
