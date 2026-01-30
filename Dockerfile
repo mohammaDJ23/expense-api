@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:24-alpine AS base
 
 RUN apk add --no-cache \
   python3 \
@@ -41,7 +41,7 @@ RUN pnpm run build && \
   pnpm prune --production && \
   rm -rf src
 
-FROM node:20-alpine AS production
+FROM node:24-alpine AS production
 
 ENV PORT=3000
 

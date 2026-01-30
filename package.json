@@ -1,8 +1,8 @@
 {
   "name": "expense-api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "This is the backend part of the expense app",
+  "author": "Mohammad Nowresideh",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -85,22 +85,5 @@
     "tsec": "^0.2.9",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }
