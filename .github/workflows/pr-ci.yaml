@@ -92,7 +92,9 @@ jobs:
         uses: docker://node:20-alpine
         with:
           entrypoint: sh
-          args: cd /github/workspace && npx eslint . --ext js,ts --plugin security --config eslint.config.mjs
+          args:
+            - -c
+            - cd /github/workspace && npx eslint . --ext js,ts --plugin security --config eslint.config.mjs
 
       - name: TypeScript security compilation scan
         uses: docker://node:20-alpine
