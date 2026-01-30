@@ -89,10 +89,15 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: ESLint Security Scan
-        uses: eslint/github-action@v1
+        uses: docker://ghcr.io/eslint/eslint:latest
         with:
-          extensions: js,ts
-          eslint-args: '--plugin security --config eslint.config.mjs'
+          entrypoint: npx
+          args: |
+            eslint . \
+            --ext js,ts \
+            --plugin security \
+            --config eslint.config.mjs \
+            --no-eslintrc
 
       - name: TypeScript Security Check
         uses: microsoft/actions/typescript-compile@v1
