@@ -40,12 +40,6 @@ jobs:
       - name: Install node and node_modules
         uses: ./.github/actions/setup-node
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ env.DOCKER_USERNAME }}
-          password: ${{ env.DOCKER_PASSWORD }}
-
       - name: Detect the branch name
         id: detect-branch-name
         uses: ./.github/actions/detect-branch-name
