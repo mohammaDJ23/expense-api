@@ -98,7 +98,7 @@ jobs:
         uses: docker://node:20-alpine
         with:
           entrypoint: npx
-          args: tsc --project tsconfig.security.json --noEmit --strict
+          args: cd /github/workspace && tsc --project tsconfig.security.json --noEmit --strict
 
       - name: TypeScript security scan (tsec)
         uses: docker://node:20-alpine
