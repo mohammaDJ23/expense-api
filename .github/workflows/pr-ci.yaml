@@ -47,15 +47,15 @@ jobs:
           password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Detect the branch name
-        uses: ./.github/actions/run-docker-image
+        uses: ./.github/actions/pull-and-run-docker-image
         with:
-          image_name: ${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/detectbranchname:latest
+          image_name: scripts-ci-detectbranchname:latest
 
       - name: Validate the branch name (non-master only)
         if: github.ref != 'refs/heads/master'
-        uses: ./.github/actions/run-docker-image
+        uses: ./.github/actions/pull-and-run-docker-image
         with:
-          image_name: ${{ env.DOCKER_USERNAME }}-${{ env.APP_NAME }}/scripts/ci/validatebranchname:latest
+          image_name: scripts-ci-validatebranchname:latest
 
       - name: Validate the commit messages
         id: commit-validation
