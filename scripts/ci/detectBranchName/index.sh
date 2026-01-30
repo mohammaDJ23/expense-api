@@ -50,10 +50,10 @@ if [ -z "$BRANCH" ]; then
   exit 1
 fi
 
-# if [ -n "${GITHUB_OUTPUT:-}" ]; then
-#   echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
-# else
-#   echo "branch=$BRANCH"
-# fi
+if [ -n "${GITHUB_OUTPUT:-}" ]; then
+  echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+else
+  echo "branch=$BRANCH"
+fi
 
-# echo "::set-output name=branch::$BRANCH"
+exit 0
