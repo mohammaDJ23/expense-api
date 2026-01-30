@@ -170,8 +170,6 @@ push_to_dockerhub() {
 cleanup() {
   log_info "Cleaning up..."
   
-  docker logout || true
-  
   docker rmi -f "${IMAGE_TAG}" 2>/dev/null || true
   docker rmi -f "${IMAGE_LATEST}" 2>/dev/null || true
   
