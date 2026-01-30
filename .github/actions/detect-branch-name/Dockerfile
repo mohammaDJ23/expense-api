@@ -12,4 +12,4 @@ WORKDIR /github/workspace
 
 USER user1
 
-ENTRYPOINT ["/github/workspace/scripts/ci/detectBranchName/index.sh"]
+ENTRYPOINT ["/github/workspace/scripts/ci/detectBranchName.sh"]
