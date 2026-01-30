@@ -107,11 +107,13 @@ jobs:
 
       - name: ShellCheck - scan
         uses: ludeeus/action-shellcheck@master
-        env:
-          SHELLCHECK_OPTS: '--severity=error --check-sourced'
         with:
-          script: |
-            find . -name "*.sh" -not -path "*/node_modules/*" | xargs shellcheck $SHELLCHECK_OPTS
+          scandir: .
+          ignore_paths: |
+            node_modules
+            **/node_modules/**
+          severity: error
+          check_together: false
 
       - name: Snyk - Scan dependencies
         uses: snyk/actions/node@master
