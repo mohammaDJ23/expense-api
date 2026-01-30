@@ -4,7 +4,6 @@ RUN apk add --no-cache \
   git \
   jq && \
   rm -rf /var/cache/apk/* && \
-  npm install -g branch-name-lint && \
   addgroup -g 10001 -S validateBranchName && \
   adduser -u 10001 -S user1 -G validateBranchName -h /home/user1 -D
 
