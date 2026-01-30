@@ -16,7 +16,9 @@ RUN test -f /usr/local/bin/index.sh && \
   chmod 550 /usr/local/bin/index.sh && \
   chown user1:detectBranchName /usr/local/bin/index.sh && \
   mkdir -p /github/file_commands && \
-  chown -R user1:detectBranchName /github
+  chown -R user1:detectBranchName /github && \
+  chmod 755 /github && \
+  chmod 755 /github/file_commands
 
 USER user1
 
