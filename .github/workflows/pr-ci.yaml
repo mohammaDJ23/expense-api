@@ -111,8 +111,7 @@ jobs:
       - name: ShellCheck - scan
         uses: docker://koalaman/shellcheck:stable
         with:
-          entrypoint: /bin/sh
-          args: -c 'find . -name "*.sh" | xargs shellcheck'
+          args: '**/*.sh'
 
       - name: Snyk - Scan dependencies
         uses: snyk/actions/node@master
