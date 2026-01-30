@@ -1,0 +1,10 @@
+name: Validate Branch name
+description: Validates current branch name
+
+runs:
+  using: docker
+  image: Dockerfile
+
+branding:
+  icon: git-branch
+  color: blue
