@@ -46,10 +46,13 @@ jobs:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ env.DOCKER_PASSWORD }}
 
+      # - name: Detect the branch name
+      #   uses: ./.github/actions/pull-and-run-docker-image
+      #   with:
+      #     image_name: scripts-ci-detectbranchname:latest
+
       - name: Detect the branch name
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-detectbranchname:latest
+        uses: docker://mohammadnowresideh1997/expense-api-scripts-ci-detectbranchname
 
       - name: Validate the branch name (non-master only)
         if: github.ref != 'refs/heads/master'
@@ -94,7 +97,7 @@ jobs:
 
       - name: Install node and node_modules
         uses: ./.github/actions/setup-node
-      
+
       - name: ESLint Security Scan
         uses: eslint/github-action@v1
         with:
@@ -111,7 +114,7 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: javascript-typescript
-        
+
       - name: CodeQL Analyze
         uses: github/codeql-action/analyze@v2
 
