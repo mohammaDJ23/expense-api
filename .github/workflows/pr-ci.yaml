@@ -46,13 +46,8 @@ jobs:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ env.DOCKER_PASSWORD }}
 
-      # - name: Detect the branch name
-      #   uses: ./.github/actions/pull-and-run-docker-image
-      #   with:
-      #     image_name: scripts-ci-detectbranchname:latest
-
       - name: Detect the branch name
-        uses: docker://mohammadnowresideh1997/expense-api-scripts-ci-detectbranchname
+        uses: ./.github/actions/detect-branch-name
 
       - name: Validate the branch name (non-master only)
         if: github.ref != 'refs/heads/master'
