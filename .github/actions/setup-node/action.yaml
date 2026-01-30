@@ -15,4 +15,4 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: npm ci --ignore-scripts
+      run: npm run install:ci

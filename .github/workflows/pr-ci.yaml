@@ -42,11 +42,11 @@ jobs:
 
       - name: Detect the branch name
         id: detect-branch-name
-        uses: ./.github/actions/detect-branch-name
+        run: npm run detect:branch:name:ci
 
       - name: Validate the branch name (non-master only)
         if: github.ref != 'refs/heads/master'
-        uses: ./.github/actions/validate-branch-name
+        run: npm run validate:branch:name
         env:
           BRANCH: ${{ steps.detect-branch-name.outputs.branch }}
 
