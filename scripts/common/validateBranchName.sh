@@ -38,7 +38,6 @@ echo ""
 if ! npx branch-name-lint "$CONFIG_FILE" --branch="$BRANCH"; then
   echo ""
   echo "❌ Branch validation failed!"
-  echo "   Branch '$BRANCH' does not match the pattern in '$CONFIG_FILE'"
   exit 1
 fi
 
