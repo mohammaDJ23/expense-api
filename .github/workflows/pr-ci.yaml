@@ -143,7 +143,7 @@ jobs:
         with:
           redact: true
           verbose: true
-          no-git: false
+          severity: high
 
   docker-security:
     runs-on: ubuntu-latest
