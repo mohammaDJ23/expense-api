@@ -36,7 +36,7 @@ echo "Previous version: ${PREVIOUS_VERSION}"
 
 echo "🧪 Running semantic-release dry run..."
 
-SEMANTIC_OUTPUT=$(npx semantic-release --dry-run --ci 2>&1) || {
+SEMANTIC_OUTPUT=$(pnpm exec semantic-release --dry-run --ci 2>&1) || {
   EXIT_CODE=$?
   echo "❌ semantic-release failed with exit code: ${EXIT_CODE}"
   echo "Output:"
@@ -93,7 +93,7 @@ fi
 echo "✅ New version detected: ${PREVIOUS_VERSION} → ${NEXT_VERSION}"
 
 echo "🚀 Starting actual Semantic Release process..."
-if ! npx semantic-release --ci; then
+if ! pnpm exec semantic-release --ci; then
   echo "❌ Semantic release failed"
   output_version "$NEXT_VERSION" false
   exit 1

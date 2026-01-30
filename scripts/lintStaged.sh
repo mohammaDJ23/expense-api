@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-npx lint-staged
+pnpm exec lint-staged

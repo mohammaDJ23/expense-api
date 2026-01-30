@@ -28,6 +28,6 @@ echo "📄 Validating: $COMMIT_MSG_FILE"
 echo "⚙️  Using config: $CONFIG_FILE"
 echo ""
 
-npx commitlint --edit "$COMMIT_MSG_FILE"
+pnpm exec commitlint --edit "$COMMIT_MSG_FILE"
 
 echo "✅ Commit message validation passed!"

@@ -35,7 +35,7 @@ fi
 echo "🔍 Validating branch: $BRANCH"
 echo ""
 
-if ! npx branch-name-lint "$CONFIG_FILE" --branch="$BRANCH"; then
+if ! pnpm exec branch-name-lint "$CONFIG_FILE" --branch="$BRANCH"; then
   echo ""
   echo "❌ Branch validation failed!"
   exit 1

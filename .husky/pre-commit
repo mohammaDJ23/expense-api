@@ -5,8 +5,8 @@ set -e
 
 echo "🚀 Running pre-commit checks..."
 
-npm run validate:branch:name
+pnpm run validate:branch:name
 
-npm run lint:staged
+pnpm run lint:staged
 
 echo "✅ All pre-commit checks passed!"

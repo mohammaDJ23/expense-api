@@ -42,11 +42,11 @@ jobs:
 
       - name: Detect the branch name
         id: detect-branch-name
-        run: npm run detect:branch:name:ci
+        run: pnpm run detect:branch:name:ci
 
       - name: Validate the branch name (non-master only)
         if: github.ref != 'refs/heads/master'
-        run: npm run validate:branch:name
+        run: pnpm run validate:branch:name
         env:
           BRANCH: ${{ steps.detect-branch-name.outputs.branch }}
 
@@ -70,10 +70,10 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Run linting
-        run: npm run lint:ci
+        run: pnpm run lint:ci
 
       - name: Check formatting
-        run: npm run format:ci
+        run: pnpm run format:ci
 
   security-checks:
     runs-on: ubuntu-latest
@@ -89,13 +89,13 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: ESLint security scan
-        run: npm run eslint:security:scan
+        run: pnpm run eslint:security:scan
 
       - name: TypeScript security compilation scan
-        run: npm run ts:compilation:security:scan
+        run: pnpm run ts:compilation:security:scan
 
       - name: TypeScript security scan (tsec)
-        run: npm run ts:tsec:security:scan
+        run: pnpm run ts:tsec:security:scan
 
       - name: CodeQL Analysis
         uses: github/codeql-action/init@v3
@@ -106,7 +106,7 @@ jobs:
         uses: github/codeql-action/analyze@v3
 
       - name: Security audit
-        run: npm audit --audit-level=high
+        run: pnpm audit --audit-level=high
 
       - name: ShellCheck - scan
         uses: docker://koalaman/shellcheck:stable
@@ -179,4 +179,4 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Build the project
-        run: npm run build
+        run: pnpm run build

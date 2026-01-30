@@ -15,8 +15,8 @@ WORKDIR /usr/src/app
 
 COPY --chown=expense-api:nodejs package*.json ./
 
-RUN npm ci --ignore-scripts && \
-  npm cache clean --force
+RUN pnpm ci --ignore-scripts && \
+  pnpm cache clean --force
 
 FROM base AS development
 
@@ -29,7 +29,7 @@ USER expense-api
 
 EXPOSE 4000 9229
 
-CMD ["npm", "run", "start:debug"]
+CMD ["pnpm", "run", "start:debug"]
 
 FROM base AS production-build
 
@@ -37,8 +37,8 @@ ENV NODE_ENV=production
 
 COPY --chown=expense-api:nodejs . .
 
-RUN npm run build && \
-  npm prune --production && \
+RUN pnpm run build && \
+  pnpm prune --production && \
   rm -rf src
 
 FROM node:20-alpine AS production
