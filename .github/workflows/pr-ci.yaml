@@ -46,7 +46,7 @@ jobs:
 
       - name: Validate the branch name (non-master only)
         if: github.ref != 'refs/heads/master'
-        run: pnpm run validate:branch:name
+        run: pnpm run validate:branch:name:ci
         env:
           BRANCH: ${{ steps.detect-branch-name.outputs.branch }}
 
