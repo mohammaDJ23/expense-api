@@ -5,6 +5,10 @@
   "author": "Mohammad Nowresideh",
   "private": true,
   "license": "UNLICENSED",
+  "packageManager": "pnpm",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "prepare": "husky",
     "build": "nest build",
