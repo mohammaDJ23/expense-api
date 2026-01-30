@@ -3,7 +3,7 @@ description: Detects current branch name
 
 runs:
   using: docker
-  image: ./scripts/ci/detectBranchName/Dockerfile
+  image: ../../scripts/ci/detectBranchName/Dockerfile
 
 branding:
   icon: git-branch
