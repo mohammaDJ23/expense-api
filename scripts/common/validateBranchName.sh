@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -euo pipefail
+set -eu
 
 BRANCH="${BRANCH:-}"
 CONFIG_FILE="${CONFIG_FILE:-.branch.namerc.json}"

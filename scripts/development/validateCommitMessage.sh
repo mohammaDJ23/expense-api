@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -euo pipefail
+set -eu
 
 COMMIT_MSG_FILE="${1:-}"
 CONFIG_FILE="${CONFIG_FILE:-commitlint.config.js}"

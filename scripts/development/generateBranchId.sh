@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
 ID_FILE=".git/branch-ids.json"
 

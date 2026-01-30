@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -euo pipefail
+set -eu
 
 readonly COMPOSE_FILE="${COMPOSE_FILE:?ERROR: COMPOSE_FILE is required}"
 readonly STACK_NAME="${STACK_NAME:?ERROR: STACK_NAME is required}"

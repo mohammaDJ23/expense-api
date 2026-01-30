@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -euo pipefail
+set -eu
 
 export COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.swarm.development.yml}"
 export STACK_NAME="${STACK_NAME:-expense-api-development}"
