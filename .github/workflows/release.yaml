@@ -1,200 +1,200 @@
 name: Release
 
 on:
-  workflow_run:
-    workflows: ['Master CI']
-    types:
-      - completed
-    branches:
-      - master
+    workflow_run:
+        workflows: ['Master CI']
+        types:
+            - completed
+        branches:
+            - master
 
 concurrency:
-  group: release
-  cancel-in-progress: true
+    group: release
+    cancel-in-progress: true
 
 env:
-  APP_NAME: ${{ vars.APP_NAME }}
-  SHA: ${{ github.event.workflow_run.head_sha }}
-  RUN_ID: ${{ github.event.workflow_run.id }}
-  RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
-  BY: ${{ github.event.workflow_run.actor.login }}
-  WORKFLOW: ${{ github.workflow }}
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    APP_NAME: ${{ vars.APP_NAME }}
+    SHA: ${{ github.event.workflow_run.head_sha }}
+    RUN_ID: ${{ github.event.workflow_run.id }}
+    RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
+    BY: ${{ github.event.workflow_run.actor.login }}
+    WORKFLOW: ${{ github.workflow }}
+    DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
-  manual-approval:
-    if: github.event.workflow_run.conclusion == 'success'
-    runs-on: ubuntu-latest
-    environment: production-release
-    steps:
-      - name: 🛑 Manual Approval Required
-        run: |
-          echo "=========================================="
-          echo "🛑 RELEASE APPROVAL REQUIRED"
-          echo "=========================================="
-          echo ""
-          echo "✅ Master Pipeline Verification:"
-          echo "   Run #: ${RUN_NUMBER}"
-          echo "   SHA: ${SHA}"
-          echo "   By: ${BY}"
-          echo ""
-          echo "📋 Before approving, verify:"
-          echo "   1. Master Pipeline completed successfully"
-          echo "   2. No Master Pipeline is currently running"
-          echo "   3. You want to proceed with this release"
-          echo ""
-          echo "⚠️  This release will use SHA:"
-          echo "   ${SHA}"
-          echo ""
-          echo "=========================================="
+    manual-approval:
+        if: github.event.workflow_run.conclusion == 'success'
+        runs-on: ubuntu-latest
+        environment: production-release
+        steps:
+            - name: 🛑 Manual Approval Required
+              run: |
+                  echo "=========================================="
+                  echo "🛑 RELEASE APPROVAL REQUIRED"
+                  echo "=========================================="
+                  echo ""
+                  echo "✅ Master Pipeline Verification:"
+                  echo "   Run #: ${RUN_NUMBER}"
+                  echo "   SHA: ${SHA}"
+                  echo "   By: ${BY}"
+                  echo ""
+                  echo "📋 Before approving, verify:"
+                  echo "   1. Master Pipeline completed successfully"
+                  echo "   2. No Master Pipeline is currently running"
+                  echo "   3. You want to proceed with this release"
+                  echo ""
+                  echo "⚠️  This release will use SHA:"
+                  echo "   ${SHA}"
+                  echo ""
+                  echo "=========================================="
 
-  create-version:
-    needs: manual-approval
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.get-version.outputs.version }}
-      commit_sha: ${{ steps.get-commit-sha.outputs.commit_sha }}
-    steps:
-      - name: Checkout the source
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ env.SHA }}
-          fetch-depth: 0
+    create-version:
+        needs: manual-approval
+        runs-on: ubuntu-latest
+        outputs:
+            version: ${{ steps.get-version.outputs.version }}
+            commit_sha: ${{ steps.get-commit-sha.outputs.commit_sha }}
+        steps:
+            - name: Checkout the source
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ env.SHA }}
+                  fetch-depth: 0
 
-      - name: Install node and node_modules
-        uses: ./.github/actions/setup-node
+            - name: Install node and node_modules
+              uses: ./.github/actions/setup-node
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ env.DOCKER_USERNAME }}
-          password: ${{ env.DOCKER_PASSWORD }}
+            - name: Login to DockerHub
+              uses: docker/login-action@v2
+              with:
+                  username: ${{ env.DOCKER_USERNAME }}
+                  password: ${{ env.DOCKER_PASSWORD }}
 
-      - name: Detect commit_sha
-        id: get-commit-sha
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-detectcommitsha:latest
+            - name: Detect commit_sha
+              id: get-commit-sha
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-detectcommitsha:latest
 
-      - name: Create a New version
-        id: get-version
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-createversion:latest
+            - name: Create a New version
+              id: get-version
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-createversion:latest
 
-  run-test-push:
-    needs: create-version
-    runs-on: ubuntu-latest
-    outputs:
-      IMAGE_LATEST: ${{ steps.build-image.outputs.IMAGE_LATEST }}
-      IMAGE_TAG: ${{ steps.build-image.outputs.IMAGE_TAG }}
-    steps:
-      - name: Checkout the source
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.create-version.outputs.commit_sha }}
+    run-test-push:
+        needs: create-version
+        runs-on: ubuntu-latest
+        outputs:
+            IMAGE_LATEST: ${{ steps.build-image.outputs.IMAGE_LATEST }}
+            IMAGE_TAG: ${{ steps.build-image.outputs.IMAGE_TAG }}
+        steps:
+            - name: Checkout the source
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ needs.create-version.outputs.commit_sha }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ env.DOCKER_USERNAME }}
-          password: ${{ env.DOCKER_PASSWORD }}
+            - name: Login to DockerHub
+              uses: docker/login-action@v2
+              with:
+                  username: ${{ env.DOCKER_USERNAME }}
+                  password: ${{ env.DOCKER_PASSWORD }}
 
-      - name: Setup the variables
-        id: variables
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-vars:latest
+            - name: Setup the variables
+              id: variables
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-vars:latest
+              env:
+                  APP_NAME: ${{ env.APP_NAME }}
+                  MODE: production
+
+            - name: Build the docker image
+              id: build-image
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-build:latest
+              env:
+                  IMAGE_NAME: ${{ steps.variables.output.IMAGE_NAME }}
+                  TAG: ${{ env.SHA }}
+
+            - name: Scan the docker image
+              uses: ./.github/actions/scan-docker-image
+              with:
+                  image_name: ${{ steps.variables.outputs.IMAGE_NAME }}
+
+            - name: Run the docker image
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-run:latest
+              env:
+                  COMPOSE_FILE: ${{ steps.variables.outputs.COMPOSE_FILE }}
+                  STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
+                  SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
+                  IMAGE_NAME: ${{ steps.build-image.outputs.IMAGE_LATEST }}
+                  ENVIRONMENT: ${{ steps.variables.outputs.ENVIRONMENT }}
+                  SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
+
+            - name: Check the healthy
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-checkhealthy:latest
+              env:
+                  SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
+
+            - name: Cleanup
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-cleanup:latest
+              env:
+                  STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
+
+            - name: Push the image, tagged, to DockerHub
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-push:latest
+              env:
+                  IMAGE_TAG: ${{ needs.build-image.outputs.IMAGE_TAG }}
+
+            - name: Push the image, latest, to DockerHub
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-push:latest
+              env:
+                  IMAGE_LATEST: ${{ needs.build-image.outputs.IMAGE_LATEST }}
+
+            - name: Log out from DockerHub
+              if: always()
+              run: docker logout
+
+    release-summary:
+        needs: [manual-approval, create-version, run-test-push]
+        runs-on: ubuntu-latest
         env:
-          APP_NAME: ${{ env.APP_NAME }}
-          MODE: production
+            VERSION: ${{ needs.create-version.outputs.version }}
+            IMAGE_TAG: ${{ needs.run-test-push.outputs.IMAGE_TAG }}
+            IMAGE_LATEST: ${{ needs.run-test-push.outputs.IMAGE_LATEST }}
+            UPDATED_SHA: ${{ needs.create-version.outputs.commit_sha }}
+        steps:
+            - name: Release Summary
+              run: |
+                  echo "🚀 RELEASE WORKFLOW SUMMARY"
+                  echo "==========================="
+                  echo ""
+                  echo "Workflow: ${WORKFLOW}"
+                  echo "Triggered by: Master Pipeline #${RUN_NUMBER}"
+                  echo "Original SHA: ${ORIGINAL_SHA}"
+                  echo "Updated SHA: ${UPDATED_SHA}"
+                  echo ""
 
-      - name: Build the docker image
-        id: build-image
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-build:latest
-        env:
-          IMAGE_NAME: ${{ steps.variables.output.IMAGE_NAME }}
-          TAG: ${{ env.SHA }}
-
-      - name: Scan the docker image
-        uses: ./.github/actions/scan-docker-image
-        with:
-          image_name: ${{ steps.variables.outputs.IMAGE_NAME }}
-
-      - name: Run the docker image
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-run:latest
-        env:
-          COMPOSE_FILE: ${{ steps.variables.outputs.COMPOSE_FILE }}
-          STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
-          SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
-          IMAGE_NAME: ${{ steps.build-image.outputs.IMAGE_LATEST }}
-          ENVIRONMENT: ${{ steps.variables.outputs.ENVIRONMENT }}
-          SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
-
-      - name: Check the healthy
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-checkhealthy:latest
-        env:
-          SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
-
-      - name: Cleanup
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-cleanup:latest
-        env:
-          STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
-
-      - name: Push the image, tagged, to DockerHub
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-push:latest
-        env:
-          IMAGE_TAG: ${{ needs.build-image.outputs.IMAGE_TAG }}
-
-      - name: Push the image, latest, to DockerHub
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-push:latest
-        env:
-          IMAGE_LATEST: ${{ needs.build-image.outputs.IMAGE_LATEST }}
-
-      - name: Log out from DockerHub
-        if: always()
-        run: docker logout
-
-  release-summary:
-    needs: [manual-approval, create-version, run-test-push]
-    runs-on: ubuntu-latest
-    env:
-      VERSION: ${{ needs.create-version.outputs.version }}
-      IMAGE_TAG: ${{ needs.run-test-push.outputs.IMAGE_TAG }}
-      IMAGE_LATEST: ${{ needs.run-test-push.outputs.IMAGE_LATEST }}
-      UPDATED_SHA: ${{ needs.create-version.outputs.commit_sha }}
-    steps:
-      - name: Release Summary
-        run: |
-          echo "🚀 RELEASE WORKFLOW SUMMARY"
-          echo "==========================="
-          echo ""
-          echo "Workflow: ${WORKFLOW}"
-          echo "Triggered by: Master Pipeline #${RUN_NUMBER}"
-          echo "Original SHA: ${ORIGINAL_SHA}"
-          echo "Updated SHA: ${UPDATED_SHA}"
-          echo ""
-
-          echo "✅ NEW RELEASE CREATED!"
-          echo "New Version: v${VERSION}"
-          echo ""
-          echo "📦 Docker Images Published:"
-          echo "   ${IMAGE_TAG}"
-          echo "   ${IMAGE_LATEST}"
-          echo ""
+                  echo "✅ NEW RELEASE CREATED!"
+                  echo "New Version: v${VERSION}"
+                  echo ""
+                  echo "📦 Docker Images Published:"
+                  echo "   ${IMAGE_TAG}"
+                  echo "   ${IMAGE_LATEST}"
+                  echo ""

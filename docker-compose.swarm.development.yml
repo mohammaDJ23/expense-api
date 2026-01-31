@@ -1,146 +1,150 @@
 services:
-  expense-api:
-    image: ${IMAGE_NAME:?ERROR IMAGE_NAME is required}
-    stdin_open: true
-    tty: true
-    environment:
-      DATABASE_PASSWORD_FILE: /run/secrets/database_password
-      REDIS_PASSWORD_FILE: /run/secrets/redis_password
-      JWT_SECRET_FILE: /run/secrets/jwt_secret
-    build:
-      context: .
-      target: development
-      dockerfile: Dockerfile
-    ports:
-      - target: 4000
-        published: ${PORT:-4000}
-        protocol: tcp
-        mode: host
-      - target: 9229
-        published: ${DEBUG_PORT:-9229}
-        protocol: tcp
-        mode: host
-    networks:
-      - expense-api-network
-    healthcheck:
-      test: ['CMD-SHELL', 'sh -c "curl -f http://localhost:$${PORT:-4000}/api/v1/health || exit 1"']
-      interval: 5s
-      timeout: 3s
-      start_period: 20s
-      retries: 2
-    secrets:
-      - source: database_password
-        target: database_password
-      - source: redis_password
-        target: redis_password
-      - source: jwt_secret
-        target: jwt_secret
-    volumes:
-      - ./src:/usr/src/app/src
-      - ./package.json:/usr/src/app/package.json
-    deploy:
-      mode: replicated
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-      update_config:
-        parallelism: 1
-        delay: 10s
+    expense-api:
+        image: ${IMAGE_NAME:?ERROR IMAGE_NAME is required}
+        stdin_open: true
+        tty: true
+        environment:
+            DATABASE_PASSWORD_FILE: /run/secrets/database_password
+            REDIS_PASSWORD_FILE: /run/secrets/redis_password
+            JWT_SECRET_FILE: /run/secrets/jwt_secret
+        build:
+            context: .
+            target: development
+            dockerfile: Dockerfile
+        ports:
+            - target: 4000
+              published: ${PORT:-4000}
+              protocol: tcp
+              mode: host
+            - target: 9229
+              published: ${DEBUG_PORT:-9229}
+              protocol: tcp
+              mode: host
+        networks:
+            - expense-api-network
+        healthcheck:
+            test:
+                [
+                    'CMD-SHELL',
+                    'sh -c "curl -f http://localhost:$${PORT:-4000}/api/v1/health || exit 1"',
+                ]
+            interval: 5s
+            timeout: 3s
+            start_period: 20s
+            retries: 2
+        secrets:
+            - source: database_password
+              target: database_password
+            - source: redis_password
+              target: redis_password
+            - source: jwt_secret
+              target: jwt_secret
+        volumes:
+            - ./src:/usr/src/app/src
+            - ./package.json:/usr/src/app/package.json
+        deploy:
+            mode: replicated
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+                max_attempts: 3
+            update_config:
+                parallelism: 1
+                delay: 10s
 
-  postgres:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: ${DATABASE_NAME:-expense_api_dev}
-      POSTGRES_USER: ${DATABASE_USER:-expense_api}
-      POSTGRES_PASSWORD_FILE: /run/secrets/database_password
-      POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
-      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
-    secrets:
-      - source: database_password
-        target: database_password
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    ports:
-      - target: 5432
-        published: ${DATABASE_PORT:-5432}
-        protocol: tcp
-        mode: host
-    networks:
-      - expense-api-network
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER:-expense_api}']
-      interval: 5s
-      timeout: 3s
-      start_period: 20s
-      retries: 2
-    deploy:
-      mode: replicated
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
+    postgres:
+        image: postgres:16-alpine
+        environment:
+            POSTGRES_DB: ${DATABASE_NAME:-expense_api_dev}
+            POSTGRES_USER: ${DATABASE_USER:-expense_api}
+            POSTGRES_PASSWORD_FILE: /run/secrets/database_password
+            POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
+            POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+        secrets:
+            - source: database_password
+              target: database_password
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        ports:
+            - target: 5432
+              published: ${DATABASE_PORT:-5432}
+              protocol: tcp
+              mode: host
+        networks:
+            - expense-api-network
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER:-expense_api}']
+            interval: 5s
+            timeout: 3s
+            start_period: 20s
+            retries: 2
+        deploy:
+            mode: replicated
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+                max_attempts: 3
 
-  redis:
-    image: redis:7-alpine
-    command: >
-      redis-server
-        --requirepass file:/run/secrets/redis_password
-        --appendonly yes
-        --save 900 1
-        --save 300 10
-        --save 60 10000
-        --maxmemory 256mb
-        --maxmemory-policy allkeys-lru
-        --protected-mode yes
-    secrets:
-      - source: redis_password
-        target: redis_password
-    volumes:
-      - redis-data:/data
-    ports:
-      - target: 6379
-        published: ${REDIS_PORT:-6379}
-        protocol: tcp
-        mode: host
-    networks:
-      - expense-api-network
-    healthcheck:
-      test:
-        [
-          'CMD',
-          'redis-cli',
-          '--no-auth-warning',
-          '-a',
-          '$$(cat /run/secrets/redis_password)',
-          'ping',
-        ]
-      interval: 5s
-      timeout: 3s
-      start_period: 20s
-      retries: 2
-    deploy:
-      mode: replicated
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
+    redis:
+        image: redis:7-alpine
+        command: >
+            redis-server
+              --requirepass file:/run/secrets/redis_password
+              --appendonly yes
+              --save 900 1
+              --save 300 10
+              --save 60 10000
+              --maxmemory 256mb
+              --maxmemory-policy allkeys-lru
+              --protected-mode yes
+        secrets:
+            - source: redis_password
+              target: redis_password
+        volumes:
+            - redis-data:/data
+        ports:
+            - target: 6379
+              published: ${REDIS_PORT:-6379}
+              protocol: tcp
+              mode: host
+        networks:
+            - expense-api-network
+        healthcheck:
+            test:
+                [
+                    'CMD',
+                    'redis-cli',
+                    '--no-auth-warning',
+                    '-a',
+                    '$$(cat /run/secrets/redis_password)',
+                    'ping',
+                ]
+            interval: 5s
+            timeout: 3s
+            start_period: 20s
+            retries: 2
+        deploy:
+            mode: replicated
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+                max_attempts: 3
 
 volumes:
-  postgres-data:
-    driver: local
-  redis-data:
-    driver: local
+    postgres-data:
+        driver: local
+    redis-data:
+        driver: local
 
 secrets:
-  database_password:
-    external: true
-  redis_password:
-    external: true
-  jwt_secret:
-    external: true
+    database_password:
+        external: true
+    redis_password:
+        external: true
+    jwt_secret:
+        external: true
 
 networks:
-  expense-api-network:
-    driver: overlay
-    attachable: true
+    expense-api-network:
+        driver: overlay
+        attachable: true
