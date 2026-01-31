@@ -280,10 +280,28 @@ show_status() {
 }
 
 cleanup() {
-  if docker stack ls | grep -q "${STACK_NAME}" 2>/dev/null; then
-    log_info "Cleaning up Docker stack: ${STACK_NAME}..."
-    docker stack rm "${STACK_NAME}" 2>/dev/null || true
-  fi
+    log_info "Removing stack: ${STACK_NAME}..."
+    docker stack rm ${STACK_NAME} 2>/dev/null || true
+    
+    sleep 10
+    
+    log_info "Removing remaining services..."
+    docker service ls --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker service rm
+    
+    log_info "Leaving swarm..."
+    docker swarm leave --force 2>/dev/null || true
+    
+    log_info "Removing stack containers..."
+    docker ps -a --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker rm -f
+    
+    log_info "Removing stack networks..."
+    docker network ls --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker network rm
+    
+    log_info "Removing dangling images..."
+    docker image prune -f
+
+    log_info "Cleaning up unused resources..."
+    docker system prune -f --volumes
 }
 
 trap cleanup ERR
