@@ -1,6 +1,6 @@
 services:
   expense-api:
-    image: ${IMAGE_NAME:-expense-api-development:latest}
+    image: ${IMAGE_NAME:?ERROR IMAGE_NAME is required}
     stdin_open: true
     tty: true
     environment:
@@ -24,10 +24,10 @@ services:
       - expense-api-network
     healthcheck:
       test: ['CMD-SHELL', 'sh -c "curl -f http://localhost:$${PORT:-4000}/api/v1/health || exit 1"']
-      interval: 10s
-      timeout: 5s
-      start_period: 60s
-      retries: 3
+      interval: 5s
+      timeout: 3s
+      start_period: 20s
+      retries: 2
     secrets:
       - source: database_password
         target: database_password
@@ -70,10 +70,10 @@ services:
       - expense-api-network
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER:-expense_api}']
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
+      interval: 5s
+      timeout: 3s
+      start_period: 20s
+      retries: 2
     deploy:
       mode: replicated
       replicas: 1
@@ -115,10 +115,10 @@ services:
           '$$(cat /run/secrets/redis_password)',
           'ping',
         ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
+      interval: 5s
+      timeout: 3s
+      start_period: 20s
+      retries: 2
     deploy:
       mode: replicated
       replicas: 1
