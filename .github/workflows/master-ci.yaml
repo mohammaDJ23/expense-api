@@ -1,86 +1,86 @@
 name: Master CI
 
 on:
-  workflow_run:
-    workflows: ['PR CI']
-    types:
-      - completed
-    branches:
-      - master
+    workflow_run:
+        workflows: ['PR CI']
+        types:
+            - completed
+        branches:
+            - master
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_sha || github.sha }}
-  cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.event.workflow_run.head_sha || github.sha }}
+    cancel-in-progress: true
 
 env:
-  APP_NAME: ${{ vars.APP_NAME }}
-  SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+    APP_NAME: ${{ vars.APP_NAME }}
+    SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
 
 jobs:
-  run-and-test:
-    if: github.event.workflow_run.conclusion == 'success'
-    timeout-minutes: 30
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the source
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ env.SHA }}
+    run-and-test:
+        if: github.event.workflow_run.conclusion == 'success'
+        timeout-minutes: 30
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the source
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ env.SHA }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ env.DOCKER_USERNAME }}
-          password: ${{ env.DOCKER_PASSWORD }}
+            - name: Login to DockerHub
+              uses: docker/login-action@v2
+              with:
+                  username: ${{ env.DOCKER_USERNAME }}
+                  password: ${{ env.DOCKER_PASSWORD }}
 
-      - name: Setup the variables
-        id: variables
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-vars:latest
-        env:
-          APP_NAME: ${{ env.APP_NAME }}
-          MODE: ci
+            - name: Setup the variables
+              id: variables
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-vars:latest
+              env:
+                  APP_NAME: ${{ env.APP_NAME }}
+                  MODE: ci
 
-      - name: Build the docker image
-        id: build-image
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-build:latest
-        env:
-          IMAGE_NAME: ${{ steps.variables.outputs.IMAGE_NAME }}
-          TAG: ${{ env.SHA }}
+            - name: Build the docker image
+              id: build-image
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-build:latest
+              env:
+                  IMAGE_NAME: ${{ steps.variables.outputs.IMAGE_NAME }}
+                  TAG: ${{ env.SHA }}
 
-      - name: Scan the docker image
-        uses: ./.github/actions/scan-docker-image
-        with:
-          image_name: ${{ steps.variables.outputs.IMAGE_NAME }}
+            - name: Scan the docker image
+              uses: ./.github/actions/scan-docker-image
+              with:
+                  image_name: ${{ steps.variables.outputs.IMAGE_NAME }}
 
-      - name: Run the docker image
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-run:latest
-        env:
-          COMPOSE_FILE: ${{ steps.variables.outputs.COMPOSE_FILE }}
-          STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
-          SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
-          IMAGE_NAME: ${{ steps.build-image.outputs.IMAGE_LATEST }}
-          ENVIRONMENT: ${{ steps.variables.outputs.ENVIRONMENT }}
-          SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
+            - name: Run the docker image
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-run:latest
+              env:
+                  COMPOSE_FILE: ${{ steps.variables.outputs.COMPOSE_FILE }}
+                  STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
+                  SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
+                  IMAGE_NAME: ${{ steps.build-image.outputs.IMAGE_LATEST }}
+                  ENVIRONMENT: ${{ steps.variables.outputs.ENVIRONMENT }}
+                  SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
 
-      - name: Check the healthy
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-checkhealthy:latest
-        env:
-          SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
+            - name: Check the healthy
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-checkhealthy:latest
+              env:
+                  SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
 
-      - name: Cleanup
-        uses: ./.github/actions/pull-and-run-docker-image
-        with:
-          image_name: scripts-ci-docker-cleanup:latest
-        env:
-          STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
+            - name: Cleanup
+              uses: ./.github/actions/pull-and-run-docker-image
+              with:
+                  image_name: scripts-ci-docker-cleanup:latest
+              env:
+                  STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}

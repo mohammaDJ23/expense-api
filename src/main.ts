@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 const PORT = 4000;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? PORT);
+    const app = await NestFactory.create(AppModule);
+    await app.listen(process.env.PORT ?? PORT);
 }
 bootstrap();

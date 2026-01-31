@@ -1,91 +1,103 @@
 {
-  "branches": ["master"],
-  "plugins": [
-    [
-      "@semantic-release/commit-analyzer",
-      {
-        "preset": "angular",
-        "releaseRules": [
-          { "type": "feature", "release": "minor" },
-          { "type": "feat", "release": "minor" },
-          { "type": "improvement", "release": "patch" },
-          { "type": "enhancement", "release": "patch" },
-          { "type": "optimization", "release": "patch" },
-          { "type": "fix", "release": "patch" },
-          { "type": "perf", "release": "patch" },
-          { "type": "performance", "release": "patch" },
-          { "type": "hotfix", "release": "patch" },
-          { "type": "config", "release": "patch" },
-          { "type": "security", "release": "minor" },
-          { "type": "breaking", "release": "major" },
-          { "type": "docs", "release": false },
-          { "type": "readme", "release": false },
-          { "type": "style", "release": "patch" },
-          { "type": "refactor", "release": "patch" },
-          { "type": "test", "release": "patch" },
-          { "type": "build", "release": "patch" },
-          { "type": "ci", "release": "patch" },
-          { "type": "cd", "release": "patch" },
-          { "type": "chore", "release": "patch" },
-          { "type": "revert", "release": "patch" },
-          { "type": "rollback", "release": "patch" },
-          { "type": "release", "release": "patch" }
+    "branches": ["master"],
+    "plugins": [
+        [
+            "@semantic-release/commit-analyzer",
+            {
+                "preset": "angular",
+                "releaseRules": [
+                    { "type": "feature", "release": "minor" },
+                    { "type": "feat", "release": "minor" },
+                    { "type": "improvement", "release": "patch" },
+                    { "type": "enhancement", "release": "patch" },
+                    { "type": "optimization", "release": "patch" },
+                    { "type": "fix", "release": "patch" },
+                    { "type": "perf", "release": "patch" },
+                    { "type": "performance", "release": "patch" },
+                    { "type": "hotfix", "release": "patch" },
+                    { "type": "config", "release": "patch" },
+                    { "type": "security", "release": "minor" },
+                    { "type": "breaking", "release": "major" },
+                    { "type": "docs", "release": false },
+                    { "type": "readme", "release": false },
+                    { "type": "style", "release": "patch" },
+                    { "type": "refactor", "release": "patch" },
+                    { "type": "test", "release": "patch" },
+                    { "type": "build", "release": "patch" },
+                    { "type": "ci", "release": "patch" },
+                    { "type": "cd", "release": "patch" },
+                    { "type": "chore", "release": "patch" },
+                    { "type": "revert", "release": "patch" },
+                    { "type": "rollback", "release": "patch" },
+                    { "type": "release", "release": "patch" }
+                ]
+            }
+        ],
+        [
+            "@semantic-release/release-notes-generator",
+            {
+                "preset": "conventionalcommits",
+                "presetConfig": {
+                    "types": [
+                        { "type": "feat", "section": "✨ Features", "hidden": false },
+                        { "type": "feature", "section": "✨ Features", "hidden": false },
+                        { "type": "fix", "section": "🐛 Bug Fixes", "hidden": false },
+                        { "type": "hotfix", "section": "🐛 Bug Fixes", "hidden": false },
+                        {
+                            "type": "perf",
+                            "section": "⚡ Performance Improvements",
+                            "hidden": false
+                        },
+                        {
+                            "type": "performance",
+                            "section": "⚡ Performance Improvements",
+                            "hidden": false
+                        },
+                        {
+                            "type": "optimization",
+                            "section": "⚡ Performance Improvements",
+                            "hidden": false
+                        },
+                        { "type": "security", "section": "🔒 Security Fixes", "hidden": false },
+                        { "type": "refactor", "section": "♻️ Code Refactoring", "hidden": false },
+                        { "type": "improvement", "section": "🔧 Improvements", "hidden": false },
+                        { "type": "enhancement", "section": "🔧 Improvements", "hidden": false },
+                        { "type": "config", "section": "🔧 Configurations", "hidden": false },
+                        { "type": "style", "section": "💄 Styles", "hidden": false },
+                        { "type": "breaking", "section": "💄 Breaking changes", "hidden": false },
+                        { "type": "test", "section": "✅ Tests", "hidden": false },
+                        { "type": "build", "section": "📦 Build System", "hidden": false },
+                        { "type": "ci", "section": "🔧 Continuous Integration", "hidden": false },
+                        { "type": "cd", "section": "🚀 Continuous Deployment", "hidden": false },
+                        { "type": "chore", "section": "🔧 Chores", "hidden": false },
+                        { "type": "revert", "section": "⏪ Reverts", "hidden": false },
+                        { "type": "rollback", "section": "⏪ Rollback", "hidden": false },
+                        { "type": "release", "section": "⏪ Release", "hidden": false },
+                        { "type": "docs", "section": "📝 Documentation", "hidden": true },
+                        { "type": "readme", "section": "📝 Documentation", "hidden": true }
+                    ]
+                }
+            }
+        ],
+        [
+            "@semantic-release/changelog",
+            {
+                "changelogFile": "VERSION.md"
+            }
+        ],
+        "@semantic-release/github",
+        [
+            "@semantic-release/npm",
+            {
+                "npmPublish": false
+            }
+        ],
+        [
+            "@semantic-release/git",
+            {
+                "assets": ["package.json", "package-lock.json", "VERSION.md"],
+                "message": "chore: ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+            }
         ]
-      }
-    ],
-    [
-      "@semantic-release/release-notes-generator",
-      {
-        "preset": "conventionalcommits",
-        "presetConfig": {
-          "types": [
-            { "type": "feat", "section": "✨ Features", "hidden": false },
-            { "type": "feature", "section": "✨ Features", "hidden": false },
-            { "type": "fix", "section": "🐛 Bug Fixes", "hidden": false },
-            { "type": "hotfix", "section": "🐛 Bug Fixes", "hidden": false },
-            { "type": "perf", "section": "⚡ Performance Improvements", "hidden": false },
-            { "type": "performance", "section": "⚡ Performance Improvements", "hidden": false },
-            { "type": "optimization", "section": "⚡ Performance Improvements", "hidden": false },
-            { "type": "security", "section": "🔒 Security Fixes", "hidden": false },
-            { "type": "refactor", "section": "♻️ Code Refactoring", "hidden": false },
-            { "type": "improvement", "section": "🔧 Improvements", "hidden": false },
-            { "type": "enhancement", "section": "🔧 Improvements", "hidden": false },
-            { "type": "config", "section": "🔧 Configurations", "hidden": false },
-            { "type": "style", "section": "💄 Styles", "hidden": false },
-            { "type": "breaking", "section": "💄 Breaking changes", "hidden": false },
-            { "type": "test", "section": "✅ Tests", "hidden": false },
-            { "type": "build", "section": "📦 Build System", "hidden": false },
-            { "type": "ci", "section": "🔧 Continuous Integration", "hidden": false },
-            { "type": "cd", "section": "🚀 Continuous Deployment", "hidden": false },
-            { "type": "chore", "section": "🔧 Chores", "hidden": false },
-            { "type": "revert", "section": "⏪ Reverts", "hidden": false },
-            { "type": "rollback", "section": "⏪ Rollback", "hidden": false },
-            { "type": "release", "section": "⏪ Release", "hidden": false },
-            { "type": "docs", "section": "📝 Documentation", "hidden": true },
-            { "type": "readme", "section": "📝 Documentation", "hidden": true }
-          ]
-        }
-      }
-    ],
-    [
-      "@semantic-release/changelog",
-      {
-        "changelogFile": "VERSION.md"
-      }
-    ],
-    "@semantic-release/github",
-    [
-      "@semantic-release/npm",
-      {
-        "npmPublish": false
-      }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "assets": ["package.json", "package-lock.json", "VERSION.md"],
-        "message": "chore: ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }
     ]
-  ]
 }

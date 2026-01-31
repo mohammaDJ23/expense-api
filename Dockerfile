@@ -6,6 +6,7 @@ RUN apk add --no-cache \
   g++ \
   curl && \
   rm -rf /var/cache/apk/* && \
+  npm install -g pnpm && \
   addgroup -g 1001 -S nodejs && \
   adduser -S expense-api -u 1001 -G nodejs && \
   mkdir -p /usr/src/app && \
@@ -15,8 +16,8 @@ WORKDIR /usr/src/app
 
 COPY --chown=expense-api:nodejs package*.json ./
 
-RUN pnpm ci --ignore-scripts && \
-  pnpm cache clean --force
+RUN pnpm install --ignore-scripts && \
+  pnpm cache clean
 
 FROM base AS development
 
