@@ -35,6 +35,7 @@ CMD ["pnpm", "run", "start:debug"]
 FROM base AS production-build
 
 ENV NODE_ENV=production
+ENV HUSKY=0
 
 COPY --chown=expense-api:nodejs . .
 
