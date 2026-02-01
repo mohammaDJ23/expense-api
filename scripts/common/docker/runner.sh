@@ -267,23 +267,21 @@ push_to_dockerhub() {
 }
 
 cleanup() {
-    log_info "Cleanup: ${STACK_NAME}..."
-
-    docker stack rm "${STACK_NAME}" 2>/dev/null || true
+    docker stack rm "${STACK_NAME}" >/dev/null 2>&1 || true
     
     sleep 10
     
-    docker service ls --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker service rm 2>/dev/null || true
+    docker service ls --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker service rm >/dev/null 2>& || true
     
-    docker swarm leave --force 2>/dev/null || true
+    docker swarm leave --force >/dev/null 2>& || true
     
-    docker ps -a --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker rm -f 2>/dev/null || true
+    docker ps -a --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker rm -f >/dev/null 2>& || true
     
-    docker network ls --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker network rm 2>/dev/null || true
+    docker network ls --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker network rm >/dev/null 2>& || true
     
-    docker image prune -f 2>/dev/null || true
+    docker image prune -f >/dev/null 2>& || true
 
-    docker system prune -f --volumes 2>/dev/null || true
+    docker system prune -f --volumes >/dev/null 2>& || true
 }
 
 trap cleanup EXIT ERR
