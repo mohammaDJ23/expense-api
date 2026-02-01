@@ -38,12 +38,12 @@ jobs:
                   MODE: ci
                   ENVIRONMENT: production
                   COMPOSE_FILE: docker-compose.swarm.ci.yml
-                  STACK_NAME: ${{ vars.APP_NAME  }}-production
-                  SERVICE_NAME: ${{ vars.APP_NAME  }}-production_${{ vars.APP_NAME  }}
-                  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME  }}-production:${{ env.SHA }}
+                  STACK_NAME: ${{ vars.APP_NAME }}-ci
+                  SERVICE_NAME: ${{ vars.APP_NAME }}-ci_${{ vars.APP_NAME }}
+                  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}-ci:${{ env.SHA }}
                   SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};jwt_secret=${{ secrets.JWT_SECRET }}'
 
             - name: Scan the docker image
               uses: ./.github/actions/scan-docker-image
               with:
-                  image_name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME  }}-production:${{ env.SHA }}
+                  image_name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}-ci:${{ env.SHA }}
