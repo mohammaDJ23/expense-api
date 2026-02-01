@@ -52,7 +52,7 @@ jobs:
               uses: wagoid/commitlint-github-action@v5
               with:
                   configFile: commitlint.config.js
-                  firstParent: false
+                  commitDepth: 0
 
     lint-and-format:
         needs: [install-dependencies, branch-and-commit-validation]
@@ -135,16 +135,14 @@ jobs:
               uses: trufflesecurity/trufflehog@main
               with:
                   path: ./
-                  base64-entropy: 4.5
+                  extra_args: --entropy 4.5
 
             - name: Gitleaks pattern detection
               uses: gitleaks/gitleaks-action@v2
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  redact: true
-                  verbose: true
-                  severity: high
+                  args: --redact --verbose
 
     docker-security:
         runs-on: ubuntu-latest
