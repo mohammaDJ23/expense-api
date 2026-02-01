@@ -26,6 +26,9 @@ jobs:
               with:
                   ref: ${{ env.SHA }}
 
+            - name: Install node and node_modules
+              uses: ./.github/actions/setup-node
+
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 

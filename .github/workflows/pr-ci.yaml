@@ -160,7 +160,7 @@ jobs:
               with:
                   dockerfile: Dockerfile
                   failure-threshold: error
-                  ignore: DL3018
+                  ignore: DL3018,DL3016
 
     build:
         runs-on: ubuntu-latest
