@@ -10,7 +10,7 @@ check_args() {
         return 1
     fi
     
-    local mode_pattern = '^(development|ci|ci_production|production)$'
+    local mode_pattern='^(development|ci|ci_production|production)$'
     if [[ ! "${MODE}" =~ $mode_pattern ]]; then
         log_error "Invalid MODE value: '${MODE}'"
         log_error "Valid values: development, ci, ci_production or production"
