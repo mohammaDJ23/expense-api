@@ -35,7 +35,7 @@ CMD ["pnpm", "run", "start:debug"]
 FROM base AS production-build
 
 ENV NODE_ENV=production
-ENV HUSKY=0
+ENV npm_config_ignore_scripts=true
 
 COPY --chown=expense-api:nodejs . .
 
