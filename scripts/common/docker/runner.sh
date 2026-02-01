@@ -271,17 +271,17 @@ cleanup() {
     
     sleep 10
     
-    docker service ls --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker service rm >/dev/null 2>& || true
+    docker service ls --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker service rm >/dev/null 2>&1 || true
     
-    docker swarm leave --force >/dev/null 2>& || true
+    docker swarm leave --force >/dev/null 2>&1 || true
     
-    docker ps -a --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker rm -f >/dev/null 2>& || true
+    docker ps -a --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker rm -f >/dev/null 2>&1 || true
     
-    docker network ls --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker network rm >/dev/null 2>& || true
+    docker network ls --filter "label=com.docker.stack.namespace=${STACK_NAME}" -q | xargs -r docker network rm >/dev/null 2>&1 || true
     
-    docker image prune -f >/dev/null 2>& || true
+    docker image prune -f >/dev/null 2>&1 || true
 
-    docker system prune -f --volumes >/dev/null 2>& || true
+    docker system prune -f --volumes >/dev/null 2>&1 || true
 }
 
 trap cleanup EXIT ERR
