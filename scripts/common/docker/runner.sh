@@ -143,7 +143,7 @@ deploy_stack() {
 }
 
 wait_for_services() {
-    local -r timeout=180
+    local -r timeout=60
     local -r interval=5
     
     log_info "Waiting for services (max ${timeout}s)..."
