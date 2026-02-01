@@ -13,7 +13,6 @@ concurrency:
     cancel-in-progress: true
 
 env:
-    APP_NAME: ${{ vars.APP_NAME }}
     SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
 
 jobs:
@@ -33,12 +32,10 @@ jobs:
             - name: Run the enptrypoint
               run: pnpm run start:docker:ci
               env:
-                  ENVIRONMENT: production
-              with:
                   mode: ci
-                  environment: ${{ env.ENVIRONMENT }}
+                  environment: production
                   compose-file: docker-compose.swarm.ci.yml
-                  stack-name: ${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}
-                  service-name: ${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}_${{ env.APP_NAME }}
-                  image-name: ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}:${{ env.SHA }}
+                  stack-name: ${{ vars.APP_NAME  }}-production
+                  service-name: ${{ vars.APP_NAME  }}-production_${{ vars.APP_NAME  }}
+                  image-name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME  }}-production:${{ env.SHA }}
                   secrets: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};jwt_secret=${{ secrets.JWT_SECRET }}'
