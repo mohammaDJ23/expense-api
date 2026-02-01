@@ -30,57 +30,15 @@ jobs:
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
-            - name: Login to DockerHub
-              uses: docker/login-action@v2
-              with:
-                  username: ${{ env.DOCKER_USERNAME }}
-                  password: ${{ env.DOCKER_PASSWORD }}
-
-            - name: Setup the variables
-              id: variables
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-vars:latest
+            - name: Run the enptrypoint
+              run: pnpm run start:docker:ci
               env:
-                  APP_NAME: ${{ env.APP_NAME }}
-                  MODE: ci
-
-            - name: Build the docker image
-              id: build-image
-              uses: ./.github/actions/pull-and-run-docker-image
+                  ENVIRONMENT: production
               with:
-                  image_name: scripts-ci-docker-build:latest
-              env:
-                  IMAGE_NAME: ${{ steps.variables.outputs.IMAGE_NAME }}
-                  TAG: ${{ env.SHA }}
-
-            - name: Scan the docker image
-              uses: ./.github/actions/scan-docker-image
-              with:
-                  image_name: ${{ steps.variables.outputs.IMAGE_NAME }}
-
-            - name: Run the docker image
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-run:latest
-              env:
-                  COMPOSE_FILE: ${{ steps.variables.outputs.COMPOSE_FILE }}
-                  STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
-                  SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
-                  IMAGE_NAME: ${{ steps.build-image.outputs.IMAGE_LATEST }}
-                  ENVIRONMENT: ${{ steps.variables.outputs.ENVIRONMENT }}
-                  SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
-
-            - name: Check the healthy
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-checkhealthy:latest
-              env:
-                  SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
-
-            - name: Cleanup
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-cleanup:latest
-              env:
-                  STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
+                  mode: ci
+                  environment: ${{ env.ENVIRONMENT }}
+                  compose-file: docker-compose.swarm.ci.yml
+                  stack-name: ${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}
+                  service-name: ${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}_${{ env.APP_NAME }}
+                  image-name: ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}:${{ env.SHA }}
+                  secrets: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};jwt_secret=${{ secrets.JWT_SECRET }}'
