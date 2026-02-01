@@ -2,103 +2,143 @@
 
 set -euo pipefail
 
+source ./scripts/common/logs.sh
+
 output_version() {
-  local version="$1"
-  local released="$2"
+    local version="$1"
+    local released="$2"
 
-  if [ -n "${GITHUB_OUTPUT:-}" ]; then
-    echo "version=$version" >> "$GITHUB_OUTPUT"
-    echo "released=$released" >> "$GITHUB_OUTPUT"
-  else
-    echo "version=$version"
-    echo "released=$released"
-  fi
-}
-
-GIT_EMAIL="${GIT_EMAIL:-release-bot@users.noreply.github.com}"
-GIT_NAME="${GIT_NAME:-Automated Release Bot}"
-
-echo "⚙️ Configuring git user as: $GIT_NAME <$GIT_EMAIL>"
-git config --global user.email "$GIT_EMAIL"
-git config --global user.name "$GIT_NAME"
-
-if [[ ! -f "package.json" ]]; then
-  echo "❌ ERROR: package.json not found in current directory!"
-  echo "   Current directory: $(pwd)"
-  echo "   Contents:"
-  ls -la . || true
-  exit 1
-fi
-
-echo "🔍 Getting previous version..."
-PREVIOUS_VERSION=$(jq -r '.version' package.json)
-echo "Previous version: ${PREVIOUS_VERSION}"
-
-echo "🧪 Running semantic-release dry run..."
-
-SEMANTIC_OUTPUT=$(pnpm exec semantic-release --dry-run --ci 2>&1) || {
-  EXIT_CODE=$?
-  echo "❌ semantic-release failed with exit code: ${EXIT_CODE}"
-  echo "Output:"
-  echo "${SEMANTIC_OUTPUT}"
-  exit $EXIT_CODE
-}
-
-echo "📋 Semantic-release dry run output:"
-echo "${SEMANTIC_OUTPUT}"
-
-NEXT_VERSION=""
-PHRASES=(
-  "The next release version is"
-  "next release version is"
-  "would release version"
-  "Published release"
-  "Cutting release"
-  "Creating tag"
-)
-
-for PHRASE in "${PHRASES[@]}"; do
-  if echo "${SEMANTIC_OUTPUT}" | grep -q "${PHRASE}"; then
-    LINE=$(echo "${SEMANTIC_OUTPUT}" | grep "${PHRASE}" | head -n 1)
-    if [[ $LINE =~ ([0-9]+\.[0-9]+\.[0-9]+) ]]; then
-      NEXT_VERSION="${BASH_REMATCH[1]}"
-      echo "📝 Found version using phrase: '${PHRASE}'"
-      break
+    if [ -n "${GITHUB_OUTPUT:-}" ]; then
+        echo "version=${version}" >> "$GITHUB_OUTPUT"
+        echo "released=${released}" >> "$GITHUB_OUTPUT"
+    else
+        echo "version=${version}"
+        echo "released=${released}"
     fi
-  fi
-done
+}
 
-if [[ -z "${NEXT_VERSION}" ]]; then
-  echo "⚠️  Could not find version with standard phrases, trying pattern search..."
-  VERSION_MATCH=$(echo "${SEMANTIC_OUTPUT}" | tail -20 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-  if [[ -n "${VERSION_MATCH}" ]]; then
-    NEXT_VERSION="${VERSION_MATCH}"
-    echo "📝 Found version via pattern match: ${NEXT_VERSION}"
-  fi
-fi
+configure_git() {
+    GIT_EMAIL="${GIT_EMAIL:-release-bot@users.noreply.github.com}"
+    GIT_NAME="${GIT_NAME:-Automated Release Bot}"
+    
+    log_info "⚙️ Configuring git user as: ${GIT_NAME} <${GIT_EMAIL}>"
 
-if [[ -z "${NEXT_VERSION}" ]]; then
-  echo "❌ Could not determine next version from semantic-release output"
-  echo "Debug: Looking for version patterns in output..."
-  echo "${SEMANTIC_OUTPUT}" | grep -E "[0-9]+\.[0-9]+\.[0-9]+|v[0-9]+\.[0-9]+\.[0-9]+" || true
-  exit 1
-fi
+    git config --global user.email "${GIT_EMAIL}" &&
+    git config --global user.name "${GIT_NAME}"
 
-if [[ "${NEXT_VERSION}" == "${PREVIOUS_VERSION}" ]]; then
-  echo "✅ Version unchanged (${PREVIOUS_VERSION}). No release needed."
-  output_version "$PREVIOUS_VERSION" false
-  exit 0
-fi
+    return $?
+}
 
-echo "✅ New version detected: ${PREVIOUS_VERSION} → ${NEXT_VERSION}"
+check_package_json() {
+    if [[ ! -f "package.json" ]]; then
+        log_error "❌ ERROR: package.json not found in current directory!"
+        log_error "   Current directory: $(pwd)"
+        log_error "   Contents:"
+        ls -la . || true
+        return 1
+    fi
 
-echo "🚀 Starting actual Semantic Release process..."
-if ! pnpm exec semantic-release --ci; then
-  echo "❌ Semantic release failed"
-  output_version "$NEXT_VERSION" false
-  exit 1
-fi
+    return 0
+}
 
-echo "✅ Semantic Release successful!"
+get_previous_version() {
+    PREVIOUS_VERSION=$(jq -r '.version' package.json)
+    
+    local exit_code=$?
+    if [ "${exit_code}" -ne 0 ]; then
+        return $exit_code
+    fi
 
-output_version "$NEXT_VERSION" true
+    log_info "Previous version: ${PREVIOUS_VERSION}"
+
+    return 0
+}
+
+run_semantic_dry_run() {
+    log_info "🧪 Running semantic-release dry run..."
+    
+    SEMANTIC_OUTPUT=$(pnpm exec semantic-release --dry-run --ci 2>&1)
+
+    local exit_code=$?
+    if [ "${exit_code}" -ne 0 ]; then
+        return $exit_code
+    fi
+    
+    log_info "📋 Semantic-release dry run output:"
+    log_info "${SEMANTIC_OUTPUT}"
+
+    return 0
+}
+
+extract_version() {
+    local phrases=(
+        "The next release version is"
+        "next release version is"
+        "would release version"
+        "Published release"
+        "Cutting release"
+        "Creating tag"
+    )
+    
+    NEXT_VERSION=""
+    
+    for phrase in "${phrases[@]}"; do
+        if echo "${SEMANTIC_OUTPUT}" | grep -q "${phrase}"; then
+            local line=$(echo "${SEMANTIC_OUTPUT}" | grep "${phrase}" | head -n 1)
+            
+            if [[ $line =~ ([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+                NEXT_VERSION="${BASH_REMATCH[1]}"
+                log_success "📝 Found version using phrase: '${phrase}'"
+                return 0
+            fi
+        fi
+    done
+    
+    log_error "❌ Could not determine next version from semantic-release output"
+
+    return 1
+}
+
+check_version_change() {
+    if [[ "${NEXT_VERSION}" == "${PREVIOUS_VERSION}" ]]; then
+        log_info "Version unchanged (${PREVIOUS_VERSION}). No release needed."
+        output_version "${PREVIOUS_VERSION}" false
+        return 1
+    fi
+    
+    log_success "✅ New version detected: ${PREVIOUS_VERSION} → ${NEXT_VERSION}"
+
+    return 0
+}
+
+run_actual_release() {
+    log_info "🚀 Starting actual Semantic Release process..."
+
+    pnpm exec semantic-release --ci 2>&1
+    
+    local exit_code=$?
+    if [ "${exit_code}" -ne 0 ]; then
+        return $exit_code
+    fi
+
+    log_success "✅ Semantic Release successful!"
+
+    return 0
+}
+
+main() {
+    configure_git &&
+    check_package_json &&
+    get_previous_version &&
+    run_semantic_dry_run &&
+    extract_version &&
+    check_version_change &&
+    run_actual_release &&
+    output_version "${NEXT_VERSION}" true
+
+    return $?
+}
+
+main
+
+exit $?
