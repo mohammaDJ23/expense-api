@@ -35,7 +35,7 @@ jobs:
             - name: Run the enptrypoint
               run: pnpm run start:docker:ci
               env:
-                  M0DE: ci
+                  MODE: ci
                   ENVIRONMENT: production
                   COMPOSE_FILE: docker-compose.swarm.ci.yml
                   STACK_NAME: ${{ vars.APP_NAME  }}-production
