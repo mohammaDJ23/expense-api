@@ -114,7 +114,7 @@ jobs:
               with:
                   path: '.'
                   severity: error
-                  exclude: 'node_modules'
+                  exclude-paths: 'node_modules'
 
             - name: Snyk - Scan dependencies
               uses: snyk/actions/node@master
