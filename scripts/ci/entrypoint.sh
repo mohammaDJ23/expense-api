@@ -2,4 +2,4 @@
 
 set -eu
 
-source ./scripts/common/entrypoint.sh
+source ./scripts/common/docker/entrypoint.sh
