@@ -109,15 +109,12 @@ jobs:
             - name: Security audit
               run: pnpm audit --audit-level=high
 
-            - name: ShellCheck - scan
-              uses: ludeeus/action-shellcheck@master
+            - name: ShellCheck scan
+              uses: azohra/shell-linter@latest
               with:
-                  scandir: .
-                  ignore_paths: |
-                      node_modules
-                      **/node_modules/**
+                  path: '.'
                   severity: error
-                  check_together: false
+                  exclude: 'node_modules'
 
             - name: Snyk - Scan dependencies
               uses: snyk/actions/node@master
