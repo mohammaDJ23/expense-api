@@ -39,3 +39,8 @@ jobs:
                   service-name: ${{ vars.APP_NAME  }}-production_${{ vars.APP_NAME  }}
                   image-name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME  }}-production:${{ env.SHA }}
                   secrets: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};jwt_secret=${{ secrets.JWT_SECRET }}'
+
+            - name: Scan the docker image
+              uses: ./.github/actions/scan-docker-image
+              with:
+                  image_name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME  }}-production:${{ env.SHA }}
