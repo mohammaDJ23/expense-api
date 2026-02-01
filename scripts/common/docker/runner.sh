@@ -201,11 +201,13 @@ wait_for_services() {
         docker service ps "${last_failed_service_name}" \
             --no-trunc \
             --format "
+
                 Task:     {{.Name}}
                 Status:   {{.CurrentState}}
                 Node:     {{.Node}}
                 Error:    {{.Error}}
                 Image:    {{.Image}}
+            
             " \
             2>/dev/null || true
     else
