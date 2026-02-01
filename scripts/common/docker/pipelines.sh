@@ -44,7 +44,7 @@ ci_production_pipeline() {
     run_step "deploy_stack" &&
     run_step "wait_for_services" &&
     run_step "show_status" &&
-    run_step "push_to_dockerhub"
+    run_step "push_to_dockerhub" &&
     run_step "cleanup"
 
     return $?
