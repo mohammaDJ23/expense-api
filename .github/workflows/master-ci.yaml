@@ -35,13 +35,13 @@ jobs:
             - name: Run the enptrypoint
               run: pnpm run start:docker:ci
               env:
-                  mode: ci
-                  environment: production
-                  compose-file: docker-compose.swarm.ci.yml
-                  stack-name: ${{ vars.APP_NAME  }}-production
-                  service-name: ${{ vars.APP_NAME  }}-production_${{ vars.APP_NAME  }}
-                  image-name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME  }}-production:${{ env.SHA }}
-                  secrets: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};jwt_secret=${{ secrets.JWT_SECRET }}'
+                  M0DE: ci
+                  ENVIRONMENT: production
+                  COMPOSE_FILE: docker-compose.swarm.ci.yml
+                  STACK_NAME: ${{ vars.APP_NAME  }}-production
+                  SERVICE_NAME: ${{ vars.APP_NAME  }}-production_${{ vars.APP_NAME  }}
+                  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME  }}-production:${{ env.SHA }}
+                  SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};jwt_secret=${{ secrets.JWT_SECRET }}'
 
             - name: Scan the docker image
               uses: ./.github/actions/scan-docker-image
