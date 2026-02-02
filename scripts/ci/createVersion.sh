@@ -17,18 +17,6 @@ output_version() {
     fi
 }
 
-configure_git() {
-    GIT_EMAIL="${GIT_EMAIL:-release-bot@users.noreply.github.com}"
-    GIT_NAME="${GIT_NAME:-Automated Release Bot}"
-    
-    log_info "⚙️ Configuring git user as: ${GIT_NAME} <${GIT_EMAIL}>"
-
-    git config --global user.email "${GIT_EMAIL}" &&
-    git config --global user.name "${GIT_NAME}"
-
-    return $?
-}
-
 check_package_json() {
     if [[ ! -f "package.json" ]]; then
         log_error "❌ ERROR: package.json not found in current directory!"
@@ -127,7 +115,6 @@ run_actual_release() {
 }
 
 main() {
-    configure_git &&
     check_package_json &&
     get_previous_version &&
     run_semantic_dry_run &&
