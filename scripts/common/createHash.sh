@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 echo "$$_$(date +%s%N)" | md5sum | cut -d' ' -f1
