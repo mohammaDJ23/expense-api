@@ -2,25 +2,47 @@
 
 set -euo pipefail
 
-echo "Getting commit_sha..."
+source ./scripts/common/logs.sh
 
-if ! git rev-parse --git-dir > /dev/null 2>&1; then
-  echo "❌ ERROR: Not in a git repository!"
-  echo "   Current directory: $(pwd)"
-  exit 1
-fi
+detect_commit_sh() {
+    log_info "Getting commit_sha..." >&2
 
-COMMIT_SHA=$(git rev-parse HEAD)
+    if ! git rev-parse --git-dir >/dev/null 2>&1; then
+        log_error "❌ ERROR: Not in a git repository!"
+        log_error "   Current directory: $(pwd)"
+        return 1
+    fi
 
-if [ -z "$COMMIT_SHA" ]; then
-  echo "❌ ERROR: Could not get commit SHA!"
-  exit 1
-fi
+    local commit_sha=$(git rev-parse HEAD || echo "")
 
-echo "✅ The commit_sha is ${COMMIT_SHA}."
+    if [ -z "${commit_sha}" ]; then
+        log_error "❌ ERROR: Could not get commit SHA!"
+        return 1
+    fi
 
-if [ -n "${GITHUB_OUTPUT:-}" ]; then
-  echo "commit_sha=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
-else
-  echo "commit_sha=$COMMIT_SHA"
-fi
+    log_success "✅ The commit_sha is ${commit_sha}." >&2
+
+    echo "${commit_sha}"
+}
+
+main() {
+    local commit_sha=$(detect_commit_sh)
+
+    if [ -z "${commit_sha}" ]; then
+        return 1
+    fi
+
+    echo "The commit sha: ${commit_sha}"
+
+    if [ -n "${GITHUB_OUTPUT:-}" ]; then
+        echo "commit_sha=${commit_sha}" >> "$GITHUB_OUTPUT"
+    else
+        log_warning "⚠️ GITHUB_OUTPUT is not defined"
+    fi
+
+    return 0
+}
+
+main
+
+exit $?
