@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 APP_NAME=$(source ./scripts/common/appName.sh)
 HASH=$(source ./scripts/common/createHash.sh)
