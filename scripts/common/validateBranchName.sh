@@ -1,45 +1,61 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
+
+source ./scripts/common/logs.sh
 
 BRANCH="${BRANCH:-}"
 CONFIG_FILE="${CONFIG_FILE:-.branch.namerc.json}"
 
-echo "🚀 Starting branch validation..."
+check_args() {
+    if [ -z "${BRANCH}" ]; then
+        log_error "❌ Error: BRANCH environment variable is not set"
+        return 1
+    fi
 
-if [ -z "$BRANCH" ]; then
-  echo "❌ Error: BRANCH environment variable is not set"
-  exit 1
-fi
+    if [ ! -f "${CONFIG_FILE}" ]; then
+        log_error "❌ Error: Config file '${CONFIG_FILE}' not found"
+        log_error "   Current directory: $(pwd)"
+        log_error "   Available files:"
+        ls -la . || true
+        log_error ""
+        log_error "   Either create it or set CONFIG_FILE environment variable"
+        return 1
+    fi
 
-if [ ! -f "$CONFIG_FILE" ]; then
-  echo "❌ Error: Config file '$CONFIG_FILE' not found"
-  echo "   Current directory: $(pwd)"
-  echo "   Available files:"
-  ls -la . || true
-  echo ""
-  echo "   Either create it or set CONFIG_FILE environment variable"
-  exit 1
-fi
+    if [ "${BRANCH}" = "HEAD" ]; then
+        log_warning "Detached HEAD detected (likely tag build)"
+        log_warning "   Skipping branch validation"
+    fi
 
-echo "Branch name: '$BRANCH'"
-echo "Config file: $CONFIG_FILE"
-echo ""
+    return 0
+}
 
-if [ "$BRANCH" = "HEAD" ]; then
-  echo "✅ Detached HEAD detected (likely tag build)"
-  echo "   Skipping branch validation"
-  exit 0
-fi
+validate_branch() {
+    log_info "🔍 Validating branch: ${BRANCH}"
 
-echo "🔍 Validating branch: $BRANCH"
-echo ""
+    if ! pnpm exec branch-name-lint "${CONFIG_FILE}" --branch="${BRANCH}" 2>/dev/null; then
+        log_error "❌ Branch validation failed!"
+        return 1
+    fi
 
-if ! pnpm exec branch-name-lint "$CONFIG_FILE" --branch="$BRANCH"; then
-  echo ""
-  echo "❌ Branch validation failed!"
-  exit 1
-fi
+    log_success "✅ Branch validation passed!"
 
-echo ""
-echo "✅ Branch validation passed!"
+    return 0
+}
+
+main() {
+    log_info "🚀 Starting branch validation..."
+
+    if ! check_args; then
+        return $?
+    fi
+
+    validate_branch
+
+    return $?
+}
+
+main
+
+exit $?
