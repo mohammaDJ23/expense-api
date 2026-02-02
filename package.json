@@ -26,7 +26,7 @@
         "start:prod": "node dist/main",
         "semantic-release": "semantic-release",
         "install:ci": "pnpm install --ignore-scripts --frozen-lockfile",
-        "generate:branch:id": "bash ./scripts/development/generateBranchId.sh",
+        "create:branch:id": "bash ./scripts/development/createBranchId.sh",
         "validate:branch:name": "bash ./scripts/development/validateBranchName.sh",
         "validate:commit:message": "bash ./scripts/development/validateCommitMessage.sh",
         "lint:staged": "bash ./scripts/development/lintStaged.sh",
