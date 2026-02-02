@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 source ./scripts/common/logs.sh
 source ./scripts/common/docker/vars.sh
