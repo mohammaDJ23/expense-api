@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 init_vars() {
     readonly MODE="${INPUT_MODE:-${MODE:-}}"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 check_daemon() {
     if docker info >/dev/null 2>&1; then
