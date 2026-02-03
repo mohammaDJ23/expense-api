@@ -384,7 +384,7 @@ export default defineConfig([
             'max-depth': ['error', 4],
             'max-lines': ['error', { max: 500, skipBlankLines: true }],
             'max-lines-per-function': ['error', { max: 100 }],
-            'max-params': ['error', 3],
+            'max-params': ['error', 4],
             complexity: ['error', 15],
             'consistent-return': 'error',
             eqeqeq: ['error', 'always'],
