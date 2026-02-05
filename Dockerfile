@@ -6,7 +6,8 @@ RUN apk add --no-cache \
   g++ \
   curl && \
   rm -rf /var/cache/apk/* && \
-  npm install -g pnpm && \
+  corepack enable && \
+  corepack prepare pnpm --activate && \
   addgroup -g 1001 -S nodejs && \
   adduser -S expense-api -u 1001 -G nodejs && \
   mkdir -p /usr/src/app && \
@@ -17,7 +18,7 @@ WORKDIR /usr/src/app
 COPY --chown=expense-api:nodejs package.json ./
 COPY --chown=expense-api:nodejs pnpm-lock.yaml ./
 
-RUN pnpm install --ignore-scripts && \
+RUN pnpm install --ignore-scripts --frozen-lockfile && \
   pnpm cache clean
 
 FROM base AS development
