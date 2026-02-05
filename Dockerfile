@@ -14,7 +14,8 @@ RUN apk add --no-cache \
 
 WORKDIR /usr/src/app
 
-COPY --chown=expense-api:nodejs package*.json ./
+COPY --chown=expense-api:nodejs package.json ./
+COPY --chown=expense-api:nodejs pnpm-lock.yaml ./
 
 RUN pnpm install --ignore-scripts && \
   pnpm cache clean
@@ -54,7 +55,8 @@ RUN apk add --no-cache curl && \
 
 WORKDIR /usr/src/app
 
-COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/package*.json ./
+COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/package.json ./
+COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/pnpm-lock.yaml ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/dist ./dist
 
