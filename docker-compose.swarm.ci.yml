@@ -15,7 +15,7 @@ services:
             test:
                 [
                     'CMD-SHELL',
-                    'sh -c "curl -f http://localhost:$${PORT:-3000}/api/v1/health || exit 1"',
+                    'sh -c "curl -f http://localhost:$${PORT:-3000}/v1/api/health || exit 1"',
                 ]
             interval: 5s
             timeout: 3s

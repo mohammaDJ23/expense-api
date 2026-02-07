@@ -69,7 +69,7 @@ RUN mkdir -p logs uploads temp && \
 USER expense-api
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:3000/api/v1/health || exit 1
+  CMD curl -f http://localhost:3000/v1/api/health || exit 1
 
 EXPOSE 3000
 
