@@ -3,7 +3,6 @@
 set -euo pipefail
 
 APP_NAME=$(source ./scripts/common/appName.sh)
-HASH=$(source ./scripts/common/createHash.sh)
 
 SECRETS=""
 
@@ -26,7 +25,7 @@ export ENVIRONMENT="development"
 export COMPOSE_FILE="docker-compose.swarm.${ENVIRONMENT}.yml"
 export STACK_NAME="${APP_NAME}-${ENVIRONMENT}"
 export SERVICE_NAME="${APP_NAME}-${ENVIRONMENT}_${APP_NAME}"
-export IMAGE_NAME="docker-username-development/${APP_NAME}-${ENVIRONMENT}:${HASH}"
+export IMAGE_NAME="docker-username/${APP_NAME}-${ENVIRONMENT}:latest"
 export SECRETS="${SECRETS}"
 
 source ./scripts/common/docker/entrypoint.sh
