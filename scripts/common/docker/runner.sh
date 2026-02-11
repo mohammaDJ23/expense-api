@@ -143,7 +143,7 @@ deploy_stack() {
 }
 
 wait_for_services() {
-    local -r timeout=60
+    local -r timeout=120
     local -r interval=5
     
     log_info "Waiting for services (max ${timeout}s)..."
@@ -156,6 +156,7 @@ wait_for_services() {
         local total=$(docker stack services "${STACK_NAME}" --format "{{.Name}}" 2>/dev/null | grep -c .)
         
         if [ "${total}" -eq 0 ]; then
+            log_warning "No services running for stack '${STACK_NAME}'"
             sleep 1
             continue
         fi
@@ -185,9 +186,7 @@ wait_for_services() {
         fi
         
         local elapsed=$(( $(date +%s) - start_time ))
-        if [ $((elapsed % interval)) -eq 0 ]; then
-            log_info "[${elapsed}s] ${ready}/${total} ready..."
-        fi
+        log_info "[${elapsed}s] ${ready}/${total} ready..."
         
         sleep 1
     done
