@@ -46,10 +46,6 @@ __tests__
 # TypeScript cache
 *.tsbuildinfo
 
-# Package manager files
-yarn.lock
-pnpm-lock.yaml
-
 # Docker files
 docker-compose.yml
 docker-compose.*.yml

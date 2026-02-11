@@ -16,8 +16,9 @@ RUN apk add --no-cache \
 WORKDIR /usr/src/app
 
 COPY --chown=expense-api:nodejs package.json ./
+COPY --chown=expense-api:nodejs pnpm-lock.yaml ./
 
-RUN pnpm install --ignore-scripts && \
+RUN pnpm install --ignore-scripts --frozen-lockfile && \
   pnpm cache clean
 
 FROM base AS development
@@ -56,6 +57,7 @@ RUN apk add --no-cache curl && \
 WORKDIR /usr/src/app
 
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/package.json ./
+COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/pnpm-lock.yaml ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/dist ./dist
 
@@ -66,7 +68,7 @@ RUN mkdir -p logs uploads temp && \
 
 USER expense-api
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+HEALTHCHECK --interval=5s --timeout=3s --start-period=20s --retries=2 \
   CMD curl -f http://localhost:3000/v1/api/health || exit 1
 
 EXPOSE 3000
