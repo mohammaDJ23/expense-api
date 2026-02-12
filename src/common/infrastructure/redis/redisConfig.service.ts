@@ -18,6 +18,7 @@ export class RedisConfigService implements RedisOptionsFactory {
                     this.configService.get<string>('REDIS_PORT', REDIS_PORT.toString()),
                     10,
                 ),
+                username: 'default',
                 password: readSecret(this.configService.get<string>('REDIS_PASSWORD_FILE', '')),
                 db: parseInt(this.configService.get<string>('REDIS_DB', REDIS_DB.toString()), 10),
             },
