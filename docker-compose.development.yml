@@ -68,15 +68,17 @@ services:
     redis:
         image: redis:7-alpine
         command: >
-            redis-server
-              --requirepass file:/run/secrets/redis_password
-              --appendonly yes
-              --save 900 1
-              --save 300 10
-              --save 60 10000
-              --maxmemory 256mb
-              --maxmemory-policy allkeys-lru
-              --protected-mode yes
+            sh -c "
+            redis-server 
+                --requirepass \"$$(cat /run/secrets/redis_password)\"
+                --save 900 1
+                --save 300 10
+                --save 60 10000
+                --maxmemory 256mb
+                --maxmemory-policy allkeys-lru
+                --protected-mode yes
+                --appendonly yes
+            "
         secrets:
             - redis_password
         volumes:
