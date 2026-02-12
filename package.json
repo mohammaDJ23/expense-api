@@ -5,6 +5,7 @@
     "author": "Mohammad Nowresideh",
     "private": true,
     "license": "UNLICENSED",
+    "packageManager": "pnpm@10.29.2",
     "engines": {
         "node": ">=24"
     },
