@@ -29,7 +29,7 @@ docker_compose() {
 run_compose() {
     log_info "Starting the services..."
 
-    docker_compose up -d
+    docker_compose up --build -d
 
     if [ $? -eq 0 ]; then
         log_success "Services started successfully"
@@ -50,8 +50,7 @@ wait_for_compose() {
     local failed_containers=""
     
     while [ $(date +%s) -lt "${end_time}" ]; do
-        local containers=""
-        containers=$(docker_compose ps -q 2>/dev/null)
+        local containers=$(docker_compose ps -a -q 2>/dev/null)
         
         local total=$(echo "${containers}" | grep -c . || echo "0")
         
@@ -69,7 +68,7 @@ wait_for_compose() {
             local status=$(docker inspect "${container_id}" --format '{{.State.Status}}' 2>/dev/null)
             local health=$(docker inspect "${container_id}" --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' 2>/dev/null)
             local name=$(docker inspect "${container_id}" --format '{{.Name}}' 2>/dev/null | sed 's/\///g')
-            
+
             if [ "${status}" = "running" ]; then
                 if [ "${health}" = "none" ] || [ "${health}" = "healthy" ]; then
                     ((ready++))
