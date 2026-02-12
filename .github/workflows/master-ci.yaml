@@ -44,6 +44,7 @@ jobs:
               env:
                   MODE: ci
                   ENVIRONMENT: production
+                  ENV_FILE: ./.env.production
                   COMPOSE_FILE: docker-compose.ci.yml
                   IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}-ci:${{ env.SHA }}
 

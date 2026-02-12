@@ -6,6 +6,7 @@ APP_NAME=$(source ./scripts/common/appName.sh)
 
 export MODE="development"
 export ENVIRONMENT="development"
+export ENV_FILE=".env"
 export COMPOSE_FILE="docker-compose.${ENVIRONMENT}.yml"
 export IMAGE_NAME="docker-username/${APP_NAME}-${ENVIRONMENT}:latest"
 

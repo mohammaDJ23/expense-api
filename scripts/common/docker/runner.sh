@@ -23,13 +23,13 @@ docker_compose() {
         return 1
     fi
     
-    ${cmd} "$@"
+    ${cmd} --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" "$@"
 }
 
 run_compose() {
     log_info "Starting the services..."
 
-    docker_compose -f "${COMPOSE_FILE}" up -d
+    docker_compose up -d
 
     if [ $? -eq 0 ]; then
         log_success "Services started successfully"
@@ -51,7 +51,7 @@ wait_for_compose() {
     
     while [ $(date +%s) -lt "${end_time}" ]; do
         local containers=""
-        containers=$(docker_compose -f "${COMPOSE_FILE}" ps -q 2>/dev/null)
+        containers=$(docker_compose ps -q 2>/dev/null)
         
         local total=$(echo "${containers}" | grep -c . || echo "0")
         
@@ -99,10 +99,10 @@ wait_for_compose() {
         log_error "Failed containers: ${failed_containers}"
         
         log_error "Container statuses:"
-        docker_compose -f "${COMPOSE_FILE}" ps
+        docker_compose ps
         
         log_error "Recent logs:"
-        docker_compose -f "${COMPOSE_FILE}" logs --tail=50
+        docker_compose logs --tail=50
     else
         log_error "No specific container detected as failed"
     fi
@@ -113,7 +113,7 @@ wait_for_compose() {
 show_status() {
     log_info "Containers status:"
     
-    if docker_compose -f "${COMPOSE_FILE}" ps; then
+    if docker_compose ps; then
         return 0
     fi
     
@@ -149,7 +149,7 @@ push_to_dockerhub() {
 }
 
 cleanup() {
-    docker_compose -f "${COMPOSE_FILE}" down 2>/dev/null || true
+    docker_compose down 2>/dev/null || true
 }
 
 trap cleanup ERR INT
