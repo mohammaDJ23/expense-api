@@ -58,8 +58,11 @@ services:
     redis:
         image: redis:7-alpine
         command: >
-            redis-server
-              --requirepass file:/run/secrets/redis_password
+            sh -c "
+            redis-server 
+                --requirepass \"$$(cat /run/secrets/redis_password)\"
+                --appendonly yes
+            "
         secrets:
             - redis_password
         volumes:
