@@ -13,11 +13,8 @@ readonly PIPELINES
 
 development_pipeline() {
     run_step "check_daemon" &&
-    run_step "init_swarm" &&
-    run_step "setup_secrets" &&
-    run_step "build_all_services" &&
-    run_step "deploy_stack" &&
-    run_step "wait_for_services" &&
+    run_step "run_compose" &&
+    run_step "wait_for_compose" &&
     run_step "show_status"
 
     return $?
@@ -25,11 +22,8 @@ development_pipeline() {
 
 ci_pipeline() {
     run_step "check_daemon" &&
-    run_step "init_swarm" &&
-    run_step "setup_secrets" &&
-    run_step "build_all_services" &&
-    run_step "deploy_stack" &&
-    run_step "wait_for_services" &&
+    run_step "run_compose" &&
+    run_step "wait_for_compose" &&
     run_step "show_status" &&
     run_step "cleanup"
 
@@ -38,11 +32,8 @@ ci_pipeline() {
 
 ci_production_pipeline() {
     run_step "check_daemon" &&
-    run_step "init_swarm" &&
-    run_step "setup_secrets" &&
-    run_step "build_all_services" &&
-    run_step "deploy_stack" &&
-    run_step "wait_for_services" &&
+    run_step "run_compose" &&
+    run_step "wait_for_compose" &&
     run_step "show_status" &&
     run_step "push_to_dockerhub" &&
     run_step "cleanup"
