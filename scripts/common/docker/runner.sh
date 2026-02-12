@@ -50,7 +50,7 @@ wait_for_compose() {
     local failed_containers=""
     
     while [ $(date +%s) -lt "${end_time}" ]; do
-        local containers=$(docker_compose ps -a -q 2>/dev/null)
+        local containers=$(docker_compose ps -q 2>/dev/null)
         
         local total=$(echo "${containers}" | grep -c . || echo "0")
         
