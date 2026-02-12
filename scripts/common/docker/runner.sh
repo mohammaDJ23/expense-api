@@ -152,4 +152,4 @@ cleanup() {
     docker_compose -f "${COMPOSE_FILE}" down 2>/dev/null || true
 }
 
-trap cleanup EXIT ERR
+trap cleanup EXIT ERR INT
