@@ -32,18 +32,26 @@ jobs:
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
+            - name: Create secrets for Docker Compose
+              run: |
+                  mkdir -p secrets
+                  echo "${{ secrets.DATABASE_PASSWORD }}" > ./secrets/database_password.txt
+                  echo "${{ secrets.REDIS_PASSWORD }}" > ./secrets/redis_password.txt
+                  echo "${{ secrets.JWT_SECRET }}" > ./secrets/jwt_secret.txt
+
             - name: Run the enptrypoint
               run: pnpm run start:docker:ci
               env:
                   MODE: ci
                   ENVIRONMENT: production
-                  COMPOSE_FILE: docker-compose.swarm.ci.yml
-                  STACK_NAME: ${{ vars.APP_NAME }}-ci
-                  SERVICE_NAME: ${{ vars.APP_NAME }}-ci_${{ vars.APP_NAME }}
+                  COMPOSE_FILE: docker-compose.ci.yml
                   IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}-ci:${{ env.SHA }}
-                  SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};jwt_secret=${{ secrets.JWT_SECRET }}'
 
             - name: Scan the docker image
               uses: ./.github/actions/scan-docker-image
               with:
                   image_name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}-ci:${{ env.SHA }}
+
+            - name: Clean up secrets
+              if: always()
+              run: rm -rf ./secrets
