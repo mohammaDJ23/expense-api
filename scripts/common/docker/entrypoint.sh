@@ -56,4 +56,4 @@ main() {
 
 main "$@"
 
-exit=$?
+exit $?
