@@ -1,13 +1,15 @@
 FROM node:24-alpine AS base
 
+ENV COREPACK_INTEGRITY_KEYS=0
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+
 RUN apk add --no-cache \
   python3 \
   make \
   g++ \
   curl && \
-  rm -rf /var/cache/apk/* && \
   corepack enable && \
-  corepack prepare pnpm --activate && \
+  corepack prepare pnpm@10.29.2 --activate && \
   addgroup -g 1001 -S nodejs && \
   adduser -S expense-api -u 1001 -G nodejs && \
   mkdir -p /usr/src/app && \
