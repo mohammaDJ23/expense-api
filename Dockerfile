@@ -7,6 +7,7 @@ RUN apk add --no-cache \
   python3 \
   make \
   g++ \
+  jq \
   curl && \
   corepack enable && \
   corepack prepare pnpm@10.29.2 --activate && \
@@ -71,7 +72,7 @@ RUN mkdir -p logs uploads temp && \
 USER expense-api
 
 HEALTHCHECK --interval=5s --timeout=3s --start-period=20s --retries=2 \
-  CMD sh -c "curl -s http://localhost:${PORT:-3000}/v1/api/health | grep -q status.:.ok || exit 1"
+  CMD sh -c "curl -s http://localhost:${PORT:-3000}/v1/api/health | jq -e ".status == \"ok\" or .response.status == \"ok\"" || exit 1"
 
 EXPOSE 3000
 

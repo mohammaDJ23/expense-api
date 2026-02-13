@@ -20,7 +20,7 @@ services:
             test:
                 [
                     'CMD-SHELL',
-                    'curl -s http://localhost:${PORT:-4000}/v1/api/health | grep -q status.:.ok || exit 1',
+                    'curl -s http://localhost:${PORT:-4000}/v1/api/health | jq -e ".status == \"ok\" or .response.status == \"ok\"" || exit 1',
                 ]
             interval: 5s
             timeout: 3s
