@@ -4,7 +4,6 @@ set -euo pipefail
 
 init_vars() {
     readonly MODE="${INPUT_MODE:-${MODE:-}}"
-    readonly ENV_FILE="${INPUT_ENV_FILE:-${ENV_FILE:-}}"
     readonly ENVIRONMENT="${INPUT_ENVIRONMENT:-${ENVIRONMENT:-}}"
     readonly COMPOSE_FILE="${INPUT_COMPOSE_FILE:-${COMPOSE_FILE:-}}"
     readonly IMAGE_NAME="${INPUT_IMAGE_NAME:-${IMAGE_NAME:-}}"
