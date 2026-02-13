@@ -27,7 +27,6 @@ RUN pnpm install --ignore-scripts --frozen-lockfile && \
 FROM base AS development
 
 ENV NODE_ENV=development
-ENV PORT=4000
 
 COPY --chown=expense-api:nodejs . .
 
@@ -51,7 +50,6 @@ RUN pnpm run build && \
 FROM node:24-alpine AS production
 
 ENV NODE_ENV=production
-ENV PORT=3000
 
 RUN apk add --no-cache curl && \
   addgroup -g 1001 -S nodejs && \
@@ -73,7 +71,7 @@ RUN mkdir -p logs uploads temp && \
 USER expense-api
 
 HEALTHCHECK --interval=5s --timeout=3s --start-period=20s --retries=2 \
-  CMD sh -c "curl -s http://localhost:${PORT:-3000}/v1/api/health | jq -e ".status == \"ok\" or .response.status == \"ok\"" || exit 1"
+  CMD sh -c 'curl -s http://localhost:3000/v1/api/health | jq -e ".status == \"ok\" or .response.status == \"ok\"" || exit 1'
 
 EXPOSE 3000
 
