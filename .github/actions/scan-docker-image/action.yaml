@@ -6,6 +6,10 @@ inputs:
         description: The docker image name
         required: true
         type: string
+    snyk_token:
+        description: The snyk token
+        required: true
+        type: string
 
 runs:
     using: composite
@@ -33,7 +37,7 @@ runs:
         - name: Snyk container scan
           uses: snyk/actions/docker@master
           env:
-              SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+              SNYK_TOKEN: ${{ inputs.snyk_token }}
           with:
               image: ${{ inputs.image_name }}
               args: |
