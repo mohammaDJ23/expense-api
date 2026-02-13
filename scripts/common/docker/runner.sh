@@ -145,7 +145,13 @@ push_to_dockerhub() {
 }
 
 cleanup() {
-    docker_compose down 2>/dev/null || true
+    local exit_code=$?
+    
+    if [ "${exit_code}" -ne 0 ]; then
+        docker_compose down >/dev/null 2>&1 || true
+    fi
+    
+    docker image prune -f >/dev/null 2>&1 || true
 }
 
-trap cleanup ERR INT
+trap cleanup EXIT ERR INT TERM
