@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { RedisModuleOptions, RedisOptionsFactory } from '@liaoliaots/nestjs-redis';
 
-import { REDIS_DB, REDIS_PORT } from 'src/common/constants';
+import { REDIS_DB, REDIS_PORT, REDIS_USERNAME } from 'src/common/constants';
 import { readSecret } from 'src/common/utils/readSecret.util';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class RedisConfigService implements RedisOptionsFactory {
                     this.configService.get<string>('REDIS_PORT', REDIS_PORT.toString()),
                     10,
                 ),
-                username: 'default',
+                username: this.configService.get<string>('REDIS_USERNAME', REDIS_USERNAME),
                 password: readSecret(this.configService.get<string>('REDIS_PASSWORD_FILE', '')),
                 db: parseInt(this.configService.get<string>('REDIS_DB', REDIS_DB.toString()), 10),
             },
