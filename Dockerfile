@@ -50,6 +50,7 @@ RUN pnpm run build && \
 
 FROM node:24-alpine AS production
 
+ENV NODE_ENV=production
 ENV PORT=3000
 
 RUN apk add --no-cache curl && \
