@@ -19,7 +19,7 @@ export class NestJsWebsiteIndicator implements IHealthIndicator {
                 this.httpService.request({
                     url: 'https://nestjs.com',
                     method: 'GET',
-                    timeout: 3000,
+                    timeout: 10000,
                 }),
             );
 
