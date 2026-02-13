@@ -30,7 +30,7 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
-        restart: no
+        restart: unless-stopped
         pull_policy: never
 
     postgres:
@@ -53,7 +53,7 @@ services:
             timeout: 3s
             start_period: 20s
             retries: 2
-        restart: no
+        restart: unless-stopped
 
     redis:
         image: redis:7-alpine
@@ -75,7 +75,7 @@ services:
             timeout: 3s
             start_period: 20s
             retries: 2
-        restart: no
+        restart: unless-stopped
 
 volumes:
     postgres-data:
