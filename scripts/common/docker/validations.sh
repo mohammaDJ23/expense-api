@@ -23,12 +23,6 @@ check_args() {
         return 1
     fi
 
-    if  [[ ! -f "${ENV_FILE}" ]]; then
-        log_error "No env file found"
-        log_error "     ${ENV_FILE}"
-        return 1
-    fi
-
     local image_name_pattern='^[a-z0-9_-]+/[a-z0-9-]+(:[a-zA-Z0-9._-]+)?$'
     if [[ ! "${IMAGE_NAME}" =~ $image_name_pattern ]]; then
         log_error "Invalid Docker image name: ${IMAGE_NAME}"

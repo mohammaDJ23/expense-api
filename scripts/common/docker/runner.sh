@@ -23,7 +23,7 @@ docker_compose() {
         return 1
     fi
     
-    ${cmd} --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" "$@"
+    ${cmd} -f "${COMPOSE_FILE}" "$@"
 }
 
 run_compose() {
