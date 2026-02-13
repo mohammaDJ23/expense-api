@@ -14,15 +14,15 @@ services:
             target: development
             dockerfile: Dockerfile
         ports:
-            - '${PORT:-4000}:4000'
-            - '${DEBUG_PORT:-9229}:9229'
+            - '4000:4000'
+            - '9229:9229'
         networks:
             - expense-api-network
         healthcheck:
             test:
                 [
                     'CMD-SHELL',
-                    'curl -s http://localhost:${PORT:-4000}/v1/api/health | jq -e ".status == \"ok\" or .response.status == \"ok\"" || exit 1',
+                    'curl -s http://localhost:4000/v1/api/health | jq -e ".status == \"ok\" or .response.status == \"ok\"" || exit 1',
                 ]
             interval: 5s
             timeout: 3s
@@ -46,8 +46,8 @@ services:
     postgres:
         image: postgres:16-alpine
         environment:
-            POSTGRES_DB: ${DATABASE_NAME:-expense_api_dev}
-            POSTGRES_USER: ${DATABASE_USER:-expense_api}
+            POSTGRES_DB: expense_api_dev
+            POSTGRES_USER: expense_api
             POSTGRES_PASSWORD_FILE: /run/secrets/database_password
             POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
             POSTGRES_HOST_AUTH_METHOD: scram-sha-256
@@ -56,11 +56,11 @@ services:
         volumes:
             - postgres-data:/var/lib/postgresql/data
         ports:
-            - '${DATABASE_PORT:-5432}:5432'
+            - '5432:5432'
         networks:
             - expense-api-network
         healthcheck:
-            test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER:-expense_api}']
+            test: ['CMD-SHELL', 'pg_isready -U expense_api']
             interval: 5s
             timeout: 3s
             start_period: 20s
@@ -86,7 +86,7 @@ services:
         volumes:
             - redis-data:/data
         ports:
-            - '${REDIS_PORT:-6379}:6379'
+            - '6379:6379'
         networks:
             - expense-api-network
         healthcheck:
