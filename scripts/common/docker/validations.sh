@@ -3,13 +3,6 @@
 set -euo pipefail
 
 check_args() {
-    local environment_pattern='^(development|production)$'
-    if [[ ! "${ENVIRONMENT}" =~ $environment_pattern ]]; then
-        log_error "Invalid ENVIRONMENT value: '${ENVIRONMENT}'"
-        log_error "Valid values: development or production"
-        return 1
-    fi
-    
     local mode_pattern='^(development|ci|ci_production|production)$'
     if [[ ! "${MODE}" =~ $mode_pattern ]]; then
         log_error "Invalid MODE value: '${MODE}'"
