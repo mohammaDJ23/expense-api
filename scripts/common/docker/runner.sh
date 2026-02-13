@@ -99,9 +99,6 @@ wait_for_compose() {
         
         log_error "Container statuses:"
         docker_compose ps
-        
-        log_error "Recent logs:"
-        docker_compose logs --tail=50
     else
         log_error "No specific container detected as failed"
     fi
