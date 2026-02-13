@@ -51,7 +51,7 @@ FROM node:24-alpine AS production
 
 ENV NODE_ENV=production
 
-RUN apk add --no-cache curl && \
+RUN apk add --no-cache curl jq && \
   addgroup -g 1001 -S nodejs && \
   adduser -S expense-api -u 1001 -G nodejs && \
   rm -rf /var/cache/apk/*
