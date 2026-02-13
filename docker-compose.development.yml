@@ -3,6 +3,8 @@ services:
         image: ${IMAGE_NAME:?ERROR IMAGE_NAME is required}
         stdin_open: true
         tty: true
+        env_file:
+            - .env
         environment:
             DATABASE_PASSWORD_FILE: /run/secrets/database_password
             REDIS_PASSWORD_FILE: /run/secrets/redis_password

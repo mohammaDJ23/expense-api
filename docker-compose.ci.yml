@@ -1,6 +1,8 @@
 services:
     expense-api:
         image: ${IMAGE_NAME:?ERROR IMAGE_NAME is required}
+        env_file:
+            - .env.production
         environment:
             DATABASE_PASSWORD_FILE: /run/secrets/database_password
             REDIS_PASSWORD_FILE: /run/secrets/redis_password
