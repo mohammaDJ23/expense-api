@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
 import { DATABASE_NAME, DATABASE_PORT } from 'src/common/constants';
-import { isDevelopment } from 'src/common/utils/environments.util';
 import { readSecret } from 'src/common/utils/readSecret.util';
 
 import { CustomNamingStrategy } from './naming.strategy';
@@ -25,7 +24,9 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
             database: this.configService.get<string>('DATABASE_NAME'),
             namingStrategy: new CustomNamingStrategy(),
             entities: [],
-            synchronize: isDevelopment(),
+            synchronize: Boolean(
+                JSON.parse(this.configService.get<string>('DATABASE_SYNCHRONIZE', 'false')),
+            ),
         };
     }
 }
