@@ -48,12 +48,15 @@ run_semantic_dry_run() {
     SEMANTIC_OUTPUT=$(pnpm exec semantic-release --dry-run --ci 2>&1)
 
     local exit_code=$?
-    if [ "${exit_code}" -ne 0 ]; then
-        return $exit_code
-    fi
     
     log_info "📋 Semantic-release dry run output:"
     log_info "${SEMANTIC_OUTPUT}"
+    
+    if [ "${exit_code}" -ne 0 ]; then
+        log_error "❌ Semantic-release dry run failed with exit code ${exit_code}"
+        
+        return $exit_code
+    fi
 
     return 0
 }
