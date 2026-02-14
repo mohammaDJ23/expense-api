@@ -13,14 +13,9 @@ concurrency:
     cancel-in-progress: true
 
 env:
-    APP_NAME: ${{ vars.APP_NAME }}
     SHA: ${{ github.event.workflow_run.head_sha }}
-    RUN_ID: ${{ github.event.workflow_run.id }}
     RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
     BY: ${{ github.event.workflow_run.actor.login }}
-    WORKFLOW: ${{ github.workflow }}
-    DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-    DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
     manual-approval:
@@ -65,107 +60,63 @@ jobs:
             - name: Install node and node_modules
               uses: ./.github/actions/setup-node
 
-            - name: Login to DockerHub
-              uses: docker/login-action@v2
-              with:
-                  username: ${{ env.DOCKER_USERNAME }}
-                  password: ${{ env.DOCKER_PASSWORD }}
-
             - name: Detect commit_sha
               id: get-commit-sha
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-detectcommitsha:latest
+              run: pnpm run detect:commitsha:ci
 
             - name: Create a New version
               id: get-version
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-createversion:latest
+              run: create:version:ci
 
     run-test-push:
         needs: create-version
+        timeout-minutes: 30
         runs-on: ubuntu-latest
         outputs:
-            IMAGE_LATEST: ${{ steps.build-image.outputs.IMAGE_LATEST }}
-            IMAGE_TAG: ${{ steps.build-image.outputs.IMAGE_TAG }}
+            tagged_image: ${{ steps.run-enptrypoint.outputs.tagged_image }}
+            latest_image: ${{ steps.run-enptrypoint.outputs.latest_image }}
         steps:
             - name: Checkout the source
               uses: actions/checkout@v4
               with:
                   ref: ${{ needs.create-version.outputs.commit_sha }}
 
+            - name: Install node and node_modules
+              uses: ./.github/actions/setup-node
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
+
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
-            - name: Login to DockerHub
-              uses: docker/login-action@v2
-              with:
-                  username: ${{ env.DOCKER_USERNAME }}
-                  password: ${{ env.DOCKER_PASSWORD }}
+            - name: Create secrets for Docker Compose
+              run: |
+                  mkdir -p secrets
+                  echo "${{ secrets.DATABASE_PASSWORD }}" > ./secrets/database_password.txt
+                  echo "${{ secrets.REDIS_PASSWORD }}" > ./secrets/redis_password.txt
+                  echo "${{ secrets.JWT_SECRET }}" > ./secrets/jwt_secret.txt
 
-            - name: Setup the variables
-              id: variables
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-vars:latest
+            - name: Run the enptrypoint
+              id: run-enptrypoint
+              run: pnpm run start:docker:ci
               env:
-                  APP_NAME: ${{ env.APP_NAME }}
-                  MODE: production
-
-            - name: Build the docker image
-              id: build-image
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-build:latest
-              env:
-                  IMAGE_NAME: ${{ steps.variables.output.IMAGE_NAME }}
-                  TAG: ${{ env.SHA }}
+                  MODE: ci_production
+                  COMPOSE_FILE: docker-compose.ci.production.yml
+                  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}-production:${{ needs.create-version.outputs.commit_sha }}
 
             - name: Scan the docker image
               uses: ./.github/actions/scan-docker-image
               with:
-                  image_name: ${{ steps.variables.outputs.IMAGE_NAME }}
+                  image_name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}-production:${{ needs.create-version.outputs.commit_sha }}
+                  snyk_token: ${{ secrets.SNYK_TOKEN }}
 
-            - name: Run the docker image
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-run:latest
-              env:
-                  COMPOSE_FILE: ${{ steps.variables.outputs.COMPOSE_FILE }}
-                  STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
-                  SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
-                  IMAGE_NAME: ${{ steps.build-image.outputs.IMAGE_LATEST }}
-                  ENVIRONMENT: ${{ steps.variables.outputs.ENVIRONMENT }}
-                  SECRETS: 'database_password=${{ secrets.DATABASE_PASSWORD }};redis_password=${{ secrets.REDIS_PASSWORD }};JWT_SECRET=${{ secrets.JWT_SECRET }}'
-
-            - name: Check the healthy
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-checkhealthy:latest
-              env:
-                  SERVICE_NAME: ${{ steps.variables.outputs.SERVICE_NAME }}
-
-            - name: Cleanup
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-cleanup:latest
-              env:
-                  STACK_NAME: ${{ steps.variables.outputs.STACK_NAME }}
-
-            - name: Push the image, tagged, to DockerHub
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-push:latest
-              env:
-                  IMAGE_TAG: ${{ needs.build-image.outputs.IMAGE_TAG }}
-
-            - name: Push the image, latest, to DockerHub
-              uses: ./.github/actions/pull-and-run-docker-image
-              with:
-                  image_name: scripts-ci-docker-push:latest
-              env:
-                  IMAGE_LATEST: ${{ needs.build-image.outputs.IMAGE_LATEST }}
+            - name: Cleanup secrets
+              if: always()
+              run: rm -rf ./secrets
 
             - name: Log out from DockerHub
               if: always()
@@ -176,9 +127,10 @@ jobs:
         runs-on: ubuntu-latest
         env:
             VERSION: ${{ needs.create-version.outputs.version }}
-            IMAGE_TAG: ${{ needs.run-test-push.outputs.IMAGE_TAG }}
-            IMAGE_LATEST: ${{ needs.run-test-push.outputs.IMAGE_LATEST }}
+            TAGGED_IMAGE: ${{ needs.run-test-push.outputs.tagged_image }}
+            LATEST_IMAGE: ${{ needs.run-test-push.outputs.latest_image }}
             UPDATED_SHA: ${{ needs.create-version.outputs.commit_sha }}
+            WORKFLOW: ${{ github.workflow }}
         steps:
             - name: Release Summary
               run: |
@@ -187,7 +139,7 @@ jobs:
                   echo ""
                   echo "Workflow: ${WORKFLOW}"
                   echo "Triggered by: Master Pipeline #${RUN_NUMBER}"
-                  echo "Original SHA: ${ORIGINAL_SHA}"
+                  echo "Original SHA: ${SHA}"
                   echo "Updated SHA: ${UPDATED_SHA}"
                   echo ""
 
@@ -195,6 +147,6 @@ jobs:
                   echo "New Version: v${VERSION}"
                   echo ""
                   echo "📦 Docker Images Published:"
-                  echo "   ${IMAGE_TAG}"
-                  echo "   ${IMAGE_LATEST}"
+                  echo "   ${TAGGED_IMAGE}"
+                  echo "   ${LATEST_IMAGE}"
                   echo ""
