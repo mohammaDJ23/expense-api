@@ -66,7 +66,7 @@ jobs:
 
             - name: Create a New version
               id: get-version
-              run: create:version:ci
+              run: pnpm run create:version:ci
 
     run-test-push:
         needs: create-version
