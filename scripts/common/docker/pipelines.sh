@@ -36,6 +36,7 @@ ci_production_pipeline() {
     run_step "wait_for_compose" &&
     run_step "show_status" &&
     run_step "push_to_dockerhub" &&
+    run_step "set_images_to_github_output" && 
     run_step "cleanup"
 
     return $?
