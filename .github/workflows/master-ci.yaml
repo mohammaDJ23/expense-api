@@ -58,6 +58,10 @@ jobs:
                   image_name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}-ci:${{ env.SHA }}
                   snyk_token: ${{ secrets.SNYK_TOKEN }}
 
-            - name: Clean up secrets
+            - name: Cleanup secrets
               if: always()
               run: rm -rf ./secrets
+
+            - name: Log out from DockerHub
+              if: always()
+              run: docker logout
