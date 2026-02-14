@@ -67,6 +67,8 @@ jobs:
             - name: Create a New version
               id: get-version
               run: pnpm run create:version:ci
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     run-test-push:
         needs: create-version
