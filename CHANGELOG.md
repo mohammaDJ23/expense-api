@@ -2,11 +2,11 @@
 
 ### 🚀 Continuous Deployment
 
-* 842373 use the version instead of sha ([5ab1bfc](https://github.com/mohammaDJ23/expense-api/commit/5ab1bfcaff74488c229041be1c0f9acfdd28edd4))
+- 842373 use the version instead of sha ([5ab1bfc](https://github.com/mohammaDJ23/expense-api/commit/5ab1bfcaff74488c229041be1c0f9acfdd28edd4))
 
 ### 🔧 Chores
 
-* 842373 format the CHANGELOG.md file ([421436f](https://github.com/mohammaDJ23/expense-api/commit/421436f87f74b57698487f86b3e378bccd4a08f8))
+- 842373 format the CHANGELOG.md file ([421436f](https://github.com/mohammaDJ23/expense-api/commit/421436f87f74b57698487f86b3e378bccd4a08f8))
 
 ## [1.0.2](https://github.com/mohammaDJ23/expense-api/compare/v1.0.1...v1.0.2) (2026-02-15)
 
