@@ -144,8 +144,8 @@ push_to_dockerhub() {
 
 set_images_to_github_output() {
     if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
-        echo "tagged_image=${IMAGE_NAME}" >> "${GITHUB_OUTPUT}"
-        echo "latest_image=${LATEST_IMAGE}" >> "${GITHUB_OUTPUT}"
+        echo "tagged_image=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
+        echo "latest_image=${LATEST_IMAGE}" >> "$GITHUB_OUTPUT"
 
         log_success "Set GitHub outputs"
 
