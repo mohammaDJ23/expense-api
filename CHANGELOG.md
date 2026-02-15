@@ -1,3 +1,13 @@
+## [1.0.5](https://github.com/mohammaDJ23/expense-api/compare/v1.0.4...v1.0.5) (2026-02-15)
+
+### 🚀 Continuous Deployment
+
+- 842373 remove the summary job and swap the create version step ([0b06a94](https://github.com/mohammaDJ23/expense-api/commit/0b06a9471ab70f240346ac24b32048fd2af282df))
+
+### 🔧 Chores
+
+- 842373 remove github output for the images ([ed811a5](https://github.com/mohammaDJ23/expense-api/commit/ed811a58fe64cbca9f4f13f3a0be0fe8d4e10225))
+
 ## [1.0.4](https://github.com/mohammaDJ23/expense-api/compare/v1.0.3...v1.0.4) (2026-02-15)
 
 ### 🔧 Chores
