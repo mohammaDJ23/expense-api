@@ -122,10 +122,10 @@ push_to_dockerhub() {
     
     local image_without_tag="${IMAGE_NAME%:*}"
     
-    LATEST_IMAGE="${image_without_tag}:latest"
+    local latest_image="${image_without_tag}:latest"
     
-    if docker tag "${IMAGE_NAME}" "${LATEST_IMAGE}"; then
-        log_success "Tagged: ${IMAGE_NAME} -> ${LATEST_IMAGE}"
+    if docker tag "${IMAGE_NAME}" "${latest_image}"; then
+        log_success "Tagged: ${IMAGE_NAME} -> ${latest_image}"
     else
         log_error "Failed to tag image"
         return 1
@@ -133,28 +133,13 @@ push_to_dockerhub() {
     
     log_info "Pushing images to Docker Hub..."
     
-    if docker push "${IMAGE_NAME}" && docker push "${LATEST_IMAGE}"; then
-        log_success "Pushed: ${IMAGE_NAME} and ${LATEST_IMAGE}"
+    if docker push "${IMAGE_NAME}" && docker push "${latest_image}"; then
+        log_success "Pushed: ${IMAGE_NAME} and ${latest_image}"
         return 0
     else
         log_error "Failed to push images"
         return 1
     fi
-}
-
-set_images_to_github_output() {
-    if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
-        echo "tagged_image=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
-        echo "latest_image=${LATEST_IMAGE}" >> "$GITHUB_OUTPUT"
-
-        log_success "Set GitHub outputs"
-
-        return 0
-    fi
-
-    log_error "Not in GitHub Actions context"
-
-    return 1
 }
 
 cleanup() {
