@@ -4,17 +4,17 @@ ENV COREPACK_INTEGRITY_KEYS=0
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 RUN apk add --no-cache \
-  python3 \
-  make \
-  g++ \
-  jq \
-  curl && \
-  corepack enable && \
-  corepack prepare pnpm@10.29.2 --activate && \
-  addgroup -g 1001 -S nodejs && \
-  adduser -S expense-api -u 1001 -G nodejs && \
-  mkdir -p /usr/src/app && \
-  chown -R expense-api:nodejs /usr/src/app
+    python3 \
+    make \
+    g++ \
+    jq \
+    curl && \
+    corepack enable && \
+    corepack prepare pnpm@10.29.2 --activate && \
+    addgroup -g 1001 -S nodejs && \
+    adduser -S expense-api -u 1001 -G nodejs && \
+    mkdir -p /usr/src/app && \
+    chown -R expense-api:nodejs /usr/src/app
 
 WORKDIR /usr/src/app
 
@@ -22,7 +22,7 @@ COPY --chown=expense-api:nodejs package.json ./
 COPY --chown=expense-api:nodejs pnpm-lock.yaml ./
 
 RUN pnpm install --ignore-scripts --frozen-lockfile && \
-  pnpm cache clean
+    pnpm cache clean
 
 FROM base AS development
 
@@ -44,17 +44,17 @@ ENV npm_config_ignore_scripts=true
 COPY --chown=expense-api:nodejs . .
 
 RUN pnpm run build && \
-  pnpm prune --production && \
-  rm -rf src
+    pnpm prune --production && \
+    rm -rf src
 
 FROM node:24-alpine AS production
 
 ENV NODE_ENV=production
 
 RUN apk add --no-cache curl jq && \
-  addgroup -g 1001 -S nodejs && \
-  adduser -S expense-api -u 1001 -G nodejs && \
-  rm -rf /var/cache/apk/*
+    addgroup -g 1001 -S nodejs && \
+    adduser -S expense-api -u 1001 -G nodejs && \
+    rm -rf /var/cache/apk/*
 
 WORKDIR /usr/src/app
 
@@ -64,9 +64,9 @@ COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/node_module
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/dist ./dist
 
 RUN mkdir -p logs uploads temp && \
-  chown -R expense-api:nodejs logs uploads temp && \
-  chmod -R 555 /usr/src/app && \
-  chmod -R 755 /usr/src/app/logs /usr/src/app/uploads /usr/src/app/temp
+    chown -R expense-api:nodejs logs uploads temp && \
+    chmod -R 555 /usr/src/app && \
+    chmod -R 755 /usr/src/app/logs /usr/src/app/uploads /usr/src/app/temp
 
 USER expense-api
 
