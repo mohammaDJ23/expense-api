@@ -95,7 +95,7 @@
         [
             "@semantic-release/git",
             {
-                "assets": ["package.json", "VERSION.md"],
+                "assets": ["package.json", "CHANGELOG.md"],
                 "message": "release: ${nextRelease.version} [skip ci] (${nextRelease.type})\n\n${nextRelease.notes}"
             }
         ]
