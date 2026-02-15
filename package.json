@@ -41,7 +41,8 @@
         "create:version:ci": "bash ./scripts/ci/createVersion.sh",
         "detect:branch:name:ci": "bash ./scripts/ci/detectBranchName.sh",
         "validate:branch:name:ci": "bash ./scripts/ci/validateBranchName.sh",
-        "detect:commitsha:ci": "bash ./scripts/ci/detectCommitSha.sh"
+        "detect:commitsha:ci": "bash ./scripts/ci/detectCommitSha.sh",
+        "postinstall": "prettier --write pnpm-lock.yaml"
     },
     "dependencies": {
         "@liaoliaots/nestjs-redis": "^10.0.0",
