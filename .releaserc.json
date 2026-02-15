@@ -96,7 +96,7 @@
             "@semantic-release/git",
             {
                 "assets": ["package.json", "package-lock.json", "VERSION.md"],
-                "message": "chore: ${nextRelease.version}"
+                "message": "release: ${nextRelease.version} [skip ci] (${nextRelease.type})\n\n${nextRelease.notes}"
             }
         ]
     ]
