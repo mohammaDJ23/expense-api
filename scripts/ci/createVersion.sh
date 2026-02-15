@@ -63,20 +63,20 @@ run_semantic_dry_run() {
 
 extract_version() {
     local phrases=(
-        "The next release version is"
+        "the next release version is"
         "next release version is"
         "would release version"
-        "Published release"
-        "Cutting release"
-        "Creating tag"
+        "published release"
+        "cutting release"
+        "creating tag"
     )
     
     NEXT_VERSION=""
     
     for phrase in "${phrases[@]}"; do
-        if echo "${SEMANTIC_OUTPUT}" | grep -q "${phrase}"; then
-            local line=$(echo "${SEMANTIC_OUTPUT}" | grep "${phrase}" | head -n 1)
-            
+        local line=$(echo "${SEMANTIC_OUTPUT}" | grep -i "${phrase}" | head -n 1)
+        
+        if [ -n "${line}" ]; then
             if [[ $line =~ ([0-9]+\.[0-9]+\.[0-9]+) ]]; then
                 NEXT_VERSION="${BASH_REMATCH[1]}"
                 log_success "📝 Found version using phrase: '${phrase}'"
