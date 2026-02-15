@@ -82,7 +82,7 @@
         [
             "@semantic-release/changelog",
             {
-                "changelogFile": "VERSION.md"
+                "changelogFile": "CHANGELOG.md"
             }
         ],
         "@semantic-release/github",
