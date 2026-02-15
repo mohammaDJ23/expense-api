@@ -62,23 +62,20 @@ jobs:
             - name: Install node and node_modules
               uses: ./.github/actions/setup-node
 
-            - name: Detect commit_sha
-              id: get-commit-sha
-              run: pnpm run detect:commitsha:ci
-
             - name: Create a New version
               id: get-version
               run: pnpm run create:version:ci
               env:
                   GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_PAT_TOKEN }}
 
+            - name: Detect commit_sha
+              id: get-commit-sha
+              run: pnpm run detect:commitsha:ci
+
     run-test-push:
         needs: create-version
         timeout-minutes: 30
         runs-on: ubuntu-latest
-        outputs:
-            tagged_image: ${{ steps.run-enptrypoint.outputs.tagged_image }}
-            latest_image: ${{ steps.run-enptrypoint.outputs.latest_image }}
         steps:
             - name: Checkout the source
               uses: actions/checkout@v4
@@ -125,32 +122,3 @@ jobs:
             - name: Log out from DockerHub
               if: always()
               run: docker logout
-
-    release-summary:
-        needs: [manual-approval, create-version, run-test-push]
-        runs-on: ubuntu-latest
-        env:
-            VERSION: ${{ needs.create-version.outputs.version }}
-            TAGGED_IMAGE: ${{ needs.run-test-push.outputs.tagged_image }}
-            LATEST_IMAGE: ${{ needs.run-test-push.outputs.latest_image }}
-            UPDATED_SHA: ${{ needs.create-version.outputs.commit_sha }}
-            WORKFLOW: ${{ github.workflow }}
-        steps:
-            - name: Release Summary
-              run: |
-                  echo "🚀 RELEASE WORKFLOW SUMMARY"
-                  echo "==========================="
-                  echo ""
-                  echo "Workflow: ${WORKFLOW}"
-                  echo "Triggered by: Master Pipeline #${RUN_NUMBER}"
-                  echo "Original SHA: ${SHA}"
-                  echo "Updated SHA: ${UPDATED_SHA}"
-                  echo ""
-
-                  echo "✅ NEW RELEASE CREATED!"
-                  echo "New Version: v${VERSION}"
-                  echo ""
-                  echo "📦 Docker Images Published:"
-                  echo "   ${TAGGED_IMAGE}"
-                  echo "   ${LATEST_IMAGE}"
-                  echo ""
