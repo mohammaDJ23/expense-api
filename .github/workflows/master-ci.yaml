@@ -45,17 +45,17 @@ jobs:
                   echo "${{ secrets.REDIS_PASSWORD }}" > ./secrets/redis_password.txt
                   echo "${{ secrets.JWT_SECRET }}" > ./secrets/jwt_secret.txt
 
-            - name: Run the enptrypoint
+            - name: Run the entrypoint
+              id: run-entrypoint
               run: pnpm run start:docker:ci
               env:
-                  MODE: ci
-                  COMPOSE_FILE: docker-compose.ci.yml
-                  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}-ci:${{ env.SHA }}
+                  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+                  TAG: ${{ env.SHA }}
 
             - name: Scan the docker image
               uses: ./.github/actions/scan-docker-image
               with:
-                  image_name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}-ci:${{ env.SHA }}
+                  image_name: ${{ steps.run-entrypoint.outputs.image_name }}
                   snyk_token: ${{ secrets.SNYK_TOKEN }}
 
             - name: Cleanup secrets
