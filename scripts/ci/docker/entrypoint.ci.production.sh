@@ -3,7 +3,7 @@
 set -euo pipefail
 
 MODE="ci_production"
-COMPOSE_FILE="docker-compose.ci.production.yml"
+COMPOSE_FILE="docker-compose.ci.yml"
 
 source ./scripts/common/docker/createImageName.sh
 source ./scrits/common/docker/setImageNameOutput.sh
