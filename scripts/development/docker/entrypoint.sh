@@ -3,8 +3,9 @@
 set -euo pipefail
 
 MODE="development"
+ENVIRONMENT="development"
 DOCKER_USERNAME="${DOCKER_USERNAME:-docker-username}"
-COMPOSE_FILE="docker-compose.${MODE}.yml"
+COMPOSE_FILE="docker-compose.${ENVIRONMENT}.yml"
 
 source ./scripts/common/docker/createImageName.sh
 source ./scripts/common/docker/entrypoint.sh
