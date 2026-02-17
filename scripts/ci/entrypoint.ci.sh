@@ -4,7 +4,7 @@ set -euo pipefail
 
 APP_NAME=$(source ./scripts/common/appName.sh)
 
-MODE="${MODE:-development}"
+MODE="${MODE:-ci}"
 DOCKER_USERNAME="${DOCKER_USERNAME:-docker-username}"
 TAG="${TAG:-latest}"
 COMPOSE_FILE="docker-compose.${MODE}.yml"
