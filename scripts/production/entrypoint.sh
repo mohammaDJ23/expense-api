@@ -2,12 +2,8 @@
 
 set -euo pipefail
 
-APP_NAME=$(source ./scripts/common/appName.sh)
-
-MODE="${MODE:-production}"
-DOCKER_USERNAME="${DOCKER_USERNAME:?ERROR DOCKER_USERNAME is required as an env}"
-TAG="${TAG:-latest}"
+MODE="production"
 COMPOSE_FILE="docker-compose.${MODE}.yml"
-export IMAGE_NAME="${DOCKER_USERNAME}/${APP_NAME}-${MODE}:${TAG}"
 
+source ./scripts/common/docker/createImageName.sh
 source ./scripts/common/docker/entrypoint.sh
