@@ -3,6 +3,7 @@
 set -euo pipefail
 
 MODE="ci"
+ENVIRONMENT="production"
 COMPOSE_FILE="docker-compose.${MODE}.yml"
 
 source ./scripts/common/docker/createImageName.sh
