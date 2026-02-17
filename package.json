@@ -36,6 +36,8 @@
         "validate:branch:name": "bash ./scripts/development/validateBranchName.sh",
         "validate:commit:message": "bash ./scripts/development/validateCommitMessage.sh",
         "lint:staged": "bash ./scripts/development/lintStaged.sh",
+        "create:image:name": "bash ./scripts/common/docker/createImageName.sh",
+        "set:image:name:output": "bash ./scripts/common/docker/setImageNameOutput.sh",
         "start:docker:development": "bash ./scripts/development/entrypoint.sh",
         "start:docker:ci": "bash ./scripts/ci/entrypoint.ci.sh",
         "start:docker:ci:production": "bash ./scripts/ci/entrypoint.ci.production.sh",
