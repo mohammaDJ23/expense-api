@@ -32,6 +32,10 @@ services:
         mem_reservation: 256M
         cpus: '0.5'
         init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
         logging:
             driver: 'json-file'
             options:
@@ -65,6 +69,16 @@ services:
         mem_reservation: 512M
         cpus: '1'
         init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - CHOWN
+            - DAC_OVERRIDE
+            - FOWNER
+            - SETGID
+            - SETUID
         logging:
             driver: 'json-file'
             options:
@@ -111,6 +125,14 @@ services:
         mem_reservation: 128M
         cpus: '0.25'
         init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - DAC_OVERRIDE
+            - SETGID
+            - SETUID
         logging:
             driver: 'json-file'
             options:
@@ -145,6 +167,14 @@ services:
         mem_reservation: 128M
         cpus: '0.5'
         init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - SETGID
+            - SETUID
+            - DAC_OVERRIDE
         logging:
             driver: 'json-file'
             options:
