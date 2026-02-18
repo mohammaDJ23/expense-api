@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import eslint from '@eslint/js';
 import { defineConfig } from 'eslint/config';
-import importPlugin from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import-x';
 import jestPlugin from 'eslint-plugin-jest';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import securityPlugin from 'eslint-plugin-security';
@@ -115,11 +115,11 @@ export default defineConfig([
     // Import plugin configuration
     {
         plugins: {
-            import: importPlugin,
+            'import-x': importPlugin,
         },
         rules: {
             // Import rules
-            'import/order': [
+            'import-x/order': [
                 'error',
                 {
                     groups: [
@@ -151,28 +151,28 @@ export default defineConfig([
                     'newlines-between': 'always',
                 },
             ],
-            'import/no-duplicates': 'error',
-            'import/no-cycle': 'error',
-            'import/no-useless-path-segments': 'error',
-            'import/no-default-export': 'off',
-            'import/no-named-as-default': 'error',
-            'import/no-unresolved': 'error',
-            'import/no-absolute-path': 'error',
-            'import/namespace': 'off',
-            'import/no-commonjs': 'error',
-            'import/no-amd': 'error',
-            'import/no-nodejs-modules': 'off',
-            'import/no-deprecated': 'warn',
-            'import/no-mutable-exports': 'error',
-            'import/no-internal-modules': 'off',
-            'import/no-unassigned-import': 'error',
-            'import/no-webpack-loader-syntax': 'error',
+            'import-x/no-duplicates': 'error',
+            'import-x/no-cycle': 'error',
+            'import-x/no-useless-path-segments': 'error',
+            'import-x/no-default-export': 'off',
+            'import-x/no-named-as-default': 'error',
+            'import-x/no-unresolved': 'error',
+            'import-x/no-absolute-path': 'error',
+            'import-x/namespace': 'off',
+            'import-x/no-commonjs': 'error',
+            'import-x/no-amd': 'error',
+            'import-x/no-nodejs-modules': 'off',
+            'import-x/no-deprecated': 'warn',
+            'import-x/no-mutable-exports': 'error',
+            'import-x/no-internal-modules': 'off',
+            'import-x/no-unassigned-import': 'error',
+            'import-x/no-webpack-loader-syntax': 'error',
         },
         settings: {
-            'import/parsers': {
+            'import-x/parsers': {
                 '@typescript-eslint/parser': ['.ts'],
             },
-            'import/resolver': {
+            'import-x/resolver': {
                 typescript: {
                     project: path.join(_dirname, 'tsconfig.eslint.json'),
                     alwaysTryTypes: true, // This helps with JS files importing TS modules
