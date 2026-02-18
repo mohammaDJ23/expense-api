@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-MODE="ci"
+PIPELINE="ci"
 ENVIRONMENT="production"
-COMPOSE_FILE="docker-compose.${MODE}.yml"
+COMPOSE_FILE="docker-compose.ci.yml"
 
 source ./scripts/common/docker/createImageName.sh
 source ./scripts/common/docker/setImageNameOutput.sh
