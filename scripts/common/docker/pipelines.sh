@@ -40,3 +40,12 @@ ci_production_pipeline() {
 
     return $?
 }
+
+production_pipeline() {
+    run_step "check_daemon" &&
+    run_step "run_compose" &&
+    run_step "wait_for_compose" &&
+    run_step "show_status"
+
+    return $?
+}
