@@ -7,6 +7,8 @@ services:
             - DATABASE_PASSWORD_FILE=/run/secrets/database_password
             - REDIS_PASSWORD_FILE=/run/secrets/redis_password
             - JWT_SECRET_FILE=/run/secrets/jwt_secret
+        ports:
+            - '127.0.0.1:3000:3000'
         networks:
             - expense-api-network
         healthcheck:
