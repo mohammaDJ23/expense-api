@@ -106,6 +106,7 @@ services:
             - BACKUP_FORMAT=sql
             - BACKUP_COMPRESS=gzip
             - BACKUP_RETAIN_DAYS=0
+            - CONTAINER_ENABLE_MONITORING=0
         secrets:
             - database_password
             - smtp_password
@@ -114,7 +115,7 @@ services:
         healthcheck:
             test:
                 - 'CMD-SHELL'
-                - 'pg_isready -U expense_api'
+                - 'pg_isready -h postgres -U expense_api'
             interval: 15s
             timeout: 5s
             start_period: 30s
@@ -126,15 +127,8 @@ services:
         mem_limit: 256M
         mem_reservation: 128M
         cpus: '0.25'
-        init: true
         security_opt:
             - no-new-privileges:true
-        cap_drop:
-            - ALL
-        cap_add:
-            - DAC_OVERRIDE
-            - SETGID
-            - SETUID
         logging:
             driver: 'json-file'
             options:
