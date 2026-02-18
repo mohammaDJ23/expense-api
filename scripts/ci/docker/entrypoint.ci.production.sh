@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-MODE="ci_production"
+PIPELINE="ci_production"
 ENVIRONMENT="production"
 COMPOSE_FILE="docker-compose.ci.yml"
 

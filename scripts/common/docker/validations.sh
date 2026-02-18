@@ -3,9 +3,9 @@
 set -euo pipefail
 
 check_args() {
-    local mode_pattern='^(development|ci|ci_production|production)$'
-    if [[ ! "${MODE}" =~ $mode_pattern ]]; then
-        log_error "Invalid MODE value: '${MODE}'"
+    local pipeline_pattern='^(development|ci|ci_production|production)$'
+    if [[ ! "${PIPELINE}" =~ $pipeline_pattern ]]; then
+        log_error "Invalid PIPELINE value: '${PIPELINE}'"
         log_error "Valid values: development, ci, ci_production or production"
         return 1
     fi

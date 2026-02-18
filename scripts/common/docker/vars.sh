@@ -3,7 +3,7 @@
 set -euo pipefail
 
 init_vars() {
-    readonly MODE="${INPUT_MODE:-${MODE:-}}"
+    readonly PIPELINE="${INPUT_PIPELINE:-${PIPELINE:-}}"
     readonly COMPOSE_FILE="${INPUT_COMPOSE_FILE:-${COMPOSE_FILE:-}}"
     readonly IMAGE_NAME="${INPUT_IMAGE_NAME:-${IMAGE_NAME:-}}"
 
