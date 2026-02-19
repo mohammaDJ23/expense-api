@@ -25,7 +25,7 @@ const COMMITS = [
     'release',
 ];
 
-// eslint-disable-next-line import/no-commonjs
+// eslint-disable-next-line import-x/no-commonjs
 module.exports = {
     rules: {
         'commit-message-format': [2, 'always'],
