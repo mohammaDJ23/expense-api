@@ -4,6 +4,8 @@ import { DocumentBuilder, SwaggerModule as NestSwaggerModule } from '@nestjs/swa
 
 import * as packageJson from '../../../../package.json';
 
+import { DESCRIPTION, JSON_PATH, PATH, TITLE, VERSION } from './swagger.constants';
+
 interface IHttpAdapterHost extends HttpAdapterHost<
     AbstractHttpAdapter<unknown, unknown, unknown>
 > {}
@@ -21,27 +23,19 @@ export class SwaggerService implements OnApplicationBootstrap {
 
         const app = httpAdapter.getInstance<INestApplication>();
 
-        const apiVersion = packageJson.version || '1.0.0';
+        const apiVersion = packageJson.version || VERSION;
 
         const configBuilder = new DocumentBuilder()
-            .setTitle('The expense-api documentation')
-            .setDescription(
-                `
-                    The Expense API provides endpoints for:
-                    • Creating and managing expense reports
-                    • Uploading and attaching receipt images
-                    • Submitting expenses for approval
-                    • Tracking reimbursement status
-                    • Generating expense analytics and reports
-                `,
-            )
+            .setTitle(TITLE)
+            .setDescription(DESCRIPTION)
             .addBearerAuth()
             .setVersion(apiVersion);
 
         const config = configBuilder.build();
         const document = NestSwaggerModule.createDocument(app, config);
 
-        const path = 'api';
-        NestSwaggerModule.setup(path, app, document);
+        NestSwaggerModule.setup(PATH, app, document, {
+            jsonDocumentUrl: JSON_PATH,
+        });
     }
 }
