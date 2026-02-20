@@ -3,7 +3,7 @@ import { HealthIndicatorResult } from '@nestjs/terminus';
 
 import { RedisService } from '@liaoliaots/nestjs-redis';
 
-import { REDIS_NAME } from 'src/common/constants/redis.constants';
+import { REDIS_NAME } from 'src/common/constants';
 
 import { HealthEntity } from '../../domain/entities/health.entity';
 import { IHealthIndicator } from '../../domain/interfaces/healthIndicator.interface';

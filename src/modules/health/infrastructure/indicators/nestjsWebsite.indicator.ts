@@ -4,9 +4,10 @@ import { HealthIndicatorResult } from '@nestjs/terminus';
 
 import { firstValueFrom } from 'rxjs';
 
+import { NESTJS_WEBSITE_NAME } from 'src/common/constants';
+
 import { HealthEntity } from '../../domain/entities/health.entity';
 import { IHealthIndicator } from '../../domain/interfaces/healthIndicator.interface';
-import { NESTJS_WEBSITE_NAME } from '../constants/nestjsWebsite.constants';
 
 @Injectable()
 export class NestJsWebsiteIndicator implements IHealthIndicator {

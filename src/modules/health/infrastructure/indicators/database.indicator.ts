@@ -4,7 +4,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 
 import { DataSource } from 'typeorm';
 
-import { DATABASE_NAME } from 'src/common/constants/database.constants';
+import { DATABASE_NAME } from 'src/common/constants';
 
 import { HealthEntity } from '../../domain/entities/health.entity';
 import { IHealthIndicator } from '../../domain/interfaces/healthIndicator.interface';
