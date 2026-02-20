@@ -1,3 +1,47 @@
+## [1.1.0](https://github.com/mohammaDJ23/expense-api/compare/v1.0.6...v1.1.0) (2026-02-20)
+
+### ✨ Features
+
+- 037364 add the swagger configuration and module ([bab535f](https://github.com/mohammaDJ23/expense-api/commit/bab535f709a41a77a0184c922a553381310bb3ce))
+
+### 🐛 Bug Fixes
+
+- 880392 use import-x/no-commonjs ([86196a6](https://github.com/mohammaDJ23/expense-api/commit/86196a6bb5654c40953d4f88f591829623d9f8f7))
+
+### ♻️ Code Refactoring
+
+- 338882 split the constants to domains specific ([88e4acc](https://github.com/mohammaDJ23/expense-api/commit/88e4acc838b28c5585753e22244c4aa992d53387))
+
+### 🚀 Continuous Deployment
+
+- 880392 add the smtp_password secret ([7bf2c16](https://github.com/mohammaDJ23/expense-api/commit/7bf2c16c9cf92de8879ae11a2d39a35817c86cb6))
+
+### 🔧 Chores
+
+- 037364 add the resolveJsonModule option ([9ec8b3a](https://github.com/mohammaDJ23/expense-api/commit/9ec8b3a3dbc77b0913d1be34c5ec385bc14e3742))
+- 037364 add the swagger and env-cmd packages ([927c426](https://github.com/mohammaDJ23/expense-api/commit/927c42621999ea1018b7ab8b292c4e4d8cdcf617))
+- 037364 add the version of the app as a provider ([e0f1677](https://github.com/mohammaDJ23/expense-api/commit/e0f16773dd3a6f4bb6a149d9b0592e6850cda3bc))
+- 037364 create the swagger constatns ([b49fba5](https://github.com/mohammaDJ23/expense-api/commit/b49fba55a4577a55dbfd73495c72c2076ed030b3))
+- 037364 ignore no-unsafe rules ([a056879](https://github.com/mohammaDJ23/expense-api/commit/a056879fb04a128c26c2148ed294ec4ae8c7625f))
+- 037364 move the version constants to the global constants ([8ad6c5f](https://github.com/mohammaDJ23/expense-api/commit/8ad6c5ffeceb294fb6d278af0dbfc111e7aab80d))
+- 880392 add an internal network for redis and postgres ([ca38b32](https://github.com/mohammaDJ23/expense-api/commit/ca38b3269d0f80f77fe08d7622c645c4c45e9d90))
+- 880392 add init option and make more robust around the healthcheck ([6e843b4](https://github.com/mohammaDJ23/expense-api/commit/6e843b4ac0d202b78baf7720c45670f74bc167af))
+- 880392 add minimatch as overrides of pnpm ([708b6f5](https://github.com/mohammaDJ23/expense-api/commit/708b6f5ba8687f87d979160f43489b94b4d5f393))
+- 880392 add some security options ([08e5588](https://github.com/mohammaDJ23/expense-api/commit/08e55889afe7d5bba39625b8c14bbaf58bc63639))
+- 880392 add the healthcheck for the postgres-backup service ([3a07abf](https://github.com/mohammaDJ23/expense-api/commit/3a07abf3eb624a208d9f325b09fd1fe8b288eab5))
+- 880392 add the port of production ([079f29d](https://github.com/mohammaDJ23/expense-api/commit/079f29d58df17aa9d52ec59f978724528857e59b))
+- 880392 add the postgres backup service ([1dda8d8](https://github.com/mohammaDJ23/expense-api/commit/1dda8d83c60596171c703df337a2d2f40c174ca3))
+- 880392 add the production pipeline ([6970f8f](https://github.com/mohammaDJ23/expense-api/commit/6970f8fdf0100ea1749f7cc3ffc5aafaf85d62e1))
+- 880392 create the compose file for production mode ([5646172](https://github.com/mohammaDJ23/expense-api/commit/5646172e8ebd3a9b965a27c6f74db1554d4212a4))
+- 880392 remove some security options caused to do not run the postgres backup service ([e24c47c](https://github.com/mohammaDJ23/expense-api/commit/e24c47c47f995473fc340c666bbe39ef6d114e65))
+- 880392 remove the quotes around the POSTGRES_INITDB_ARGS env ([668edf7](https://github.com/mohammaDJ23/expense-api/commit/668edf75a929c10ca91f6696b3288b400fd3fbae))
+- 880392 rename all MODE to PIPELINE ([6201476](https://github.com/mohammaDJ23/expense-api/commit/6201476ce7c9a0c8e57590a55ac0f0cf7e6d4c91))
+- 880392 update lockfile with minimatch overrides ([671277b](https://github.com/mohammaDJ23/expense-api/commit/671277b1a6ab2fc684128325a5e5f8794ef01830))
+- 880392 update the healthcheck options ([3c17c2d](https://github.com/mohammaDJ23/expense-api/commit/3c17c2de7f6bb1286f48525bc52dc9e928b6ef42))
+- 880392 use 'eslint-plugin-import-x' instead of 'eslint-plugin-import' ([ecdbadf](https://github.com/mohammaDJ23/expense-api/commit/ecdbadf8e095db27620afe70e4e14412dd9225c4))
+- 880392 use the key=value format ([8f2db1f](https://github.com/mohammaDJ23/expense-api/commit/8f2db1f6717e392ad5cce77cf69856a9c4046ba7))
+- 880392 use the key=value format ([1aa9d46](https://github.com/mohammaDJ23/expense-api/commit/1aa9d46549a4abac8880d8c31623d9c97b7b675e))
+
 ## [1.0.6](https://github.com/mohammaDJ23/expense-api/compare/v1.0.5...v1.0.6) (2026-02-17)
 
 ### 🐛 Bug Fixes
