@@ -1,0 +1,1 @@
+export const VERSION_PROVIDER = 'VERSION_PROVIDER';
