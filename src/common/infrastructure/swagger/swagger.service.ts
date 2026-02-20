@@ -2,7 +2,7 @@ import { Injectable, OnApplicationBootstrap, INestApplication, Inject } from '@n
 import { AbstractHttpAdapter, HttpAdapterHost } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule as NestSwaggerModule } from '@nestjs/swagger';
 
-import { VERSION_PROVIDER } from '../version/version.constants';
+import { VERSION_PROVIDER } from '../../constants/version.constants';
 
 import { DESCRIPTION, JSON_PATH, PATH, TITLE, VERSION } from './swagger.constants';
 
