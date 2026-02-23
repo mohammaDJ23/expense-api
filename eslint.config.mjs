@@ -96,6 +96,19 @@ export default defineConfig([
     // TypeScript strict configuration
     {
         files: ['**/*.ts'],
+        languageOptions: {
+            parser: tseslint.parser,
+            parserOptions: {
+                project: path.join(_dirname, 'tsconfig.eslint.json'),
+                tsconfigRootDir: _dirname,
+                ecmaVersion: 'latest',
+                sourceType: 'module',
+                warnOnUnsupportedTypeScriptVersion: false,
+            },
+        },
+        plugins: {
+            '@typescript-eslint': tseslint.plugin,
+        },
         extends: [...tseslint.configs.strictTypeChecked, ...tseslint.configs.stylisticTypeChecked],
     },
 
@@ -114,6 +127,7 @@ export default defineConfig([
 
     // Import plugin configuration
     {
+        files: ['**/*.ts', '**/*.js'],
         plugins: {
             'import-x': importPlugin,
         },
@@ -122,16 +136,7 @@ export default defineConfig([
             'import-x/order': [
                 'error',
                 {
-                    groups: [
-                        'builtin',
-                        'external',
-                        'internal',
-                        'parent',
-                        'sibling',
-                        'index',
-                        'object',
-                        'type',
-                    ],
+                    groups: ['builtin', 'external', 'internal', 'type'],
                     pathGroups: [
                         {
                             pattern: '@nestjs/**',
@@ -151,9 +156,26 @@ export default defineConfig([
                     'newlines-between': 'always',
                 },
             ],
+            'no-restricted-imports': [
+                'error',
+                {
+                    patterns: [
+                        {
+                            group: ['../*'],
+                            message: 'Use @/* imports instead of relative imports',
+                        },
+                    ],
+                },
+            ],
+            'import-x/no-relative-parent-imports': [
+                'error',
+                {
+                    ignore: ['@/*'],
+                },
+            ],
+            'import-x/no-relative-packages': 'error',
             'import-x/no-duplicates': 'error',
             'import-x/no-cycle': 'error',
-            'import-x/no-useless-path-segments': 'error',
             'import-x/no-default-export': 'off',
             'import-x/no-named-as-default': 'error',
             'import-x/no-unresolved': 'error',
@@ -256,23 +278,6 @@ export default defineConfig([
         },
         rules: {
             ...jestPlugin.configs.recommended.rules,
-        },
-    },
-
-    // Global configuration
-    {
-        languageOptions: {
-            globals: {
-                ...globals.node,
-                ...globals.jest,
-                ...globals.es2022,
-            },
-            sourceType: 'module',
-            parserOptions: {
-                project: path.join(_dirname, 'tsconfig.eslint.json'),
-                tsconfigRootDir: import.meta.dirname,
-                warnOnUnsupportedTypeScriptVersion: false,
-            },
         },
     },
 
