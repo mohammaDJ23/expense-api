@@ -1,6 +1,6 @@
-import type { HealthIndicatorResult, HealthIndicatorStatus } from '@nestjs/terminus';
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
-import { getCurrentUTCTimestamp } from 'src/common/utils/getCurrentUTCTimestamp.util';
+import type { HealthIndicatorResult, HealthIndicatorStatus } from '@nestjs/terminus';
 
 export class HealthEntity {
     private readonly timestamp: string;

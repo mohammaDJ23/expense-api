@@ -1,5 +1,5 @@
-import { type NamingStrategyInterface, DefaultNamingStrategy } from 'typeorm';
-import { snakeCase } from 'typeorm/util/StringUtils';
+import { DefaultNamingStrategy, type NamingStrategyInterface } from 'typeorm';
+import { snakeCase } from 'typeorm/util/StringUtils.js';
 
 export class CustomNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
     override tableName(targetName: string, userSpecifiedName: string): string {

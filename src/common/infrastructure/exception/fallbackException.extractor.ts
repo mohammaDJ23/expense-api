@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 
-import { INTERNAL_SERVER_ERROR } from 'src/common/constants/exception.constants';
+import { INTERNAL_SERVER_ERROR } from '@/common/constants/exception.constants';
 
 import { ExceptionResponseBuilder } from './exceptionResponse.builder';
 

@@ -1,6 +1,5 @@
-import type { ArgumentsHost } from '@nestjs/common';
-
 import type { IExceptionResponse } from './exceptionResponse.interface';
+import type { ArgumentsHost } from '@nestjs/common';
 
 export interface IHostHandler {
     canHandle: (host: ArgumentsHost) => boolean;

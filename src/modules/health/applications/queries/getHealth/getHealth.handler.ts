@@ -1,10 +1,10 @@
 import { ServiceUnavailableException } from '@nestjs/common';
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
+import { type IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { type HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
 
-import { DatabaseIndicator } from 'src/modules/health/infrastructure/indicators/database.indicator';
-import { NestJsWebsiteIndicator } from 'src/modules/health/infrastructure/indicators/nestjsWebsite.indicator';
-import { RedisIndicator } from 'src/modules/health/infrastructure/indicators/redis.indicator';
+import { DatabaseIndicator } from '@/modules/health/infrastructure/indicators/database.indicator';
+import { NestJsWebsiteIndicator } from '@/modules/health/infrastructure/indicators/nestjsWebsite.indicator';
+import { RedisIndicator } from '@/modules/health/infrastructure/indicators/redis.indicator';
 
 import { IGetHealthQuery } from './getHealth.query';
 
