@@ -1,4 +1,8 @@
-import { ExceptionFilter as GlobalExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
+import {
+    Catch,
+    type ExceptionFilter as GlobalExceptionFilter,
+    type ArgumentsHost,
+} from '@nestjs/common';
 
 import { ExceptionResponseBuilder } from './exceptionResponse.builder';
 import { FallbackExceptionExtractor } from './fallbackException.extractor';

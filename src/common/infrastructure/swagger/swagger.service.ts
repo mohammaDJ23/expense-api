@@ -1,12 +1,17 @@
-import { Injectable, OnApplicationBootstrap, INestApplication, Inject } from '@nestjs/common';
+import {
+    Injectable,
+    type OnApplicationBootstrap,
+    type INestApplication,
+    Inject,
+} from '@nestjs/common';
 import { AbstractHttpAdapter, HttpAdapterHost } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule as NestSwaggerModule } from '@nestjs/swagger';
 
-import { VERSION_PROVIDER } from '../../constants/version.constants';
+import { VERSION_PROVIDER } from '@/common/constants/version.constants';
 
 import { DESCRIPTION, JSON_PATH, PATH, TITLE, VERSION } from './swagger.constants';
 
-import type { IVersionProvider } from '../version/version.interface';
+import type { IVersionProvider } from '@/common/infrastructure/version/version.interface';
 
 interface IHttpAdapterHost extends HttpAdapterHost<
     AbstractHttpAdapter<unknown, unknown, unknown>

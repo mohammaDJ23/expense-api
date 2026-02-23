@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-
 import { RedisModule as RM } from '@liaoliaots/nestjs-redis';
 
 import { RedisConfigService } from './redisConfig.service';

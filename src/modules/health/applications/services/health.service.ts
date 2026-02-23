@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { HealthCheckResult } from '@nestjs/terminus';
 
-import { GetHealthHandler } from '../queries/getHealth/getHealth.handler';
+import { GetHealthHandler } from '@/modules/health/applications/queries/getHealth/getHealth.handler';
+
+import type { HealthCheckResult } from '@nestjs/terminus';
 
 @Injectable()
 export class HealthSerice {

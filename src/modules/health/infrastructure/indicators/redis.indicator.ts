@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { HealthIndicatorResult } from '@nestjs/terminus';
-
 import { RedisService } from '@liaoliaots/nestjs-redis';
 
-import { REDIS_NAME } from 'src/common/constants/redis.constants';
+import { REDIS_NAME } from '@/common/constants/redis.constants';
+import { HealthEntity } from '@/modules/health/domain/entities/health.entity';
 
-import { HealthEntity } from '../../domain/entities/health.entity';
-import { IHealthIndicator } from '../../domain/interfaces/healthIndicator.interface';
+import type { IHealthIndicator } from '@/modules/health/domain/interfaces/healthIndicator.interface';
+import type { HealthIndicatorResult } from '@nestjs/terminus';
 
 @Injectable()
 export class RedisIndicator implements IHealthIndicator {

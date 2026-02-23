@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
-import { DATABASE_NAME } from 'src/common/constants/database.constants';
-import { readSecret } from 'src/common/utils/readSecret.util';
+import { DATABASE_NAME } from '@/common/constants/database.constants';
+import { readSecret } from '@/common/utils/readSecret.util';
 
 import { DATABASE_PORT } from './database.constants';
 import { CustomNamingStrategy } from './naming.strategy';
+
+import type { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
 @Injectable()
 export class DatabaseConfigService implements TypeOrmOptionsFactory {

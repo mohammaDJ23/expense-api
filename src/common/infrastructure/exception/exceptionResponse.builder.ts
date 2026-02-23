@@ -1,4 +1,4 @@
-import { getCurrentUTCTimestamp } from 'src/common/utils/getCurrentUTCTimestamp.util';
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
 import type { IExceptionResponse } from './exceptionResponse.interface';
 

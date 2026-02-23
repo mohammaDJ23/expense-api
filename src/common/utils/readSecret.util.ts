@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { AppException } from '../kernel/exceptions/app.exception';
+import { AppException } from '@/common/kernel/exceptions/app.exception';
 
 export function readSecret(secretPath: string): string {
     try {

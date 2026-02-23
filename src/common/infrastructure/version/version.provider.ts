@@ -1,8 +1,8 @@
-import type { Provider } from '@nestjs/common';
-
-import { VERSION_PROVIDER } from '../../constants/version.constants';
+import { VERSION_PROVIDER } from '@/common/constants/version.constants';
 
 import { VersionProviderImplementation } from './version.implementation';
+
+import type { Provider } from '@nestjs/common';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const VersionProvider: Provider = {

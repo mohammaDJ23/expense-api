@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { RedisModuleOptions, RedisOptionsFactory } from '@liaoliaots/nestjs-redis';
-
-import { readSecret } from 'src/common/utils/readSecret.util';
+import { readSecret } from '@/common/utils/readSecret.util';
 
 import { REDIS_DB, REDIS_PORT, REDIS_USERNAME } from './redis.constants';
+
+import type { RedisModuleOptions, RedisOptionsFactory } from '@liaoliaots/nestjs-redis';
 
 @Injectable()
 export class RedisConfigService implements RedisOptionsFactory {

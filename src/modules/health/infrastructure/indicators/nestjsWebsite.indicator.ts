@@ -1,13 +1,16 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { HealthIndicatorResult } from '@nestjs/terminus';
-
 import { firstValueFrom } from 'rxjs';
 
-import { HealthEntity } from '../../domain/entities/health.entity';
-import { IHealthIndicator } from '../../domain/interfaces/healthIndicator.interface';
-import { NESTJS_WEBSITE_NAME } from '../constants/nestjsWebsite.constants';
+import { HealthEntity } from '@/modules/health/domain/entities/health.entity';
+import { NESTJS_WEBSITE_NAME } from '@/modules/health/infrastructure/constants/nestjsWebsite.constants';
 
+import { DatabaseIndicator } from './database.indicator';
+
+import type { IHealthIndicator } from '@/modules/health/domain/interfaces/healthIndicator.interface';
+import type { HealthIndicatorResult } from '@nestjs/terminus';
+
+console.log(DatabaseIndicator);
 @Injectable()
 export class NestJsWebsiteIndicator implements IHealthIndicator {
     constructor(private readonly httpService: HttpService) {}
