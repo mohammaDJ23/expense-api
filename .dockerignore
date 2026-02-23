@@ -56,8 +56,5 @@ Dockerfile*
 .git
 .gitignore
 
-# NestJS specific
-nest-cli.json
-
 secrets
 TODO.txt
