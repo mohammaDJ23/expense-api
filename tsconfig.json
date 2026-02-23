@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
-        "module": "nodenext",
-        "moduleResolution": "nodenext",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "verbatimModuleSyntax": true,
         "resolveJsonModule": true,
         "resolvePackageJsonExports": true,
         "esModuleInterop": true,
@@ -21,6 +22,9 @@
         "forceConsistentCasingInFileNames": true,
         "noImplicitAny": false,
         "strictBindCallApply": false,
-        "noFallthroughCasesInSwitch": false
+        "noFallthroughCasesInSwitch": false,
+        "paths": {
+            "@/*": ["src/*"]
+        }
     }
 }
