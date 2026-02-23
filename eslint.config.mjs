@@ -136,7 +136,13 @@ export default defineConfig([
             'import-x/order': [
                 'error',
                 {
-                    groups: ['builtin', 'external', 'internal', 'type'],
+                    groups: [
+                        'builtin',
+                        'external',
+                        'internal',
+                        ['parent', 'sibling', 'index'],
+                        'type',
+                    ],
                     pathGroups: [
                         {
                             pattern: '@nestjs/**',
@@ -146,9 +152,11 @@ export default defineConfig([
                         {
                             pattern: '@/**',
                             group: 'internal',
+                            position: 'after',
                         },
                     ],
-                    pathGroupsExcludedImportTypes: ['builtin'],
+                    pathGroupsExcludedImportTypes: ['type'],
+                    distinctGroup: false,
                     alphabetize: {
                         order: 'asc',
                         caseInsensitive: true,
@@ -163,6 +171,11 @@ export default defineConfig([
                         {
                             group: ['../*'],
                             message: 'Use @/* imports instead of relative imports',
+                        },
+                        {
+                            group: ['./*/*'],
+                            message:
+                                'Use @/* imports for nested files, only allow direct ./ imports',
                         },
                     ],
                 },
