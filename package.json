@@ -12,7 +12,7 @@
     "pnpm": {
         "overrides": {
             "@isaacs/brace-expansion": ">=5.0.1",
-            "minimatch": ">=10.2.1"
+            "minimatch": ">=10.2.3"
         }
     },
     "scripts": {
@@ -57,7 +57,7 @@
         "@nestjs/config": "^4.0.3",
         "@nestjs/core": "^11.0.1",
         "@nestjs/cqrs": "^11.0.3",
-        "@nestjs/platform-express": "^11.0.1",
+        "@nestjs/platform-express": "^11.1.14",
         "@nestjs/swagger": "^11.2.6",
         "@nestjs/terminus": "^11.0.0",
         "@nestjs/throttler": "^6.5.0",
