@@ -3,7 +3,6 @@ import { type IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { type HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
 
 import { DatabaseIndicator } from '@/modules/health/infrastructure/indicators/database.indicator';
-import { NestJsWebsiteIndicator } from '@/modules/health/infrastructure/indicators/nestjsWebsite.indicator';
 import { RedisIndicator } from '@/modules/health/infrastructure/indicators/redis.indicator';
 
 import { IGetHealthQuery } from './getHealth.query';
@@ -13,7 +12,6 @@ export class GetHealthHandler implements IQueryHandler<IGetHealthQuery> {
     constructor(
         private readonly databaseIndicator: DatabaseIndicator,
         private readonly redisIndicator: RedisIndicator,
-        private readonly nestJsWebsiteIndicator: NestJsWebsiteIndicator,
         private readonly health: HealthCheckService,
     ) {}
 
@@ -22,7 +20,6 @@ export class GetHealthHandler implements IQueryHandler<IGetHealthQuery> {
             return await this.health.check([
                 () => this.databaseIndicator.check(),
                 () => this.redisIndicator.check(),
-                () => this.nestJsWebsiteIndicator.check(),
             ]);
         } catch (error) {
             throw new ServiceUnavailableException(error);

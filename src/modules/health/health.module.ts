@@ -4,21 +4,14 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { TerminusModule } from '@nestjs/terminus';
 
 import { GetHealthHandler } from '@/modules/health/applications/queries/getHealth/getHealth.handler';
-import { HealthSerice } from '@/modules/health/applications/services/health.service';
+import { HealthService } from '@/modules/health/applications/services/health.service';
 import { DatabaseIndicator } from '@/modules/health/infrastructure/indicators/database.indicator';
-import { NestJsWebsiteIndicator } from '@/modules/health/infrastructure/indicators/nestjsWebsite.indicator';
 import { RedisIndicator } from '@/modules/health/infrastructure/indicators/redis.indicator';
 import { HealthController } from '@/modules/health/interfaces/controllers/v1.controller';
 
 @Module({
     imports: [CqrsModule, HttpModule, TerminusModule],
     controllers: [HealthController],
-    providers: [
-        HealthSerice,
-        GetHealthHandler,
-        DatabaseIndicator,
-        RedisIndicator,
-        NestJsWebsiteIndicator,
-    ],
+    providers: [HealthService, GetHealthHandler, DatabaseIndicator, RedisIndicator],
 })
 export class HealthModule {}
