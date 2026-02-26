@@ -5,6 +5,7 @@ import { DatabaseModule } from '@/common/infrastructure/database/database.module
 import { ExceptionModule } from '@/common/infrastructure/exception/exception.module';
 import { RedisModule } from '@/common/infrastructure/redis/redis.module';
 import { SwaggerModule } from '@/common/infrastructure/swagger/swagger.module';
+import { ThrottlerModule } from '@/common/infrastructure/throttler/throttler.module';
 import { VersionModule } from '@/common/infrastructure/version/version.module';
 
 @Module({
@@ -15,6 +16,7 @@ import { VersionModule } from '@/common/infrastructure/version/version.module';
         DatabaseModule,
         RedisModule,
         SwaggerModule,
+        ThrottlerModule,
     ],
 })
 export class CommonModule {}
