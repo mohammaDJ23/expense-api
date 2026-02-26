@@ -1,7 +1,9 @@
-export function isDevelopment(): boolean {
-    return process.env.NODE_ENV === 'development';
+import type { ConfigService } from '@nestjs/config';
+
+export function isDevelopment(configService: ConfigService): boolean {
+    return configService.get<string>('NODE_ENV') === 'development';
 }
 
-export function isProduction(): boolean {
-    return process.env.NODE_ENV === 'production';
+export function isProduction(configService: ConfigService): boolean {
+    return configService.get<string>('NODE_ENV') === 'production';
 }
