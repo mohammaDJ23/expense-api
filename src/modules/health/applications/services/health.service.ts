@@ -5,7 +5,7 @@ import { GetHealthHandler } from '@/modules/health/applications/queries/getHealt
 import type { HealthCheckResult } from '@nestjs/terminus';
 
 @Injectable()
-export class HealthSerice {
+export class HealthService {
     constructor(private readonly getHealthHandler: GetHealthHandler) {}
 
     getHealth(): Promise<HealthCheckResult> {
