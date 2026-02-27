@@ -140,7 +140,7 @@ main() {
         return 0
     fi
 
-    log_error "Faild to create an id"
+    log_error "Failed to create an id"
     return 1
 }
 

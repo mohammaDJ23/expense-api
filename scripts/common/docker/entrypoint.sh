@@ -31,7 +31,7 @@ run_pipeline() {
     local pipeline_func="${PIPELINES[${PIPELINE}]}"
     
     if [ -z "${pipeline_func}" ] || ! declare -f "${pipeline_func}" >/dev/null 2>&1; then
-        log_error "Pipeline for pipeline '${MPIPELINEE}' not found"
+        log_error "Pipeline for pipeline '${PIPELINE}' not found"
         return 1
     fi
     
