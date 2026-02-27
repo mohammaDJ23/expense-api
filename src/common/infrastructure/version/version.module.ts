@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { VERSION_PROVIDER } from '@/common/constants/version.constants';
-
+import { VERSION_PROVIDER } from './version.constants';
 import { VersionProvider } from './version.provider';
 
 @Module({

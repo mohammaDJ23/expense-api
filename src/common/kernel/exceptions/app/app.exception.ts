@@ -1,4 +1,4 @@
-import { INTERNAL_SERVER_ERROR } from '@/common/constants/exception.constants';
+import { INTERNAL_SERVER_ERROR } from '@/common/infrastructure/exception/exception.constants';
 
 import { ErrorStrategy } from './error.strategy';
 import { FallbackStrategy } from './fallback.strategy';

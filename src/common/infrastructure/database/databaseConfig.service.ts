@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { DATABASE_NAME } from '@/common/constants/database.constants';
 import { readSecret } from '@/common/utils/readSecret.util';
 
-import { DATABASE_PORT } from './database.constants';
+import { DATABASE_NAME, DATABASE_PORT } from './database.constants';
 import { CustomNamingStrategy } from './naming.strategy';
 
 import type { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';

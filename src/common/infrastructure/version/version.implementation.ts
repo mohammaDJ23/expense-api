@@ -3,7 +3,7 @@ import { join } from 'path';
 
 import { Injectable } from '@nestjs/common';
 
-import { AppException } from '@/common/kernel/exceptions/app.exception';
+import { AppException } from '@/common/kernel/exceptions/app/app.exception';
 
 import type { IVersionProvider } from './version.interface';
 

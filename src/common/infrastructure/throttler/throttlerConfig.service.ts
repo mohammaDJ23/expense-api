@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
 
-import { AppException } from '@/common/kernel/exceptions/app.exception';
+import { AppException } from '@/common/kernel/exceptions/app/app.exception';
 
 import { THROTTLE_DEFAULT_NAME, THROTTLE_LIMIT, THROTTLE_TTL } from './throttler.constants';
 
