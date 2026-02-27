@@ -1,3 +1,42 @@
+## [1.1.1](https://github.com/mohammaDJ23/expense-api/compare/v1.1.0...v1.1.1) (2026-02-27)
+
+### 🐛 Bug Fixes
+
+- 125823 fix the modules imported from the related pacakges ([26b6995](https://github.com/mohammaDJ23/expense-api/commit/26b69950112172d29eb1e1432c4b3bdcb5b1c51e))
+- 393315 add qs inside overrides to ignore the security exception ([0bd6a0a](https://github.com/mohammaDJ23/expense-api/commit/0bd6a0a7960694e3022172da894482fb5820707a))
+- 393315 import RedisModule ([830e470](https://github.com/mohammaDJ23/expense-api/commit/830e470f373591d27907c871c665d6c2819d74e1))
+- 393315 rename HealthService ([22df321](https://github.com/mohammaDJ23/expense-api/commit/22df32162046c229bbbf88dd0109843ad6c6892e))
+- 393315 update some packages to ignore the security exception ([d473861](https://github.com/mohammaDJ23/expense-api/commit/d47386153b3562cf775aa707c0f79f293fad0d3c))
+
+### ♻️ Code Refactoring
+
+- 364295 use INTERNAL_SERVICE_ERROR ([d29ddcf](https://github.com/mohammaDJ23/expense-api/commit/d29ddcfa93eb115be4d9fb4327fd8b5b9b127a0e))
+- 364295 use strategy pattern for extract the message of the error ([70dafc5](https://github.com/mohammaDJ23/expense-api/commit/70dafc5a21373ee9f92284e57e4e2d8ad9548f7b))
+
+### 🔧 Configurations
+
+- 271190 add ES_JAVA_OPTS env ([1ab14df](https://github.com/mohammaDJ23/expense-api/commit/1ab14df96bbd4b304bdc6ecb3d373814eb015aaa))
+- 271190 add the elasticsearch and filebeat ([6e94799](https://github.com/mohammaDJ23/expense-api/commit/6e9479992762dc849939eb51e6fe928a75368ff3))
+- 271190 add the secret related to elasticsearch ([4acdac3](https://github.com/mohammaDJ23/expense-api/commit/4acdac3a204df1b6c7c891458cfbd3734509ff48))
+- 393315 add the throttle envs ([0217000](https://github.com/mohammaDJ23/expense-api/commit/0217000b7d09a17db11df2a5d76a511aef8b0d1b))
+- 393315 add the throttle packages ([b3cde10](https://github.com/mohammaDJ23/expense-api/commit/b3cde10c7301d2799bbc9593154d563470da4d41))
+- 393315 add the throttler configuration and setup ([a7b232e](https://github.com/mohammaDJ23/expense-api/commit/a7b232eec2214fabf93fd2a8f51c3deee19f6c0c))
+- 393315 add ThrottlerModule to CommonModule ([0669703](https://github.com/mohammaDJ23/expense-api/commit/066970385d9eefea005111091cba598398e6ee4f))
+
+### 🔧 Chores
+
+- 125823 add some configuration related to parser, import groups and avoiding relative pathes ([81bf109](https://github.com/mohammaDJ23/expense-api/commit/81bf109e128e7de2f9adae05f47f70a6e27d7e01))
+- 125823 add the custom pathes which starts with @ ([361f293](https://github.com/mohammaDJ23/expense-api/commit/361f2933b08ac9d0219cb2bd094738e73aac6ddc))
+- 125823 add the ts config to the nest cli file and also do not ignore for docker ([6484357](https://github.com/mohammaDJ23/expense-api/commit/6484357a801384e672b64e6d41cc92adc9dd048d))
+- 125823 modify the import pattern based on the rules ([7e3bd8b](https://github.com/mohammaDJ23/expense-api/commit/7e3bd8bb27c184422bd5db91aeaa263eb6b2e691))
+- 125823 modify the pattern for import ([4055c1a](https://github.com/mohammaDJ23/expense-api/commit/4055c1aa384209212c562e53ae2d938420833d1d))
+- 125823 remove the log of database ([cd199e8](https://github.com/mohammaDJ23/expense-api/commit/cd199e885740ef90b93fb58c743b86ec19d5e657))
+- 271190 add the pino configuration ([867b1a6](https://github.com/mohammaDJ23/expense-api/commit/867b1a6149cc1a4c360d0d1a59edf8f9029842b9))
+- 271190 export the version module and the provider name ([f784733](https://github.com/mohammaDJ23/expense-api/commit/f7847337141dd5b93c844c15dcef1e9a876a012f))
+- 393315 remove the nestj indicator for healthcheck ([8f2ca5e](https://github.com/mohammaDJ23/expense-api/commit/8f2ca5e748c2b0269ced88b4cd898b6beb635ed6))
+- 393315 use configService to extract dev and prod envs ([1fe9102](https://github.com/mohammaDJ23/expense-api/commit/1fe910240122aa7ca2cd00aa2e29b58223ff072d))
+- 686504 add the global exception ([b555e4d](https://github.com/mohammaDJ23/expense-api/commit/b555e4d1895f0f8d7854dba30948b8339d22a66d))
+
 ## [1.1.0](https://github.com/mohammaDJ23/expense-api/compare/v1.0.6...v1.1.0) (2026-02-20)
 
 ### ✨ Features
