@@ -221,6 +221,11 @@ services:
             - SETUID
             - SYS_CHROOT
             - KILL
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m'
+                max-file: '3'
 
     filebeat:
         image: docker.elastic.co/beats/filebeat:latest
@@ -259,6 +264,11 @@ services:
             - SETUID
             - CHOWN
             - SYS_PTRACE
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m'
+                max-file: '3'
 
 volumes:
     postgres-data:
