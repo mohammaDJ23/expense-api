@@ -44,6 +44,9 @@ services:
             options:
                 max-size: '10m'
                 max-file: '3'
+        labels:
+            service: expense-api
+            environment: production
 
     postgres:
         image: postgres:16-alpine
@@ -131,6 +134,15 @@ services:
         cpus: '0.25'
         security_opt:
             - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - CHOWN
+            - DAC_OVERRIDE
+            - FOWNER
+            - SETGID
+            - SETUID
+            - SYS_CHROOT
         logging:
             driver: 'json-file'
             options:
@@ -179,10 +191,82 @@ services:
                 max-size: '10m'
                 max-file: '3'
 
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:latest
+        environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=true
+            - ELASTIC_PASSWORD_FILE=/run/secrets/elasticsearch_password
+        volumes:
+            - elasticsearch-data:/usr/share/elasticsearch/data
+        secrets:
+            - elasticsearch_password
+        networks:
+            - expense-api-network-internal
+        restart: unless-stopped
+        mem_limit: 2G
+        mem_reservation: 512M
+        cpus: '1.0'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - CHOWN
+            - DAC_OVERRIDE
+            - FOWNER
+            - SETGID
+            - SETUID
+            - SYS_CHROOT
+            - KILL
+
+    filebeat:
+        image: docker.elastic.co/beats/filebeat:latest
+        volumes:
+            - /var/lib/docker/containers:/var/lib/docker/containers:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+            - filebeat-data:/usr/share/filebeat/data
+        environment:
+            - ELASTICSEARCH_HOSTS=elasticsearch:9200
+            - ELASTICSEARCH_USERNAME=elastic
+        entrypoint: >
+            sh -c "
+                export ELASTICSEARCH_PASSWORD=$$(cat /run/secrets/elasticsearch_password) &&
+                exec /usr/local/bin/docker-entrypoint -environment container
+            "
+        secrets:
+            - elasticsearch_password
+        networks:
+            - expense-api-network-internal
+        depends_on:
+            - elasticsearch
+        restart: unless-stopped
+        mem_limit: 256M
+        mem_reservation: 128M
+        cpus: '0.2'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - DAC_OVERRIDE
+            - FOWNER
+            - SETGID
+            - SETUID
+            - CHOWN
+            - SYS_PTRACE
+
 volumes:
     postgres-data:
         driver: local
     redis-data:
+        driver: local
+    elasticsearch-data:
+        driver: local
+    filebeat-data:
         driver: local
 
 secrets:
@@ -194,6 +278,8 @@ secrets:
         file: ./secrets/jwt_secret.txt
     smtp_password:
         file: ./secrets/smtp_password.txt
+    elasticsearch_password:
+        file: ./secrets/elasticsearch_password.txt
 
 networks:
     expense-api-network:
