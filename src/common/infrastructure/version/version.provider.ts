@@ -1,4 +1,4 @@
-import { VERSION_PROVIDER } from '@/common/constants/version.constants';
+import { VERSION_PROVIDER } from '@/common/infrastructure/version/version.constants';
 
 import { VersionProviderImplementation } from './version.implementation';
 

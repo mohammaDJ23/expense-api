@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
 
-import { VERSION_PROVIDER } from '@/common/constants/version.constants';
+import { VERSION_PROVIDER } from '@/common/infrastructure/version/version.constants';
 import { VersionModule } from '@/common/infrastructure/version/version.module';
 import { getNodeEnv } from '@/common/utils/environments.util';
 

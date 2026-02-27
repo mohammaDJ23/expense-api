@@ -7,7 +7,7 @@ import {
 import { AbstractHttpAdapter, HttpAdapterHost } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule as NestSwaggerModule } from '@nestjs/swagger';
 
-import { VERSION_PROVIDER } from '@/common/constants/version.constants';
+import { VERSION_PROVIDER } from '@/common/infrastructure/version/version.constants';
 
 import { DESCRIPTION, JSON_PATH, PATH, TITLE, VERSION } from './swagger.constants';
 

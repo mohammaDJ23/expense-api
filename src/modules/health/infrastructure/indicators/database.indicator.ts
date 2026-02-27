@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-import { DATABASE_NAME } from '@/common/constants/database.constants';
+import { DATABASE_NAME } from '@/common/infrastructure/database/database.constants';
 import { HealthEntity } from '@/modules/health/domain/entities/health.entity';
 
 import type { IHealthIndicator } from '@/modules/health/domain/interfaces/healthIndicator.interface';
