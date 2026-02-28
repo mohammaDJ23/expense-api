@@ -1,11 +1,32 @@
-import type { IErrorStrategy } from './errorStrategy.interface';
+import { HttpStatus } from '@nestjs/common';
 
-export class ErrorStrategy implements IErrorStrategy {
-    canHandle(error: unknown): boolean {
-        return error instanceof Error && Boolean(error.message);
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
+
+import { INTERNAL_SERVER_ERROR } from './exception.constants';
+
+import type { IExceptionStrategy } from './strategy.interface';
+
+export class ErrorStrategy implements IExceptionStrategy<Error> {
+    constructor(private readonly exception: unknown) {}
+
+    canHandle(): boolean {
+        return this.exception instanceof Error;
     }
 
-    getMessage(error: unknown): string {
-        return (error as Error).message;
+    getException(): Error {
+        return this.exception as Error;
+    }
+
+    getMessage(): string {
+        const exception = this.getException();
+        return exception.message || INTERNAL_SERVER_ERROR;
+    }
+
+    getStatusCode(): number {
+        return HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
+    getTimestamp(): string {
+        return getCurrentUTCTimestamp();
     }
 }

@@ -1,13 +1,25 @@
-import { INTERNAL_SERVER_ERROR } from '@/common/infrastructure/exception/exception.constants';
+import { HttpStatus } from '@nestjs/common';
 
-import type { IErrorStrategy } from './errorStrategy.interface';
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
-export class FallbackStrategy implements IErrorStrategy {
+import { INTERNAL_SERVER_ERROR } from './exception.constants';
+
+import type { IExceptionStrategy } from './strategy.interface';
+
+export class FallbackStrategy implements IExceptionStrategy {
     canHandle(): boolean {
         return true;
     }
 
     getMessage(): string {
         return INTERNAL_SERVER_ERROR;
+    }
+
+    getStatusCode(): number {
+        return HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
+    getTimestamp(): string {
+        return getCurrentUTCTimestamp();
     }
 }
