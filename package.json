@@ -12,6 +12,7 @@
     "pnpm": {
         "overrides": {
             "@isaacs/brace-expansion": ">=5.0.1",
+            "brace-expansion": ">=5.0.5",
             "minimatch": ">=10.2.3",
             "qs": ">=6.14.2",
             "handlebars": ">=4.7.9",
@@ -62,9 +63,9 @@
         "@liaoliaots/nestjs-redis": "^10.0.0",
         "@nest-lab/throttler-storage-redis": "^1.2.0",
         "@nestjs/axios": "^4.0.1",
-        "@nestjs/common": "^11.0.1",
+        "@nestjs/common": "^11.1.17",
         "@nestjs/config": "^4.0.3",
-        "@nestjs/core": "^11.0.1",
+        "@nestjs/core": "^11.1.17",
         "@nestjs/cqrs": "^11.0.3",
         "@nestjs/platform-express": "^11.1.14",
         "@nestjs/swagger": "^11.2.6",
