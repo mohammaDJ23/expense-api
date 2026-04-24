@@ -1,11 +1,48 @@
-import { VERSION_PROVIDER } from '@/common/infrastructure/version/version.constants';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-import { VersionProviderImplementation } from './version.implementation';
+import { Injectable } from '@nestjs/common';
 
-import type { Provider } from '@nestjs/common';
+import { AppException } from '@/common/kernel/exceptions/app/exception';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const VersionProvider: Provider = {
-    provide: VERSION_PROVIDER,
-    useClass: VersionProviderImplementation,
-};
+import type { IVersionProvider } from './version.interface';
+
+@Injectable()
+export class VersionProvider implements IVersionProvider {
+    private readonly version: string;
+
+    constructor() {
+        this.version = this.loadVersion();
+    }
+
+    private loadVersion(): string {
+        if (process.env.npm_package_version) {
+            return process.env.npm_package_version;
+        }
+
+        const packageJson = 'package.json';
+
+        try {
+            const possiblePaths = [join(process.cwd(), packageJson), join(__dirname, packageJson)];
+
+            for (const path of possiblePaths) {
+                try {
+                    const packageJson = JSON.parse(readFileSync(path, 'utf8'));
+                    if (packageJson.version) {
+                        return packageJson.version;
+                    }
+                } catch {
+                    continue;
+                }
+            }
+        } catch (error) {
+            throw new AppException(error);
+        }
+
+        throw new AppException('Unable to find the app version.');
+    }
+
+    getVersion(): string {
+        return this.version;
+    }
+}
