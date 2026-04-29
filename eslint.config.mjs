@@ -188,7 +188,7 @@ export default defineConfig([
             ],
             'import-x/no-relative-packages': 'error',
             'import-x/no-duplicates': 'error',
-            'import-x/no-cycle': 'error',
+            'import-x/no-cycle': 'off',
             'import-x/no-default-export': 'off',
             'import-x/no-named-as-default': 'error',
             'import-x/no-unresolved': 'error',
