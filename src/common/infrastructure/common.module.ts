@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { ApiVersioningModule } from '@/common/infrastructure/apiVersioning/apiVersioning.module';
 import { AppInstanceModule } from '@/common/infrastructure/appInstance/appInstance.module';
 import { ConfigModule } from '@/common/infrastructure/config/config.module';
 import { DatabaseModule } from '@/common/infrastructure/database/database.module';
@@ -21,6 +22,7 @@ import { VersionModule } from '@/common/infrastructure/version/version.module';
         SwaggerModule,
         ThrottlerModule,
         LoggerModule,
+        ApiVersioningModule,
     ],
 })
 export class CommonModule {}
