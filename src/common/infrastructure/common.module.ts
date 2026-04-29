@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { AppInstanceModule } from '@/common/infrastructure/appInstance/appInstance.module';
 import { ConfigModule } from '@/common/infrastructure/config/config.module';
 import { DatabaseModule } from '@/common/infrastructure/database/database.module';
 import { ExceptionModule } from '@/common/infrastructure/exception/exception.module';
@@ -13,6 +14,7 @@ import { VersionModule } from '@/common/infrastructure/version/version.module';
     imports: [
         ExceptionModule,
         ConfigModule,
+        AppInstanceModule,
         VersionModule,
         DatabaseModule,
         RedisModule,
