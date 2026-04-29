@@ -16,7 +16,7 @@ import type { IExceptionStrategy } from './strategy.interface';
 export class AppException extends Error implements IAppException {
     public readonly statusCode: number;
     public readonly timestamp: string;
-    public readonly message: string;
+    public override readonly message: string;
 
     constructor(exception: unknown) {
         super();
