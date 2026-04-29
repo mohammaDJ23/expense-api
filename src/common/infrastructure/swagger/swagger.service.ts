@@ -1,26 +1,17 @@
-import {
-    Injectable,
-    type OnApplicationBootstrap,
-    type INestApplication,
-    Inject,
-} from '@nestjs/common';
-import { AbstractHttpAdapter, HttpAdapterHost } from '@nestjs/core';
+import { Injectable, type OnApplicationBootstrap, Inject } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule as NestSwaggerModule } from '@nestjs/swagger';
 
+import { AppInstanceService } from '@/common/infrastructure/appInstance/appInstance.service';
 import { VERSION_PROVIDER } from '@/common/infrastructure/version/version.constants';
 
 import { DESCRIPTION, JSON_PATH, PATH, TITLE, VERSION } from './swagger.constants';
 
 import type { IVersionProvider } from '@/common/infrastructure/version/version.interface';
 
-interface IHttpAdapterHost extends HttpAdapterHost<
-    AbstractHttpAdapter<unknown, unknown, unknown>
-> {}
-
 @Injectable()
 export class SwaggerService implements OnApplicationBootstrap {
     constructor(
-        private readonly httpAdapterHost: IHttpAdapterHost,
+        private readonly appInstanceService: AppInstanceService,
         @Inject(VERSION_PROVIDER) private readonly versionProvider: IVersionProvider,
     ) {}
 
@@ -29,10 +20,6 @@ export class SwaggerService implements OnApplicationBootstrap {
     }
 
     private setupSwagger(): void {
-        const httpAdapter = this.httpAdapterHost.httpAdapter;
-
-        const app = httpAdapter.getInstance<INestApplication>();
-
         const version = this.versionProvider.getVersion() || VERSION;
 
         const configBuilder = new DocumentBuilder()
@@ -42,6 +29,7 @@ export class SwaggerService implements OnApplicationBootstrap {
             .setVersion(version);
 
         const config = configBuilder.build();
+        const app = this.appInstanceService.getApp();
         const document = NestSwaggerModule.createDocument(app, config);
 
         NestSwaggerModule.setup(PATH, app, document, {
