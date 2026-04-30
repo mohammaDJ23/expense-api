@@ -198,15 +198,19 @@ services:
         environment:
             - discovery.type=single-node
             - xpack.security.enabled=true
-            - ELASTIC_PASSWORD_FILE=/run/secrets/elasticsearch_password
+            - ELASTIC_PASSWORD_FILE=/usr/share/elasticsearch/config/secrets/elasticsearch_password
             - ES_JAVA_OPTS=-Xms1g -Xmx1g
             - TINI_SUBREAPER=true
         volumes:
             - elasticsearch-data:/usr/share/elasticsearch/data
+            - shared-secrets:/usr/share/elasticsearch/config/secrets
         secrets:
             - elasticsearch_password
         networks:
             - expense-api-network-internal
+        depends_on:
+            init-elasticsearch-secrets:
+                condition: service_completed_successfully
         restart: unless-stopped
         mem_limit: 2G
         mem_reservation: 512M
@@ -223,12 +227,39 @@ services:
             - SETGID
             - SETUID
             - SYS_CHROOT
-            - KILL
         logging:
             driver: 'json-file'
             options:
                 max-size: '10m'
                 max-file: '3'
+
+    init-elasticsearch-secrets:
+        image: busybox:latest
+        command: |
+            cp /run/secrets/elasticsearch_password /secrets/elasticsearch_password
+            chmod 600 /secrets/elasticsearch_password
+            chown 1000:0 /secrets/elasticsearch_password
+        volumes:
+            - shared-secrets:/secrets
+        secrets:
+            - elasticsearch_password
+        restart: no
+        mem_limit: 128M
+        mem_reservation: 64M
+        cpus: '0.1'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - DAC_OVERRIDE
+            - CHOWN
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '3m'
+                max-file: '2'
 
     filebeat:
         image: docker.elastic.co/beats/filebeat:9.3.2
@@ -281,6 +312,8 @@ volumes:
     elasticsearch-data:
         driver: local
     filebeat-data:
+        driver: local
+    shared-secrets:
         driver: local
 
 secrets:
