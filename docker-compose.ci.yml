@@ -13,6 +13,7 @@ services:
             dockerfile: Dockerfile
         networks:
             - expense-api-network
+            - expense-api-network-internal
         healthcheck:
             test:
                 - 'CMD-SHELL'
@@ -31,7 +32,23 @@ services:
             redis:
                 condition: service_healthy
         restart: unless-stopped
-        pull_policy: never
+        pull_policy: build
+        mem_limit: 512M
+        mem_reservation: 256M
+        cpus: '0.5'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m'
+                max-file: '3'
+        labels:
+            service: expense-api
+            environment: production
 
     postgres:
         image: postgres:16-alpine
@@ -46,7 +63,7 @@ services:
         volumes:
             - postgres-data:/var/lib/postgresql/data
         networks:
-            - expense-api-network
+            - expense-api-network-internal
         healthcheck:
             test:
                 - 'CMD-SHELL'
@@ -56,6 +73,83 @@ services:
             start_period: 30s
             retries: 3
         restart: unless-stopped
+        mem_limit: 1G
+        mem_reservation: 512M
+        cpus: '1'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - CHOWN
+            - DAC_OVERRIDE
+            - FOWNER
+            - SETGID
+            - SETUID
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m'
+                max-file: '3'
+
+    postgres-backup:
+        image: tiredofit/db-backup:4.1.21
+        environment:
+            - DB_TYPE=postgres
+            - DB_HOST=postgres
+            - DB_NAME=expense_api_prod
+            - DB_USER=expense_api
+            - DB_PASS_FILE=/run/secrets/database_password
+            - ENABLE_MAIL=true
+            - MAIL_TO=mohammad.nowresideh1997@gmail.com
+            - MAIL_FROM=database-backup@expense.com
+            - SMTP_HOST=smtp.gmail.com
+            - SMTP_PORT=587
+            - SMTP_USER=mohammad.nowresideh1997@gmail.com
+            - SMTP_PASS_FILE=/run/secrets/smtp_password
+            - BACKUP_INTERVAL=360
+            - BACKUP_FORMAT=sql
+            - BACKUP_COMPRESS=gzip
+            - BACKUP_RETAIN_DAYS=0
+            - CONTAINER_ENABLE_MONITORING=0
+        secrets:
+            - database_password
+            - smtp_password
+        networks:
+            - expense-api-network
+            - expense-api-network-internal
+        healthcheck:
+            test:
+                - 'CMD-SHELL'
+                - 'pg_isready -h postgres -U expense_api'
+            interval: 15s
+            timeout: 5s
+            start_period: 30s
+            retries: 3
+        restart: unless-stopped
+        depends_on:
+            postgres:
+                condition: service_healthy
+        mem_limit: 256M
+        mem_reservation: 128M
+        cpus: '0.25'
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - CHOWN
+            - DAC_OVERRIDE
+            - FOWNER
+            - SETGID
+            - SETUID
+            - SYS_CHROOT
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m'
+                max-file: '3'
 
     redis:
         image: redis:7-alpine
@@ -70,7 +164,7 @@ services:
         volumes:
             - redis-data:/data
         networks:
-            - expense-api-network
+            - expense-api-network-internal
         healthcheck:
             test:
                 - 'CMD'
@@ -81,11 +175,111 @@ services:
             start_period: 30s
             retries: 3
         restart: unless-stopped
+        mem_limit: 256M
+        mem_reservation: 128M
+        cpus: '0.5'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - SETGID
+            - SETUID
+            - DAC_OVERRIDE
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m'
+                max-file: '3'
+
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:9.2.4
+        environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=true
+            - ELASTIC_PASSWORD_FILE=/run/secrets/elasticsearch_password
+            - ES_JAVA_OPTS=-Xms1g -Xmx1g
+        volumes:
+            - elasticsearch-data:/usr/share/elasticsearch/data
+        secrets:
+            - elasticsearch_password
+        networks:
+            - expense-api-network-internal
+        restart: unless-stopped
+        mem_limit: 2G
+        mem_reservation: 512M
+        cpus: '1.0'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - CHOWN
+            - DAC_OVERRIDE
+            - FOWNER
+            - SETGID
+            - SETUID
+            - SYS_CHROOT
+            - KILL
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m'
+                max-file: '3'
+
+    filebeat:
+        image: docker.elastic.co/beats/filebeat:9.3.2
+        volumes:
+            - /var/lib/docker/containers:/var/lib/docker/containers:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+            - filebeat-data:/usr/share/filebeat/data
+        environment:
+            - ELASTICSEARCH_HOSTS=elasticsearch:9200
+            - ELASTICSEARCH_USERNAME=elastic
+        entrypoint: >
+            sh -c "
+                export ELASTICSEARCH_PASSWORD=$$(cat /run/secrets/elasticsearch_password) &&
+                exec /usr/local/bin/docker-entrypoint -environment container
+            "
+        secrets:
+            - elasticsearch_password
+        networks:
+            - expense-api-network-internal
+        depends_on:
+            - elasticsearch
+        restart: unless-stopped
+        mem_limit: 256M
+        mem_reservation: 128M
+        cpus: '0.2'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - DAC_OVERRIDE
+            - FOWNER
+            - SETGID
+            - SETUID
+            - CHOWN
+            - SYS_PTRACE
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m'
+                max-file: '3'
 
 volumes:
     postgres-data:
         driver: local
     redis-data:
+        driver: local
+    elasticsearch-data:
+        driver: local
+    filebeat-data:
         driver: local
 
 secrets:
@@ -95,7 +289,14 @@ secrets:
         file: ./secrets/redis_password.txt
     jwt_secret:
         file: ./secrets/jwt_secret.txt
+    smtp_password:
+        file: ./secrets/smtp_password.txt
+    elasticsearch_password:
+        file: ./secrets/elasticsearch_password.txt
 
 networks:
     expense-api-network:
         driver: bridge
+    expense-api-network-internal:
+        driver: bridge
+        internal: true
