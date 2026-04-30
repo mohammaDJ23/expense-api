@@ -243,7 +243,7 @@ services:
         entrypoint: >
             sh -c "
                 export ELASTICSEARCH_PASSWORD=$$(cat /run/secrets/elasticsearch_password) &&
-                exec /usr/local/bin/docker-entrypoint -environment container
+                exec /usr/local/bin/docker-entrypoint
             "
         secrets:
             - elasticsearch_password
