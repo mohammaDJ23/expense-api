@@ -13,4 +13,8 @@ export class ThrottlerGuard extends BaseThrottlerGuard {
 
         return Promise.resolve(tracker);
     }
+
+    protected override getErrorMessage(): Promise<string> {
+        return Promise.resolve('Too many requests please try later.');
+    }
 }
