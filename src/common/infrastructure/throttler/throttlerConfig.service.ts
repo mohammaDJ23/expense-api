@@ -38,7 +38,6 @@ export class ThrottlerConfigService implements ThrottlerOptionsFactory {
                     },
                 ],
                 storage: new ThrottlerStorageRedisService(redisClient),
-                errorMessage: 'Too many requests, please try again later.',
             };
         } catch (error) {
             throw new AppException(error);
