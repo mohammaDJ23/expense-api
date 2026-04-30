@@ -236,6 +236,7 @@ services:
     init-elasticsearch-secrets:
         image: busybox:latest
         command: |
+            mkdir -p /secrets
             cp /run/secrets/elasticsearch_password /secrets/elasticsearch_password
             chmod 600 /secrets/elasticsearch_password
             chown 1000:0 /secrets/elasticsearch_password
