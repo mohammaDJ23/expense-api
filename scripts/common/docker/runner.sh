@@ -73,9 +73,11 @@ wait_for_compose() {
                 if [ "${health}" = "none" ] || [ "${health}" = "healthy" ]; then
                     ((ready++))
                 else
+                    docker logs "${container_id}"
                     failed_containers="${name} (health: ${health})"
                 fi
             else
+                docker logs "${container_id}"
                 failed_containers="${name} (status: ${status})"
             fi
         done <<< "${containers}"
