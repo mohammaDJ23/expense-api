@@ -200,6 +200,7 @@ services:
             - xpack.security.enabled=true
             - ELASTIC_PASSWORD_FILE=/run/secrets/elasticsearch_password
             - ES_JAVA_OPTS=-Xms1g -Xmx1g
+            - TINI_SUBREAPER=true
         volumes:
             - elasticsearch-data:/usr/share/elasticsearch/data
         secrets:
