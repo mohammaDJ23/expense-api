@@ -47,8 +47,6 @@ jobs:
                   echo "${{ secrets.SMTP_PASSWORD }}" > ./secrets/smtp_password.txt
                   echo "${{ secrets.ELASTICSEARCH_PASSWORD }}" > ./secrets/elasticsearch_password.txt
 
-                  chmod 600 ./secrets/*.txt
-
             - name: Run the entrypoint
               id: run-entrypoint
               run: pnpm run start:docker:ci
