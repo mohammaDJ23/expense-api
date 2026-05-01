@@ -51,9 +51,7 @@ jobs:
 
             - name: Run the entrypoint
               id: run-entrypoint
-              run: |
-                  export HOST_UID=$(id -u)
-                  pnpm run start:docker:ci
+              run: pnpm run start:docker:ci
               env:
                   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
                   TAG: ${{ env.SHA }}

@@ -324,7 +324,6 @@ services:
 
     init-filebeat-keystore:
         image: docker.elastic.co/beats/filebeat:9.3.2
-        user: ${HOST_UID:-1000}:1000
         volumes:
             - filebeat-data:/usr/share/filebeat/data
         secrets:
@@ -332,7 +331,8 @@ services:
         entrypoint: >
             sh -c "
                 filebeat keystore create &&
-                cat /run/secrets/elasticsearch_password | filebeat keystore add ELASTICSEARCH_PASSWORD --stdin --force
+                cat /run/secrets/elasticsearch_password | filebeat keystore add ELASTICSEARCH_PASSWORD --stdin --force &&
+                chown -R 1000:1000 /usr/share/filebeat/data
             "
         restart: no
         # mem_limit: 128M
