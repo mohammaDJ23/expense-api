@@ -235,17 +235,12 @@ services:
 
     init-elasticsearch-secrets:
         image: busybox:latest
-        command: |
-            ls -la /run/secrets/ || echo "Cannot list /run/secrets"
-            ls -la /secrets/
-
-            cp /run/secrets/elasticsearch_password /secrets/elasticsearch_password
-
-            echo "Changing permissions..."
-            chmod 600 /secrets/elasticsearch_password
-
-            echo "Changing ownership..."
-            chown 1000:0 /secrets/elasticsearch_password
+        command: >
+            sh -c "
+                cp /run/secrets/elasticsearch_password /secrets/elasticsearch_password &&
+                chmod 600 /secrets/elasticsearch_password &&
+                chown 1000:0 /secrets/elasticsearch_password
+            "
         volumes:
             - shared-secrets:/secrets
         secrets:
