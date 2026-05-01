@@ -357,11 +357,10 @@ services:
         image: busybox:latest
         user: root
         volumes:
-            - ./filebeat.yml:/tmp/filebeat.yml:ro
+            - /filebeat.yml:/tmp/filebeat.yml:ro
             - filebeat-config:/config
         command: >
             sh -c "
-                mkdir -p /config &&
                 cp /tmp/filebeat.yml /config/filebeat.yml &&
                 chown 1000:1000 /config/filebeat.yml &&
                 chmod 644 /config/filebeat.yml
