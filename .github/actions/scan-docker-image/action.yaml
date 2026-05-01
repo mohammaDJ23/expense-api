@@ -33,6 +33,8 @@ runs:
               exit-code: true
               only-severities: critical,high
               ignore-base: true
+              only-package: |
+                  !curl
 
         - name: Snyk container scan
           uses: snyk/actions/docker@master
