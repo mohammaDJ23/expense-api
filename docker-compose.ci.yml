@@ -354,7 +354,7 @@ services:
                 max-file: '2'
 
     init-filebeat-config:
-        image: alpine:latest
+        image: busybox:latest
         user: root
         volumes:
             - ./filebeat.yml:/tmp/filebeat.yml:ro
