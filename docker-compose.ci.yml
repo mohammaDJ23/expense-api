@@ -356,9 +356,9 @@ services:
     init-filebeat-config:
         image: busybox:latest
         user: root
-        volumes:
-            # - filebeat.yml:/tmp/filebeat.yml:ro
-            # - filebeat-config:/config
+        # volumes:
+        # - filebeat.yml:/tmp/filebeat.yml:ro
+        # - filebeat-config:/config
         command: >
             sh -c "
                 # cp /tmp/filebeat.yml /config/filebeat.yml &&
