@@ -281,6 +281,7 @@ services:
         environment:
             - ELASTICSEARCH_HOSTS=elasticsearch:9200
             - ELASTICSEARCH_USERNAME=elastic
+            - TINI_SUBREAPER=1
         secrets:
             - elasticsearch_password
         networks:
