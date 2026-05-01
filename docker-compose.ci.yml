@@ -277,7 +277,7 @@ services:
             - /var/lib/docker/containers:/var/lib/docker/containers:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - filebeat-data:/usr/share/filebeat/data
-            - filebeat-config:/usr/share/filebeat/config
+            # - filebeat-config:/usr/share/filebeat/config
         environment:
             - ELASTICSEARCH_HOSTS=elasticsearch:9200
             - ELASTICSEARCH_USERNAME=elastic
@@ -291,8 +291,8 @@ services:
                 condition: service_healthy
             init-filebeat-keystore:
                 condition: service_completed_successfully
-            init-filebeat-config:
-                condition: service_completed_successfully
+            # init-filebeat-config:
+            #     condition: service_completed_successfully
         healthcheck:
             test:
                 - 'CMD-SHELL'
@@ -353,37 +353,37 @@ services:
                 max-size: '3m'
                 max-file: '2'
 
-    init-filebeat-config:
-        image: busybox:latest
-        user: root
-        # volumes:
-        # - filebeat.yml:/tmp/filebeat.yml:ro
-        # - filebeat-config:/config
-        command: >
-            sh -c "
-                # cp /tmp/filebeat.yml /config/filebeat.yml &&
-                # chown 1000:1000 /config/filebeat.yml &&
-                # chmod 644 /config/filebeat.yml
-                ls
-                exit 0
-            "
-        restart: no
-        mem_limit: 128M
-        mem_reservation: 64M
-        cpus: '0.1'
-        init: true
-        security_opt:
-            - no-new-privileges:true
-        cap_drop:
-            - ALL
-        cap_add:
-            - DAC_OVERRIDE
-            - CHOWN
-        logging:
-            driver: 'json-file'
-            options:
-                max-size: '3m'
-                max-file: '2'
+    # init-filebeat-config:
+    #     image: busybox:latest
+    #     user: root
+    #     volumes:
+    #         - ./filebeat.yml:/tmp/filebeat.yml:ro
+    #         - filebeat-config:/config
+    #     command: >
+    #         sh -c "
+    #             # cp /tmp/filebeat.yml /config/filebeat.yml &&
+    #             # chown 1000:1000 /config/filebeat.yml &&
+    #             # chmod 644 /config/filebeat.yml
+    #             ls
+    #             exit 0
+    #         "
+    #     restart: no
+    #     mem_limit: 128M
+    #     mem_reservation: 64M
+    #     cpus: '0.1'
+    #     init: true
+    #     security_opt:
+    #         - no-new-privileges:true
+    #     cap_drop:
+    #         - ALL
+    #     cap_add:
+    #         - DAC_OVERRIDE
+    #         - CHOWN
+    #     logging:
+    #         driver: 'json-file'
+    #         options:
+    #             max-size: '3m'
+    #             max-file: '2'
 
 volumes:
     postgres-data:
