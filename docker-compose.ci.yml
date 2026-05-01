@@ -276,8 +276,8 @@ services:
         volumes:
             - /var/lib/docker/containers:/var/lib/docker/containers:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
-            - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
             - filebeat-data:/usr/share/filebeat/data
+            - filebeat-config:/usr/share/filebeat/filebeat.yml:ro
         environment:
             - ELASTICSEARCH_HOSTS=elasticsearch:9200
             - ELASTICSEARCH_USERNAME=elastic
@@ -290,6 +290,8 @@ services:
             elasticsearch:
                 condition: service_healthy
             init-filebeat-keystore:
+                condition: service_completed_successfully
+            init-filebeat-config:
                 condition: service_completed_successfully
         healthcheck:
             test:
@@ -314,7 +316,6 @@ services:
             - SETGID
             - SETUID
             - CHOWN
-            - SYS_PTRACE
         logging:
             driver: 'json-file'
             options:
@@ -352,6 +353,36 @@ services:
                 max-size: '3m'
                 max-file: '2'
 
+    init-filebeat-config:
+        image: alpine:latest
+        user: root
+        volumes:
+            - ./filebeat.yml:/tmp/filebeat.yml:ro
+            - filebeat-config:/config
+        command: >
+            sh -c "
+                cp /tmp/filebeat.yml /config/filebeat.yml &&
+                chown 1000:1000 /config/filebeat.yml &&
+                chmod 644 /config/filebeat.yml
+            "
+        restart: no
+        mem_limit: 128M
+        mem_reservation: 64M
+        cpus: '0.1'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - DAC_OVERRIDE
+            - CHOWN
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '3m'
+                max-file: '2'
+
 volumes:
     postgres-data:
         driver: local
@@ -362,6 +393,8 @@ volumes:
     filebeat-data:
         driver: local
     shared-secrets:
+        driver: local
+    filebeat-config:
         driver: local
 
 secrets:
