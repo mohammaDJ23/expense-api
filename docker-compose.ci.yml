@@ -332,7 +332,7 @@ services:
         entrypoint: >
             sh -c "
                 filebeat keystore create &&
-                cat /run/secrets/elasticsearch_password | filebeat keystore add ELASTICSEARCH_PASSWORD --stdin --force &&
+                cat /run/secrets/elasticsearch_password | filebeat keystore add ELASTICSEARCH_PASSWORD --stdin --force
             "
         restart: no
         mem_limit: 128M
