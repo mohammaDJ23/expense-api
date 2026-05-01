@@ -17,7 +17,7 @@ services:
         healthcheck:
             test:
                 - 'CMD-SHELL'
-                - 'curl -s http://localhost:3000/v1/api/health | jq -e ".status == \"ok\" or .response.status == \"ok\"" || exit 1'
+                - 'wget -q -O- http://localhost:3000/v1/api/health | grep -q "ok" || exit 1'
             interval: 15s
             timeout: 5s
             start_period: 30s
