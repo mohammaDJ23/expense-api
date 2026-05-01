@@ -324,7 +324,7 @@ services:
 
     init-filebeat-keystore:
         image: docker.elastic.co/beats/filebeat:9.3.2
-        user: root
+        user: 1000:1000
         volumes:
             - filebeat-data:/usr/share/filebeat/data
         secrets:
@@ -333,21 +333,12 @@ services:
             sh -c "
                 filebeat keystore create &&
                 cat /run/secrets/elasticsearch_password | filebeat keystore add ELASTICSEARCH_PASSWORD --stdin --force &&
-                chown 1000:1000 /usr/share/filebeat/data/filebeat.keystore &&
-                chmod 600 /usr/share/filebeat/data/filebeat.keystore
             "
         restart: no
         mem_limit: 128M
         mem_reservation: 64M
         cpus: '0.1'
         init: true
-        security_opt:
-            - no-new-privileges:true
-        cap_drop:
-            - ALL
-        cap_add:
-            - DAC_OVERRIDE
-            - CHOWN
         logging:
             driver: 'json-file'
             options:
