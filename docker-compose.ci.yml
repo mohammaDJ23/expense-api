@@ -211,6 +211,14 @@ services:
         depends_on:
             init-elasticsearch-secrets:
                 condition: service_completed_successfully
+        healthcheck:
+            test:
+                - 'CMD-SHELL'
+                - 'curl -f -u elastic:$(cat /usr/share/elasticsearch/config/secrets/elasticsearch_password) http://localhost:9200/_cluster/health || exit 1'
+            interval: 15s
+            timeout: 5s
+            start_period: 30s
+            retries: 3
         restart: unless-stopped
         mem_limit: 2G
         mem_reservation: 512M
