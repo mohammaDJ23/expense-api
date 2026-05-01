@@ -357,13 +357,15 @@ services:
         image: busybox:latest
         user: root
         volumes:
-            - filebeat.yml:/tmp/filebeat.yml:ro
-            - filebeat-config:/config
+            # - filebeat.yml:/tmp/filebeat.yml:ro
+            # - filebeat-config:/config
         command: >
             sh -c "
-                cp /tmp/filebeat.yml /config/filebeat.yml &&
-                chown 1000:1000 /config/filebeat.yml &&
-                chmod 644 /config/filebeat.yml
+                # cp /tmp/filebeat.yml /config/filebeat.yml &&
+                # chown 1000:1000 /config/filebeat.yml &&
+                # chmod 644 /config/filebeat.yml
+                ls
+                exit 0
             "
         restart: no
         mem_limit: 128M
