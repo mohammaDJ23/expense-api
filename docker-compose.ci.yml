@@ -277,7 +277,7 @@ services:
             - /var/lib/docker/containers:/var/lib/docker/containers:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - filebeat-data:/usr/share/filebeat/data
-            - filebeat-config:/usr/share/filebeat/filebeat.yml:ro
+            - filebeat-config:/usr/share/filebeat/config
         environment:
             - ELASTICSEARCH_HOSTS=elasticsearch:9200
             - ELASTICSEARCH_USERNAME=elastic
