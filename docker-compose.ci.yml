@@ -333,6 +333,7 @@ services:
             sh -c "
                 filebeat keystore create &&
                 cat /run/secrets/elasticsearch_password | filebeat keystore add ELASTICSEARCH_PASSWORD --stdin --force &&
+                chown 1000:1000 /usr/share/filebeat/data/filebeat.keystore &&
                 chmod 600 /usr/share/filebeat/data/filebeat.keystore
             "
         restart: no
