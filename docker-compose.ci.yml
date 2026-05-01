@@ -357,7 +357,7 @@ services:
         image: busybox:latest
         user: root
         volumes:
-            - /filebeat.yml:/tmp/filebeat.yml:ro
+            - filebeat.yml:/tmp/filebeat.yml:ro
             - filebeat-config:/config
         command: >
             sh -c "
