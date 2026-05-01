@@ -7,8 +7,7 @@ RUN apk add --no-cache \
     python3 \
     make \
     g++ \
-    jq \
-    curl && \
+    wget && \
     corepack enable && \
     corepack prepare pnpm@10.29.2 --activate && \
     addgroup -g 1001 -S nodejs && \
@@ -51,7 +50,7 @@ FROM node:24-alpine AS production
 
 ENV NODE_ENV=production
 
-RUN apk add --no-cache curl jq && \
+RUN apk add --no-cache wget && \
     addgroup -g 1001 -S nodejs && \
     adduser -S expense-api -u 1001 -G nodejs && \
     rm -rf /var/cache/apk/*
