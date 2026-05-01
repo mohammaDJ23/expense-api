@@ -49,10 +49,14 @@ jobs:
 
                   chmod 600 ./secrets/*.txt
 
+            - name: Get host UID
+              run: echo "HOST_UID=$(id -u)" >> $GITHUB_ENV
+
             - name: Run the entrypoint
               id: run-entrypoint
               run: pnpm run start:docker:ci
               env:
+                  UID: ${{ env.HOST_UID }}
                   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
                   TAG: ${{ env.SHA }}
 
