@@ -335,15 +335,15 @@ services:
                 cat /run/secrets/elasticsearch_password | filebeat keystore add ELASTICSEARCH_PASSWORD --stdin --force
             "
         restart: no
-        mem_limit: 128M
-        mem_reservation: 64M
-        cpus: '0.1'
-        init: true
-        logging:
-            driver: 'json-file'
-            options:
-                max-size: '3m'
-                max-file: '2'
+        # mem_limit: 128M
+        # mem_reservation: 64M
+        # cpus: '0.1'
+        # init: true
+        # logging:
+        #     driver: 'json-file'
+        #     options:
+        #         max-size: '3m'
+        #         max-file: '2'
 
     # init-filebeat-config:
     #     image: busybox:latest
