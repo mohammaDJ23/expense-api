@@ -281,17 +281,23 @@ services:
         environment:
             - ELASTICSEARCH_HOSTS=elasticsearch:9200
             - ELASTICSEARCH_USERNAME=elastic
-        entrypoint: >
-            sh -c "
-                export ELASTICSEARCH_PASSWORD=$$(cat /run/secrets/elasticsearch_password) &&
-                exec /usr/local/bin/docker-entrypoint
-            "
         secrets:
             - elasticsearch_password
         networks:
             - expense-api-network-internal
         depends_on:
-            - elasticsearch
+            elasticsearch:
+                condition: service_healthy
+            init-filebeat-keystore:
+                condition: service_completed_successfully
+        healthcheck:
+            test:
+                - 'CMD-SHELL'
+                - 'filebeat test output'
+            interval: 15s
+            timeout: 5s
+            start_period: 30s
+            retries: 3
         restart: unless-stopped
         mem_limit: 256M
         mem_reservation: 128M
@@ -313,6 +319,37 @@ services:
             options:
                 max-size: '10m'
                 max-file: '3'
+
+    init-filebeat-keystore:
+        image: docker.elastic.co/beats/filebeat:9.3.2
+        user: root
+        volumes:
+            - filebeat-data:/usr/share/filebeat/data
+        secrets:
+            - elasticsearch_password
+        entrypoint: >
+            sh -c "
+                filebeat keystore create &&
+                cat /run/secrets/elasticsearch_password | filebeat keystore add ELASTICSEARCH_PASSWORD --stdin --force &&
+                chmod 600 /usr/share/filebeat/data/filebeat.keystore
+            "
+        restart: no
+        mem_limit: 128M
+        mem_reservation: 64M
+        cpus: '0.1'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - DAC_OVERRIDE
+            - CHOWN
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '3m'
+                max-file: '2'
 
 volumes:
     postgres-data:
