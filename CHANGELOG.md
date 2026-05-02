@@ -1,3 +1,73 @@
+## [1.1.2](https://github.com/mohammaDJ23/expense-api/compare/v1.1.1...v1.1.2) (2026-05-02)
+
+### 🐛 Bug Fixes
+
+- 123281 remove && sign after the command ([a9ff839](https://github.com/mohammaDJ23/expense-api/commit/a9ff83927b532b48e0a43519ccedfdb683c904dc))
+- 123281 upgrade aquasecurity/trivy-action to v0.36.0 ([e54147a](https://github.com/mohammaDJ23/expense-api/commit/e54147a2d49bb28f7804c49ab0878760c5877544))
+- 123281 use the docker compose production for ci mode ([13d2b3b](https://github.com/mohammaDJ23/expense-api/commit/13d2b3b01343d9e7f1846a3c6e223c6b7bc58661))
+- 473121 update the message of throttler ([8a250bf](https://github.com/mohammaDJ23/expense-api/commit/8a250bf69aca90a7e355ab9d42c0b9da6c4760c7))
+- 473121 upgrade aquasecurity/trivy-action to 0.36.0 ([63e4ec5](https://github.com/mohammaDJ23/expense-api/commit/63e4ec5ab606e4c1222ba7a03706af9812402ed4))
+
+### ♻️ Code Refactoring
+
+- 346926 fix the typeo names ([30b6e98](https://github.com/mohammaDJ23/expense-api/commit/30b6e9855f7039df0773349a5d09042e9d769b72))
+- 346926 move the constatns to the related service and use them inside the modules ([452ecb7](https://github.com/mohammaDJ23/expense-api/commit/452ecb7bd48ce5979eaeb042a9f6d6fdc565c30d))
+- 473121 add the strategies of the exceptions ([9236072](https://github.com/mohammaDJ23/expense-api/commit/9236072f1a1610bfafbeb714b5ec076d923f9d2f))
+
+### 🔧 Configurations
+
+- 473121 update the swagger configuration ([02d8e59](https://github.com/mohammaDJ23/expense-api/commit/02d8e593863e2ff2d91883184d78fac86b3f551d))
+
+### 🔧 Chores
+
+- 123281 add a healthcheck to elasticsearch ([3e5ab66](https://github.com/mohammaDJ23/expense-api/commit/3e5ab66cced4210ae4229a20be279673b029e548))
+- 123281 add HOST_UID ([9ead89c](https://github.com/mohammaDJ23/expense-api/commit/9ead89c741ae5ad489f36ca3947cbbf0c59897ee))
+- 123281 add HOST_UID ([f1af47a](https://github.com/mohammaDJ23/expense-api/commit/f1af47a87d7a1a1431c2bc0466f0637e1c889b8c))
+- 123281 add init-filebeat-keystore service and a healthcheck for the filebeat service ([0b1bd20](https://github.com/mohammaDJ23/expense-api/commit/0b1bd2095c271effe650a80b044152328b1c890b))
+- 123281 add some commands for debugging ([f90a2a9](https://github.com/mohammaDJ23/expense-api/commit/f90a2a9e6725aa0e96e2f1b1342c723ce6ab3e06))
+- 123281 add some logs to see the failed containers ([d3709a3](https://github.com/mohammaDJ23/expense-api/commit/d3709a3e3b0bae6fc0dbb3a6a75c9a2feba912c9))
+- 123281 add the init-elasticsearch-secrets service ([f284540](https://github.com/mohammaDJ23/expense-api/commit/f284540b6ece5b58cd62619ace95371471e67ba9))
+- 123281 add the init-filebeat-config service ([4b8e979](https://github.com/mohammaDJ23/expense-api/commit/4b8e9791e2d033df8e3aab557db9917c5f9e319c))
+- 123281 add the only-vex-affected option ([4a2c510](https://github.com/mohammaDJ23/expense-api/commit/4a2c5106e958f2956c9e5a895f4134e496d5c044))
+- 123281 add the scout file to ignore the curl package ([069ef31](https://github.com/mohammaDJ23/expense-api/commit/069ef31078a7594c81f343f4dbf0425282cf44c1))
+- 123281 add TINI_SUBREAPER ([483f231](https://github.com/mohammaDJ23/expense-api/commit/483f231272572180d87cb1a9801ac3cd30627b75))
+- 123281 add TINI_SUBREAPER ([ac2ccff](https://github.com/mohammaDJ23/expense-api/commit/ac2ccfff2162082fa1546cff2d0e4d3173afb673))
+- 123281 change the prmissions ([da0577c](https://github.com/mohammaDJ23/expense-api/commit/da0577c9f8652e1dcee88a8d8ecfae1653a4e065))
+- 123281 comment the init-filebeat-config service ([a3d3676](https://github.com/mohammaDJ23/expense-api/commit/a3d3676c25609886e9935674bb8c5b8c380725bf))
+- 123281 comment the options related to cpus, mem and logs ([7c2c7c3](https://github.com/mohammaDJ23/expense-api/commit/7c2c7c316a786e9cf3e062b2ad7bc33568fbdfb8))
+- 123281 create /config dir ([14a0467](https://github.com/mohammaDJ23/expense-api/commit/14a0467df64b4dd8d4cef1a8844434f53beb1aa2))
+- 123281 create /secrets path ([7bf1711](https://github.com/mohammaDJ23/expense-api/commit/7bf17112665824e3c1d0597a3083febc1e5760fa))
+- 123281 mount the filebeat dir not the file ([ff8a87b](https://github.com/mohammaDJ23/expense-api/commit/ff8a87b53c03ddedfef8c28c90349f618515ce2a))
+- 123281 remove -environment container ([88bd2e5](https://github.com/mohammaDJ23/expense-api/commit/88bd2e5159c966105a0248eaab30ef4ad6112fcd))
+- 123281 remove jq and curl and use wget ([fca36ee](https://github.com/mohammaDJ23/expense-api/commit/fca36eea4455976766baa9916bb2cf9a1eabb120))
+- 123281 remove jq and curl and use wget ([c11f3c8](https://github.com/mohammaDJ23/expense-api/commit/c11f3c826893615d524c6a06befdc1746592092f))
+- 123281 remove the chmod of 600 ([d6ca957](https://github.com/mohammaDJ23/expense-api/commit/d6ca9571270287cac43c95228711fe22e116ac39))
+- 123281 remove the filebeat and elasticsearch services ([2c263fb](https://github.com/mohammaDJ23/expense-api/commit/2c263fb9e40ed191835848dc4c5766473da504df))
+- 123281 remove the filebeat.yml file ([0aa80e6](https://github.com/mohammaDJ23/expense-api/commit/0aa80e6c60f35d75ded27f9a3f8e71d9905b63b0))
+- 123281 remove the HOST_UID env ([6c599aa](https://github.com/mohammaDJ23/expense-api/commit/6c599aade614e4ade1e7b0c36b88c47720895e03))
+- 123281 remove the logs for the services ([471dc10](https://github.com/mohammaDJ23/expense-api/commit/471dc10319587a73bc3b21fa4f738009bfc3b948))
+- 123281 remove the scout.yaml and add vex.json file to use for scout scan action ([c5bcfd9](https://github.com/mohammaDJ23/expense-api/commit/c5bcfd9395cd9c9a16eadc053df7b2f0b7fd0854))
+- 123281 run init-filebeat-keystore with user 1000:1000 ([735da78](https://github.com/mohammaDJ23/expense-api/commit/735da78dc9017f2573bec8ea96e1913832188d21))
+- 123281 test the init-filebeat-config service ([c2fd4fc](https://github.com/mohammaDJ23/expense-api/commit/c2fd4fcab56b343ac6c6d3494c17c59cb8ae8891))
+- 123281 test the init-filebeat-config service ([50e9033](https://github.com/mohammaDJ23/expense-api/commit/50e90336215ac02f460213a27a7f7872db854622))
+- 123281 use busybox ([4067b3e](https://github.com/mohammaDJ23/expense-api/commit/4067b3eaa1a6456fb7cf16b8cfc76d64fbfd3a0b))
+- 123281 use curl and ignore for scanning ([1d5af4a](https://github.com/mohammaDJ23/expense-api/commit/1d5af4a91f9ddf2d8cc854dd15c0f05518e3cb75))
+- 123281 use multi line command syntax ([aaab63c](https://github.com/mohammaDJ23/expense-api/commit/aaab63cd4088f798ba7d038f4a22205c881de179))
+- 123281 use ownership of 1000 for filebeat.keystore ([b276224](https://github.com/mohammaDJ23/expense-api/commit/b276224633d334f759ebb6efeac364e934e4a8ed))
+- 123281 use the absolute path of filebeat.yml ([0ae488f](https://github.com/mohammaDJ23/expense-api/commit/0ae488fe116511ce3f221fd17d6fba5600bc9cbe))
+- 123281 use the absolute path of filebeat.yml ([4c232b4](https://github.com/mohammaDJ23/expense-api/commit/4c232b412b0a7dbeb6b68fe9f4f477035f92aebc))
+- 346926 add the json log file ([2710a39](https://github.com/mohammaDJ23/expense-api/commit/2710a39e5da97fb5e8674c890e4c9e78552acf26))
+- 473121 add apiVersioning ([1ccae23](https://github.com/mohammaDJ23/expense-api/commit/1ccae23a2ba2a6275b1313ccf1365155a7bc50de))
+- 473121 add appException strategy ([a35d5cf](https://github.com/mohammaDJ23/expense-api/commit/a35d5cf93dd822348ad35318d0d5af41630a76c3))
+- 473121 add override to message ([b82f8b7](https://github.com/mohammaDJ23/expense-api/commit/b82f8b72a72dfdfb53d1f0e6aea2c737fc49457e))
+- 473121 add some packages as overrides of pnpm ([0156de3](https://github.com/mohammaDJ23/expense-api/commit/0156de3332a78453a4e8d2b4ac2ddf12bde0b06d))
+- 473121 add the appInstance module ([e9701d1](https://github.com/mohammaDJ23/expense-api/commit/e9701d1d066e3a041f644d5fa1bb6471283b57d1))
+- 473121 add the overrides ([5188ee3](https://github.com/mohammaDJ23/expense-api/commit/5188ee36555b8c976517955fe9f960f1c2be4c42))
+- 473121 add the version to the services ([d470cf8](https://github.com/mohammaDJ23/expense-api/commit/d470cf80c0abdeb1b70a3aa419be61239716caa2))
+- 473121 export just VERSION_PROVIDER ([d8cb480](https://github.com/mohammaDJ23/expense-api/commit/d8cb4806287eff15bc5668d3288229054c645a7e))
+- 473121 update pnpm-lock.yaml ([261cac2](https://github.com/mohammaDJ23/expense-api/commit/261cac223210528b164f2457a5c2a360cc34c8d5))
+- 473121 upgrade axios ([f6a5954](https://github.com/mohammaDJ23/expense-api/commit/f6a595452686dbc3d168bd52184312a61d9d05f9))
+
 ## [1.1.1](https://github.com/mohammaDJ23/expense-api/compare/v1.1.0...v1.1.1) (2026-02-27)
 
 ### 🐛 Bug Fixes
