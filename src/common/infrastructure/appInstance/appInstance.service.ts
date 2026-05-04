@@ -8,11 +8,11 @@ import type { IAppInstance } from './appInstance.interface';
 export class AppInstanceService implements IAppInstance {
     private app: INestApplication | null = null;
 
-    setApp(app: INestApplication): void {
+    set(app: INestApplication): void {
         this.app = app;
     }
 
-    getApp(): INestApplication {
+    get(): INestApplication {
         if (!this.app) {
             throw new AppException('App instance not set. Call setApp() during bootstrap.');
         }
