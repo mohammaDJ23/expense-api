@@ -325,7 +325,7 @@ export default defineConfig([
             '@typescript-eslint/no-base-to-string': 'error',
             '@typescript-eslint/no-unnecessary-condition': 'error',
             '@typescript-eslint/no-import-type-side-effects': 'error',
-            '@typescript-eslint/method-signature-style': ['error', 'property'],
+            '@typescript-eslint/method-signature-style': 'off',
             '@typescript-eslint/prefer-readonly': 'error',
             '@typescript-eslint/prefer-reduce-type-parameter': 'error',
             '@typescript-eslint/prefer-string-starts-ends-with': 'error',
