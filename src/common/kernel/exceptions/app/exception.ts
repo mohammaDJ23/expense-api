@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 
-import { INTERNAL_SERVER_ERROR } from '@/common/constants/messages.constant';
+import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.constant';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
 import { AppExceptionStrategy } from './appException.strategy';
@@ -39,7 +39,7 @@ export class AppException extends Error implements IAppException {
         } else {
             this.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
             this.timestamp = getCurrentUTCTimestamp();
-            this.message = INTERNAL_SERVER_ERROR;
+            this.message = INTERNAL_SERVER_ERROR_MESSAGE;
         }
     }
 }
