@@ -31,7 +31,7 @@ export class UserEntity implements IUser {
         this.lastLoginAt = data.lastLoginAt;
     }
 
-    static create(data: Partial<UserEntity>) {
+    static create(data: Partial<UserEntity>): UserEntity {
         return new UserEntity({
             id: data.id ?? '',
             email: data.email ?? '',
