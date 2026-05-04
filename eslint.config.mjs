@@ -316,7 +316,7 @@ export default defineConfig([
             ],
             '@typescript-eslint/no-non-null-assertion': 'error',
             '@typescript-eslint/no-unnecessary-type-assertion': 'error',
-            '@typescript-eslint/prefer-nullish-coalescing': 'error',
+            '@typescript-eslint/prefer-nullish-coalescing': 'off',
             '@typescript-eslint/prefer-optional-chain': 'error',
             '@typescript-eslint/switch-exhaustiveness-check': 'error',
             '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
@@ -476,7 +476,7 @@ export default defineConfig([
     {
         files: ['**/*.dto.ts', '**/*.entity.ts'],
         rules: {
-            '@typescript-eslint/explicit-function-return-type': 'off',
+            '@typescript-eslint/explicit-function-return-type': 'error',
             '@typescript-eslint/explicit-module-boundary-types': 'off',
             'max-lines-per-function': 'off',
         },
