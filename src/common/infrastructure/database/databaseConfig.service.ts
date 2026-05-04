@@ -25,6 +25,7 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
             database: this.configService.get<string>('DATABASE_NAME'),
             namingStrategy: new CustomNamingStrategy(),
             entities: [],
+            autoLoadEntities: true,
             synchronize: Boolean(
                 JSON.parse(this.configService.get<string>('DATABASE_SYNCHRONIZE', 'false')),
             ),
