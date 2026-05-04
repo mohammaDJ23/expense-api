@@ -11,7 +11,7 @@ import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 import type { IUser } from '@/modules/user/domain/interfaces/user.interface';
 
 @Entity('users')
-export class User implements IUser {
+export class UserEntity implements IUser {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
