@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+import { isDevelopment } from '@/common/utils/environments.util';
 import { readSecret } from '@/common/utils/readSecret.util';
 
 import { DATABASE_NAME, DATABASE_PORT } from './database.constants';
@@ -26,9 +27,7 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
             namingStrategy: new CustomNamingStrategy(),
             entities: [],
             autoLoadEntities: true,
-            synchronize: Boolean(
-                JSON.parse(this.configService.get<string>('DATABASE_SYNCHRONIZE', 'false')),
-            ),
+            synchronize: isDevelopment(this.configService),
         };
     }
 }
