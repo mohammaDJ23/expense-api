@@ -10,7 +10,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
     app.get(AppInstanceService).set(app);
-    app.get(ApiVersioningService).setApiVersioning();
+    app.get(ApiVersioningService).set();
 
     await app.listen(process.env.PORT ?? PORT);
 }

@@ -8,8 +8,8 @@ import type { IApiVersioning } from './apiVersioning.interface';
 export class ApiVersioningService implements IApiVersioning {
     constructor(private readonly appInstanceService: AppInstanceService) {}
 
-    setApiVersioning(): void {
-        const app = this.appInstanceService.getApp();
+    set(): void {
+        const app = this.appInstanceService.get();
 
         app.enableVersioning({
             type: VersioningType.URI,
