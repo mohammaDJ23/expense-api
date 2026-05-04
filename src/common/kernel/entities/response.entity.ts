@@ -4,14 +4,14 @@ import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/common/constants/messages.cons
 
 import type { IResponse } from '@/common/kernel/interfaces/response.interface';
 
-export class ResponseEntity implements IResponse {
+export class ResponseEntity<T> implements IResponse<T> {
     public message: string;
-    public data: unknown;
+    public data: T;
     public statusCode: number;
     public success: boolean;
     public error: boolean;
 
-    private constructor(data: ResponseEntity) {
+    private constructor(data: ResponseEntity<T>) {
         this.message = data.message;
         this.data = data.data;
         this.statusCode = data.statusCode;
@@ -19,18 +19,18 @@ export class ResponseEntity implements IResponse {
         this.error = data.error;
     }
 
-    static create(data: Partial<ResponseEntity>): ResponseEntity {
-        return new ResponseEntity({
+    static create<K>(data: Partial<ResponseEntity<K>>): ResponseEntity<K> {
+        return new ResponseEntity<K>({
             message: data.message || '',
-            data: data.data || null,
+            data: (data.data || null) as K,
             statusCode: data.statusCode || 0,
             success: data.success || false,
             error: data.error || false,
         });
     }
 
-    static success(data: Partial<ResponseEntity>): ResponseEntity {
-        return ResponseEntity.create({
+    static success<K>(data: Partial<ResponseEntity<K>>): ResponseEntity<K> {
+        return ResponseEntity.create<K>({
             message: data.message || SUCCESS_MESSAGE,
             data: data.data,
             statusCode: data.statusCode || HttpStatus.OK,
@@ -39,8 +39,8 @@ export class ResponseEntity implements IResponse {
         });
     }
 
-    static error(data: Partial<ResponseEntity>): ResponseEntity {
-        return ResponseEntity.create({
+    static error<K>(data: Partial<ResponseEntity<K>>): ResponseEntity<K> {
+        return ResponseEntity.create<K>({
             message: data.message || ERROR_MESSAGE,
             data: data.data,
             statusCode: data.statusCode || HttpStatus.INTERNAL_SERVER_ERROR,

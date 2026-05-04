@@ -4,6 +4,7 @@ import {
     type ArgumentsHost,
 } from '@nestjs/common';
 
+import { ResponseEntity } from '@/common/kernel/entities/response.entity';
 import { AppException } from '@/common/kernel/exceptions/app/exception';
 
 import { FallbackHostHandler } from './fallbackHost.handler';
@@ -30,7 +31,11 @@ export class ExceptionFilter implements GlobalExceptionFilter {
                 throw new AppException('No host handler for exception handling found.');
             }
 
-            const response = new AppException(exception);
+            const exceptionData = new AppException(exception);
+            const response = ResponseEntity.error({
+                data: exceptionData,
+                statusCode: exceptionData.statusCode,
+            });
 
             handler.send(host, response);
         } catch (error) {
