@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 
-import { INTERNAL_SERVER_ERROR } from '@/common/constants/messages.constant';
+import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.constant';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
 import type { IExceptionStrategy } from './strategy.interface';
@@ -18,7 +18,7 @@ export class ErrorStrategy implements IExceptionStrategy<Error> {
 
     getMessage(): string {
         const exception = this.getException();
-        return exception.message || INTERNAL_SERVER_ERROR;
+        return exception.message || INTERNAL_SERVER_ERROR_MESSAGE;
     }
 
     getStatusCode(): number {

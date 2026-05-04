@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
-import { INTERNAL_SERVER_ERROR } from '@/common/constants/messages.constant';
+import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.constant';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
 import type { IExceptionStrategy } from './strategy.interface';
@@ -21,7 +21,7 @@ export class HttpStrategy implements IExceptionStrategy<HttpException> {
         const response = exception.getResponse();
         const isResponseString = typeof response === 'string';
         const isResponseObject = typeof response === 'object';
-        let message = INTERNAL_SERVER_ERROR;
+        let message = INTERNAL_SERVER_ERROR_MESSAGE;
         if (isResponseString) {
             message = response || message;
         } else if (isResponseObject) {
