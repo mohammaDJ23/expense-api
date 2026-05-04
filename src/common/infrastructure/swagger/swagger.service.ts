@@ -29,7 +29,7 @@ export class SwaggerService implements OnApplicationBootstrap {
             .setVersion(version);
 
         const config = configBuilder.build();
-        const app = this.appInstanceService.getApp();
+        const app = this.appInstanceService.get();
         const document = NestSwaggerModule.createDocument(app, config);
 
         NestSwaggerModule.setup(PATH, app, document, {
