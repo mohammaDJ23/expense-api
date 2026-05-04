@@ -9,7 +9,7 @@ export class SignupEntity implements ISignup {
         this.password = data.password;
     }
 
-    static create(data: SignupEntity) {
+    static create(data: SignupEntity): SignupEntity {
         return new SignupEntity({
             email: data.email,
             password: data.password,
