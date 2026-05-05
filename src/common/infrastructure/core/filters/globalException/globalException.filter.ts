@@ -1,8 +1,4 @@
-import {
-    Catch,
-    type ExceptionFilter as GlobalExceptionFilter,
-    type ArgumentsHost,
-} from '@nestjs/common';
+import { Catch, type ExceptionFilter, type ArgumentsHost } from '@nestjs/common';
 
 import { AppException } from '@/common/infrastructure/core/exceptions/app/exception';
 import { ResponseEntity } from '@/common/kernel/entities/response.entity';
@@ -10,16 +6,16 @@ import { ResponseEntity } from '@/common/kernel/entities/response.entity';
 import { FallbackHostHandler } from './fallbackHost.handler';
 import { HttpHostHandler } from './httpHost.handler';
 
-import type { IHostHandler } from './hostHandler.interface';
+import type { IGlobalExceptionHostHandler } from '@/common/kernel/interfaces/globalExceptionHostHandler.interface';
 
 @Catch()
-export class ExceptionFilter implements GlobalExceptionFilter {
+export class GlobalExceptionFilter implements ExceptionFilter {
     constructor(
         private readonly httpHostHandler: HttpHostHandler,
         private readonly fallbackHostHandler: FallbackHostHandler,
     ) {}
 
-    private get hostHandlers(): IHostHandler[] {
+    private get hostHandlers(): IGlobalExceptionHostHandler[] {
         return [this.httpHostHandler, this.fallbackHostHandler];
     }
 
