@@ -1,4 +1,4 @@
-export interface IExceptionStrategy<T = unknown> {
+export interface IAppExceptionStrategy<T = unknown> {
     getException?: () => T;
     canHandle: () => boolean;
     getMessage: () => string;

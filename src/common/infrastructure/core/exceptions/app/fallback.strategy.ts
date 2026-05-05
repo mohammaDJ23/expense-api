@@ -3,9 +3,9 @@ import { HttpStatus } from '@nestjs/common';
 import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.constant';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
-import type { IExceptionStrategy } from './strategy.interface';
+import type { IAppExceptionStrategy } from '@/common/kernel/interfaces/appExceptionStrategy.interface';
 
-export class FallbackStrategy implements IExceptionStrategy {
+export class FallbackStrategy implements IAppExceptionStrategy {
     canHandle(): boolean {
         return true;
     }

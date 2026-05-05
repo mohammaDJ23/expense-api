@@ -2,7 +2,7 @@ import { Injectable, type ArgumentsHost } from '@nestjs/common';
 
 import type { IHostHandler } from './hostHandler.interface';
 import type { ResponseEntity } from '@/common/kernel/entities/response.entity';
-import type { IAppException } from '@/common/kernel/exceptions/app/exception.interface';
+import type { IAppException } from '@/common/kernel/interfaces/appException.interface';
 
 @Injectable()
 export class HttpHostHandler implements IHostHandler {
