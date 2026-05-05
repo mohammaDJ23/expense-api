@@ -3,9 +3,9 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.constant';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
-import type { IExceptionStrategy } from './strategy.interface';
+import type { IAppExceptionStrategy } from '@/common/kernel/interfaces/appExceptionStrategy.interface';
 
-export class HttpStrategy implements IExceptionStrategy<HttpException> {
+export class HttpStrategy implements IAppExceptionStrategy<HttpException> {
     constructor(private readonly exception: unknown) {}
 
     canHandle(): boolean {

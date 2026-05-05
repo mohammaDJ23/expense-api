@@ -4,8 +4,8 @@ import {
     type ArgumentsHost,
 } from '@nestjs/common';
 
+import { AppException } from '@/common/infrastructure/core/exceptions/app/exception';
 import { ResponseEntity } from '@/common/kernel/entities/response.entity';
-import { AppException } from '@/common/kernel/exceptions/app/exception';
 
 import { FallbackHostHandler } from './fallbackHost.handler';
 import { HttpHostHandler } from './httpHost.handler';

@@ -10,8 +10,8 @@ import { HttpStrategy } from './http.strategy';
 import { ObjectStrategy } from './object.strategy';
 import { StringStrategy } from './string.strategy';
 
-import type { IAppException } from './exception.interface';
-import type { IExceptionStrategy } from './strategy.interface';
+import type { IAppException } from '@/common/kernel/interfaces/appException.interface';
+import type { IAppExceptionStrategy } from '@/common/kernel/interfaces/appExceptionStrategy.interface';
 
 export class AppException extends Error implements IAppException {
     public readonly statusCode: number;
@@ -21,7 +21,7 @@ export class AppException extends Error implements IAppException {
     constructor(exception: unknown) {
         super();
 
-        const strategies: IExceptionStrategy[] = [
+        const strategies: IAppExceptionStrategy[] = [
             new AppExceptionStrategy(exception),
             new HttpStrategy(exception),
             new ErrorStrategy(exception),

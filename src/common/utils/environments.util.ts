@@ -1,4 +1,4 @@
-import { AppException } from '@/common/kernel/exceptions/app/exception';
+import { AppException } from '@/common/infrastructure/core/exceptions/app/exception';
 
 import type { ConfigService } from '@nestjs/config';
 

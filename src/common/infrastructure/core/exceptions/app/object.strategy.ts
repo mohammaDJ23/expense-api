@@ -3,11 +3,11 @@ import { HttpStatus } from '@nestjs/common';
 import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.constant';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
-import type { IExceptionStrategy } from './strategy.interface';
+import type { IAppExceptionStrategy } from '@/common/kernel/interfaces/appExceptionStrategy.interface';
 
 interface IObjectError extends Record<string, string | number> {}
 
-export class ObjectStrategy implements IExceptionStrategy<IObjectError> {
+export class ObjectStrategy implements IAppExceptionStrategy<IObjectError> {
     constructor(private readonly exception: unknown) {}
 
     canHandle(): boolean {

@@ -3,22 +3,21 @@ import { HttpStatus } from '@nestjs/common';
 import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.constant';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
-import type { IExceptionStrategy } from './strategy.interface';
+import type { IAppExceptionStrategy } from '@/common/kernel/interfaces/appExceptionStrategy.interface';
 
-export class ErrorStrategy implements IExceptionStrategy<Error> {
+export class StringStrategy implements IAppExceptionStrategy<string> {
     constructor(private readonly exception: unknown) {}
 
     canHandle(): boolean {
-        return this.exception instanceof Error;
+        return typeof this.exception === 'string';
     }
 
-    getException(): Error {
-        return this.exception as Error;
+    getException(): string {
+        return this.exception as string;
     }
 
     getMessage(): string {
-        const exception = this.getException();
-        return exception.message || INTERNAL_SERVER_ERROR_MESSAGE;
+        return this.getException() || INTERNAL_SERVER_ERROR_MESSAGE;
     }
 
     getStatusCode(): number {
