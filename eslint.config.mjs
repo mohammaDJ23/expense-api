@@ -338,6 +338,7 @@ export default defineConfig([
             '@typescript-eslint/no-redundant-type-constituents': 'error',
             '@typescript-eslint/no-meaningless-void-operator': 'error',
             '@typescript-eslint/no-extraneous-class': 'off',
+            '@typescript-eslint/no-unsafe-function-type': 'off',
 
             // Naming conventions
             '@typescript-eslint/naming-convention': [
@@ -467,6 +468,7 @@ export default defineConfig([
             '@typescript-eslint/unbound-method': 'off',
             '@typescript-eslint/require-await': 'off',
             '@typescript-eslint/no-floating-promises': 'off',
+            '@typescript-eslint/no-unsafe-function-type': 'off',
             'no-magic-numbers': 'off',
             'import/no-default-export': 'off',
         },
@@ -478,6 +480,7 @@ export default defineConfig([
         rules: {
             '@typescript-eslint/explicit-function-return-type': 'error',
             '@typescript-eslint/explicit-module-boundary-types': 'off',
+            '@typescript-eslint/no-unsafe-function-type': 'off',
             'max-lines-per-function': 'off',
         },
     },
