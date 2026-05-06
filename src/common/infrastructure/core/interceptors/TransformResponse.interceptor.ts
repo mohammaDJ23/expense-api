@@ -13,7 +13,7 @@ import {
     RESPONSE_MESSAGE_METADATA_KEY,
     RESPONSE_STATUS_METADATA_KEY,
 } from '@/common/infrastructure/core/constants/responseMetadata.constant';
-import { ResponseEntity } from '@/common/kernel/entities/response.entity';
+import { ResponseEntity } from '@/common/kernel/response/response.entity';
 
 import type { Reflector } from '@nestjs/core';
 import type { Observable } from 'rxjs';
