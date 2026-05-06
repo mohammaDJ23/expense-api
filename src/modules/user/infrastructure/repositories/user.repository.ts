@@ -8,7 +8,9 @@ import type { Repository } from 'typeorm';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
-    constructor(private readonly userRepository: Repository<UserOrmEntity>) {}
+    constructor(private readonly userRepository: Repository<UserOrmEntity>) {
+        console.log(this.userRepository);
+    }
 
     create(data: Partial<UserEntity>): Promise<UserEntity> {
         return Promise.resolve(UserEntity.create(data));
