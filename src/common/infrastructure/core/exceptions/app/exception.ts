@@ -3,15 +3,15 @@ import { HttpStatus } from '@nestjs/common';
 import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.constant';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
-import { AppExceptionStrategy } from './appException.strategy';
 import { ErrorStrategy } from './error.strategy';
+import { AppExceptionStrategy } from './exception.strategy';
 import { FallbackStrategy } from './fallback.strategy';
 import { HttpStrategy } from './http.strategy';
 import { ObjectStrategy } from './object.strategy';
 import { StringStrategy } from './string.strategy';
 
+import type { IAppExceptionStrategy } from './exceptionStrategy.interface';
 import type { IAppException } from '@/common/kernel/interfaces/appException.interface';
-import type { IAppExceptionStrategy } from '@/common/kernel/interfaces/appExceptionStrategy.interface';
 
 export class AppException extends Error implements IAppException {
     public readonly statusCode: number;

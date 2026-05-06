@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import type { IGlobalExceptionHostHandler } from '@/common/kernel/interfaces/globalExceptionHostHandler.interface';
+import type { IGlobalExceptionHostHandler } from './globalExceptionHostHandler.interface';
 
 @Injectable()
 export class FallbackHostHandler implements IGlobalExceptionHostHandler {
