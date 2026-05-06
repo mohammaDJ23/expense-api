@@ -71,7 +71,6 @@ wait_for_compose() {
 
             if [ "${status}" = "running" ]; then
                 if [ "${health}" = "none" ] || [ "${health}" = "healthy" ]; then
-                    docker logs "${container_id}"
                     ((ready++))
                 else
                     failed_containers="${name} (health: ${health})"
