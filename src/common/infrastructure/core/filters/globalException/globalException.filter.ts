@@ -6,7 +6,7 @@ import { ResponseEntity } from '@/common/kernel/entities/response.entity';
 import { FallbackHostHandler } from './fallbackHost.handler';
 import { HttpHostHandler } from './httpHost.handler';
 
-import type { IGlobalExceptionHostHandler } from '@/common/kernel/interfaces/globalExceptionHostHandler.interface';
+import type { IGlobalExceptionHostHandler } from './globalExceptionHostHandler.interface';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {

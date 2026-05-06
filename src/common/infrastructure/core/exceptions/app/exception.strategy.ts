@@ -5,8 +5,8 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 
 import { AppException } from './exception';
 
+import type { IAppExceptionStrategy } from './exceptionStrategy.interface';
 import type { IAppException } from '@/common/kernel/interfaces/appException.interface';
-import type { IAppExceptionStrategy } from '@/common/kernel/interfaces/appExceptionStrategy.interface';
 
 export class AppExceptionStrategy implements IAppExceptionStrategy<IAppException> {
     constructor(private readonly exception: unknown) {}
