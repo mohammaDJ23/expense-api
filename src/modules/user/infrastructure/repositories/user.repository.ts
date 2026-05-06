@@ -11,12 +11,16 @@ import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepos
 export class UserRepository implements IUserRepository {
     constructor(
         @InjectRepository(UserOrmEntity) private readonly userRepository: Repository<UserOrmEntity>,
-    ) {
-        console.log(this.userRepository);
-    }
+    ) {}
 
     create(data: Partial<UserEntity>): Promise<UserEntity> {
-        return Promise.resolve(UserEntity.create(data));
+        return this.userRepository
+            .createQueryBuilder('user')
+            .insert()
+            .into(UserOrmEntity)
+            .values(data)
+            .returning('*')
+            .toEntity();
     }
 
     update(data: Partial<UserEntity>): Promise<UserEntity> {
