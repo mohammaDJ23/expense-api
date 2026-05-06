@@ -17,6 +17,7 @@ export class AppException extends Error implements IAppException {
     public readonly statusCode: number;
     public readonly timestamp: string;
     public override readonly message: string;
+    public readonly data: unknown;
 
     constructor(exception: unknown) {
         super();
@@ -36,10 +37,12 @@ export class AppException extends Error implements IAppException {
             this.statusCode = strategy.getStatusCode();
             this.timestamp = strategy.getTimestamp();
             this.message = strategy.getMessage();
+            this.data = strategy.getData();
         } else {
             this.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
             this.timestamp = getCurrentUTCTimestamp();
             this.message = INTERNAL_SERVER_ERROR_MESSAGE;
+            this.data = null;
         }
     }
 }
