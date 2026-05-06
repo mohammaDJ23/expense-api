@@ -17,11 +17,8 @@ import type { IVersionProvider } from '@/common/infrastructure/version/version.i
                 return {
                     pinoHttp: {
                         autoLogging: {
-                            ignore: (req) => {
-                                return Boolean(
-                                    req.url === '/v1/api/health' ||
-                                    req.url?.startsWith('/v1/api/health'),
-                                );
+                            ignore: () => {
+                                return false;
                             },
                         },
                         mixin: () => {
