@@ -4,10 +4,9 @@ import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.const
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
 import type { IAppExceptionStrategy } from './exceptionStrategy.interface';
+import type { IObjectException } from './objectException.interface';
 
-interface IObjectError extends Record<string, string | number> {}
-
-export class ObjectStrategy implements IAppExceptionStrategy<IObjectError> {
+export class ObjectStrategy implements IAppExceptionStrategy<IObjectException> {
     constructor(private readonly exception: unknown) {}
 
     canHandle(): boolean {
@@ -20,8 +19,8 @@ export class ObjectStrategy implements IAppExceptionStrategy<IObjectError> {
         );
     }
 
-    getException(): IObjectError {
-        return this.exception as IObjectError;
+    getException(): IObjectException {
+        return this.exception as IObjectException;
     }
 
     getMessage(): string {
