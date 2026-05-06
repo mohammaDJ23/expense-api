@@ -17,8 +17,7 @@ services:
         healthcheck:
             test:
                 - 'CMD-SHELL'
-                # - 'curl -s http://localhost:3000/v1/api/health | grep -q "ok" || exit 1'
-                - 'response=$(curl -s http://localhost:3000/v1/api/health); echo "Healthcheck response: $${response}"; echo "$${response}" | grep -q "ok" || exit 1'
+                - 'curl -s http://localhost:3000/v1/api/health | grep -q "ok" || exit 1'
             interval: 15s
             timeout: 5s
             start_period: 30s
