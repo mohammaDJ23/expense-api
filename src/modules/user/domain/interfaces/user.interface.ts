@@ -1,16 +1,16 @@
 import type { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
 export interface IUser {
-    id: string;
-    email: string;
-    role: UserRoles;
-    firstName: string | null;
-    lastName: string | null;
-    avatar: string | null;
-    phone: string | null;
-    hashedPassword: string;
-    verifiedAt: Date | null;
-    createdAt: Date;
-    updatedAt: Date | null;
-    lastLoginAt: Date | null;
+    readonly id: string;
+    readonly email: string;
+    readonly role: UserRoles;
+    readonly firstName: string | null;
+    readonly lastName: string | null;
+    readonly avatar: string | null;
+    readonly phone: string | null;
+    readonly hashedPassword: string;
+    readonly verifiedAt: Date | null;
+    readonly createdAt: Date;
+    readonly updatedAt: Date | null;
+    readonly lastLoginAt: Date | null;
 }
