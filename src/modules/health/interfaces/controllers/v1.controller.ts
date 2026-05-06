@@ -1,9 +1,9 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 
-import { SUCCESS_MESSAGE } from '@/common/constants/messages.constant';
 import { ResponseMessage } from '@/common/infrastructure/core/decorators/responseMessage.decorator';
 import { ResponseStatusCode } from '@/common/infrastructure/core/decorators/responseStatusCode.decorator';
 import { HealthService } from '@/modules/health/applications/services/health.service';
+import { SUCCESS_HEALTH_MESSAGE } from '@/modules/health/interfaces/constants/messages.constant';
 
 import type { HealthCheckResult } from '@nestjs/terminus';
 
@@ -12,7 +12,7 @@ export class HealthController {
     constructor(private readonly healthService: HealthService) {}
 
     @Get()
-    @ResponseMessage(SUCCESS_MESSAGE)
+    @ResponseMessage(SUCCESS_HEALTH_MESSAGE)
     @ResponseStatusCode(HttpStatus.OK)
     @HttpCode(HttpStatus.OK)
     getHealth(): Promise<HealthCheckResult> {
