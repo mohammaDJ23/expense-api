@@ -200,7 +200,7 @@ export default defineConfig([
             'import-x/no-deprecated': 'warn',
             'import-x/no-mutable-exports': 'error',
             'import-x/no-internal-modules': 'off',
-            'import-x/no-unassigned-import': 'error',
+            'import-x/no-unassigned-import': 'off',
             'import-x/no-webpack-loader-syntax': 'error',
         },
         settings: {
