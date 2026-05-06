@@ -16,10 +16,6 @@ export class StringStrategy implements IAppExceptionStrategy<string> {
         return this.exception as string;
     }
 
-    getData(): null {
-        return null;
-    }
-
     getMessage(): string {
         return this.getException() || INTERNAL_SERVER_ERROR_MESSAGE;
     }

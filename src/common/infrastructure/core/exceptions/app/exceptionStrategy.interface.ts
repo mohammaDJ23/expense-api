@@ -4,5 +4,4 @@ export interface IAppExceptionStrategy<T = unknown> {
     getMessage(): string;
     getStatusCode(): number;
     getTimestamp(): string;
-    getData(): unknown;
 }
