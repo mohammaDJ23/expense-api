@@ -1,6 +1,6 @@
 import { Injectable, type INestApplication } from '@nestjs/common';
 
-import { AppException } from '@/common/kernel/exceptions/app/exception';
+import { AppException } from '@/common/infrastructure/core/exceptions/app/exception';
 
 import type { IAppInstance } from './appInstance.interface';
 
