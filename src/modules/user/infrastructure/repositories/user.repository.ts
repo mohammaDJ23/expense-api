@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { UserEntity } from '@/modules/user/domain/entities/user.entity';
+import { UserOrmEntity } from '@/modules/user/infrastructure/entities/user.orm.entity';
 
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
-import type { UserOrmEntity } from '@/modules/user/infrastructure/entities/user.orm.entity';
-import type { Repository } from 'typeorm';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
-    constructor(private readonly userRepository: Repository<UserOrmEntity>) {
+    constructor(
+        @InjectRepository(UserOrmEntity) private readonly userRepository: Repository<UserOrmEntity>,
+    ) {
         console.log(this.userRepository);
     }
 
