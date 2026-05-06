@@ -16,6 +16,10 @@ export class ErrorStrategy implements IAppExceptionStrategy<Error> {
         return this.exception as Error;
     }
 
+    getData(): unknown {
+        return null;
+    }
+
     getMessage(): string {
         const exception = this.getException();
         return exception.message || INTERNAL_SERVER_ERROR_MESSAGE;

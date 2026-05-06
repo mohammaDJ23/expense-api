@@ -23,6 +23,11 @@ export class ObjectStrategy implements IAppExceptionStrategy<IObjectException> {
         return this.exception as IObjectException;
     }
 
+    getData(): unknown {
+        const exception = this.getException();
+        return exception.data || null;
+    }
+
     getMessage(): string {
         const exception = this.getException();
         return (exception.message ||

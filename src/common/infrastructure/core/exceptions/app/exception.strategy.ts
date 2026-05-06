@@ -19,6 +19,11 @@ export class AppExceptionStrategy implements IAppExceptionStrategy<IAppException
         return this.exception as AppException;
     }
 
+    getData(): unknown {
+        const exception = this.getException();
+        return exception.data || null;
+    }
+
     getMessage(): string {
         const exception = this.getException();
         return exception.message || INTERNAL_SERVER_ERROR_MESSAGE;

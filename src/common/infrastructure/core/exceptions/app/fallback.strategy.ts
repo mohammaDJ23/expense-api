@@ -10,6 +10,10 @@ export class FallbackStrategy implements IAppExceptionStrategy {
         return true;
     }
 
+    getData(): null {
+        return null;
+    }
+
     getMessage(): string {
         return INTERNAL_SERVER_ERROR_MESSAGE;
     }
