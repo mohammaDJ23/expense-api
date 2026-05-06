@@ -10,8 +10,8 @@ import { HttpStrategy } from './http.strategy';
 import { ObjectStrategy } from './object.strategy';
 import { StringStrategy } from './string.strategy';
 
+import type { IAppException } from './exception.interface';
 import type { IAppExceptionStrategy } from './exceptionStrategy.interface';
-import type { IAppException } from '@/common/kernel/interfaces/appException.interface';
 
 export class AppException extends Error implements IAppException {
     public readonly statusCode: number;
