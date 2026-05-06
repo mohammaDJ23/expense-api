@@ -1,6 +1,6 @@
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
-import type { IHealth } from '@/modules/health/domain/interfaces/healthEntity.interface';
+import type { IHealth } from '@/modules/health/domain/interfaces/health.interface';
 import type { HealthIndicatorResult, HealthIndicatorStatus } from '@nestjs/terminus';
 
 export class HealthEntity implements IHealth {
