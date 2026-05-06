@@ -2,7 +2,7 @@ import { HttpStatus } from '@nestjs/common';
 
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/common/constants/messages.constant';
 
-import type { IResponse } from '@/common/kernel/interfaces/response.interface';
+import type { IResponse } from './response.interface';
 
 export class ResponseEntity<T> implements IResponse<T> {
     public message: string;
