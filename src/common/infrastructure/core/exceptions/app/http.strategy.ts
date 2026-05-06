@@ -17,15 +17,6 @@ export class HttpStrategy implements IAppExceptionStrategy<HttpException> {
         return this.exception as HttpException;
     }
 
-    getData(): unknown {
-        const exception = this.getException();
-        const response = exception.getResponse();
-        if (this.isResponseObject(response)) {
-            return (response as IHttpExceptionResponse).data || null;
-        }
-        return null;
-    }
-
     getMessage(): string {
         const exception = this.getException();
         const response = exception.getResponse();
