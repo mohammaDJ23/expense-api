@@ -36,7 +36,7 @@ export class TransformResponseInterceptor<T> implements NestInterceptor<T, Respo
         return next.handle().pipe(
             // eslint-disable-next-line import-x/no-deprecated
             map((data): ResponseEntity<T> => {
-                return ResponseEntity.success({
+                return ResponseEntity.success<T>({
                     message,
                     statusCode,
                     data,
