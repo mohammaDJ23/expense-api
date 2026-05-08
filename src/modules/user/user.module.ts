@@ -2,13 +2,14 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { CreateUserHandler } from '@/modules/user/applications/commands/createUser/createUser.handler';
 import { PasswordHasherService } from '@/modules/user/applications/services/passwordHasher.service';
 import { UserOrmEntity } from '@/modules/user/infrastructure/entities/user.orm.entity';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 
 @Module({
     imports: [TypeOrmModule.forFeature([UserOrmEntity]), CqrsModule],
-    providers: [UserRepository, PasswordHasherService],
+    providers: [UserRepository, PasswordHasherService, CreateUserHandler],
     exports: [PasswordHasherService, CqrsModule],
 })
 export class UserModule {}
