@@ -12,7 +12,7 @@ import type { UserEntity } from '@/modules/user/domain/entities/user.entity';
 export class AuthenticationController {
     constructor(private readonly authenticationService: AuthenticationService) {}
 
-    @Post()
+    @Post('signup')
     @ResponseMessage(SUCCESS_SIGNUP_MESSAGE)
     @ResponseStatusCode(HttpStatus.CREATED)
     @HttpCode(HttpStatus.CREATED)
