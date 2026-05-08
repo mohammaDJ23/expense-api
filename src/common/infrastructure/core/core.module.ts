@@ -1,5 +1,5 @@
-import { Module } from '@nestjs/common';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { Module, ValidationPipe } from '@nestjs/common';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { FallbackHostHandler } from '@/common/infrastructure/core/filters/globalException/fallbackHost.handler';
 import { GlobalExceptionFilter } from '@/common/infrastructure/core/filters/globalException/globalException.filter';
@@ -13,6 +13,12 @@ import { TransformResponseInterceptor } from '@/common/infrastructure/core/inter
         {
             provide: APP_FILTER,
             useClass: GlobalExceptionFilter,
+        },
+        {
+            provide: APP_PIPE,
+            useValue: new ValidationPipe({
+                whitelist: true,
+            }),
         },
         {
             provide: APP_INTERCEPTOR,
