@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 
-import { SignupHandler } from '@/modules/authentication/applications/commands/signup/signup.handler';
+import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
+import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
 import { UserModule } from '@/modules/user/user.module';
 
 @Module({
-    imports: [UserModule],
-    providers: [SignupHandler],
+    imports: [UserModule, CqrsModule],
+    controllers: [AuthenticationController],
+    providers: [AuthenticationService],
 })
 export class AuthenticationModule {}
