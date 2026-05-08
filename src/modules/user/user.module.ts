@@ -9,6 +9,6 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
 @Module({
     imports: [TypeOrmModule.forFeature([UserOrmEntity]), CqrsModule],
     providers: [UserRepository, PasswordHasherService],
-    exports: [PasswordHasherService],
+    exports: [PasswordHasherService, CqrsModule],
 })
 export class UserModule {}
