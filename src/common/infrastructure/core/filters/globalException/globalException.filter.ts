@@ -1,7 +1,7 @@
 import { Catch, type ExceptionFilter, type ArgumentsHost } from '@nestjs/common';
 
 import { AppException } from '@/common/infrastructure/core/exceptions/app/exception';
-import { ResponseEntity } from '@/common/kernel/response/response.entity';
+import { ResponseEntity } from '@/common/presentation/response/response.entity';
 
 import { FallbackHostHandler } from './fallbackHost.handler';
 import { HttpHostHandler } from './httpHost.handler';
