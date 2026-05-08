@@ -5,7 +5,7 @@ import { ResponseStatusCode } from '@/common/infrastructure/core/decorators/resp
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { SUCCESS_SIGNUP_MESSAGE } from '@/modules/authentication/interface/constants/messages.constant';
 
-import type { SignupDto } from '@/common/applications/dtos/singup.dto';
+import type { SignupDto } from '@/modules/authentication/interface/dtos/singup.dto';
 import type { UserEntity } from '@/modules/user/domain/entities/user.entity';
 
 @Controller({ version: '1', path: 'api/authentication' })

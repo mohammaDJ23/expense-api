@@ -4,7 +4,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { PasswordHasherService } from '@/modules/user/applications/services/passwordHasher.service';
 
-import type { SignupDto } from '@/common/applications/dtos/singup.dto';
+import type { SignupDto } from '@/modules/authentication/interface/dtos/singup.dto';
 import type { UserEntity } from '@/modules/user/domain/entities/user.entity';
 
 @Injectable()
