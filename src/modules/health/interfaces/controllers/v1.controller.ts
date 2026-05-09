@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 
-import { ResponseMessage } from '@/common/infrastructure/core/decorators/responseMessage.decorator';
-import { ResponseStatusCode } from '@/common/infrastructure/core/decorators/responseStatusCode.decorator';
+import { ResponseMessage } from '@/common/core/decorators/responseMessage.decorator';
+import { ResponseStatusCode } from '@/common/core/decorators/responseStatusCode.decorator';
 import { HealthService } from '@/modules/health/applications/services/health.service';
 import { SUCCESS_HEALTH_MESSAGE } from '@/modules/health/interfaces/constants/messages.constant';
 

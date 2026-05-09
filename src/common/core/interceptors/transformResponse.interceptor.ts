@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 import {
     RESPONSE_MESSAGE_METADATA_KEY,
     RESPONSE_STATUS_METADATA_KEY,
-} from '@/common/infrastructure/core/constants/responseMetadata.constant';
+} from '@/common/core/constants/responseMetadata.constant';
 import { ResponseEntity } from '@/common/presentation/response/response.entity';
 
 import type { Observable } from 'rxjs';

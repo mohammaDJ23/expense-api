@@ -4,7 +4,7 @@ import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.const
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
 import type { IAppExceptionStrategy } from './exceptionStrategy.interface';
-import type { IHttpExceptionResponse } from '@/common/infrastructure/core/exceptions/app/httpExceptionResponse.interface';
+import type { IHttpExceptionResponse } from './httpExceptionResponse.interface';
 
 export class HttpStrategy implements IAppExceptionStrategy<HttpException> {
     constructor(private readonly exception: unknown) {}

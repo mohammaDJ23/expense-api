@@ -1,4 +1,4 @@
-import type { IAppException } from '@/common/infrastructure/core/exceptions/app/exception.interface';
+import type { IAppException } from '@/common/core/exceptions/app/exception.interface';
 import type { ResponseEntity } from '@/common/presentation/response/response.entity';
 import type { ArgumentsHost } from '@nestjs/common';
 
