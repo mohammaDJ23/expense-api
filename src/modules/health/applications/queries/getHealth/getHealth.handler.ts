@@ -5,10 +5,10 @@ import { type HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
 import { DatabaseIndicator } from '@/modules/health/infrastructure/indicators/database.indicator';
 import { RedisIndicator } from '@/modules/health/infrastructure/indicators/redis.indicator';
 
-import { IGetHealthQuery } from './getHealth.query';
+import { GetHealthQuery } from './getHealth.query';
 
-@QueryHandler(IGetHealthQuery)
-export class GetHealthHandler implements IQueryHandler<IGetHealthQuery> {
+@QueryHandler(GetHealthQuery)
+export class GetHealthHandler implements IQueryHandler<GetHealthQuery> {
     constructor(
         private readonly databaseIndicator: DatabaseIndicator,
         private readonly redisIndicator: RedisIndicator,

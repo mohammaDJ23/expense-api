@@ -1,1 +1,1 @@
-export class IGetHealthQuery {}
+export class GetHealthQuery {}
