@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 
-import { GetHealthHandler } from '@/modules/health/applications/queries/getHealth/getHealth.handler';
+import { GetHealthQuery } from '@/modules/health/applications/queries/getHealth/getHealth.query';
 
+import type { QueryBus } from '@nestjs/cqrs';
 import type { HealthCheckResult } from '@nestjs/terminus';
 
 @Injectable()
 export class HealthService {
-    constructor(private readonly getHealthHandler: GetHealthHandler) {}
+    constructor(private readonly queryBus: QueryBus) {}
 
     getHealth(): Promise<HealthCheckResult> {
-        return this.getHealthHandler.execute();
+        const getHealthQuery = new GetHealthQuery();
+        return this.queryBus.execute(getHealthQuery);
     }
 }
