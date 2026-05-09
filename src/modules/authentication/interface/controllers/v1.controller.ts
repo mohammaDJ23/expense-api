@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 
-import { ResponseMessage } from '@/common/infrastructure/core/decorators/responseMessage.decorator';
-import { ResponseStatusCode } from '@/common/infrastructure/core/decorators/responseStatusCode.decorator';
+import { ResponseMessage } from '@/common/core/decorators/responseMessage.decorator';
+import { ResponseStatusCode } from '@/common/core/decorators/responseStatusCode.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { SUCCESS_SIGNUP_MESSAGE } from '@/modules/authentication/interface/constants/messages.constant';
 
