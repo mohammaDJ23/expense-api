@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import '@/common/infrastructure/database/typeorm/queryBuilder.extension';
+import '@/infrastructure/database/typeorm/queryBuilder.extension';
 
 import { DatabaseConfigService } from './databaseConfig.service';
 

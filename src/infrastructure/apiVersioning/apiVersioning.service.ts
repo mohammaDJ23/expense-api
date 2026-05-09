@@ -1,6 +1,6 @@
 import { Injectable, VersioningType } from '@nestjs/common';
 
-import { AppInstanceService } from '@/common/infrastructure/appInstance/appInstance.service';
+import { AppInstanceService } from '@/infrastructure/appInstance/appInstance.service';
 
 import type { IApiVersioning } from './apiVersioning.interface';
 

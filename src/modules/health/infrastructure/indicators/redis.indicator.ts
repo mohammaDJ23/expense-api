@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 
-import { REDIS_NAME } from '@/common/infrastructure/redis/redis.constants';
+import { REDIS_NAME } from '@/infrastructure/redis/redis.constants';
 import { HealthEntity } from '@/modules/health/domain/entities/health.entity';
 
 import type { IHealthIndicator } from '@/modules/health/domain/interfaces/healthIndicator.interface';

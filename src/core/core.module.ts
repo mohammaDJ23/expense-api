@@ -1,10 +1,10 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
-import { FallbackHostHandler } from '@/common/core/filters/globalException/fallbackHost.handler';
-import { GlobalExceptionFilter } from '@/common/core/filters/globalException/globalException.filter';
-import { HttpHostHandler } from '@/common/core/filters/globalException/httpHost.handler';
-import { TransformResponseInterceptor } from '@/common/core/interceptors/transformResponse.interceptor';
+import { FallbackHostHandler } from '@/core/filters/globalException/fallbackHost.handler';
+import { GlobalExceptionFilter } from '@/core/filters/globalException/globalException.filter';
+import { HttpHostHandler } from '@/core/filters/globalException/httpHost.handler';
+import { TransformResponseInterceptor } from '@/core/interceptors/transformResponse.interceptor';
 
 @Module({
     providers: [
