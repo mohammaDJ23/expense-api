@@ -23,6 +23,13 @@ export class UserRepository implements IUserRepository {
             .toEntity();
     }
 
+    isExistsByEmail(email: string): Promise<boolean> {
+        return this.userRepository
+            .createQueryBuilder('user')
+            .where('LOWER(user.email) = LOWER(:email)', { email })
+            .getExists();
+    }
+
     update(data: Partial<UserEntity>): Promise<UserEntity> {
         return Promise.resolve(UserEntity.create(data));
     }
