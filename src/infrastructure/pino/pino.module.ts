@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
 
-import { VERSION_PROVIDER } from '@/common/infrastructure/version/version.constants';
-import { VersionModule } from '@/common/infrastructure/version/version.module';
 import { getNodeEnv } from '@/common/utils/environments.util';
+import { VERSION_PROVIDER } from '@/infrastructure/version/version.constants';
+import { VersionModule } from '@/infrastructure/version/version.module';
 
-import type { IVersionProvider } from '@/common/infrastructure/version/version.interface';
+import type { IVersionProvider } from '@/infrastructure/version/version.interface';
 
 @Module({
     imports: [
