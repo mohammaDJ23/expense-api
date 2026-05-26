@@ -1,7 +1,7 @@
 import { Injectable, type ArgumentsHost } from '@nestjs/common';
 
 import type { IGlobalExceptionHostHandler } from './globalExceptionHostHandler.interface';
-import type { ResponseEntity } from '@/common/presentation/response/response.entity';
+import type { ResponseEntity } from '@/common/application/response/response.entity';
 import type { IAppException } from '@/core/exceptions/app/exception.interface';
 
 @Injectable()
