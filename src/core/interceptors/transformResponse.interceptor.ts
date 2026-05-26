@@ -9,7 +9,7 @@ import { Reflector } from '@nestjs/core';
 // eslint-disable-next-line import-x/no-deprecated
 import { map } from 'rxjs/operators';
 
-import { ResponseEntity } from '@/common/presentation/response/response.entity';
+import { ResponseEntity } from '@/common/application/response/response.entity';
 import {
     RESPONSE_MESSAGE_METADATA_KEY,
     RESPONSE_STATUS_METADATA_KEY,
