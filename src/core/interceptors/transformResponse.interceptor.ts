@@ -1,6 +1,7 @@
 import {
     HttpStatus,
     Injectable,
+    InternalServerErrorException,
     type CallHandler,
     type ExecutionContext,
     type NestInterceptor,
@@ -23,15 +24,27 @@ export class TransformResponseInterceptor<T> implements NestInterceptor<T, Respo
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<ResponseEntity<T>> {
         const handler = context.getHandler();
+        const controller = context.getClass();
 
         const message = this.reflector.get<string | undefined, string>(
             RESPONSE_MESSAGE_METADATA_KEY,
             handler,
         );
+        if (!message) {
+            throw new InternalServerErrorException(
+                `@ResponseMessage Missing required decorator on ${controller.name}.${handler.name}. Please add @ResponseMessage('Your success message') decorator to this endpoint.`,
+            );
+        }
+
         const statusCode = this.reflector.get<HttpStatus | undefined, string>(
             RESPONSE_STATUS_METADATA_KEY,
             handler,
         );
+        if (!statusCode) {
+            throw new InternalServerErrorException(
+                `@ResponseStatusCode Missing required decorator on ${controller.name}.${handler.name}. Please add @ResponseStatusCode(HttpStatus.YOUR_STATUS) decorator to this endpoint.`,
+            );
+        }
 
         return next.handle().pipe(
             // eslint-disable-next-line import-x/no-deprecated
