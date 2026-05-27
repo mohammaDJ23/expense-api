@@ -19,6 +19,7 @@ WORKDIR /usr/src/app
 
 COPY --chown=expense-api:nodejs package.json ./
 COPY --chown=expense-api:nodejs pnpm-lock.yaml ./
+COPY --chown=expense-api:nodejs .npmrc ./
 
 RUN pnpm install --ignore-scripts --frozen-lockfile && \
     pnpm cache clean
@@ -59,6 +60,7 @@ WORKDIR /usr/src/app
 
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/package.json ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/pnpm-lock.yaml ./
+COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/.npmrc ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/dist ./dist
 
