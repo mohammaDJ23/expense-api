@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 
 import { GetHealthQuery } from '@/modules/health/applications/queries/getHealth/getHealth.query';
 
-import type { QueryBus } from '@nestjs/cqrs';
 import type { HealthCheckResult } from '@nestjs/terminus';
 
 @Injectable()
