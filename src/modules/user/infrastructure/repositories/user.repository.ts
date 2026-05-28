@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { eq, sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 
 import { isExists, toEntityOrThrow } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import { DrizzleClientService } from '@/infrastructure/database/drizzle/drizzleClient.service';
@@ -21,11 +21,7 @@ export class UserRepository implements IUserRepository {
 
     isExistsByEmail(email: string): Promise<boolean> {
         return isExists(
-            this.drizzleClientService.db
-                .select({ one: sql<number>`1` })
-                .from(users)
-                .where(eq(users.email, email))
-                .limit(1),
+            this.drizzleClientService.db.select().from(users).where(eq(users.email, email)),
         );
     }
 }
