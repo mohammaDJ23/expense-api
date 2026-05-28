@@ -13,7 +13,7 @@ export class UserEntity implements TUser {
     public readonly hashedPassword: string;
     public readonly verifiedAt: Date | null;
     public readonly createdAt: Date;
-    public readonly updatedAt: Date | null;
+    public readonly updatedAt: Date;
     public readonly lastLoginAt: Date | null;
 
     private constructor(data: UserEntity) {
@@ -43,7 +43,7 @@ export class UserEntity implements TUser {
             hashedPassword: data.hashedPassword ?? '',
             verifiedAt: data.verifiedAt ?? null,
             createdAt: data.createdAt ?? new Date(),
-            updatedAt: data.updatedAt ?? null,
+            updatedAt: data.updatedAt ?? new Date(),
             lastLoginAt: data.lastLoginAt ?? null,
         });
     }
