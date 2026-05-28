@@ -1,4 +1,4 @@
-import type { ISignup } from '@/modules/authentication/domain/interfaces/signin.interface';
+import type { ISignup } from '@/modules/authentication/domain/interfaces/signup.interface';
 
 export class SignupEntity implements ISignup {
     public readonly email: string;
