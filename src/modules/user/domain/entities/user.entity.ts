@@ -1,8 +1,8 @@
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-import type { IUser } from '@/modules/user/domain/interfaces/user.interface';
+import type { TUser } from '@/modules/user/infrastructure/entities/user.orm.entity';
 
-export class UserEntity implements IUser {
+export class UserEntity implements TUser {
     public readonly id: string;
     public readonly email: string;
     public readonly role: UserRoles;

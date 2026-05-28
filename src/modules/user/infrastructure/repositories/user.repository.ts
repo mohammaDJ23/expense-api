@@ -1,36 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { eq, sql } from 'drizzle-orm';
 
-import { UserEntity } from '@/modules/user/domain/entities/user.entity';
-import { UserOrmEntity } from '@/modules/user/infrastructure/entities/user.orm.entity';
+import { isExists, toEntity } from '@/infrastructure/database/drizzle/drizzle.transformer';
+import { DrizzleClientService } from '@/infrastructure/database/drizzle/drizzleClient.service';
+import { users } from '@/modules/user/infrastructure/entities/user.orm.entity';
 
+import type { UserEntity } from '@/modules/user/domain/entities/user.entity';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
-    constructor(
-        @InjectRepository(UserOrmEntity) private readonly userRepository: Repository<UserOrmEntity>,
-    ) {}
+    constructor(private readonly drizzleClientService: DrizzleClientService) {}
 
-    create(data: Partial<UserEntity>): Promise<UserEntity> {
-        return this.userRepository
-            .createQueryBuilder('user')
-            .insert()
-            .into(UserOrmEntity)
-            .values(data)
-            .returning('*')
-            .toEntity();
+    create(data: UserEntity): Promise<UserEntity> {
+        return toEntity(this.drizzleClientService.db.insert(users).values(data).returning());
     }
 
     isExistsByEmail(email: string): Promise<boolean> {
-        return this.userRepository
-            .createQueryBuilder('user')
-            .where('LOWER(user.email) = LOWER(:email)', { email })
-            .getExists();
-    }
-
-    update(data: Partial<UserEntity>): Promise<UserEntity> {
-        return Promise.resolve(UserEntity.create(data));
+        return isExists(
+            this.drizzleClientService.db
+                .select({ one: sql<number>`1` })
+                .from(users)
+                .where(eq(users.email, email))
+                .limit(1),
+        );
     }
 }
