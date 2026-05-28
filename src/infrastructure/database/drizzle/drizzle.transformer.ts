@@ -1,10 +1,5 @@
 import { AppException } from '@/core/exceptions/app/exception';
 
-export async function toEntity<T>(query: Promise<T[]>): Promise<T> {
-    const result = await query;
-    return result[0];
-}
-
 export async function toEntityOrNull<T>(query: Promise<T[]>): Promise<T | null> {
     const result = await query;
     return result[0] ?? null;
