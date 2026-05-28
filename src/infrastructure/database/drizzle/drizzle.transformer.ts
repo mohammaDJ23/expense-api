@@ -10,14 +10,12 @@ export async function toEntityOrNull<T>(query: Promise<T[]>): Promise<T | null> 
     return result[0] ?? null;
 }
 
-export function toEntityOrThrow<T>(errorMessage: string): (query: Promise<T[]>) => Promise<T> {
-    return async function result(query: Promise<T[]>): Promise<T> {
-        const result = await query;
-        if (!result[0]) {
-            throw new AppException(errorMessage);
-        }
-        return result[0];
-    };
+export async function toEntityOrThrow<T>(query: Promise<T[]>, errorMessage: string): Promise<T> {
+    const result = await query;
+    if (!result[0]) {
+        throw new AppException(errorMessage);
+    }
+    return result[0];
 }
 
 export function toEntities<T>(query: Promise<T[]>): Promise<T[]> {
