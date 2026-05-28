@@ -1,95 +1,23 @@
-import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-} from 'typeorm';
+import { pgTable, timestamp, uuid, pgEnum, varchar } from 'drizzle-orm/pg-core';
 
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-import type { IUser } from '@/modules/user/domain/interfaces/user.interface';
+export const userRolesEnum = pgEnum('user_roles', UserRoles);
 
-@Entity('users')
-export class UserOrmEntity implements IUser {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+export const users = pgTable('users', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    email: varchar('email', { length: 150 }).notNull().unique(),
+    role: userRolesEnum('role').notNull().default(UserRoles.USER),
+    firstName: varchar('first_name', { length: 50 }),
+    lastName: varchar('last_name', { length: 50 }),
+    avatar: varchar('avatar', { length: 500 }),
+    phone: varchar('phone', { length: 20 }),
+    hashedPassword: varchar('hashed_password', { length: 255 }).notNull(),
+    verifiedAt: timestamp('verified_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }),
+    lastLoginAt: timestamp('last_login_at', { withTimezone: true }),
+});
 
-    @Column({
-        unique: true,
-        length: 150,
-        type: 'varchar',
-    })
-    email: string;
-
-    @Column({
-        type: 'enum',
-        enum: UserRoles,
-        default: UserRoles.USER,
-        nullable: false,
-    })
-    role: UserRoles;
-
-    @Column({
-        length: 50,
-        type: 'varchar',
-        nullable: true,
-    })
-    firstName: string | null;
-
-    @Column({
-        length: 50,
-        type: 'varchar',
-        nullable: true,
-    })
-    lastName: string | null;
-
-    @Column({
-        length: 500,
-        type: 'varchar',
-        nullable: true,
-    })
-    avatar: string | null;
-
-    @Column({
-        type: 'varchar',
-        length: 20,
-        nullable: true,
-    })
-    phone: string | null;
-
-    @Column({
-        name: 'hashed_password',
-        length: 255,
-        type: 'varchar',
-        select: false,
-    })
-    hashedPassword: string;
-
-    @Column({
-        name: 'verified_at',
-        type: 'timestamptz',
-        nullable: true,
-    })
-    verifiedAt: Date | null;
-
-    @CreateDateColumn({
-        type: 'timestamptz',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @UpdateDateColumn({
-        type: 'timestamptz',
-        name: 'updated_at',
-        nullable: true,
-    })
-    updatedAt: Date | null;
-
-    @Column({
-        type: 'timestamptz',
-        name: 'last_login_at',
-        nullable: true,
-    })
-    lastLoginAt: Date | null;
-}
+export type TUser = typeof users.$inferSelect;
+export type TNewUser = typeof users.$inferInsert;

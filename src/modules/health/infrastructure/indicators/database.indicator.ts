@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { sql } from 'drizzle-orm';
 
 import { DATABASE_NAME } from '@/infrastructure/database/database.constants';
+import { DrizzleClientService } from '@/infrastructure/database/drizzle/drizzleClient.service';
 import { HealthEntity } from '@/modules/health/domain/entities/health.entity';
 
 import type { IHealthIndicator } from '@/modules/health/domain/interfaces/healthIndicator.interface';
@@ -10,11 +10,11 @@ import type { HealthIndicatorResult } from '@nestjs/terminus';
 
 @Injectable()
 export class DatabaseIndicator implements IHealthIndicator {
-    constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
+    constructor(private readonly drizzleClientService: DrizzleClientService) {}
 
     async check(): Promise<HealthIndicatorResult> {
         try {
-            await this.dataSource.query('SELECT 1');
+            await this.drizzleClientService.db.execute(sql`SELECT 1`);
 
             return HealthEntity.up(DATABASE_NAME).toJSON();
         } catch (error) {

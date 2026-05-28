@@ -1,15 +1,8 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
-import '@/infrastructure/database/typeorm/queryBuilder.extension';
-
-import { DatabaseConfigService } from './databaseConfig.service';
+import { DrizzleModule } from '@/infrastructure/database/drizzle/drizzle.module';
 
 @Module({
-    imports: [
-        TypeOrmModule.forRootAsync({
-            useClass: DatabaseConfigService,
-        }),
-    ],
+    imports: [DrizzleModule],
 })
 export class DatabaseModule {}

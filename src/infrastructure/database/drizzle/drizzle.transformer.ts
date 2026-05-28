@@ -1,0 +1,35 @@
+import { AppException } from '@/core/exceptions/app/exception';
+
+export async function toEntity<T>(query: Promise<T[]>): Promise<T> {
+    const result = await query;
+    return result[0];
+}
+
+export async function toEntityOrNull<T>(query: Promise<T[]>): Promise<T | null> {
+    const result = await query;
+    return result[0] ?? null;
+}
+
+export function toEntityOrThrow<T>(errorMessage: string): (query: Promise<T[]>) => Promise<T> {
+    return async function result(query: Promise<T[]>): Promise<T> {
+        const result = await query;
+        if (!result[0]) {
+            throw new AppException(errorMessage);
+        }
+        return result[0];
+    };
+}
+
+export function toEntities<T>(query: Promise<T[]>): Promise<T[]> {
+    return query;
+}
+
+export async function isExists<T>(query: Promise<T[]>): Promise<boolean> {
+    const result = await query;
+    return result.length > 0;
+}
+
+export async function toCount<T>(query: Promise<T[]>): Promise<number> {
+    const result = await query;
+    return result.length;
+}
