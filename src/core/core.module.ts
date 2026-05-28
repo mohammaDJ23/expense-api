@@ -18,6 +18,8 @@ import { TransformResponseInterceptor } from '@/core/interceptors/transformRespo
             provide: APP_PIPE,
             useValue: new ValidationPipe({
                 whitelist: true,
+                transform: true,
+                forbidNonWhitelisted: true,
             }),
         },
         {
