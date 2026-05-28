@@ -29,7 +29,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
             const exceptionData = new AppException(exception);
             const response = ResponseEntity.error<AppException>({
-                message: exceptionData.message,
                 data: exceptionData,
                 statusCode: exceptionData.statusCode,
             });
