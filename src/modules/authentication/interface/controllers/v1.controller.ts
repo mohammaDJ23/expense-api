@@ -3,7 +3,7 @@ import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
 import { Response } from '@/core/decorators/Response.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { SUCCESS_SIGNUP_MESSAGE } from '@/modules/authentication/interface/constants/messages.constant';
-import { SignupDto } from '@/modules/authentication/interface/dtos/singup.dto';
+import { SignupDto } from '@/modules/authentication/interface/dtos/signup.dto';
 
 import type { UserEntity } from '@/modules/user/domain/entities/user.entity';
 
