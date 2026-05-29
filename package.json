@@ -61,9 +61,13 @@
         "detect:branch:name:ci": "bash ./scripts/ci/detectBranchName.sh",
         "validate:branch:name:ci": "bash ./scripts/ci/validateBranchName.sh",
         "detect:commitsha:ci": "bash ./scripts/ci/detectCommitSha.sh",
-        "postinstall": "prettier --write pnpm-lock.yaml"
+        "postinstall": "prettier --write pnpm-lock.yaml",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate",
+        "db:push": "drizzle-kit push"
     },
     "dependencies": {
+        "@humanwhocodes/env": "^4.0.1",
         "@liaoliaots/nestjs-redis": "^10.0.0",
         "@nest-lab/throttler-storage-redis": "^1.2.0",
         "@nestjs/axios": "^4.0.1",
