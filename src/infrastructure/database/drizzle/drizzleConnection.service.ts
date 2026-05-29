@@ -5,7 +5,6 @@ import { Pool } from 'pg';
 
 import { readSecret } from '@/common/utils/readSecret.util';
 import { AppException } from '@/core/exceptions/app/exception';
-import { DATABASE_PORT } from '@/infrastructure/database/database.constants';
 
 @Injectable()
 export class DrizzleConnectionService implements OnModuleInit, OnModuleDestroy {
@@ -16,14 +15,11 @@ export class DrizzleConnectionService implements OnModuleInit, OnModuleDestroy {
 
     async onModuleInit(): Promise<void> {
         this.pool = new Pool({
-            host: this.configService.get<string>('DATABASE_HOST'),
-            port: parseInt(
-                this.configService.get<string>('DATABASE_PORT', DATABASE_PORT.toString()),
-                10,
-            ),
-            user: this.configService.get<string>('DATABASE_USER'),
-            password: readSecret(this.configService.get<string>('DATABASE_PASSWORD_FILE', '')),
-            database: this.configService.get<string>('DATABASE_NAME'),
+            host: this.configService.getOrThrow<string>('DATABASE_HOST'),
+            port: parseInt(this.configService.getOrThrow<string>('DATABASE_PORT'), 10),
+            user: this.configService.getOrThrow<string>('DATABASE_USER'),
+            password: readSecret(this.configService.getOrThrow<string>('DATABASE_PASSWORD_FILE')),
+            database: this.configService.getOrThrow<string>('DATABASE_NAME'),
         });
 
         try {
