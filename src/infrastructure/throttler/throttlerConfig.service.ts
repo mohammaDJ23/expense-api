@@ -5,7 +5,7 @@ import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis'
 
 import { AppException } from '@/core/exceptions/app/exception';
 
-import { THROTTLE_DEFAULT_NAME, THROTTLE_LIMIT, THROTTLE_TTL } from './throttler.constants';
+import { THROTTLE_DEFAULT_NAME } from './throttler.constants';
 
 import type { ThrottlerModuleOptions, ThrottlerOptionsFactory } from '@nestjs/throttler';
 
@@ -25,14 +25,9 @@ export class ThrottlerConfigService implements ThrottlerOptionsFactory {
                 throttlers: [
                     {
                         name: THROTTLE_DEFAULT_NAME,
-                        ttl: parseInt(
-                            this.configService.get<number>('THROTTLE_TTL', THROTTLE_TTL).toString(),
-                            10,
-                        ),
+                        ttl: parseInt(this.configService.getOrThrow<string>('THROTTLE_TTL'), 10),
                         limit: parseInt(
-                            this.configService
-                                .get<number>('THROTTLE_LIMIT', THROTTLE_LIMIT)
-                                .toString(),
+                            this.configService.getOrThrow<string>('THROTTLE_LIMIT'),
                             10,
                         ),
                     },
