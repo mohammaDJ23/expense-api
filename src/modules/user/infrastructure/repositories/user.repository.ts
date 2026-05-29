@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 
 import { isExists, toEntityOrThrow } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import { DrizzleClientService } from '@/infrastructure/database/drizzle/drizzleClient.service';
-import { users } from '@/modules/user/infrastructure/entities/user.orm.entity';
+import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
 import type { UserEntity } from '@/modules/user/domain/entities/user.entity';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
