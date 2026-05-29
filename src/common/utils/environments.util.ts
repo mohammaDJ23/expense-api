@@ -1,15 +1,7 @@
-import { AppException } from '@/core/exceptions/app/exception';
-
 import type { ConfigService } from '@nestjs/config';
 
 export function getNodeEnv(configService: ConfigService): string {
-    const nodeEnv = configService.get<string>('NODE_ENV');
-
-    if (!nodeEnv) {
-        throw new AppException('No NODE_ENV provided');
-    }
-
-    return nodeEnv;
+    return configService.getOrThrow<string>('NODE_ENV');
 }
 
 export function isDevelopment(configService: ConfigService): boolean {
