@@ -19,5 +19,5 @@ export const users = pgTable('users', {
     lastLoginAt: timestamp('last_login_at', { withTimezone: true }),
 });
 
-export type TUser = typeof users.$inferSelect;
-export type TNewUser = typeof users.$inferInsert;
+export type TSelectUser = typeof users.$inferSelect;
+export type TInsertUser = typeof users.$inferInsert;
