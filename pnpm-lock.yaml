@@ -26,6 +26,9 @@ importers:
 
   .:
     dependencies:
+      '@humanwhocodes/env':
+        specifier: ^4.0.1
+        version: 4.0.1
       '@liaoliaots/nestjs-redis':
         specifier: ^10.0.0
         version: 10.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(ioredis@5.9.2)
@@ -1073,6 +1076,10 @@ packages:
   '@humanfs/node@0.16.7':
     resolution: {integrity: sha512-/zUx+yOsIrG4Y43Eh2peDeKCxlRt/gET6aHfaKpuq267qXdYDFViVHfMaLyygZOnl0kGWxFIgsBy8QFuTLUXEQ==}
     engines: {node: '>=18.18.0'}
+
+  '@humanwhocodes/env@4.0.1':
+    resolution: {integrity: sha512-zSCrqngdlvOm1YpKvvZAZC/WTlc/RePP1N6/kNzGLxbzMCZNWiMZIS8t8/yiLgnbg125yAdclqwJHJxJvPtRWA==}
+    engines: {node: ^16.20.0 || ^18.0.0 || ^20.0.0 || >=22.0.0}
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -7497,6 +7504,8 @@ snapshots:
     dependencies:
       '@humanfs/core': 0.19.1
       '@humanwhocodes/retry': 0.4.3
+
+  '@humanwhocodes/env@4.0.1': {}
 
   '@humanwhocodes/module-importer@1.0.1': {}
 
