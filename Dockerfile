@@ -20,6 +20,7 @@ WORKDIR /usr/src/app
 COPY --chown=expense-api:nodejs package.json ./
 COPY --chown=expense-api:nodejs pnpm-lock.yaml ./
 COPY --chown=expense-api:nodejs .npmrc ./
+COPY --chown=expense-api:nodejs drizzle.config.ts ./
 
 RUN pnpm install --ignore-scripts --frozen-lockfile && \
     pnpm cache clean
@@ -34,7 +35,7 @@ USER expense-api
 
 EXPOSE 4000 9229
 
-CMD ["pnpm", "run", "start:debug"]
+ENTRYPOINT ["sh", "-c", "pnpm run db:push && pnpm run start:debug"]
 
 FROM base AS production-build
 
@@ -61,6 +62,7 @@ WORKDIR /usr/src/app
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/package.json ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/pnpm-lock.yaml ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/.npmrc ./
+COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/drizzle.config.ts ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/dist ./dist
 
@@ -73,4 +75,4 @@ USER expense-api
 
 EXPOSE 3000
 
-CMD ["node", "dist/main"]
+ENTRYPOINT ["node", "dist/main"]
