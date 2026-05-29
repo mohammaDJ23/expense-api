@@ -8,8 +8,8 @@ const env = new Env();
 function readSecret(filePath: string): string {
     try {
         return fs.readFileSync(filePath, 'utf8').trim();
-    } catch (error) {
-        throw new Error(`Failed to read secret from ${filePath}: ${error.message}`);
+    } catch {
+        throw new Error('Failed to read secret');
     }
 }
 
