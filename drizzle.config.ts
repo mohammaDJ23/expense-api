@@ -18,11 +18,7 @@ export default defineConfig({
     schema: './src/**/*.schema.ts',
     out: './drizzle',
     dbCredentials: {
-        host: env.require('DATABASE_HOST'),
-        port: parseInt(env.require('DATABASE_PORT'), 10),
-        user: env.require('DATABASE_USER'),
-        password: readSecret(env.require('DATABASE_PASSWORD_FILE')),
-        database: env.require('DATABASE_NAME'),
+        url: `postgresql://${env.require('DATABASE_USER')}:${encodeURIComponent(readSecret(env.require('DATABASE_PASSWORD_FILE')))}@${env.require('DATABASE_HOST')}:${parseInt(env.require('DATABASE_PORT'), 10)}/${env.require('DATABASE_NAME')}`,
     },
     verbose: true,
     strict: true,
