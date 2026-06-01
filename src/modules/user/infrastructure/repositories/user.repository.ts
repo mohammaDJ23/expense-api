@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 
 import { isExists, toEntityOrThrow } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import { DrizzleClientService } from '@/infrastructure/database/drizzle/drizzleClient.service';
-import { users } from '@/modules/user/infrastructure/schemas/user.schema';
+import { users, type TRequiredInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 import type { UserEntity } from '@/modules/user/domain/entities/user.entity';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
@@ -12,7 +12,7 @@ import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepos
 export class UserRepository implements IUserRepository {
     constructor(private readonly drizzleClientService: DrizzleClientService) {}
 
-    create(data: UserEntity): Promise<UserEntity> {
+    create(data: Omit<UserEntity, 'id'>): Promise<TRequiredInsertUser> {
         return toEntityOrThrow(
             this.drizzleClientService.db.insert(users).values(data).returning(),
             'Failed to create a new user',
