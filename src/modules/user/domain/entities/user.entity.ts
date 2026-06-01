@@ -1,8 +1,11 @@
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type {
+    TPartialInsertUser,
+    TRequiredInsertUser,
+} from '@/modules/user/infrastructure/schemas/user.schema';
 
-export class UserEntity implements TInsertUser {
+export class UserEntity implements TRequiredInsertUser {
     public readonly id: string;
     public readonly email: string;
     public readonly role: UserRoles;
@@ -16,7 +19,7 @@ export class UserEntity implements TInsertUser {
     public readonly updatedAt: Date;
     public readonly lastLoginAt: Date | null;
 
-    private constructor(data: UserEntity) {
+    private constructor(data: TRequiredInsertUser) {
         this.id = data.id;
         this.email = data.email;
         this.role = data.role;
@@ -31,7 +34,7 @@ export class UserEntity implements TInsertUser {
         this.lastLoginAt = data.lastLoginAt;
     }
 
-    static create(data: Partial<UserEntity>): UserEntity {
+    static create(data: TPartialInsertUser): UserEntity {
         return new UserEntity({
             id: data.id ?? '',
             email: data.email ?? '',
@@ -46,5 +49,11 @@ export class UserEntity implements TInsertUser {
             updatedAt: data.updatedAt ?? new Date(),
             lastLoginAt: data.lastLoginAt ?? null,
         });
+    }
+
+    toInsert(): Omit<UserEntity, 'id'> {
+        const userEntity = Object.assign(this);
+        delete userEntity.id;
+        return userEntity;
     }
 }

@@ -2,7 +2,7 @@ import { pgTable, timestamp, uuid, pgEnum, varchar } from 'drizzle-orm/pg-core';
 
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-const userRolesEnum = pgEnum('user_roles', UserRoles);
+export const userRolesEnum = pgEnum('user_roles', UserRoles);
 
 export const users = pgTable('users', {
     id: uuid('id').primaryKey().defaultRandom(),
@@ -21,3 +21,5 @@ export const users = pgTable('users', {
 
 export type TSelectUser = typeof users.$inferSelect;
 export type TInsertUser = typeof users.$inferInsert;
+export type TRequiredInsertUser = Required<typeof users.$inferSelect>;
+export type TPartialInsertUser = Partial<typeof users.$inferSelect>;
