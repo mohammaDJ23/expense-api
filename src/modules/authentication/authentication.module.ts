@@ -2,12 +2,20 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
+import { EmailVerificationMailerService } from '@/modules/authentication/applications/services/EmailVerificationMailer.service';
+import { EmailVerificationTokenService } from '@/modules/authentication/applications/services/EmailVerificationToken.service';
+import { PasswordHasherService } from '@/modules/authentication/applications/services/passwordHasher.service';
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
 import { UserModule } from '@/modules/user/user.module';
 
 @Module({
     imports: [UserModule, CqrsModule],
     controllers: [AuthenticationController],
-    providers: [AuthenticationService],
+    providers: [
+        AuthenticationService,
+        EmailVerificationMailerService,
+        EmailVerificationTokenService,
+        PasswordHasherService,
+    ],
 })
 export class AuthenticationModule {}
