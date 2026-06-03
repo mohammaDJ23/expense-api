@@ -100,8 +100,9 @@ jobs:
                   echo "${{ secrets.DATABASE_PASSWORD }}" > ./secrets/database_password.txt
                   echo "${{ secrets.REDIS_PASSWORD }}" > ./secrets/redis_password.txt
                   echo "${{ secrets.JWT_SECRET }}" > ./secrets/jwt_secret.txt
-                  echo "${{ secrets.SMTP_PASSWORD }}" > ./secrets/smtp_password.txt
-                  echo "${{ secrets.ELASTICSEARCH_PASSWORD }}" > ./secrets/elasticsearch_password.txt
+                  echo "${{ secrets.MAIL_USERNAME }}" > ./secrets/mail_username.txt
+                  echo "${{ secrets.MAIL_PASSWORD }}" > ./secrets/mail_password.txt
+                  echo "${{ secrets.MAIL_TO }}" > ./secrets/mail_to.txt
 
             - name: Run the entrypoint
               id: run-entrypoint
