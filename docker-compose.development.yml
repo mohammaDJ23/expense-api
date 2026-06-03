@@ -9,6 +9,8 @@ services:
             - DATABASE_PASSWORD_FILE=/run/secrets/database_password
             - REDIS_PASSWORD_FILE=/run/secrets/redis_password
             - JWT_SECRET_FILE=/run/secrets/jwt_secret
+            - MAIL_USERNAME_FILE=/run/secrets/mail_username
+            - MAIL_PASSWORD_FILE=/run/secrets/mail_password
         build:
             context: .
             target: development
@@ -30,6 +32,8 @@ services:
             - database_password
             - redis_password
             - jwt_secret
+            - mail_username
+            - mail_password
         volumes:
             - ./src:/usr/src/app/src
             - ./package.json:/usr/src/app/package.json
@@ -107,6 +111,10 @@ secrets:
         file: ./secrets/redis_password.txt
     jwt_secret:
         file: ./secrets/jwt_secret.txt
+    mail_username:
+        file: ./secrets/mail_username.txt
+    mail_password:
+        file: ./secrets/mail_password.txt
 
 networks:
     expense-api-network:
