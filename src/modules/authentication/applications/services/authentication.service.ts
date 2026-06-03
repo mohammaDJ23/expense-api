@@ -3,8 +3,8 @@ import { CommandBus } from '@nestjs/cqrs';
 
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 
-import { EmailVerificationMailerService } from './EmailVerificationMailer.service';
-import { EmailVerificationTokenService } from './EmailVerificationToken.service';
+import { EmailVerificationMailerService } from './emailVerificationMailer.service';
+import { EmailVerificationTokenService } from './emailVerificationToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
 
 import type { SignupDto } from '@/modules/authentication/interface/dtos/signup.dto';
