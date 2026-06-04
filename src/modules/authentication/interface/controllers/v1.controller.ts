@@ -5,12 +5,12 @@ import { Response } from '@/core/decorators/Response.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import {
     SUCCESS_SIGNUP_MESSAGE,
-    SUCCESS_SEND_EMAIL_VERIFICATION_TOKEN_MESSAGE,
-    SUCCESS_VERIFY_EMAIL_VERIFICATION_TOKEN_MESSAGE,
+    SUCCESS_SEND_VERIFICATION_MESSAGE,
+    SUCCESS_VERIFY_VERIFICATION_MESSAGE,
 } from '@/modules/authentication/interface/constants/messages.constant';
-import { EmailVerificationTokenDto } from '@/modules/authentication/interface/dtos/emailVerificationToken.dto';
-import { EmailVerificationTokenVerifyingDto } from '@/modules/authentication/interface/dtos/emailVerificationTokenVerifying.dto';
+import { SendVerificationDto } from '@/modules/authentication/interface/dtos/sendVerification.dto';
 import { SignupDto } from '@/modules/authentication/interface/dtos/signup.dto';
+import { VerifyVerificationDto } from '@/modules/authentication/interface/dtos/verifyVerification.dto';
 
 import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
@@ -25,19 +25,17 @@ export class AuthenticationController {
         return this.authenticationService.signup(body);
     }
 
-    @Post('send-email-verification-token')
+    @Post('send-verification')
     @Throttle({ default: { limit: 1, ttl: 300000 } })
-    @Response(SUCCESS_SEND_EMAIL_VERIFICATION_TOKEN_MESSAGE, HttpStatus.OK)
-    sendEmailVerificationToken(@Body() body: EmailVerificationTokenDto): Promise<boolean> {
-        return this.authenticationService.sendEmailVerificationToken(body);
+    @Response(SUCCESS_SEND_VERIFICATION_MESSAGE, HttpStatus.OK)
+    sendVerification(@Body() body: SendVerificationDto): Promise<boolean> {
+        return this.authenticationService.sendVerification(body);
     }
 
-    @Post('verify-email-verification-token')
+    @Post('verify-verification')
     @Throttle({ default: { limit: 1, ttl: 300000 } })
-    @Response(SUCCESS_VERIFY_EMAIL_VERIFICATION_TOKEN_MESSAGE, HttpStatus.OK)
-    verifyEmailVerificationToken(
-        @Query() query: EmailVerificationTokenVerifyingDto,
-    ): Promise<boolean> {
-        return this.authenticationService.verifyEmailVerificationToken(query);
+    @Response(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
+    verifyVerification(@Query() query: VerifyVerificationDto): Promise<boolean> {
+        return this.authenticationService.verifyVerification(query);
     }
 }
