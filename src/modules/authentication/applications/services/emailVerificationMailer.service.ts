@@ -11,7 +11,7 @@ export class EmailVerificationMailerService {
     constructor(private readonly mailerService: MailerService) {}
 
     async sendMail(user: TRequiredInsertUser | TSelectUser, token: string): Promise<void> {
-        const link = `${process.env.APP_URL}/v1/api/authentication/verify?token=${token}`;
+        const link = `${process.env.APP_URL}/v1/api/authentication/verify-email-verification-token?token=${token}`;
         const subject = 'Verify Your Email Address';
         const html = `
             <div style="font-family: Arial, sans-serif;">
