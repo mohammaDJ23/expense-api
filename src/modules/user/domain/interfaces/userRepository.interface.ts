@@ -1,11 +1,8 @@
 import type { UserEntity } from '@/modules/user/domain/entities/user.entity';
-import type {
-    TRequiredInsertUser,
-    TSelectUser,
-} from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 export interface IUserRepository {
-    create(data: Omit<UserEntity, 'id'>): Promise<TRequiredInsertUser>;
+    create(data: Omit<UserEntity, 'id'>): Promise<TInsertUser>;
     update(data: Omit<UserEntity, 'id'>): Promise<TSelectUser>;
     isExistsByEmail(email: string): Promise<boolean>;
     getByEmailOrThrow(email: string): Promise<TSelectUser>;

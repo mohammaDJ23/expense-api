@@ -1,11 +1,8 @@
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-import type {
-    TPartialInsertUser,
-    TRequiredInsertUser,
-} from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
-export class UserEntity implements TRequiredInsertUser {
+export class UserEntity implements TInsertUser {
     public readonly id: string;
     public readonly email: string;
     public readonly role: UserRoles;
@@ -19,7 +16,7 @@ export class UserEntity implements TRequiredInsertUser {
     public readonly updatedAt: Date;
     public readonly lastLoginAt: Date | null;
 
-    private constructor(data: TRequiredInsertUser) {
+    private constructor(data: TInsertUser) {
         this.id = data.id;
         this.email = data.email;
         this.role = data.role;
@@ -34,7 +31,7 @@ export class UserEntity implements TRequiredInsertUser {
         this.lastLoginAt = data.lastLoginAt;
     }
 
-    static create(data: TPartialInsertUser): UserEntity {
+    static create(data: Partial<TInsertUser>): UserEntity {
         return new UserEntity({
             id: data.id ?? '',
             email: data.email ?? '',

@@ -12,7 +12,7 @@ import { EmailVerificationTokenDto } from '@/modules/authentication/interface/dt
 import { EmailVerificationTokenVerifyingDto } from '@/modules/authentication/interface/dtos/emailVerificationTokenVerifying.dto';
 import { SignupDto } from '@/modules/authentication/interface/dtos/signup.dto';
 
-import type { TRequiredInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/authentication' })
 export class AuthenticationController {
@@ -21,7 +21,7 @@ export class AuthenticationController {
     @Post('signup')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @Response(SUCCESS_SIGNUP_MESSAGE, HttpStatus.CREATED)
-    signup(@Body() body: SignupDto): Promise<TRequiredInsertUser> {
+    signup(@Body() body: SignupDto): Promise<TInsertUser> {
         return this.authenticationService.signup(body);
     }
 

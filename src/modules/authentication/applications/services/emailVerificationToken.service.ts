@@ -4,16 +4,13 @@ import { JwtService } from '@nestjs/jwt';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
 import type { IEmailVerificationTokenPayload } from '@/modules/authentication/domain/interfaces/emailVerificationTokenPayload.interface';
-import type {
-    TRequiredInsertUser,
-    TSelectUser,
-} from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class EmailVerificationTokenService {
     constructor(private readonly jwtService: JwtService) {}
 
-    sign(user: TRequiredInsertUser | TSelectUser): string {
+    sign(user: TInsertUser | TSelectUser): string {
         try {
             return this.jwtService.sign<IEmailVerificationTokenPayload>(
                 {
