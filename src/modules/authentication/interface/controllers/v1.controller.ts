@@ -8,12 +8,16 @@ import {
     SUCCESS_SIGNUP_MESSAGE,
     SUCCESS_SEND_VERIFICATION_MESSAGE,
     SUCCESS_VERIFY_VERIFICATION_MESSAGE,
+    SUCCESS_LOGIN_MESSAGE,
 } from '@/modules/authentication/interface/constants/messages.constant';
+import { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
+import { LoginResponseDto } from '@/modules/authentication/interface/dtos/login.response.dto';
 import { SendVerificationRequestDto } from '@/modules/authentication/interface/dtos/sendVerification.request.dto';
 import { SignupRequestDto } from '@/modules/authentication/interface/dtos/signup.request.dto';
 import { SignupResponseDto } from '@/modules/authentication/interface/dtos/signup.response.dto';
 import { VerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/verifyVerification.request.dto';
 
+import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/authentication' })
@@ -26,6 +30,14 @@ export class AuthenticationController {
     @SerializeObjectInterceptor(SignupResponseDto)
     signup(@Body() body: SignupRequestDto): Promise<TInsertUser> {
         return this.authenticationService.signup(body);
+    }
+
+    @Post('login')
+    @Throttle({ default: { limit: 3, ttl: 60000 } })
+    @Response(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
+    @SerializeObjectInterceptor(LoginResponseDto)
+    login(@Body() body: LoginRequestDto): Promise<AccessTokenEntity> {
+        return this.authenticationService.login(body);
     }
 
     @Post('verification/send')
