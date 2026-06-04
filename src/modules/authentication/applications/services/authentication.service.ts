@@ -12,10 +12,7 @@ import { PasswordHasherService } from './passwordHasher.service';
 import type { EmailVerificationTokenDto } from '@/modules/authentication/interface/dtos/emailVerificationToken.dto';
 import type { EmailVerificationTokenVerifyingDto } from '@/modules/authentication/interface/dtos/emailVerificationTokenVerifying.dto';
 import type { SignupDto } from '@/modules/authentication/interface/dtos/signup.dto';
-import type {
-    TRequiredInsertUser,
-    TSelectUser,
-} from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class AuthenticationService {
@@ -28,11 +25,11 @@ export class AuthenticationService {
         private readonly emailVerificationTokenService: EmailVerificationTokenService,
     ) {}
 
-    async signup(data: SignupDto): Promise<TRequiredInsertUser> {
+    async signup(data: SignupDto): Promise<TInsertUser> {
         const hashedPassword = await this.passwordHasherService.hash(data.password);
 
         const createUserCommand = new CreateUserCommand(data.email, hashedPassword);
-        const createdUser = await this.commandBus.execute<CreateUserCommand, TRequiredInsertUser>(
+        const createdUser = await this.commandBus.execute<CreateUserCommand, TInsertUser>(
             createUserCommand,
         );
 
