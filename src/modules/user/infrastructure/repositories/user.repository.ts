@@ -27,6 +27,13 @@ export class UserRepository implements IUserRepository {
         );
     }
 
+    update(data: Omit<UserEntity, 'id'>): Promise<TSelectUser> {
+        return toEntityOrThrow(
+            this.drizzleClientService.db.update(users).set(data).returning(),
+            'Failed to update the user',
+        );
+    }
+
     private selectByEmail(email: string) {
         return this.drizzleClientService.db.select().from(users).where(eq(users.email, email));
     }
@@ -41,5 +48,21 @@ export class UserRepository implements IUserRepository {
 
     getByEmail(email: string): Promise<TSelectUser | null> {
         return toEntityOrNull(this.selectByEmail(email));
+    }
+
+    private selectById(id: string) {
+        return this.drizzleClientService.db.select().from(users).where(eq(users.id, id));
+    }
+
+    isExistsById(id: string): Promise<boolean> {
+        return isExists(this.selectById(id));
+    }
+
+    getByIdOrThrow(id: string): Promise<TSelectUser> {
+        return toEntityOrThrow(this.selectById(id), 'Failed to find the user');
+    }
+
+    getById(id: string): Promise<TSelectUser | null> {
+        return toEntityOrNull(this.selectById(id));
     }
 }
