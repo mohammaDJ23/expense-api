@@ -1,13 +1,16 @@
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 
-import type { TRequiredInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type {
+    TRequiredInsertUser,
+    TSelectUser,
+} from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class EmailVerificationMailerService {
     constructor(private readonly mailerService: MailerService) {}
 
-    async sendMail(user: TRequiredInsertUser, token: string): Promise<void> {
+    async sendMail(user: TRequiredInsertUser | TSelectUser, token: string): Promise<void> {
         const link = `${process.env.APP_URL}/v1/api/authentication/verify?token=${token}`;
         const subject = 'Verify Your Email Address';
         const html = `

@@ -1,34 +1,60 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
+import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
 
+import { EmailVerificationCacheService } from './emailVerificationCache.service';
 import { EmailVerificationMailerService } from './emailVerificationMailer.service';
 import { EmailVerificationTokenService } from './emailVerificationToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
 
+import type { EmailVerificationTokenDto } from '@/modules/authentication/interface/dtos/emailVerificationToken.dto';
 import type { SignupDto } from '@/modules/authentication/interface/dtos/signup.dto';
-import type { TRequiredInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type {
+    TRequiredInsertUser,
+    TSelectUser,
+} from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class AuthenticationService {
+    // eslint-disable-next-line max-params
     constructor(
         private readonly commandBus: CommandBus,
+        private readonly queryBus: QueryBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly emailVerificationMailerService: EmailVerificationMailerService,
         private readonly emailVerificationTokenService: EmailVerificationTokenService,
+        private readonly emailVerificationCacheService: EmailVerificationCacheService,
     ) {}
 
     async signup(data: SignupDto): Promise<TRequiredInsertUser> {
         const hashedPassword = await this.passwordHasherService.hash(data.password);
 
         const createUserCommand = new CreateUserCommand(data.email, hashedPassword);
-        const createdUser = await this.commandBus.execute(createUserCommand);
+        const createdUser = await this.commandBus.execute<CreateUserCommand, TRequiredInsertUser>(
+            createUserCommand,
+        );
 
         const token = this.emailVerificationTokenService.sign(createdUser);
 
         await this.emailVerificationMailerService.sendMail(createdUser, token);
 
         return createdUser;
+    }
+
+    async sendEmailVerificationToken(data: EmailVerificationTokenDto): Promise<boolean> {
+        const getUserByEmailQuery = new GetUserByEmailQuery(data.email);
+        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser>(
+            getUserByEmailQuery,
+        );
+
+        const token = this.emailVerificationTokenService.sign(user);
+
+        await this.emailVerificationCacheService.cache(user.email, token);
+
+        await this.emailVerificationMailerService.sendMail(user, token);
+
+        return true;
     }
 }
