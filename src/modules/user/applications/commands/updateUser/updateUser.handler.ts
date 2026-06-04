@@ -4,10 +4,7 @@ import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUs
 import { UserEntity } from '@/modules/user/domain/entities/user.entity';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 
-import type {
-    TPartialInsertUser,
-    TSelectUser,
-} from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
@@ -15,7 +12,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
 
     async execute(command: UpdateUserCommand): Promise<TSelectUser> {
         const user = await this.userRepository.getByIdOrThrow(command.id);
-        const updatedUser = Object.assign<TSelectUser, UpdateUserCommand, TPartialInsertUser>(
+        const updatedUser = Object.assign<TSelectUser, UpdateUserCommand, Partial<TInsertUser>>(
             user,
             command,
             { updatedAt: new Date() },

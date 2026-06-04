@@ -9,7 +9,7 @@ import {
 import { DrizzleClientService } from '@/infrastructure/database/drizzle/drizzleClient.service';
 import {
     users,
-    type TRequiredInsertUser,
+    type TInsertUser,
     type TSelectUser,
 } from '@/modules/user/infrastructure/schemas/user.schema';
 
@@ -20,7 +20,7 @@ import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepos
 export class UserRepository implements IUserRepository {
     constructor(private readonly drizzleClientService: DrizzleClientService) {}
 
-    create(data: Omit<UserEntity, 'id'>): Promise<TRequiredInsertUser> {
+    create(data: Omit<UserEntity, 'id'>): Promise<TInsertUser> {
         return toEntityOrThrow(
             this.drizzleClientService.db.insert(users).values(data).returning(),
             'Failed to create a new user',
