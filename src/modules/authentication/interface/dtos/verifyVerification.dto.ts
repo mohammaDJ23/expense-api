@@ -1,6 +1,6 @@
 import { IsJWT, IsNotEmpty } from 'class-validator';
 
-export class EmailVerificationTokenVerifyingDto {
+export class VerifyVerificationDto {
     @IsJWT()
     @IsNotEmpty()
     token: string;

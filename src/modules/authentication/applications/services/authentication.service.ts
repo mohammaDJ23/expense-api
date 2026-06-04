@@ -5,13 +5,13 @@ import { CreateUserCommand } from '@/modules/user/applications/commands/createUs
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
 
-import { EmailVerificationMailerService } from './emailVerificationMailer.service';
-import { EmailVerificationTokenService } from './emailVerificationToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
+import { VerificationMailerService } from './verificationMailer.service';
+import { VerificationTokenService } from './verificationToken.service';
 
-import type { EmailVerificationTokenDto } from '@/modules/authentication/interface/dtos/emailVerificationToken.dto';
-import type { EmailVerificationTokenVerifyingDto } from '@/modules/authentication/interface/dtos/emailVerificationTokenVerifying.dto';
+import type { SendVerificationDto } from '@/modules/authentication/interface/dtos/sendVerification.dto';
 import type { SignupDto } from '@/modules/authentication/interface/dtos/signup.dto';
+import type { VerifyVerificationDto } from '@/modules/authentication/interface/dtos/verifyVerification.dto';
 import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
@@ -21,8 +21,8 @@ export class AuthenticationService {
         private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
         private readonly passwordHasherService: PasswordHasherService,
-        private readonly emailVerificationMailerService: EmailVerificationMailerService,
-        private readonly emailVerificationTokenService: EmailVerificationTokenService,
+        private readonly verificationMailerService: VerificationMailerService,
+        private readonly verificationTokenService: VerificationTokenService,
     ) {}
 
     async signup(data: SignupDto): Promise<TInsertUser> {
@@ -33,14 +33,14 @@ export class AuthenticationService {
             createUserCommand,
         );
 
-        const token = this.emailVerificationTokenService.sign(createdUser);
+        const token = this.verificationTokenService.sign(createdUser);
 
-        await this.emailVerificationMailerService.sendMail(createdUser, token);
+        await this.verificationMailerService.sendMail(createdUser, token);
 
         return createdUser;
     }
 
-    async sendEmailVerificationToken(data: EmailVerificationTokenDto): Promise<boolean> {
+    async sendVerification(data: SendVerificationDto): Promise<boolean> {
         const getUserByEmailQuery = new GetUserByEmailQuery(data.email);
         const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser>(
             getUserByEmailQuery,
@@ -49,15 +49,15 @@ export class AuthenticationService {
             throw new ConflictException('Your email has been verified before');
         }
 
-        const token = this.emailVerificationTokenService.sign(user);
+        const token = this.verificationTokenService.sign(user);
 
-        await this.emailVerificationMailerService.sendMail(user, token);
+        await this.verificationMailerService.sendMail(user, token);
 
         return true;
     }
 
-    async verifyEmailVerificationToken(data: EmailVerificationTokenVerifyingDto): Promise<boolean> {
-        const payload = this.emailVerificationTokenService.verify(data.token);
+    async verifyVerification(data: VerifyVerificationDto): Promise<boolean> {
+        const payload = this.verificationTokenService.verify(data.token);
 
         const getUserByEmailQuery = new GetUserByEmailQuery(payload.email);
         const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser>(
