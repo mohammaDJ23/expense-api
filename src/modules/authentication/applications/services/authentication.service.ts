@@ -9,9 +9,9 @@ import { PasswordHasherService } from './passwordHasher.service';
 import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationTokenService } from './verificationToken.service';
 
-import type { SendVerificationDto } from '@/modules/authentication/interface/dtos/sendVerification.dto';
-import type { SignupDto } from '@/modules/authentication/interface/dtos/signup.dto';
-import type { VerifyVerificationDto } from '@/modules/authentication/interface/dtos/verifyVerification.dto';
+import type { SendVerificationDto } from '@/modules/authentication/interface/dtos/request/sendVerification.dto';
+import type { SignupDto } from '@/modules/authentication/interface/dtos/request/signup.dto';
+import type { VerifyVerificationDto } from '@/modules/authentication/interface/dtos/request/verifyVerification.dto';
 import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
