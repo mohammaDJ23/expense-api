@@ -1,10 +1,13 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
+import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
+import { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
 
+import { AccessTokenService } from './accessToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
 import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationTokenService } from './verificationToken.service';
@@ -23,6 +26,7 @@ export class AuthenticationService {
         private readonly passwordHasherService: PasswordHasherService,
         private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
+        private readonly accessTokenService: AccessTokenService,
     ) {}
 
     async signup(data: SignupRequestDto): Promise<TInsertUser> {
@@ -38,6 +42,26 @@ export class AuthenticationService {
         await this.verificationMailerService.sendMail(createdUser, token);
 
         return createdUser;
+    }
+
+    async login(data: LoginRequestDto): Promise<AccessTokenEntity> {
+        const getUserByEmailQuery = new GetUserByEmailQuery(data.email);
+        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser>(
+            getUserByEmailQuery,
+        );
+
+        const isPasswordValid = await this.passwordHasherService.verify(
+            user.hashedPassword,
+            data.password,
+        );
+
+        if (!isPasswordValid || !user.verifiedAt) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
+
+        const token = this.accessTokenService.sign(user);
+
+        return AccessTokenEntity.create(token);
     }
 
     async sendVerification(data: SendVerificationRequestDto): Promise<boolean> {
