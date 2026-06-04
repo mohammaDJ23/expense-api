@@ -8,9 +8,9 @@ import {
     SUCCESS_SEND_VERIFICATION_MESSAGE,
     SUCCESS_VERIFY_VERIFICATION_MESSAGE,
 } from '@/modules/authentication/interface/constants/messages.constant';
-import { SendVerificationDto } from '@/modules/authentication/interface/dtos/sendVerification.dto';
-import { SignupDto } from '@/modules/authentication/interface/dtos/signup.dto';
-import { VerifyVerificationDto } from '@/modules/authentication/interface/dtos/verifyVerification.dto';
+import { SendVerificationDto } from '@/modules/authentication/interface/dtos/request/sendVerification.dto';
+import { SignupDto } from '@/modules/authentication/interface/dtos/request/signup.dto';
+import { VerifyVerificationDto } from '@/modules/authentication/interface/dtos/request/verifyVerification.dto';
 
 import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
