@@ -9,9 +9,9 @@ import { PasswordHasherService } from './passwordHasher.service';
 import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationTokenService } from './verificationToken.service';
 
-import type { SendVerificationDto } from '@/modules/authentication/interface/dtos/request/sendVerification.dto';
-import type { SignupDto } from '@/modules/authentication/interface/dtos/request/signup.dto';
-import type { VerifyVerificationDto } from '@/modules/authentication/interface/dtos/request/verifyVerification.dto';
+import type { SendVerificationRequestDto } from '@/modules/authentication/interface/dtos/sendVerification.request.dto';
+import type { SignupRequestDto } from '@/modules/authentication/interface/dtos/signup.request.dto';
+import type { VerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/verifyVerification.request.dto';
 import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class AuthenticationService {
         private readonly verificationTokenService: VerificationTokenService,
     ) {}
 
-    async signup(data: SignupDto): Promise<TInsertUser> {
+    async signup(data: SignupRequestDto): Promise<TInsertUser> {
         const hashedPassword = await this.passwordHasherService.hash(data.password);
 
         const createUserCommand = new CreateUserCommand(data.email, hashedPassword);
@@ -40,7 +40,7 @@ export class AuthenticationService {
         return createdUser;
     }
 
-    async sendVerification(data: SendVerificationDto): Promise<boolean> {
+    async sendVerification(data: SendVerificationRequestDto): Promise<boolean> {
         const getUserByEmailQuery = new GetUserByEmailQuery(data.email);
         const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser>(
             getUserByEmailQuery,
@@ -56,7 +56,7 @@ export class AuthenticationService {
         return true;
     }
 
-    async verifyVerification(data: VerifyVerificationDto): Promise<boolean> {
+    async verifyVerification(data: VerifyVerificationRequestDto): Promise<boolean> {
         const payload = this.verificationTokenService.verify(data.token);
 
         const getUserByEmailQuery = new GetUserByEmailQuery(payload.email);
