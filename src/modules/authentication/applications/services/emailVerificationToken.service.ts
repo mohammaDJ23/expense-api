@@ -1,8 +1,9 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
+import type { IEmailVerificationTokenPayload } from '@/modules/authentication/domain/interfaces/emailVerificationTokenPayload.interface';
 import type {
     TRequiredInsertUser,
     TSelectUser,
@@ -14,20 +15,26 @@ export class EmailVerificationTokenService {
 
     sign(user: TRequiredInsertUser | TSelectUser): string {
         try {
-            return this.jwtService.sign(
+            return this.jwtService.sign<IEmailVerificationTokenPayload>(
                 {
                     id: user.id,
                     email: user.email,
-                    role: user.role,
                     issuedAt: getCurrentUTCTimestamp(),
                 },
                 {
-                    // NOTICE: this timer should match with the redis cache expiration time
-                    expiresIn: '15m',
+                    expiresIn: '10m',
                 },
             );
         } catch {
             throw new InternalServerErrorException('Failed to create the email verification token');
+        }
+    }
+
+    verify(token: string): IEmailVerificationTokenPayload {
+        try {
+            return this.jwtService.verify<IEmailVerificationTokenPayload>(token);
+        } catch {
+            throw new BadRequestException('Failed to verify the email verification token');
         }
     }
 }
