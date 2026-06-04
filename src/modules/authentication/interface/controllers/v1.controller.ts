@@ -1,7 +1,7 @@
 import { Body, Controller, HttpStatus, Post, Query } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 
-import { Response } from '@/core/decorators/Response.decorator';
+import { Response } from '@/core/decorators/response.decorator';
 import { SerializeObjectInterceptor } from '@/core/decorators/serializeObjectInterceptor.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import {
