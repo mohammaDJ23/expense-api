@@ -28,14 +28,14 @@ export class AuthenticationController {
         return this.authenticationService.signup(body);
     }
 
-    @Post('send-verification')
+    @Post('verification/send')
     @Throttle({ default: { limit: 1, ttl: 300000 } })
     @Response(SUCCESS_SEND_VERIFICATION_MESSAGE, HttpStatus.OK)
     sendVerification(@Body() body: SendVerificationRequestDto): Promise<boolean> {
         return this.authenticationService.sendVerification(body);
     }
 
-    @Post('verify-verification')
+    @Post('verification/verify')
     @Throttle({ default: { limit: 1, ttl: 300000 } })
     @Response(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
     verifyVerification(@Query() query: VerifyVerificationRequestDto): Promise<boolean> {
