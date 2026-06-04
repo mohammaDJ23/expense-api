@@ -13,7 +13,7 @@ import type { TClassConstructor } from '@/common/types';
 export class SerializeObjectInterceptor<T> implements NestInterceptor {
     constructor(private readonly dto: TClassConstructor<T>) {}
 
-    intercept(context: ExecutionContext, next: CallHandler): Observable<T> {
+    intercept(_: ExecutionContext, next: CallHandler): Observable<T> {
         return next.handle().pipe(
             // eslint-disable-next-line import-x/no-deprecated
             map((data: unknown): T => {
