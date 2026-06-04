@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { VerificationPayloadEntity } from '@/modules/authentication/domain/entities/verificationPayload.entity';
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
 import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
 import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
@@ -12,11 +12,14 @@ export class VerificationTokenService {
 
     sign(user: TInsertUser | TSelectUser): string {
         try {
-            const entity = VerificationPayloadEntity.create({
-                id: user.id,
-                email: user.email,
-            });
-            return this.jwtService.sign<IVerificationPayload>(entity, { expiresIn: '10m' });
+            return this.jwtService.sign<IVerificationPayload>(
+                {
+                    id: user.id,
+                    email: user.email,
+                    issuedAt: getCurrentUTCTimestamp(),
+                },
+                { expiresIn: '10m' },
+            );
         } catch {
             throw new InternalServerErrorException('Failed to create the email verification token');
         }
