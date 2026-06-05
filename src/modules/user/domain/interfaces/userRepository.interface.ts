@@ -3,7 +3,7 @@ import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/sch
 
 export interface IUserRepository {
     create(data: Omit<UserEntity, 'id'>): Promise<TInsertUser>;
-    update(data: Omit<UserEntity, 'id'>): Promise<TSelectUser>;
+    update(data: UserEntity): Promise<TSelectUser>;
     isExistsByEmail(email: string): Promise<boolean>;
     getByEmailOrThrow(email: string): Promise<TSelectUser>;
     getByEmail(email: string): Promise<TSelectUser | null>;
