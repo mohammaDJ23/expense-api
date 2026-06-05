@@ -7,6 +7,7 @@ import { ForgotPasswordMailerService } from '@/modules/authentication/applicatio
 import { ForgotPasswordTokenService } from '@/modules/authentication/applications/services/forgotPasswordToken.service';
 import { PasswordHasherService } from '@/modules/authentication/applications/services/passwordHasher.service';
 import { VerificationMailerService } from '@/modules/authentication/applications/services/verificationMailer.service';
+import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { VerificationTokenService } from '@/modules/authentication/applications/services/verificationToken.service';
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
 import { UserModule } from '@/modules/user/user.module';
@@ -18,6 +19,7 @@ import { UserModule } from '@/modules/user/user.module';
         AuthenticationService,
         VerificationMailerService,
         VerificationTokenService,
+        VerificationStorageService,
         ForgotPasswordMailerService,
         ForgotPasswordTokenService,
         PasswordHasherService,
