@@ -81,17 +81,16 @@ export class AuthenticationService {
     }
 
     async sendVerification(data: SendVerificationRequestDto): Promise<boolean> {
-        const getUserByEmailOrThrowQuery = new GetUserByEmailOrThrowQuery(data.email);
-        const user = await this.queryBus.execute<GetUserByEmailOrThrowQuery, TSelectUser>(
-            getUserByEmailOrThrowQuery,
+        const getUserByEmail = new GetUserByEmailQuery(data.email);
+        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
+            getUserByEmail,
         );
-        if (user.verifiedAt) {
-            throw new ConflictException('Your account has been verified before');
+
+        if (user?.verifiedAt) {
+            const token = this.verificationTokenService.sign(user);
+
+            await this.verificationMailerService.sendMail(user, token);
         }
-
-        const token = this.verificationTokenService.sign(user);
-
-        await this.verificationMailerService.sendMail(user, token);
 
         return true;
     }
