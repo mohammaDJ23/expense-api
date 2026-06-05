@@ -21,12 +21,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: IAccessTokenPayload): Promise<TSelectUser> {
+        const unauthorizedException = new UnauthorizedException();
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (payload.type !== 'ACCESS_TOKEN') {
+            throw unauthorizedException;
+        }
         const getUserByIdQuery = new GetUserByIdQuery(payload.id);
         const user = await this.queryBus.execute<GetUserByIdQuery, TSelectUser | null>(
             getUserByIdQuery,
         );
         if (!user) {
-            throw new UnauthorizedException();
+            throw unauthorizedException;
         }
         return user;
     }
