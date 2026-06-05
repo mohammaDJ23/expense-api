@@ -27,12 +27,12 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    update(data: UserEntity): Promise<TSelectUser> {
+    update(id: string, data: Partial<TSelectUser>): Promise<TSelectUser> {
         return toEntityOrThrow(
             this.drizzleClientService.db
                 .update(users)
                 .set(data)
-                .where(eq(users.id, data.id))
+                .where(eq(users.id, id))
                 .returning(),
             'Unable to update',
         );
