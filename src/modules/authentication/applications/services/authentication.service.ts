@@ -5,7 +5,7 @@ import { AccessTokenEntity } from '@/modules/authentication/domain/entities/acce
 import { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
-import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
+import { GetUserByEmailOrThrowQuery } from '@/modules/user/applications/queries/getUserByEmailOrThrow/getUserByEmailOrThrow.query';
 
 import { AccessTokenService } from './accessToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
@@ -45,9 +45,9 @@ export class AuthenticationService {
     }
 
     async login(data: LoginRequestDto): Promise<AccessTokenEntity> {
-        const getUserByEmailQuery = new GetUserByEmailQuery(data.email);
-        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser>(
-            getUserByEmailQuery,
+        const getUserByEmailOrThrowQuery = new GetUserByEmailOrThrowQuery(data.email);
+        const user = await this.queryBus.execute<GetUserByEmailOrThrowQuery, TSelectUser>(
+            getUserByEmailOrThrowQuery,
         );
 
         const isPasswordValid = await this.passwordHasherService.verify(
@@ -65,9 +65,9 @@ export class AuthenticationService {
     }
 
     async sendVerification(data: SendVerificationRequestDto): Promise<boolean> {
-        const getUserByEmailQuery = new GetUserByEmailQuery(data.email);
-        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser>(
-            getUserByEmailQuery,
+        const getUserByEmailOrThrowQuery = new GetUserByEmailOrThrowQuery(data.email);
+        const user = await this.queryBus.execute<GetUserByEmailOrThrowQuery, TSelectUser>(
+            getUserByEmailOrThrowQuery,
         );
         if (user.verifiedAt) {
             throw new ConflictException('Your email has been verified before');
@@ -83,9 +83,9 @@ export class AuthenticationService {
     async verifyVerification(data: VerifyVerificationRequestDto): Promise<boolean> {
         const payload = this.verificationTokenService.verify(data.token);
 
-        const getUserByEmailQuery = new GetUserByEmailQuery(payload.email);
-        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser>(
-            getUserByEmailQuery,
+        const getUserByEmailOrThrowQuery = new GetUserByEmailOrThrowQuery(payload.email);
+        const user = await this.queryBus.execute<GetUserByEmailOrThrowQuery, TSelectUser>(
+            getUserByEmailOrThrowQuery,
         );
         if (user.verifiedAt) {
             throw new ConflictException('Your email has been verified before');
