@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+import { readSecret } from '@/common/utils/readSecret.util';
 import { GetUserByIdQuery } from '@/modules/user/applications/queries/getUserById/getUserById.query';
 
 import type { IAccessTokenPayload } from '@/modules/authentication/domain/interfaces/accessTokenPayload.interface';
@@ -16,7 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: env.require('JWT_SECRET_FILE'),
+            secretOrKey: readSecret(env.require('JWT_SECRET_FILE')),
         });
     }
 
