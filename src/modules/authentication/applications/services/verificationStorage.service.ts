@@ -10,7 +10,7 @@ export class VerificationStorageService {
     async set(key: string, value: string): Promise<void> {
         const redis = this.redisService.getOrThrow();
         await redis.setex(
-            `${this.prefixKey}_${key}`,
+            `${this.prefixKey}:${key}`,
             // this time should be syncing with the token expiration time
             1 * 60 * 10,
             value,
@@ -19,11 +19,11 @@ export class VerificationStorageService {
 
     get(key: string): Promise<string | null> {
         const redis = this.redisService.getOrThrow();
-        return redis.get(`${this.prefixKey}_${key}`);
+        return redis.get(`${this.prefixKey}:${key}`);
     }
 
     async delete(key: string): Promise<void> {
         const redis = this.redisService.getOrThrow();
-        await redis.del(`${this.prefixKey}_${key}`);
+        await redis.del(`${this.prefixKey}:${key}`);
     }
 }
