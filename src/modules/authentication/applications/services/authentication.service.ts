@@ -8,7 +8,6 @@ import { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.r
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
-import { GetUserByEmailOrThrowQuery } from '@/modules/user/applications/queries/getUserByEmailOrThrow/getUserByEmailOrThrow.query';
 
 import { AccessTokenService } from './accessToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
@@ -86,7 +85,7 @@ export class AuthenticationService {
             getUserByEmail,
         );
 
-        if (user?.verifiedAt) {
+        if (user && !user.verifiedAt) {
             const token = this.verificationTokenService.sign(user);
 
             await this.verificationMailerService.sendMail(user, token);
@@ -103,7 +102,7 @@ export class AuthenticationService {
             getUserByEmail,
         );
 
-        if (user?.verifiedAt) {
+        if (user && !user.verifiedAt) {
             const updateUserCommand = new UpdateUserCommand(user.id, { verifiedAt: new Date() });
             await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
         }
@@ -112,17 +111,16 @@ export class AuthenticationService {
     }
 
     async forgotPassword(data: ForgotPasswordRequestDto): Promise<boolean> {
-        const getUserByEmailOrThrowQuery = new GetUserByEmailOrThrowQuery(data.email);
-        const user = await this.queryBus.execute<GetUserByEmailOrThrowQuery, TSelectUser>(
-            getUserByEmailOrThrowQuery,
+        const getUserByEmail = new GetUserByEmailQuery(data.email);
+        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
+            getUserByEmail,
         );
-        if (!user.verifiedAt) {
-            throw new UnauthorizedException('Your account has not been verified before');
+
+        if (user?.verifiedAt) {
+            const token = this.forgotPasswordTokenService.sign(user);
+
+            await this.forgotPasswordMailerService.sendMail(user, token);
         }
-
-        const token = this.forgotPasswordTokenService.sign(user);
-
-        await this.forgotPasswordMailerService.sendMail(user, token);
 
         return true;
     }
