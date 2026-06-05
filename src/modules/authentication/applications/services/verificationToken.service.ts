@@ -16,6 +16,7 @@ export class VerificationTokenService {
                 {
                     id: user.id,
                     email: user.email,
+                    type: 'VERIFICATION',
                     issuedAt: getCurrentUTCTimestamp(),
                 },
                 { expiresIn: '10m' },
@@ -27,7 +28,12 @@ export class VerificationTokenService {
 
     verify(token: string): IVerificationPayload {
         try {
-            return this.jwtService.verify<IVerificationPayload>(token);
+            const payload = this.jwtService.verify<IVerificationPayload>(token);
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (payload.type === 'VERIFICATION') {
+                return payload;
+            }
+            throw new BadRequestException();
         } catch {
             throw new BadRequestException('Failed to verify the verification token');
         }

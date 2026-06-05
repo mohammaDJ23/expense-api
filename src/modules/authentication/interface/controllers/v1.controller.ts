@@ -9,7 +9,9 @@ import {
     SUCCESS_SEND_VERIFICATION_MESSAGE,
     SUCCESS_VERIFY_VERIFICATION_MESSAGE,
     SUCCESS_LOGIN_MESSAGE,
+    SUCCESS_FORGOT_PASSWORD_MESSAGE,
 } from '@/modules/authentication/interface/constants/messages.constant';
+import { ForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/forgotPassword.request.dto';
 import { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
 import { LoginResponseDto } from '@/modules/authentication/interface/dtos/login.response.dto';
 import { SendVerificationRequestDto } from '@/modules/authentication/interface/dtos/sendVerification.request.dto';
@@ -52,5 +54,12 @@ export class AuthenticationController {
     @Response(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
     verifyVerification(@Body() body: VerifyVerificationRequestDto): Promise<boolean> {
         return this.authenticationService.verifyVerification(body);
+    }
+
+    @Post('forgot-password')
+    @Throttle({ default: { limit: 3, ttl: 60000 } })
+    @Response(SUCCESS_FORGOT_PASSWORD_MESSAGE, HttpStatus.OK)
+    forgotPassword(@Body() body: ForgotPasswordRequestDto): Promise<boolean> {
+        return this.authenticationService.forgotPassword(body);
     }
 }
