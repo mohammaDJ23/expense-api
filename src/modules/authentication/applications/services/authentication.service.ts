@@ -7,6 +7,7 @@ import { AccessTokenEntity } from '@/modules/authentication/domain/entities/acce
 import { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
+import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
 import { GetUserByEmailOrThrowQuery } from '@/modules/user/applications/queries/getUserByEmailOrThrow/getUserByEmailOrThrow.query';
 
 import { AccessTokenService } from './accessToken.service';
@@ -50,18 +51,28 @@ export class AuthenticationService {
     }
 
     async login(data: LoginRequestDto): Promise<AccessTokenEntity> {
-        const getUserByEmailOrThrowQuery = new GetUserByEmailOrThrowQuery(data.email);
-        const user = await this.queryBus.execute<GetUserByEmailOrThrowQuery, TSelectUser>(
-            getUserByEmailOrThrowQuery,
+        const getUserByEmail = new GetUserByEmailQuery(data.email);
+        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
+            getUserByEmail,
         );
+
+        const unauthorizedException = new UnauthorizedException('Invalid credentials');
+
+        if (!user) {
+            throw unauthorizedException;
+        }
+
+        if (!user.verifiedAt) {
+            throw unauthorizedException;
+        }
 
         const isPasswordValid = await this.passwordHasherService.verify(
             user.hashedPassword,
             data.password,
         );
 
-        if (!isPasswordValid || !user.verifiedAt) {
-            throw new UnauthorizedException('Invalid credentials');
+        if (!isPasswordValid) {
+            throw unauthorizedException;
         }
 
         const token = this.accessTokenService.sign(user);
