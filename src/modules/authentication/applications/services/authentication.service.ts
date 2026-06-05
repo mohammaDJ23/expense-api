@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { ForgotPasswordMailerService } from '@/modules/authentication/applications/services/forgotPasswordMailer.service';
@@ -98,16 +98,15 @@ export class AuthenticationService {
     async verifyVerification(data: VerifyVerificationRequestDto): Promise<boolean> {
         const payload = this.verificationTokenService.verify(data.token);
 
-        const getUserByEmailOrThrowQuery = new GetUserByEmailOrThrowQuery(payload.email);
-        const user = await this.queryBus.execute<GetUserByEmailOrThrowQuery, TSelectUser>(
-            getUserByEmailOrThrowQuery,
+        const getUserByEmail = new GetUserByEmailQuery(payload.email);
+        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
+            getUserByEmail,
         );
-        if (user.verifiedAt) {
-            throw new ConflictException('Your account has been verified before');
-        }
 
-        const updateUserCommand = new UpdateUserCommand(user.id, { verifiedAt: new Date() });
-        await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
+        if (user?.verifiedAt) {
+            const updateUserCommand = new UpdateUserCommand(user.id, { verifiedAt: new Date() });
+            await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
+        }
 
         return true;
     }
