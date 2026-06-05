@@ -23,7 +23,7 @@ export class UserRepository implements IUserRepository {
     create(data: Omit<UserEntity, 'id'>): Promise<TInsertUser> {
         return toEntityOrThrow(
             this.drizzleClientService.db.insert(users).values(data).returning(),
-            'Failed to create a new user',
+            'Unable to create',
         );
     }
 
@@ -34,7 +34,7 @@ export class UserRepository implements IUserRepository {
                 .set(data)
                 .where(eq(users.id, data.id))
                 .returning(),
-            'Failed to update the user',
+            'Unable to update',
         );
     }
 
@@ -47,7 +47,7 @@ export class UserRepository implements IUserRepository {
     }
 
     getByEmailOrThrow(email: string): Promise<TSelectUser> {
-        return toEntityOrThrow(this.selectByEmail(email), 'Failed to find the user');
+        return toEntityOrThrow(this.selectByEmail(email), 'User not found');
     }
 
     getByEmail(email: string): Promise<TSelectUser | null> {
@@ -63,7 +63,7 @@ export class UserRepository implements IUserRepository {
     }
 
     getByIdOrThrow(id: string): Promise<TSelectUser> {
-        return toEntityOrThrow(this.selectById(id), 'Failed to find the user');
+        return toEntityOrThrow(this.selectById(id), 'User not found');
     }
 
     getById(id: string): Promise<TSelectUser | null> {
