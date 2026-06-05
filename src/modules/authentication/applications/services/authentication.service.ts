@@ -9,6 +9,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { INVALID_CREDENTIAL, PROCESS_FAILED } from '@/common/constants/messages.constant';
 import { ForgotPasswordMailerService } from '@/modules/authentication/applications/services/forgotPasswordMailer.service';
+import { ForgotPasswordStorageService } from '@/modules/authentication/applications/services/forgotPasswordStorage.service';
 import { ForgotPasswordTokenService } from '@/modules/authentication/applications/services/forgotPasswordToken.service';
 import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
@@ -41,6 +42,7 @@ export class AuthenticationService {
         private readonly verificationStorageService: VerificationStorageService,
         private readonly forgotPasswordMailerService: ForgotPasswordMailerService,
         private readonly forgotPasswordTokenService: ForgotPasswordTokenService,
+        private readonly forgotPasswordStorageService: ForgotPasswordStorageService,
         private readonly accessTokenService: AccessTokenService,
     ) {}
 
@@ -176,7 +178,12 @@ export class AuthenticationService {
 
         if (user?.verifiedAt) {
             try {
+                const isTokenExists = await this.forgotPasswordStorageService.get(user.email);
+                if (isTokenExists) {
+                    return true;
+                }
                 const token = this.forgotPasswordTokenService.sign(user);
+                await this.forgotPasswordStorageService.set(user.email, token);
                 await this.forgotPasswordMailerService.sendMail(user, token);
                 // eslint-disable-next-line no-empty
             } catch {}

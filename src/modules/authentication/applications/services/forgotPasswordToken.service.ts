@@ -18,6 +18,7 @@ export class ForgotPasswordTokenService {
                 type: 'FORGOT_PASSWORD',
                 issuedAt: getCurrentUTCTimestamp(),
             },
+            // this time should be syncing with the ttl of redis
             { expiresIn: '10m' },
         );
     }
