@@ -27,9 +27,13 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    update(data: Omit<UserEntity, 'id'>): Promise<TSelectUser> {
+    update(data: UserEntity): Promise<TSelectUser> {
         return toEntityOrThrow(
-            this.drizzleClientService.db.update(users).set(data).returning(),
+            this.drizzleClientService.db
+                .update(users)
+                .set(data)
+                .where(eq(users.id, data.id))
+                .returning(),
             'Failed to update the user',
         );
     }
