@@ -1,6 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    ConflictException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
+import { INVALID_CREDENTIAL, PROCESS_FAILED } from '@/common/constants/messages.constant';
 import { ForgotPasswordMailerService } from '@/modules/authentication/applications/services/forgotPasswordMailer.service';
 import { ForgotPasswordTokenService } from '@/modules/authentication/applications/services/forgotPasswordToken.service';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
@@ -13,6 +20,7 @@ import { PasswordHasherService } from './passwordHasher.service';
 import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationTokenService } from './verificationToken.service';
 
+import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
 import type { ForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/forgotPassword.request.dto';
 import type { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
 import type { SendVerificationRequestDto } from '@/modules/authentication/interface/dtos/sendVerification.request.dto';
@@ -35,16 +43,27 @@ export class AuthenticationService {
     ) {}
 
     async signup(data: SignupRequestDto): Promise<TInsertUser> {
-        const hashedPassword = await this.passwordHasherService.hash(data.password);
+        let hashedPassword: string;
+        let createdUser: TInsertUser;
+        try {
+            hashedPassword = await this.passwordHasherService.hash(data.password);
 
-        const createUserCommand = new CreateUserCommand(data.email, hashedPassword);
-        const createdUser = await this.commandBus.execute<CreateUserCommand, TInsertUser>(
-            createUserCommand,
-        );
+            const createUserCommand = new CreateUserCommand(data.email, hashedPassword);
+            createdUser = await this.commandBus.execute<CreateUserCommand, TInsertUser>(
+                createUserCommand,
+            );
+        } catch (error) {
+            if (error instanceof ConflictException || error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException(PROCESS_FAILED);
+        }
 
-        const token = this.verificationTokenService.sign(createdUser);
-
-        await this.verificationMailerService.sendMail(createdUser, token);
+        try {
+            const token = this.verificationTokenService.sign(createdUser);
+            await this.verificationMailerService.sendMail(createdUser, token);
+            // eslint-disable-next-line no-empty
+        } catch {}
 
         return createdUser;
     }
@@ -55,64 +74,103 @@ export class AuthenticationService {
     }
 
     async login(data: LoginRequestDto): Promise<AccessTokenEntity> {
-        const user = await this.getUserByEmail(data.email);
-
-        const unauthorizedException = new UnauthorizedException('Invalid credentials');
-
-        if (!user) {
-            throw unauthorizedException;
+        let user: TSelectUser | null;
+        try {
+            user = await this.getUserByEmail(data.email);
+        } catch {
+            throw new InternalServerErrorException(PROCESS_FAILED);
         }
 
-        if (!user.verifiedAt) {
-            throw unauthorizedException;
+        if (!user?.verifiedAt) {
+            throw new UnauthorizedException(INVALID_CREDENTIAL);
         }
 
-        const isPasswordValid = await this.passwordHasherService.verify(
-            user.hashedPassword,
-            data.password,
-        );
+        let isPasswordValid = false;
+        try {
+            isPasswordValid = await this.passwordHasherService.verify(
+                user.hashedPassword,
+                data.password,
+            );
+        } catch {
+            throw new InternalServerErrorException(PROCESS_FAILED);
+        }
 
         if (!isPasswordValid) {
-            throw unauthorizedException;
+            throw new UnauthorizedException(INVALID_CREDENTIAL);
         }
 
-        const token = this.accessTokenService.sign(user);
+        try {
+            const token = this.accessTokenService.sign(user);
 
-        return AccessTokenEntity.create(token);
+            const updateUserCommand = new UpdateUserCommand(user.id, {
+                lastLoginAt: new Date(),
+            });
+            await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
+
+            return AccessTokenEntity.create(token);
+        } catch {
+            throw new InternalServerErrorException(PROCESS_FAILED);
+        }
     }
 
     async sendVerification(data: SendVerificationRequestDto): Promise<boolean> {
-        const user = await this.getUserByEmail(data.email);
+        let user: TSelectUser | null;
+        try {
+            user = await this.getUserByEmail(data.email);
+        } catch {
+            throw new InternalServerErrorException(PROCESS_FAILED);
+        }
 
         if (user && !user.verifiedAt) {
-            const token = this.verificationTokenService.sign(user);
-
-            await this.verificationMailerService.sendMail(user, token);
+            try {
+                const token = this.verificationTokenService.sign(user);
+                await this.verificationMailerService.sendMail(user, token);
+                // eslint-disable-next-line no-empty
+            } catch {}
         }
 
         return true;
     }
 
     async verifyVerification(data: VerifyVerificationRequestDto): Promise<boolean> {
-        const payload = this.verificationTokenService.verify(data.token);
+        let payload: IVerificationPayload;
+        let user: TSelectUser | null;
+        try {
+            payload = this.verificationTokenService.verify(data.token);
 
-        const user = await this.getUserByEmail(payload.email);
+            user = await this.getUserByEmail(payload.email);
+        } catch {
+            throw new InternalServerErrorException(PROCESS_FAILED);
+        }
 
         if (user && !user.verifiedAt) {
-            const updateUserCommand = new UpdateUserCommand(user.id, { verifiedAt: new Date() });
-            await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
+            try {
+                const updateUserCommand = new UpdateUserCommand(user.id, {
+                    verifiedAt: new Date(),
+                });
+                await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
+            } catch {
+                throw new InternalServerErrorException('Could not verify your email, try again');
+            }
         }
 
         return true;
     }
 
     async forgotPassword(data: ForgotPasswordRequestDto): Promise<boolean> {
-        const user = await this.getUserByEmail(data.email);
+        let user: TSelectUser | null;
+        try {
+            user = await this.getUserByEmail(data.email);
+        } catch {
+            throw new InternalServerErrorException(PROCESS_FAILED);
+        }
 
         if (user?.verifiedAt) {
-            const token = this.forgotPasswordTokenService.sign(user);
-
-            await this.forgotPasswordMailerService.sendMail(user, token);
+            try {
+                const token = this.forgotPasswordTokenService.sign(user);
+                await this.forgotPasswordMailerService.sendMail(user, token);
+                // eslint-disable-next-line no-empty
+            } catch {}
         }
 
         return true;
