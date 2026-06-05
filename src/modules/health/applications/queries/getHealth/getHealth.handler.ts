@@ -1,4 +1,3 @@
-import { ServiceUnavailableException } from '@nestjs/common';
 import { type IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { type HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
 
@@ -15,14 +14,10 @@ export class GetHealthHandler implements IQueryHandler<GetHealthQuery> {
         private readonly health: HealthCheckService,
     ) {}
 
-    async execute(): Promise<HealthCheckResult> {
-        try {
-            return await this.health.check([
-                () => this.databaseIndicator.check(),
-                () => this.redisIndicator.check(),
-            ]);
-        } catch (error) {
-            throw new ServiceUnavailableException(error);
-        }
+    execute(): Promise<HealthCheckResult> {
+        return this.health.check([
+            () => this.databaseIndicator.check(),
+            () => this.redisIndicator.check(),
+        ]);
     }
 }
