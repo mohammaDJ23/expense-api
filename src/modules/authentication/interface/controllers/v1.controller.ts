@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Query } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 
 import { Response } from '@/core/decorators/response.decorator';
@@ -47,10 +47,10 @@ export class AuthenticationController {
         return this.authenticationService.sendVerification(body);
     }
 
-    @Get('verification/verify')
+    @Post('verification/verify')
     @Throttle({ default: { limit: 1, ttl: 300000 } })
     @Response(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
-    verifyVerification(@Query() query: VerifyVerificationRequestDto): Promise<boolean> {
-        return this.authenticationService.verifyVerification(query);
+    verifyVerification(@Body() body: VerifyVerificationRequestDto): Promise<boolean> {
+        return this.authenticationService.verifyVerification(body);
     }
 }
