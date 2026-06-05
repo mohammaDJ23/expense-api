@@ -28,7 +28,7 @@ export class SerializeObjectInterceptor<T> implements NestInterceptor {
                     !(data instanceof Date);
                 if (!isValid) {
                     throw new InternalServerErrorException(
-                        `@SerializeObject() expects an object but received ${typeof data}`,
+                        `@SerializeObjectInterceptor() expects an object but received ${typeof data}`,
                     );
                 }
                 return plainToClass(this.dto, data, {
