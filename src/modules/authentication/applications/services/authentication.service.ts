@@ -70,7 +70,7 @@ export class AuthenticationService {
             getUserByEmailOrThrowQuery,
         );
         if (user.verifiedAt) {
-            throw new ConflictException('Your email has been verified before');
+            throw new ConflictException('Your account has been verified before');
         }
 
         const token = this.verificationTokenService.sign(user);
@@ -88,7 +88,7 @@ export class AuthenticationService {
             getUserByEmailOrThrowQuery,
         );
         if (user.verifiedAt) {
-            throw new ConflictException('Your email has been verified before');
+            throw new ConflictException('Your account has been verified before');
         }
 
         const updateUserCommand = new UpdateUserCommand(user.id, { verifiedAt: new Date() });

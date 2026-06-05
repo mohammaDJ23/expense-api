@@ -21,7 +21,7 @@ export class VerificationTokenService {
                 { expiresIn: '10m' },
             );
         } catch {
-            throw new InternalServerErrorException('Failed to create the email verification token');
+            throw new InternalServerErrorException('Failed to create the verification token');
         }
     }
 
@@ -29,7 +29,7 @@ export class VerificationTokenService {
         try {
             return this.jwtService.verify<IVerificationPayload>(token);
         } catch {
-            throw new BadRequestException('Failed to verify the email verification token');
+            throw new BadRequestException('Failed to verify the verification token');
         }
     }
 }
