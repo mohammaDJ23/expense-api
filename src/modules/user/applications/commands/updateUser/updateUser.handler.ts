@@ -14,7 +14,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
         const { id, ...properties } = command;
         const updatedData = Object.assign<
             Omit<UpdateUserCommand, 'id'>,
-            Pick<TInsertUser | TSelectUser, 'updatedAt'> & Omit<Partial<UpdateUserCommand>, 'id'>
+            Pick<TInsertUser | TSelectUser, 'updatedAt'>
         >(omitUndefined(properties), {
             updatedAt: new Date(),
         });
