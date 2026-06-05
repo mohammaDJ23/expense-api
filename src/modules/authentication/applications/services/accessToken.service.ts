@@ -25,6 +25,7 @@ export class AccessTokenService {
                     createdAt: user.createdAt,
                     updatedAt: user.updatedAt,
                     lastLoginAt: user.lastLoginAt,
+                    type: 'ACCESS_TOKEN',
                     issuedAt: getCurrentUTCTimestamp(),
                 },
                 { expiresIn: '1d' },
