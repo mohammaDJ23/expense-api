@@ -34,9 +34,7 @@ export class VerificationMailerService {
                 html,
             });
         } catch {
-            throw new ServiceUnavailableException(
-                'Failed to send you the email verification token',
-            );
+            throw new ServiceUnavailableException('Failed to send you the verification');
         }
     }
 }
