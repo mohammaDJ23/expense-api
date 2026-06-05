@@ -28,13 +28,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         if (payload.type !== 'ACCESS_TOKEN') {
             throw unauthorizedException;
         }
-        const getUserByIdQuery = new GetUserByIdQuery(payload.id);
-        const user = await this.queryBus.execute<GetUserByIdQuery, TSelectUser | null>(
-            getUserByIdQuery,
-        );
+
+        let user: TSelectUser | null;
+        try {
+            const getUserByIdQuery = new GetUserByIdQuery(payload.id);
+            user = await this.queryBus.execute<GetUserByIdQuery, TSelectUser | null>(
+                getUserByIdQuery,
+            );
+        } catch {
+            throw unauthorizedException;
+        }
+
         if (!user) {
             throw unauthorizedException;
         }
+
         return user;
     }
 }
