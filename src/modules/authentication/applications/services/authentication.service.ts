@@ -127,8 +127,8 @@ export class AuthenticationService {
 
         if (user && !user.verifiedAt) {
             try {
-                const isTokenExists = await this.verificationStorageService.get(user.email);
-                if (isTokenExists) {
+                const storedToken = await this.verificationStorageService.get(user.email);
+                if (storedToken) {
                     return true;
                 }
                 const token = this.verificationTokenService.sign(user);
@@ -178,8 +178,8 @@ export class AuthenticationService {
 
         if (user?.verifiedAt) {
             try {
-                const isTokenExists = await this.forgotPasswordStorageService.get(user.email);
-                if (isTokenExists) {
+                const storedToken = await this.forgotPasswordStorageService.get(user.email);
+                if (storedToken) {
                     return true;
                 }
                 const token = this.forgotPasswordTokenService.sign(user);
