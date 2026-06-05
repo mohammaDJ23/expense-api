@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
@@ -11,31 +11,23 @@ export class VerificationTokenService {
     constructor(private readonly jwtService: JwtService) {}
 
     sign(user: TInsertUser | TSelectUser): string {
-        try {
-            return this.jwtService.sign<IVerificationPayload>(
-                {
-                    id: user.id,
-                    email: user.email,
-                    type: 'VERIFICATION',
-                    issuedAt: getCurrentUTCTimestamp(),
-                },
-                { expiresIn: '10m' },
-            );
-        } catch {
-            throw new InternalServerErrorException('Failed to create the verification token');
-        }
+        return this.jwtService.sign<IVerificationPayload>(
+            {
+                id: user.id,
+                email: user.email,
+                type: 'VERIFICATION',
+                issuedAt: getCurrentUTCTimestamp(),
+            },
+            { expiresIn: '10m' },
+        );
     }
 
     verify(token: string): IVerificationPayload {
-        try {
-            const payload = this.jwtService.verify<IVerificationPayload>(token);
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (payload.type === 'VERIFICATION') {
-                return payload;
-            }
-            throw new BadRequestException();
-        } catch {
-            throw new BadRequestException('Failed to verify the verification token');
+        const payload = this.jwtService.verify<IVerificationPayload>(token);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (payload.type === 'VERIFICATION') {
+            return payload;
         }
+        throw new BadRequestException('The verification token is not valid');
     }
 }
