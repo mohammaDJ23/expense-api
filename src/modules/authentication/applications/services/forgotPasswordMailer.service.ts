@@ -1,4 +1,4 @@
-import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
@@ -22,14 +22,10 @@ export class ForgotPasswordMailerService {
             </div>
         `;
 
-        try {
-            await this.mailerService.sendMail({
-                to: user.email,
-                subject,
-                html,
-            });
-        } catch {
-            throw new ServiceUnavailableException('Failed to send you the forgot password link');
-        }
+        await this.mailerService.sendMail({
+            to: user.email,
+            subject,
+            html,
+        });
     }
 }
