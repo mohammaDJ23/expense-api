@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
@@ -31,14 +31,6 @@ export class AccessTokenService {
             );
         } catch {
             throw new InternalServerErrorException('Failed to create an access token');
-        }
-    }
-
-    verify(token: string): IAccessTokenPayload {
-        try {
-            return this.jwtService.verify<IAccessTokenPayload>(token);
-        } catch {
-            throw new BadRequestException('Failed to verify the access token');
         }
     }
 }
