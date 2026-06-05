@@ -1,4 +1,4 @@
-import { AppException } from '@/core/exceptions/app/exception';
+import { NotFoundException } from '@nestjs/common';
 
 export async function toEntityOrNull<T>(query: Promise<T[]>): Promise<T | null> {
     const result = await query;
@@ -8,7 +8,7 @@ export async function toEntityOrNull<T>(query: Promise<T[]>): Promise<T | null> 
 export async function toEntityOrThrow<T>(query: Promise<T[]>, errorMessage: string): Promise<T> {
     const result = await query;
     if (!result[0]) {
-        throw new AppException(errorMessage);
+        throw new NotFoundException(errorMessage);
     }
     return result[0];
 }
