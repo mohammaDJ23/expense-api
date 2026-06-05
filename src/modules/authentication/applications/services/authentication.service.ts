@@ -10,6 +10,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { INVALID_CREDENTIAL, PROCESS_FAILED } from '@/common/constants/messages.constant';
 import { ForgotPasswordMailerService } from '@/modules/authentication/applications/services/forgotPasswordMailer.service';
 import { ForgotPasswordTokenService } from '@/modules/authentication/applications/services/forgotPasswordToken.service';
+import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
@@ -37,6 +38,7 @@ export class AuthenticationService {
         private readonly passwordHasherService: PasswordHasherService,
         private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
+        private readonly verificationStorageService: VerificationStorageService,
         private readonly forgotPasswordMailerService: ForgotPasswordMailerService,
         private readonly forgotPasswordTokenService: ForgotPasswordTokenService,
         private readonly accessTokenService: AccessTokenService,
@@ -123,7 +125,12 @@ export class AuthenticationService {
 
         if (user && !user.verifiedAt) {
             try {
+                const isTokenExists = await this.verificationStorageService.get(user.email);
+                if (isTokenExists) {
+                    return true;
+                }
                 const token = this.verificationTokenService.sign(user);
+                await this.verificationStorageService.set(user.email, token);
                 await this.verificationMailerService.sendMail(user, token);
                 // eslint-disable-next-line no-empty
             } catch {}
@@ -145,6 +152,8 @@ export class AuthenticationService {
 
         if (user && !user.verifiedAt) {
             try {
+                await this.verificationStorageService.delete(payload.email);
+
                 const updateUserCommand = new UpdateUserCommand(user.id, {
                     verifiedAt: new Date(),
                 });
