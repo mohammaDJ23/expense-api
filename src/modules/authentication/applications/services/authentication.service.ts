@@ -49,11 +49,13 @@ export class AuthenticationService {
         return createdUser;
     }
 
+    private getUserByEmail(email: string): Promise<TSelectUser | null> {
+        const getUserByEmailQuery = new GetUserByEmailQuery(email);
+        return this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(getUserByEmailQuery);
+    }
+
     async login(data: LoginRequestDto): Promise<AccessTokenEntity> {
-        const getUserByEmail = new GetUserByEmailQuery(data.email);
-        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
-            getUserByEmail,
-        );
+        const user = await this.getUserByEmail(data.email);
 
         const unauthorizedException = new UnauthorizedException('Invalid credentials');
 
@@ -80,10 +82,7 @@ export class AuthenticationService {
     }
 
     async sendVerification(data: SendVerificationRequestDto): Promise<boolean> {
-        const getUserByEmail = new GetUserByEmailQuery(data.email);
-        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
-            getUserByEmail,
-        );
+        const user = await this.getUserByEmail(data.email);
 
         if (user && !user.verifiedAt) {
             const token = this.verificationTokenService.sign(user);
@@ -97,10 +96,7 @@ export class AuthenticationService {
     async verifyVerification(data: VerifyVerificationRequestDto): Promise<boolean> {
         const payload = this.verificationTokenService.verify(data.token);
 
-        const getUserByEmail = new GetUserByEmailQuery(payload.email);
-        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
-            getUserByEmail,
-        );
+        const user = await this.getUserByEmail(payload.email);
 
         if (user && !user.verifiedAt) {
             const updateUserCommand = new UpdateUserCommand(user.id, { verifiedAt: new Date() });
@@ -111,10 +107,7 @@ export class AuthenticationService {
     }
 
     async forgotPassword(data: ForgotPasswordRequestDto): Promise<boolean> {
-        const getUserByEmail = new GetUserByEmailQuery(data.email);
-        const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
-            getUserByEmail,
-        );
+        const user = await this.getUserByEmail(data.email);
 
         if (user?.verifiedAt) {
             const token = this.forgotPasswordTokenService.sign(user);
