@@ -4,7 +4,6 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ForgotPasswordMailerService } from '@/modules/authentication/applications/services/forgotPasswordMailer.service';
 import { ForgotPasswordTokenService } from '@/modules/authentication/applications/services/forgotPasswordToken.service';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
-import { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
@@ -15,6 +14,7 @@ import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationTokenService } from './verificationToken.service';
 
 import type { ForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/forgotPassword.request.dto';
+import type { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
 import type { SendVerificationRequestDto } from '@/modules/authentication/interface/dtos/sendVerification.request.dto';
 import type { SignupRequestDto } from '@/modules/authentication/interface/dtos/signup.request.dto';
 import type { VerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/verifyVerification.request.dto';
