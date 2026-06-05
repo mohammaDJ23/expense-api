@@ -18,6 +18,6 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
             { updatedAt: new Date() },
         );
         const userEntity = UserEntity.create(updatedUser);
-        return this.userRepository.update(userEntity.toInsert());
+        return this.userRepository.update(userEntity);
     }
 }
