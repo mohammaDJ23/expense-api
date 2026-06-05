@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { GetHealthQuery } from '@/modules/health/applications/queries/getHealth/getHealth.query';
@@ -10,7 +10,11 @@ export class HealthService {
     constructor(private readonly queryBus: QueryBus) {}
 
     getHealth(): Promise<HealthCheckResult> {
-        const getHealthQuery = new GetHealthQuery();
-        return this.queryBus.execute(getHealthQuery);
+        try {
+            const getHealthQuery = new GetHealthQuery();
+            return this.queryBus.execute(getHealthQuery);
+        } catch {
+            throw new ServiceUnavailableException('Health check failed');
+        }
     }
 }
