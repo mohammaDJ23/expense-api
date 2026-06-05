@@ -3,6 +3,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 
 import { AccessTokenService } from '@/modules/authentication/applications/services/accessToken.service';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
+import { ForgotPasswordMailerService } from '@/modules/authentication/applications/services/forgotPasswordMailer.service';
+import { ForgotPasswordTokenService } from '@/modules/authentication/applications/services/forgotPasswordToken.service';
 import { PasswordHasherService } from '@/modules/authentication/applications/services/passwordHasher.service';
 import { VerificationMailerService } from '@/modules/authentication/applications/services/verificationMailer.service';
 import { VerificationTokenService } from '@/modules/authentication/applications/services/verificationToken.service';
@@ -16,6 +18,8 @@ import { UserModule } from '@/modules/user/user.module';
         AuthenticationService,
         VerificationMailerService,
         VerificationTokenService,
+        ForgotPasswordMailerService,
+        ForgotPasswordTokenService,
         PasswordHasherService,
         AccessTokenService,
     ],

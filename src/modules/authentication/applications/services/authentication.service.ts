@@ -1,6 +1,8 @@
 import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
+import { ForgotPasswordMailerService } from '@/modules/authentication/applications/services/forgotPasswordMailer.service';
+import { ForgotPasswordTokenService } from '@/modules/authentication/applications/services/forgotPasswordToken.service';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
@@ -12,6 +14,7 @@ import { PasswordHasherService } from './passwordHasher.service';
 import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationTokenService } from './verificationToken.service';
 
+import type { ForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/forgotPassword.request.dto';
 import type { SendVerificationRequestDto } from '@/modules/authentication/interface/dtos/sendVerification.request.dto';
 import type { SignupRequestDto } from '@/modules/authentication/interface/dtos/signup.request.dto';
 import type { VerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/verifyVerification.request.dto';
@@ -26,6 +29,8 @@ export class AuthenticationService {
         private readonly passwordHasherService: PasswordHasherService,
         private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
+        private readonly forgotPasswordMailerService: ForgotPasswordMailerService,
+        private readonly forgotPasswordTokenService: ForgotPasswordTokenService,
         private readonly accessTokenService: AccessTokenService,
     ) {}
 
@@ -93,6 +98,22 @@ export class AuthenticationService {
 
         const updateUserCommand = new UpdateUserCommand(user.id, { verifiedAt: new Date() });
         await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
+
+        return true;
+    }
+
+    async forgotPassword(data: ForgotPasswordRequestDto): Promise<boolean> {
+        const getUserByEmailOrThrowQuery = new GetUserByEmailOrThrowQuery(data.email);
+        const user = await this.queryBus.execute<GetUserByEmailOrThrowQuery, TSelectUser>(
+            getUserByEmailOrThrowQuery,
+        );
+        if (!user.verifiedAt) {
+            throw new UnauthorizedException('Your account has not been verified before');
+        }
+
+        const token = this.forgotPasswordTokenService.sign(user);
+
+        await this.forgotPasswordMailerService.sendMail(user, token);
 
         return true;
     }
