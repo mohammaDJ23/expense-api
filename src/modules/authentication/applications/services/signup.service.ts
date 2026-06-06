@@ -37,10 +37,9 @@ export class SignupService {
             throw new ConflictException('The Email already exists.');
         }
 
-        let hashedPassword: string;
         let createdUser: TInsertUser;
         try {
-            hashedPassword = await this.passwordHasherService.hash(data.password);
+            const hashedPassword = await this.passwordHasherService.hash(data.password);
 
             const createUserCommand = new CreateUserCommand(data.email, hashedPassword);
             createdUser = await this.commandBus.execute<CreateUserCommand, TInsertUser>(
