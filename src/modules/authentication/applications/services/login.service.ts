@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
-import { InternalServerProcessFailedException } from '@/core/exceptions/internalServerProcessFailed.exception';
-import { LocalAuthProviderRequiredException } from '@/core/exceptions/localAuthRequired.exception';
-import { UnAuthorizedProcessFailedException } from '@/core/exceptions/unauthorizedProcessFailed.exception';
+import { LocalAuthProviderBadRequestException } from '@/core/exceptions/localAuthProviderBadRequest.exception';
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { ProcessFailedUnAuthorizedException } from '@/core/exceptions/processFailedUnauthrized.exception';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
@@ -32,19 +32,19 @@ export class LoginService {
                 getUserByEmailQuery,
             );
         } catch {
-            throw new InternalServerProcessFailedException();
+            throw new ProcessFailedInternalServerErrorException();
         }
 
         if (!user) {
-            throw new UnAuthorizedProcessFailedException();
+            throw new ProcessFailedUnAuthorizedException();
         }
 
         if (user.authProvider !== AuthProvider.LOCAL || !user.hashedPassword) {
-            throw new LocalAuthProviderRequiredException();
+            throw new LocalAuthProviderBadRequestException();
         }
 
         if (!user.verifiedAt) {
-            throw new UnAuthorizedProcessFailedException();
+            throw new ProcessFailedUnAuthorizedException();
         }
 
         let isPasswordValid = false;
@@ -54,10 +54,10 @@ export class LoginService {
                 data.password,
             );
         } catch {
-            throw new InternalServerProcessFailedException();
+            throw new ProcessFailedInternalServerErrorException();
         }
         if (!isPasswordValid) {
-            throw new UnAuthorizedProcessFailedException();
+            throw new ProcessFailedUnAuthorizedException();
         }
 
         try {
@@ -70,7 +70,7 @@ export class LoginService {
 
             return AccessTokenEntity.create(token);
         } catch {
-            throw new InternalServerProcessFailedException();
+            throw new ProcessFailedInternalServerErrorException();
         }
     }
 }

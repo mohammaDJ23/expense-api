@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 
-export class LocalAuthProviderRequiredException extends BadRequestException {
+export class LocalAuthProviderBadRequestException extends BadRequestException {
     constructor() {
         super('This operation requires an email/password account');
     }
