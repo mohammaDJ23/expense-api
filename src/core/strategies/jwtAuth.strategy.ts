@@ -11,7 +11,7 @@ import type { IAccessTokenPayload } from '@/modules/authentication/domain/interf
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtAuthStrategy extends PassportStrategy(Strategy) {
     constructor(private readonly queryBus: QueryBus) {
         const env = new Env();
         super({
