@@ -7,8 +7,10 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { InternalServerProcessFailedException } from '@/core/exceptions/internalServerProcessFailed.exception';
 import { InvalidCredentialException } from '@/core/exceptions/invalidCredential.exception';
+import { LocalAuthProviderRequiredException } from '@/core/exceptions/localAuthRequired.exception';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
+import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationStorageService } from './verificationStorage.service';
@@ -48,7 +50,15 @@ export class VerificationService {
             throw new InternalServerProcessFailedException();
         }
 
-        if (user && !user.verifiedAt) {
+        if (!user) {
+            return true;
+        }
+
+        if (user.authProvider !== AuthProvider.LOCAL) {
+            throw new LocalAuthProviderRequiredException();
+        }
+
+        if (!user.verifiedAt) {
             try {
                 const token = this.verificationTokenService.sign(user);
                 await this.verificationStorageService.set(user.email, token);
@@ -85,7 +95,15 @@ export class VerificationService {
             throw new InternalServerProcessFailedException();
         }
 
-        if (user && !user.verifiedAt) {
+        if (!user) {
+            return true;
+        }
+
+        if (user.authProvider !== AuthProvider.LOCAL) {
+            throw new LocalAuthProviderRequiredException();
+        }
+
+        if (!user.verifiedAt) {
             try {
                 const updateUserCommand = new UpdateUserCommand(user.id, {
                     verifiedAt: new Date(),

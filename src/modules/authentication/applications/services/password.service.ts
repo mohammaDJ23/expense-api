@@ -7,8 +7,10 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { InternalServerProcessFailedException } from '@/core/exceptions/internalServerProcessFailed.exception';
 import { InvalidCredentialException } from '@/core/exceptions/invalidCredential.exception';
+import { LocalAuthProviderRequiredException } from '@/core/exceptions/localAuthRequired.exception';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
+import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { PasswordHasherService } from './passwordHasher.service';
 import { PasswordMailerService } from './passwordMailer.service';
@@ -50,7 +52,15 @@ export class PasswordService {
             throw new InternalServerProcessFailedException();
         }
 
-        if (user?.verifiedAt) {
+        if (!user) {
+            return true;
+        }
+
+        if (user.authProvider !== AuthProvider.LOCAL) {
+            throw new LocalAuthProviderRequiredException();
+        }
+
+        if (user.verifiedAt) {
             try {
                 const token = this.passwordTokenService.sign(user);
                 await this.passwordStorageService.set(user.email, token);
@@ -87,7 +97,15 @@ export class PasswordService {
             throw new InternalServerProcessFailedException();
         }
 
-        if (user?.verifiedAt) {
+        if (!user) {
+            return true;
+        }
+
+        if (user.authProvider !== AuthProvider.LOCAL) {
+            throw new LocalAuthProviderRequiredException();
+        }
+
+        if (user.verifiedAt) {
             try {
                 const hashedPassword = await this.passwordHasherService.hash(data.newPassword);
 

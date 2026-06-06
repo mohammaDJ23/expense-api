@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { InternalServerProcessFailedException } from '@/core/exceptions/internalServerProcessFailed.exception';
+import { LocalAuthProviderRequiredException } from '@/core/exceptions/localAuthRequired.exception';
 import { UnAuthorizedProcessFailedException } from '@/core/exceptions/unauthorizedProcessFailed.exception';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
+import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { AccessTokenService } from './accessToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
@@ -32,7 +34,16 @@ export class LoginService {
         } catch {
             throw new InternalServerProcessFailedException();
         }
-        if (!user?.verifiedAt) {
+
+        if (!user) {
+            throw new UnAuthorizedProcessFailedException();
+        }
+
+        if (user.authProvider !== AuthProvider.LOCAL || !user.hashedPassword) {
+            throw new LocalAuthProviderRequiredException();
+        }
+
+        if (!user.verifiedAt) {
             throw new UnAuthorizedProcessFailedException();
         }
 
