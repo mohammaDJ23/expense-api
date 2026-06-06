@@ -47,6 +47,8 @@ jobs:
                   echo "${{ secrets.MAIL_USERNAME }}" > ./secrets/mail_username.txt
                   echo "${{ secrets.MAIL_PASSWORD }}" > ./secrets/mail_password.txt
                   echo "${{ secrets.MAIL_TO }}" > ./secrets/mail_to.txt
+                  echo "${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}" > ./secrets/google_oauth_client_id.txt
+                  echo "${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}" > ./secrets/google_oauth_client_secret.txt
 
             - name: Run the entrypoint
               id: run-entrypoint

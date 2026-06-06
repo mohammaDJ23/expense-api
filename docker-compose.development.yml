@@ -11,6 +11,8 @@ services:
             - JWT_SECRET_FILE=/run/secrets/jwt_secret
             - MAIL_USERNAME_FILE=/run/secrets/mail_username
             - MAIL_PASSWORD_FILE=/run/secrets/mail_password
+            - GOOGLE_OAUTH_CLIENT_ID_FILE=/run/secrets/google_oauth_client_id
+            - GOOGLE_OAUTH_CLIENT_SECRET_FILE=/run/secrets/google_oauth_client_secret
         build:
             context: .
             target: development
@@ -34,6 +36,8 @@ services:
             - jwt_secret
             - mail_username
             - mail_password
+            - google_oauth_client_id
+            - google_oauth_client_secret
         volumes:
             - ./src:/usr/src/app/src
             - ./package.json:/usr/src/app/package.json
@@ -115,6 +119,10 @@ secrets:
         file: ./secrets/mail_username.txt
     mail_password:
         file: ./secrets/mail_password.txt
+    google_oauth_client_id:
+        file: ./secrets/google_oauth_client_id.txt
+    google_oauth_client_secret:
+        file: ./secrets/google_oauth_client_secret.txt
 
 networks:
     expense-api-network:

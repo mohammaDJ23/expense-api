@@ -9,6 +9,8 @@ services:
             - JWT_SECRET_FILE=/run/secrets/jwt_secret
             - MAIL_USERNAME_FILE=/run/secrets/mail_username
             - MAIL_PASSWORD_FILE=/run/secrets/mail_password
+            - GOOGLE_OAUTH_CLIENT_ID_FILE=/run/secrets/google_oauth_client_id
+            - GOOGLE_OAUTH_CLIENT_SECRET_FILE=/run/secrets/google_oauth_client_secret
         ports:
             - '127.0.0.1:3000:3000'
         networks:
@@ -28,6 +30,8 @@ services:
             - jwt_secret
             - mail_username
             - mail_password
+            - google_oauth_client_id
+            - google_oauth_client_secret
         depends_on:
             postgres:
                 condition: service_healthy
@@ -216,6 +220,10 @@ secrets:
         file: ./secrets/mail_password.txt
     mail_to:
         file: ./secrets/mail_to.txt
+    google_oauth_client_id:
+        file: ./secrets/google_oauth_client_id.txt
+    google_oauth_client_secret:
+        file: ./secrets/google_oauth_client_secret.txt
 
 networks:
     expense-api-network:
