@@ -1,14 +1,14 @@
 import {
-    BadRequestException,
     ConflictException,
     Injectable,
     InternalServerErrorException,
     ServiceUnavailableException,
-    UnauthorizedException,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
-import { INVALID_CREDENTIAL, PROCESS_FAILED } from '@/common/constants/messages.constant';
+import { InternalServerProcessFailedException } from '@/core/exceptions/internalServerProcessFailed.exception';
+import { InvalidCredentialException } from '@/core/exceptions/invalidCredential.exception';
+import { UnAuthorizedProcessFailedException } from '@/core/exceptions/unauthorizedProcessFailed.exception';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
@@ -63,7 +63,7 @@ export class AuthenticationService {
                 isUserExistsByEmailQuery,
             );
         } catch {
-            throw new InternalServerErrorException(PROCESS_FAILED);
+            throw new InternalServerProcessFailedException();
         }
         if (isExists) {
             throw new ConflictException('The Email already exists.');
@@ -79,7 +79,7 @@ export class AuthenticationService {
                 createUserCommand,
             );
         } catch {
-            throw new InternalServerErrorException(PROCESS_FAILED);
+            throw new InternalServerProcessFailedException();
         }
 
         try {
@@ -87,7 +87,7 @@ export class AuthenticationService {
             await this.verificationMailerService.sendMail(createdUser, token);
         } catch {
             throw new ServiceUnavailableException(
-                'Could not send you the verification token, please try again',
+                'Your email has been saved but we could not send you the verification link, send the verification link manually',
             );
         }
 
@@ -99,10 +99,10 @@ export class AuthenticationService {
         try {
             user = await this.getUserByEmail(data.email);
         } catch {
-            throw new InternalServerErrorException(PROCESS_FAILED);
+            throw new InternalServerProcessFailedException();
         }
         if (!user?.verifiedAt) {
-            throw new UnauthorizedException(INVALID_CREDENTIAL);
+            throw new UnAuthorizedProcessFailedException();
         }
 
         let isPasswordValid = false;
@@ -112,10 +112,10 @@ export class AuthenticationService {
                 data.password,
             );
         } catch {
-            throw new InternalServerErrorException(PROCESS_FAILED);
+            throw new InternalServerProcessFailedException();
         }
         if (!isPasswordValid) {
-            throw new UnauthorizedException(INVALID_CREDENTIAL);
+            throw new UnAuthorizedProcessFailedException();
         }
 
         try {
@@ -128,7 +128,7 @@ export class AuthenticationService {
 
             return AccessTokenEntity.create(token);
         } catch {
-            throw new InternalServerErrorException(PROCESS_FAILED);
+            throw new InternalServerProcessFailedException();
         }
     }
 
@@ -142,7 +142,7 @@ export class AuthenticationService {
 
             user = await this.getUserByEmail(data.email);
         } catch {
-            throw new InternalServerErrorException(PROCESS_FAILED);
+            throw new InternalServerProcessFailedException();
         }
 
         if (user && !user.verifiedAt) {
@@ -163,7 +163,7 @@ export class AuthenticationService {
         try {
             payload = this.verificationTokenService.verify(data.token);
         } catch {
-            throw new BadRequestException(INVALID_CREDENTIAL);
+            throw new InvalidCredentialException();
         }
 
         let storedToken: string | null = null;
@@ -172,14 +172,14 @@ export class AuthenticationService {
             // eslint-disable-next-line no-empty
         } catch {}
         if (storedToken !== data.token) {
-            throw new BadRequestException(INVALID_CREDENTIAL);
+            throw new InvalidCredentialException();
         }
 
         let user: TSelectUser | null = null;
         try {
             user = await this.getUserByEmail(payload.email);
         } catch {
-            throw new InternalServerErrorException(PROCESS_FAILED);
+            throw new InternalServerProcessFailedException();
         }
 
         if (user && !user.verifiedAt) {
@@ -211,7 +211,7 @@ export class AuthenticationService {
 
             user = await this.getUserByEmail(data.email);
         } catch {
-            throw new InternalServerErrorException(PROCESS_FAILED);
+            throw new InternalServerProcessFailedException();
         }
 
         if (user?.verifiedAt) {
@@ -232,7 +232,7 @@ export class AuthenticationService {
         try {
             payload = this.passwordTokenService.verify(data.token);
         } catch {
-            throw new BadRequestException(INVALID_CREDENTIAL);
+            throw new InvalidCredentialException();
         }
 
         let storedToken: string | null = null;
@@ -241,14 +241,14 @@ export class AuthenticationService {
             // eslint-disable-next-line no-empty
         } catch {}
         if (storedToken !== data.token) {
-            throw new BadRequestException(INVALID_CREDENTIAL);
+            throw new InvalidCredentialException();
         }
 
         let user: TSelectUser | null = null;
         try {
             user = await this.getUserByEmail(payload.email);
         } catch {
-            throw new InternalServerErrorException(PROCESS_FAILED);
+            throw new InternalServerProcessFailedException();
         }
 
         if (user?.verifiedAt) {
