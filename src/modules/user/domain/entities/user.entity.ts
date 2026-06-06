@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
 import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
@@ -10,7 +11,9 @@ export class UserEntity implements TInsertUser {
     public readonly lastName: string | null;
     public readonly avatar: string | null;
     public readonly phone: string | null;
-    public readonly hashedPassword: string;
+    public readonly hashedPassword: string | null;
+    public readonly googleId: string | null;
+    public readonly authProvider: AuthProvider;
     public readonly verifiedAt: Date | null;
     public readonly createdAt: Date;
     public readonly updatedAt: Date;
@@ -25,6 +28,8 @@ export class UserEntity implements TInsertUser {
         this.avatar = data.avatar;
         this.phone = data.phone;
         this.hashedPassword = data.hashedPassword;
+        this.googleId = data.googleId;
+        this.authProvider = data.authProvider;
         this.verifiedAt = data.verifiedAt;
         this.createdAt = data.createdAt;
         this.updatedAt = data.updatedAt;
@@ -40,7 +45,9 @@ export class UserEntity implements TInsertUser {
             lastName: data.lastName ?? null,
             avatar: data.avatar ?? null,
             phone: data.phone ?? null,
-            hashedPassword: data.hashedPassword ?? '',
+            hashedPassword: data.hashedPassword ?? null,
+            googleId: data.googleId ?? null,
+            authProvider: data.authProvider ?? AuthProvider.LOCAL,
             verifiedAt: data.verifiedAt ?? null,
             createdAt: data.createdAt ?? new Date(),
             updatedAt: data.updatedAt ?? new Date(),
