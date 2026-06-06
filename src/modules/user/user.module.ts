@@ -6,6 +6,7 @@ import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUs
 import { GetUserByEmailHandler } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.handler';
 import { GetUserByEmailOrThrowHandler } from '@/modules/user/applications/queries/getUserByEmailOrThrow/getUserByEmailOrThrow.handler';
 import { GetUserByIdHandler } from '@/modules/user/applications/queries/getUserById/getUserById.handler';
+import { IsUserExistsByEmailHandler } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.handler';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 
 @Module({
@@ -17,6 +18,7 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
         GetUserByEmailHandler,
         UpdateUserHandler,
         GetUserByIdHandler,
+        IsUserExistsByEmailHandler,
     ],
     exports: [CqrsModule],
 })
