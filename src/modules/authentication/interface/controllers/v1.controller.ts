@@ -3,7 +3,10 @@ import { Throttle } from '@nestjs/throttler';
 
 import { Response } from '@/core/decorators/response.decorator';
 import { SerializeObjectInterceptor } from '@/core/decorators/serializeObjectInterceptor.decorator';
-import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
+import { LoginService } from '@/modules/authentication/applications/services/login.service';
+import { PasswordService } from '@/modules/authentication/applications/services/password.service';
+import { SignupService } from '@/modules/authentication/applications/services/signup.service';
+import { VerificationService } from '@/modules/authentication/applications/services/verification.service';
 import {
     SUCCESS_SIGNUP_MESSAGE,
     SUCCESS_SEND_VERIFICATION_MESSAGE,
@@ -26,14 +29,19 @@ import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.sch
 
 @Controller({ version: '1', path: 'api/authentication' })
 export class AuthenticationController {
-    constructor(private readonly authenticationService: AuthenticationService) {}
+    constructor(
+        private readonly signupService: SignupService,
+        private readonly loginService: LoginService,
+        private readonly verificationService: VerificationService,
+        private readonly passwordService: PasswordService,
+    ) {}
 
     @Post('signup')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @Response(SUCCESS_SIGNUP_MESSAGE, HttpStatus.CREATED)
     @SerializeObjectInterceptor(SignupResponseDto)
     signup(@Body() body: SignupRequestDto): Promise<TInsertUser> {
-        return this.authenticationService.signup(body);
+        return this.signupService.signup(body);
     }
 
     @Post('login')
@@ -41,34 +49,34 @@ export class AuthenticationController {
     @Response(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializeObjectInterceptor(LoginResponseDto)
     login(@Body() body: LoginRequestDto): Promise<AccessTokenEntity> {
-        return this.authenticationService.login(body);
+        return this.loginService.login(body);
     }
 
     @Post('verification/send')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @Response(SUCCESS_SEND_VERIFICATION_MESSAGE, HttpStatus.OK)
     sendVerification(@Body() body: SendVerificationRequestDto): Promise<boolean> {
-        return this.authenticationService.sendVerification(body);
+        return this.verificationService.sendVerification(body);
     }
 
     @Post('verification/verify')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @Response(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
     verifyVerification(@Body() body: VerifyVerificationRequestDto): Promise<boolean> {
-        return this.authenticationService.verifyVerification(body);
+        return this.verificationService.verifyVerification(body);
     }
 
     @Post('forgot-password')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @Response(SUCCESS_FORGOT_PASSWORD_MESSAGE, HttpStatus.OK)
     forgotPassword(@Body() body: ForgotPasswordRequestDto): Promise<boolean> {
-        return this.authenticationService.forgotPassword(body);
+        return this.passwordService.forgotPassword(body);
     }
 
     @Post('reset-password')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @Response(SUCCESS_RESET_PASSWORD_MESSAGE, HttpStatus.OK)
     resetPassword(@Body() body: ResetPasswordRequestDto): Promise<boolean> {
-        return this.authenticationService.resetPassword(body);
+        return this.passwordService.resetPassword(body);
     }
 }
