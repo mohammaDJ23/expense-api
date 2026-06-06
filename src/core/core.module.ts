@@ -4,9 +4,9 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { FallbackHostHandler } from '@/core/filters/globalException/fallbackHost.handler';
 import { GlobalExceptionFilter } from '@/core/filters/globalException/globalException.filter';
 import { HttpHostHandler } from '@/core/filters/globalException/httpHost.handler';
-import { JwtGuard } from '@/core/guards/jwt.guard';
+import { JwtAuthGuard } from '@/core/guards/jwtAuth.guard';
 import { TransformResponseInterceptor } from '@/core/interceptors/transformResponse.interceptor';
-import { JwtStrategy } from '@/core/strategies/jwt.strategy';
+import { JwtAuthStrategy } from '@/core/strategies/jwtAuth.strategy';
 import { UserModule } from '@/modules/user/user.module';
 
 @Module({
@@ -14,8 +14,8 @@ import { UserModule } from '@/modules/user/user.module';
     providers: [
         HttpHostHandler,
         FallbackHostHandler,
-        JwtGuard,
-        JwtStrategy,
+        JwtAuthGuard,
+        JwtAuthStrategy,
         {
             provide: APP_FILTER,
             useClass: GlobalExceptionFilter,
