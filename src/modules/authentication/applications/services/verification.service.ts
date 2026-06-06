@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
-import { InternalServerProcessFailedException } from '@/core/exceptions/internalServerProcessFailed.exception';
-import { InvalidCredentialException } from '@/core/exceptions/invalidCredential.exception';
-import { LocalAuthProviderRequiredException } from '@/core/exceptions/localAuthRequired.exception';
+import { InvalidCredentialBadRequestException } from '@/core/exceptions/invalidCredentialBadRequest.exception';
+import { LocalAuthProviderBadRequestException } from '@/core/exceptions/localAuthProviderBadRequest.exception';
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
@@ -47,7 +47,7 @@ export class VerificationService {
 
             user = await this.getUserByEmail(data.email);
         } catch {
-            throw new InternalServerProcessFailedException();
+            throw new ProcessFailedInternalServerErrorException();
         }
 
         if (!user) {
@@ -55,7 +55,7 @@ export class VerificationService {
         }
 
         if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderRequiredException();
+            throw new LocalAuthProviderBadRequestException();
         }
 
         if (!user.verifiedAt) {
@@ -76,7 +76,7 @@ export class VerificationService {
         try {
             payload = this.verificationTokenService.verify(data.token);
         } catch {
-            throw new InvalidCredentialException();
+            throw new InvalidCredentialBadRequestException();
         }
 
         let storedToken: string | null = null;
@@ -85,14 +85,14 @@ export class VerificationService {
             // eslint-disable-next-line no-empty
         } catch {}
         if (storedToken !== data.token) {
-            throw new InvalidCredentialException();
+            throw new InvalidCredentialBadRequestException();
         }
 
         let user: TSelectUser | null = null;
         try {
             user = await this.getUserByEmail(payload.email);
         } catch {
-            throw new InternalServerProcessFailedException();
+            throw new ProcessFailedInternalServerErrorException();
         }
 
         if (!user) {
@@ -100,7 +100,7 @@ export class VerificationService {
         }
 
         if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderRequiredException();
+            throw new LocalAuthProviderBadRequestException();
         }
 
         if (!user.verifiedAt) {

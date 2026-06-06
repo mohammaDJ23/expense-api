@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
-import { InternalServerProcessFailedException } from '@/core/exceptions/internalServerProcessFailed.exception';
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { IsUserExistsByEmailQuery } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.query';
 
@@ -31,7 +31,7 @@ export class SignupService {
                 isUserExistsByEmailQuery,
             );
         } catch {
-            throw new InternalServerProcessFailedException();
+            throw new ProcessFailedInternalServerErrorException();
         }
         if (isExists) {
             throw new ConflictException('The Email already exists.');
@@ -46,7 +46,7 @@ export class SignupService {
                 createUserCommand,
             );
         } catch {
-            throw new InternalServerProcessFailedException();
+            throw new ProcessFailedInternalServerErrorException();
         }
 
         try {
