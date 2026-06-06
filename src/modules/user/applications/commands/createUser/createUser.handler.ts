@@ -1,4 +1,3 @@
-import { ConflictException } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
@@ -11,11 +10,7 @@ import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.sch
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     constructor(private readonly userRepository: UserRepository) {}
 
-    async execute(command: CreateUserCommand): Promise<TInsertUser> {
-        const isExists = await this.userRepository.isExistsByEmail(command.email);
-        if (isExists) {
-            throw new ConflictException('The Email already exists.');
-        }
+    execute(command: CreateUserCommand): Promise<TInsertUser> {
         const userEntity = UserEntity.create(command);
         return this.userRepository.create(userEntity.toInsert());
     }
