@@ -1,30 +1,34 @@
 import {
+    BadRequestException,
     ConflictException,
     Injectable,
     InternalServerErrorException,
-    NotFoundException,
+    ServiceUnavailableException,
     UnauthorizedException,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { INVALID_CREDENTIAL, PROCESS_FAILED } from '@/common/constants/messages.constant';
-import { ForgotPasswordMailerService } from '@/modules/authentication/applications/services/forgotPasswordMailer.service';
-import { ForgotPasswordStorageService } from '@/modules/authentication/applications/services/forgotPasswordStorage.service';
-import { ForgotPasswordTokenService } from '@/modules/authentication/applications/services/forgotPasswordToken.service';
-import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
+import { IsUserExistsByEmailQuery } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.query';
 
 import { AccessTokenService } from './accessToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
+import { PasswordMailerService } from './passwordMailer.service';
+import { PasswordStorageService } from './passwordStorage.service';
+import { PasswordTokenService } from './passwordToken.service';
 import { VerificationMailerService } from './verificationMailer.service';
+import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
+import type { INewPasswordPayload } from '@/modules/authentication/domain/interfaces/newPasswordPayload.interface';
 import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
 import type { ForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/forgotPassword.request.dto';
 import type { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
+import type { ResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/resetPassword.request.dto';
 import type { SendVerificationRequestDto } from '@/modules/authentication/interface/dtos/sendVerification.request.dto';
 import type { SignupRequestDto } from '@/modules/authentication/interface/dtos/signup.request.dto';
 import type { VerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/verifyVerification.request.dto';
@@ -40,13 +44,31 @@ export class AuthenticationService {
         private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
-        private readonly forgotPasswordMailerService: ForgotPasswordMailerService,
-        private readonly forgotPasswordTokenService: ForgotPasswordTokenService,
-        private readonly forgotPasswordStorageService: ForgotPasswordStorageService,
+        private readonly passwordMailerService: PasswordMailerService,
+        private readonly passwordTokenService: PasswordTokenService,
+        private readonly passwordStorageService: PasswordStorageService,
         private readonly accessTokenService: AccessTokenService,
     ) {}
 
+    private getUserByEmail(email: string): Promise<TSelectUser | null> {
+        const getUserByEmailQuery = new GetUserByEmailQuery(email);
+        return this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(getUserByEmailQuery);
+    }
+
     async signup(data: SignupRequestDto): Promise<TInsertUser> {
+        let isExists = false;
+        try {
+            const isUserExistsByEmailQuery = new IsUserExistsByEmailQuery(data.email);
+            isExists = await this.queryBus.execute<IsUserExistsByEmailQuery, boolean>(
+                isUserExistsByEmailQuery,
+            );
+        } catch {
+            throw new InternalServerErrorException(PROCESS_FAILED);
+        }
+        if (isExists) {
+            throw new ConflictException('The Email already exists.');
+        }
+
         let hashedPassword: string;
         let createdUser: TInsertUser;
         try {
@@ -56,35 +78,29 @@ export class AuthenticationService {
             createdUser = await this.commandBus.execute<CreateUserCommand, TInsertUser>(
                 createUserCommand,
             );
-        } catch (error) {
-            if (error instanceof ConflictException || error instanceof NotFoundException) {
-                throw error;
-            }
+        } catch {
             throw new InternalServerErrorException(PROCESS_FAILED);
         }
 
         try {
             const token = this.verificationTokenService.sign(createdUser);
             await this.verificationMailerService.sendMail(createdUser, token);
-            // eslint-disable-next-line no-empty
-        } catch {}
+        } catch {
+            throw new ServiceUnavailableException(
+                'Could not send you the verification token, please try again',
+            );
+        }
 
         return createdUser;
     }
 
-    private getUserByEmail(email: string): Promise<TSelectUser | null> {
-        const getUserByEmailQuery = new GetUserByEmailQuery(email);
-        return this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(getUserByEmailQuery);
-    }
-
     async login(data: LoginRequestDto): Promise<AccessTokenEntity> {
-        let user: TSelectUser | null;
+        let user: TSelectUser | null = null;
         try {
             user = await this.getUserByEmail(data.email);
         } catch {
             throw new InternalServerErrorException(PROCESS_FAILED);
         }
-
         if (!user?.verifiedAt) {
             throw new UnauthorizedException(INVALID_CREDENTIAL);
         }
@@ -98,7 +114,6 @@ export class AuthenticationService {
         } catch {
             throw new InternalServerErrorException(PROCESS_FAILED);
         }
-
         if (!isPasswordValid) {
             throw new UnauthorizedException(INVALID_CREDENTIAL);
         }
@@ -118,8 +133,13 @@ export class AuthenticationService {
     }
 
     async sendVerification(data: SendVerificationRequestDto): Promise<boolean> {
-        let user: TSelectUser | null;
+        let user: TSelectUser | null = null;
         try {
+            const storedToken = await this.verificationStorageService.get(data.email);
+            if (storedToken) {
+                return true;
+            }
+
             user = await this.getUserByEmail(data.email);
         } catch {
             throw new InternalServerErrorException(PROCESS_FAILED);
@@ -127,15 +147,12 @@ export class AuthenticationService {
 
         if (user && !user.verifiedAt) {
             try {
-                const storedToken = await this.verificationStorageService.get(user.email);
-                if (storedToken) {
-                    return true;
-                }
                 const token = this.verificationTokenService.sign(user);
                 await this.verificationStorageService.set(user.email, token);
                 await this.verificationMailerService.sendMail(user, token);
-                // eslint-disable-next-line no-empty
-            } catch {}
+            } catch {
+                throw new ServiceUnavailableException('Could not send you a verification link');
+            }
         }
 
         return true;
@@ -143,10 +160,23 @@ export class AuthenticationService {
 
     async verifyVerification(data: VerifyVerificationRequestDto): Promise<boolean> {
         let payload: IVerificationPayload;
-        let user: TSelectUser | null;
         try {
             payload = this.verificationTokenService.verify(data.token);
+        } catch {
+            throw new BadRequestException(INVALID_CREDENTIAL);
+        }
 
+        let storedToken: string | null = null;
+        try {
+            storedToken = await this.verificationStorageService.get(payload.email);
+            // eslint-disable-next-line no-empty
+        } catch {}
+        if (storedToken !== data.token) {
+            throw new BadRequestException(INVALID_CREDENTIAL);
+        }
+
+        let user: TSelectUser | null = null;
+        try {
             user = await this.getUserByEmail(payload.email);
         } catch {
             throw new InternalServerErrorException(PROCESS_FAILED);
@@ -154,8 +184,6 @@ export class AuthenticationService {
 
         if (user && !user.verifiedAt) {
             try {
-                await this.verificationStorageService.delete(payload.email);
-
                 const updateUserCommand = new UpdateUserCommand(user.id, {
                     verifiedAt: new Date(),
                 });
@@ -163,6 +191,11 @@ export class AuthenticationService {
             } catch {
                 throw new InternalServerErrorException('Could not verify your email, try again');
             }
+
+            try {
+                await this.verificationStorageService.delete(user.email);
+                // eslint-disable-next-line no-empty
+            } catch {}
         }
 
         return true;
@@ -171,6 +204,11 @@ export class AuthenticationService {
     async forgotPassword(data: ForgotPasswordRequestDto): Promise<boolean> {
         let user: TSelectUser | null;
         try {
+            const storedToken = await this.passwordStorageService.get(data.email);
+            if (storedToken) {
+                return true;
+            }
+
             user = await this.getUserByEmail(data.email);
         } catch {
             throw new InternalServerErrorException(PROCESS_FAILED);
@@ -178,13 +216,53 @@ export class AuthenticationService {
 
         if (user?.verifiedAt) {
             try {
-                const storedToken = await this.forgotPasswordStorageService.get(user.email);
-                if (storedToken) {
-                    return true;
-                }
-                const token = this.forgotPasswordTokenService.sign(user);
-                await this.forgotPasswordStorageService.set(user.email, token);
-                await this.forgotPasswordMailerService.sendMail(user, token);
+                const token = this.passwordTokenService.sign(user);
+                await this.passwordStorageService.set(user.email, token);
+                await this.passwordMailerService.sendMail(user, token);
+            } catch {
+                throw new ServiceUnavailableException('Could not send you a verification link');
+            }
+        }
+
+        return true;
+    }
+
+    async resetPassword(data: ResetPasswordRequestDto): Promise<boolean> {
+        let payload: INewPasswordPayload;
+        try {
+            payload = this.passwordTokenService.verify(data.token);
+        } catch {
+            throw new BadRequestException(INVALID_CREDENTIAL);
+        }
+
+        let storedToken: string | null = null;
+        try {
+            storedToken = await this.passwordStorageService.get(payload.email);
+            // eslint-disable-next-line no-empty
+        } catch {}
+        if (storedToken !== data.token) {
+            throw new BadRequestException(INVALID_CREDENTIAL);
+        }
+
+        let user: TSelectUser | null = null;
+        try {
+            user = await this.getUserByEmail(payload.email);
+        } catch {
+            throw new InternalServerErrorException(PROCESS_FAILED);
+        }
+
+        if (user?.verifiedAt) {
+            try {
+                const hashedPassword = await this.passwordHasherService.hash(data.newPassword);
+
+                const updateUserCommand = new UpdateUserCommand(user.id, { hashedPassword });
+                await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
+            } catch {
+                throw new InternalServerErrorException('Could not change your password, try again');
+            }
+
+            try {
+                await this.passwordStorageService.delete(user.email);
                 // eslint-disable-next-line no-empty
             } catch {}
         }

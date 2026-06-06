@@ -4,7 +4,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class ForgotPasswordMailerService {
+export class PasswordMailerService {
     constructor(private readonly mailerService: MailerService) {}
 
     async sendMail(user: TSelectUser, token: string): Promise<void> {
