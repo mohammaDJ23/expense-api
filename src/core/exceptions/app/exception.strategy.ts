@@ -1,9 +1,9 @@
 import { HttpStatus } from '@nestjs/common';
 
-import { INTERNAL_SERVER_ERROR_MESSAGE } from '@/common/constants/messages.constant';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
 import { AppException } from './exception';
+import { INTERNAL_SERVER_ERROR_MESSAGE } from './exception.constant';
 
 import type { IAppException } from './exception.interface';
 import type { IAppExceptionStrategy } from './exceptionStrategy.interface';

@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/common/constants/messages.constant';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from './response.constant';
 
 import type { IResponse } from './response.interface';
 
