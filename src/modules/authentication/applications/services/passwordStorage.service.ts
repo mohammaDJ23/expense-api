@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 
 @Injectable()
-export class ForgotPasswordStorageService {
-    private readonly prefixKey = 'forgot-password';
+export class PasswordStorageService {
+    private readonly prefixKey = 'new-password';
 
     constructor(private readonly redisService: RedisService) {}
 
