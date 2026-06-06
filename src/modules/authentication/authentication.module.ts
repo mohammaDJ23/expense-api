@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
 import { AccessTokenService } from '@/modules/authentication/applications/services/accessToken.service';
-import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { LoginService } from '@/modules/authentication/applications/services/login.service';
 import { PasswordService } from '@/modules/authentication/applications/services/password.service';
 import { PasswordHasherService } from '@/modules/authentication/applications/services/passwordHasher.service';
@@ -21,7 +20,6 @@ import { UserModule } from '@/modules/user/user.module';
     imports: [UserModule, CqrsModule],
     controllers: [AuthenticationController],
     providers: [
-        AuthenticationService,
         SignupService,
         LoginService,
         PasswordService,
