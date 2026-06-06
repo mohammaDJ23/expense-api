@@ -24,6 +24,8 @@ export class AccessTokenService {
                 createdAt: user.createdAt,
                 updatedAt: user.updatedAt,
                 lastLoginAt: user.lastLoginAt,
+                googleId: user.googleId,
+                authProvider: user.authProvider,
                 type: 'ACCESS_TOKEN',
                 issuedAt: getCurrentUTCTimestamp(),
             },
