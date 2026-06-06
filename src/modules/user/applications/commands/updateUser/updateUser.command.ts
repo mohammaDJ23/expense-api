@@ -3,6 +3,7 @@ import type { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 export class UpdateUserCommand {
     public readonly id: string;
     public readonly role?: UserRoles;
+    public readonly hashedPassword?: string;
     public readonly firstName?: string | null;
     public readonly lastName?: string | null;
     public readonly avatar?: string | null;
@@ -12,6 +13,8 @@ export class UpdateUserCommand {
 
     constructor(id: string, data: Partial<UpdateUserCommand>) {
         this.id = id;
+        this.role = data.role;
+        this.hashedPassword = data.hashedPassword;
         this.firstName = data.firstName;
         this.lastName = data.lastName;
         this.avatar = data.avatar;
