@@ -1,25 +1,12 @@
-import type { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
+import { UserCommand } from '@/modules/user/applications/commands/common/user.command';
 
-export class UpdateUserCommand {
-    public readonly id: string;
-    public readonly role?: UserRoles;
-    public readonly hashedPassword?: string;
-    public readonly firstName?: string | null;
-    public readonly lastName?: string | null;
-    public readonly avatar?: string | null;
-    public readonly phone?: string | null;
-    public readonly verifiedAt?: Date | null;
-    public readonly lastLoginAt?: Date | null;
+import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
-    constructor(id: string, data: Partial<UpdateUserCommand>) {
-        this.id = id;
-        this.role = data.role;
-        this.hashedPassword = data.hashedPassword;
-        this.firstName = data.firstName;
-        this.lastName = data.lastName;
-        this.avatar = data.avatar;
-        this.phone = data.phone;
-        this.verifiedAt = data.verifiedAt;
-        this.lastLoginAt = data.lastLoginAt;
+export class UpdateUserCommand extends UserCommand {
+    constructor(
+        public readonly id: string,
+        data: Partial<TSelectUser>,
+    ) {
+        super(data);
     }
 }
