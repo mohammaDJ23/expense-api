@@ -41,7 +41,10 @@ export class SignupService {
         try {
             const hashedPassword = await this.passwordHasherService.hash(data.password);
 
-            const createUserCommand = new CreateUserCommand(data.email, hashedPassword);
+            const createUserCommand = new CreateUserCommand({
+                email: data.email,
+                hashedPassword,
+            });
             createdUser = await this.commandBus.execute<CreateUserCommand, TInsertUser>(
                 createUserCommand,
             );
