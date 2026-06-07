@@ -87,11 +87,13 @@ export class AuthenticationController {
     }
 
     @Get('google')
+    @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
     // eslint-disable-next-line no-empty-function, @typescript-eslint/no-empty-function
     googleAuth(): void {}
 
     @Get('google/callback')
+    @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
     @Response(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializeObjectInterceptor(LoginResponseDto)
