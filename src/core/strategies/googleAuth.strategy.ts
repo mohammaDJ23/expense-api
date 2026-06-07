@@ -1,12 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { Strategy, type Profile } from 'passport-google-oauth20';
 
 import { readSecret } from '@/common/utils/readSecret.util';
+import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
+import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
+import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
+import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
@@ -23,25 +27,45 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
         });
     }
 
-    async validate(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
-        accessToken: string,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
-        refreshToken: string,
-        profile: Profile,
-    ): Promise<TSelectUser> {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    async validate(_: string, __: string, profile: Profile): Promise<TSelectUser> {
         try {
-            // find a the user
+            const email = profile.emails?.[0];
+            if (!email) {
+                throw new Error();
+            }
 
-            // if not exists create a new one
+            const getUserByEmailQuery = new GetUserByEmailQuery(email.value);
+            const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
+                getUserByEmailQuery,
+            );
 
-            // if exists just return: user.authProvider === 'local' && !user.googleId
+            if (!user) {
+                const createUserCommand = new CreateUserCommand({
+                    firstName: profile.name?.givenName,
+                    lastName: profile.name?.familyName,
+                    googleId: profile.id,
+                    email: email.value,
+                    avatar: profile.photos?.[0]?.value,
+                    authProvider: AuthProvider.GOOGLE,
+                    verifiedAt: new Date(),
+                    lastLoginAt: new Date(),
+                });
+                return await this.commandBus.execute<CreateUserCommand, TInsertUser>(
+                    createUserCommand,
+                );
+            }
 
-            // Security: check if Email belongs to different Google account: user.authProvider === 'google' && user.googleId !== googleId
+            if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
+                throw new Error();
+            }
 
-            // also update the user lastloginat
-
-            return {};
-        } catch {}
+            const updateUserCommand = new UpdateUserCommand(user.id, {
+                lastLoginAt: new Date(),
+            });
+            return await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
+        } catch {
+            throw new UnauthorizedException();
+        }
     }
 }
