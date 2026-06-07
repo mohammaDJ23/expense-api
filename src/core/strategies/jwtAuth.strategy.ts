@@ -43,6 +43,10 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
             throw unauthorizedException;
         }
 
+        if (!user.verifiedAt) {
+            throw unauthorizedException;
+        }
+
         return user;
     }
 }
