@@ -1,8 +1,11 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 
+import { CurrentUser } from '@/core/decorators/currentUser.decorator';
 import { Response } from '@/core/decorators/response.decorator';
 import { SerializeObjectInterceptor } from '@/core/decorators/serializeObjectInterceptor.decorator';
+import { GoogleAuthGuard } from '@/core/guards/googleAuth.guard';
+import { GoogleService } from '@/modules/authentication/applications/services/google.service';
 import { LoginService } from '@/modules/authentication/applications/services/login.service';
 import { PasswordService } from '@/modules/authentication/applications/services/password.service';
 import { SignupService } from '@/modules/authentication/applications/services/signup.service';
@@ -24,16 +27,19 @@ import { SignupRequestDto } from '@/modules/authentication/interface/dtos/signup
 import { SignupResponseDto } from '@/modules/authentication/interface/dtos/signup.response.dto';
 import { VerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/verifyVerification.request.dto';
 
+import type { ICurrentUser } from '@/core/interfaces/currentUser.interface';
 import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/authentication' })
 export class AuthenticationController {
+    // eslint-disable-next-line max-params
     constructor(
         private readonly signupService: SignupService,
         private readonly loginService: LoginService,
         private readonly verificationService: VerificationService,
         private readonly passwordService: PasswordService,
+        private readonly googleService: GoogleService,
     ) {}
 
     @Post('signup')
@@ -78,5 +84,18 @@ export class AuthenticationController {
     @Response(SUCCESS_RESET_PASSWORD_MESSAGE, HttpStatus.OK)
     resetPassword(@Body() body: ResetPasswordRequestDto): Promise<boolean> {
         return this.passwordService.resetPassword(body);
+    }
+
+    @Get('google')
+    @UseGuards(GoogleAuthGuard)
+    // eslint-disable-next-line no-empty-function, @typescript-eslint/no-empty-function
+    googleAuth(): void {}
+
+    @Get('google/callback')
+    @UseGuards(GoogleAuthGuard)
+    @Response(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
+    @SerializeObjectInterceptor(LoginResponseDto)
+    googleRedirect(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
+        return this.googleService.sign(user);
     }
 }
