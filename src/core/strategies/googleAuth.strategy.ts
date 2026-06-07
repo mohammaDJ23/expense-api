@@ -56,6 +56,10 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
                 );
             }
 
+            if (!user.verifiedAt) {
+                throw new Error();
+            }
+
             if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
                 throw new Error();
             }
