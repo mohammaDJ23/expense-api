@@ -90,14 +90,14 @@ export class AuthenticationController {
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
     // eslint-disable-next-line no-empty-function, @typescript-eslint/no-empty-function
-    googleAuth(): void {}
+    google(): void {}
 
     @Get('google/callback')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
     @Response(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializeObjectInterceptor(LoginResponseDto)
-    googleRedirect(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
+    googleCallback(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
         return this.googleService.sign(user);
     }
 }
