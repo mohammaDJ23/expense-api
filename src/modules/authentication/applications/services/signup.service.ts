@@ -27,7 +27,7 @@ export class SignupService {
         private readonly verificationStorageService: VerificationStorageService,
     ) {}
 
-    async signup(data: SignupRequestDto): Promise<TSelectUser> {
+    async signup(data: SignupRequestDto): Promise<boolean> {
         let isExists = false;
         try {
             const isUserExistsByEmailQuery = new IsUserExistsByEmailQuery(data.email);
@@ -70,6 +70,6 @@ export class SignupService {
             );
         }
 
-        return createdUser;
+        return true;
     }
 }
