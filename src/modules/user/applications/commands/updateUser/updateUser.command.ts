@@ -1,12 +1,13 @@
-import { UserCommand } from '@/modules/user/applications/commands/common/user.command';
+import { UserAbstract } from '@/modules/user/domain/abstracts/user.abstract';
 
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+export class UpdateUserCommand extends UserAbstract {
+    public override readonly id: string;
+    public override readonly updatedAt: Date;
 
-export class UpdateUserCommand extends UserCommand {
-    constructor(
-        public readonly id: string,
-        data: Partial<TSelectUser>,
-    ) {
+    constructor(data: UserAbstract & Required<Pick<UserAbstract, 'updatedAt' | 'id'>>) {
         super(data);
+
+        this.id = data.id;
+        this.updatedAt = data.updatedAt;
     }
 }

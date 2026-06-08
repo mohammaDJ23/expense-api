@@ -13,26 +13,25 @@ import {
     type TSelectUser,
 } from '@/modules/user/infrastructure/schemas/user.schema';
 
-import type { UserEntity } from '@/modules/user/domain/entities/user.entity';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
     constructor(private readonly drizzleClientService: DrizzleClientService) {}
 
-    create(data: Omit<UserEntity, 'id'>): Promise<TInsertUser> {
+    create(data: TInsertUser): Promise<Required<TSelectUser>> {
         return toEntityOrThrow(
             this.drizzleClientService.db.insert(users).values(data).returning(),
             'Unable to create',
         );
     }
 
-    update(id: string, data: Partial<TSelectUser>): Promise<TSelectUser> {
+    update(data: Partial<TSelectUser> & Required<Pick<TSelectUser, 'id'>>): Promise<TSelectUser> {
         return toEntityOrThrow(
             this.drizzleClientService.db
                 .update(users)
                 .set(data)
-                .where(eq(users.id, id))
+                .where(eq(users.id, data.id))
                 .returning(),
             'Unable to update',
         );
