@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { uuid, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
-import { consumers } from '@/modules/consumers/infrastructure/schema/consumer.schema';
+import { consumers } from '@/modules/consumers/infrastructure/schemas/consumer.schema';
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
 export const bills = pgTable('bills', {
