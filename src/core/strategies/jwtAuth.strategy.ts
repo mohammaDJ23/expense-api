@@ -5,6 +5,8 @@ import { Env } from '@humanwhocodes/env';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { readSecret } from '@/common/utils/readSecret.util';
+import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { GetUserByIdQuery } from '@/modules/user/applications/queries/getUserById/getUserById.query';
 
 import type { IAccessTokenPayload } from '@/modules/authentication/domain/interfaces/accessTokenPayload.interface';
@@ -22,11 +24,9 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: IAccessTokenPayload): Promise<TSelectUser> {
-        const unauthorizedException = new UnauthorizedException();
-
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (payload.type !== 'ACCESS_TOKEN') {
-            throw unauthorizedException;
+            throw new UnauthorizedException();
         }
 
         let user: TSelectUser | null;
@@ -36,15 +36,15 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
                 getUserByIdQuery,
             );
         } catch {
-            throw unauthorizedException;
+            throw new ProcessFailedInternalServerErrorException();
         }
 
         if (!user) {
-            throw unauthorizedException;
+            throw new UnauthorizedException();
         }
 
         if (!user.verifiedAt) {
-            throw unauthorizedException;
+            throw new ProcessFailedForbiddenException();
         }
 
         return user;
