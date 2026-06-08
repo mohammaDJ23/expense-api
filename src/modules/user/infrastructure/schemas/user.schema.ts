@@ -1,5 +1,7 @@
+import { relations } from 'drizzle-orm';
 import { pgTable, timestamp, uuid, pgEnum, varchar } from 'drizzle-orm/pg-core';
 
+import { bills } from '@/modules/bill/infrastructure/schema/bill.schema';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
@@ -22,6 +24,10 @@ export const users = pgTable('users', {
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
     lastLoginAt: timestamp('last_login_at', { withTimezone: true }),
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+    bills: many(bills),
+}));
 
 export type TSelectUser = typeof users.$inferSelect;
 export type TInsertUser = typeof users.$inferInsert;
