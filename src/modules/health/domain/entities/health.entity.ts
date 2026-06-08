@@ -1,15 +1,15 @@
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
-import type { IHealth } from '@/modules/health/domain/interfaces/health.interface';
+import type { IHealthEntity } from '@/modules/health/domain/interfaces/healthEntity.interface';
 import type { HealthIndicatorResult, HealthIndicatorStatus } from '@nestjs/terminus';
 
-export class HealthEntity implements IHealth {
+export class HealthEntity implements IHealthEntity {
     public readonly timestamp: string;
     public readonly name: string;
     public readonly status: HealthIndicatorStatus;
     public readonly details: Record<string, unknown>;
 
-    private constructor(data: IHealth) {
+    private constructor(data: IHealthEntity) {
         this.timestamp = data.timestamp;
         this.name = data.name;
         this.status = data.status;
