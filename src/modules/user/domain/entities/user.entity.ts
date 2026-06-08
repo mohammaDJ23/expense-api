@@ -1,9 +1,9 @@
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
-export class UserEntity implements TInsertUser, TInsertUser {
+export class UserEntity implements TInsertUser, TSelectUser {
     public readonly id: string;
     public readonly email: string;
     public readonly role: UserRoles;
