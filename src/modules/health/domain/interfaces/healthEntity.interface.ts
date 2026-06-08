@@ -1,6 +1,6 @@
 import type { HealthIndicatorStatus } from '@nestjs/terminus';
 
-export interface IHealth {
+export interface IHealthEntity {
     readonly timestamp: string;
     readonly name: string;
     readonly status: HealthIndicatorStatus;
