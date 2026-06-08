@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
+import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { ProcessFailedUnAuthorizedException } from '@/core/exceptions/processFailedUnauthrized.exception';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
@@ -44,7 +45,7 @@ export class LoginService {
         }
 
         if (!user.verifiedAt) {
-            throw new ProcessFailedUnAuthorizedException();
+            throw new ProcessFailedForbiddenException();
         }
 
         let isPasswordValid = false;
@@ -57,7 +58,7 @@ export class LoginService {
             throw new ProcessFailedInternalServerErrorException();
         }
         if (!isPasswordValid) {
-            throw new ProcessFailedUnAuthorizedException();
+            throw new ProcessFailedForbiddenException();
         }
 
         try {
