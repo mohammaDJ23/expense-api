@@ -109,7 +109,11 @@ export class PasswordService {
             try {
                 const hashedPassword = await this.passwordHasherService.hash(data.newPassword);
 
-                const updateUserCommand = new UpdateUserCommand(user.id, { hashedPassword });
+                const updateUserCommand = new UpdateUserCommand({
+                    id: user.id,
+                    updatedAt: new Date(),
+                    hashedPassword,
+                });
                 await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
             } catch {
                 throw new InternalServerErrorException('Could not change your password, try again');

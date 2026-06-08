@@ -4,13 +4,15 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { IsUserExistsByEmailQuery } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.query';
+import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
+import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
 import { PasswordHasherService } from './passwordHasher.service';
 import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationTokenService } from './verificationToken.service';
 
 import type { SignupRequestDto } from '@/modules/authentication/interface/dtos/signup.request.dto';
-import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class SignupService {
@@ -23,7 +25,7 @@ export class SignupService {
         private readonly verificationTokenService: VerificationTokenService,
     ) {}
 
-    async signup(data: SignupRequestDto): Promise<TInsertUser> {
+    async signup(data: SignupRequestDto): Promise<TSelectUser> {
         let isExists = false;
         try {
             const isUserExistsByEmailQuery = new IsUserExistsByEmailQuery(data.email);
@@ -37,15 +39,19 @@ export class SignupService {
             throw new ConflictException('The Email already exists.');
         }
 
-        let createdUser: TInsertUser;
+        let createdUser: TSelectUser;
         try {
             const hashedPassword = await this.passwordHasherService.hash(data.password);
 
             const createUserCommand = new CreateUserCommand({
                 email: data.email,
                 hashedPassword,
+                role: UserRoles.USER,
+                authProvider: AuthProvider.LOCAL,
+                createdAt: new Date(),
+                updatedAt: new Date(),
             });
-            createdUser = await this.commandBus.execute<CreateUserCommand, TInsertUser>(
+            createdUser = await this.commandBus.execute<CreateUserCommand, TSelectUser>(
                 createUserCommand,
             );
         } catch {

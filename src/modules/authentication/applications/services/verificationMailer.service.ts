@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 
-import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class VerificationMailerService {
     constructor(private readonly mailerService: MailerService) {}
 
-    async sendMail(user: TInsertUser | TSelectUser, token: string): Promise<void> {
+    async sendMail(user: TSelectUser, token: string): Promise<void> {
         const link = `${process.env.APP_URL}/authentication/verification?token=${token}`;
         const subject = 'Verify Your Email Address';
         const html = `
