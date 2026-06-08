@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
-import { LocalAuthProviderBadRequestException } from '@/core/exceptions/localAuthProviderBadRequest.exception';
+import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { ProcessFailedUnAuthorizedException } from '@/core/exceptions/processFailedUnauthrized.exception';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
@@ -40,7 +40,7 @@ export class LoginService {
         }
 
         if (user.authProvider !== AuthProvider.LOCAL || !user.hashedPassword) {
-            throw new LocalAuthProviderBadRequestException();
+            throw new LocalAuthProviderForbiddenException();
         }
 
         if (!user.verifiedAt) {
