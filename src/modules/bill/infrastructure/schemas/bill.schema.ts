@@ -2,6 +2,7 @@ import { relations } from 'drizzle-orm';
 import { uuid, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 import { consumers } from '@/modules/consumers/infrastructure/schemas/consumer.schema';
+import { locations } from '@/modules/location/infrastructure/schemas/location.schema';
 import { receivers } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
@@ -21,6 +22,9 @@ export const bills = pgTable('bills', {
     receiverId: uuid('receiver_id')
         .notNull()
         .references(() => receivers.id),
+    locationId: uuid('location_id')
+        .notNull()
+        .references(() => locations.id),
 });
 
 export const billsRelations = relations(bills, ({ one }) => ({
@@ -35,6 +39,10 @@ export const billsRelations = relations(bills, ({ one }) => ({
     receiver: one(receivers, {
         fields: [bills.receiverId],
         references: [receivers.id],
+    }),
+    location: one(locations, {
+        fields: [bills.locationId],
+        references: [locations.id],
     }),
 }));
 
