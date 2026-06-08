@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { uuid, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
+import { consumers } from '@/modules/consumers/infrastructure/schema/consumer.schema';
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
 export const bills = pgTable('bills', {
@@ -13,12 +14,19 @@ export const bills = pgTable('bills', {
     userId: uuid('user_id')
         .notNull()
         .references(() => users.id, { onDelete: 'cascade' }),
+    consumerId: uuid('consumer_id')
+        .notNull()
+        .references(() => consumers.id),
 });
 
 export const billsRelations = relations(bills, ({ one }) => ({
     user: one(users, {
         fields: [bills.userId],
         references: [users.id],
+    }),
+    consumer: one(consumers, {
+        fields: [bills.consumerId],
+        references: [consumers.id],
     }),
 }));
 
