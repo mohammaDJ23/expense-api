@@ -105,7 +105,9 @@ export class VerificationService {
 
         if (!user.verifiedAt) {
             try {
-                const updateUserCommand = new UpdateUserCommand(user.id, {
+                const updateUserCommand = new UpdateUserCommand({
+                    id: user.id,
+                    updatedAt: new Date(),
                     verifiedAt: new Date(),
                 });
                 await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);

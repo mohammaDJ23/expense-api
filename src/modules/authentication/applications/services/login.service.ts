@@ -64,7 +64,9 @@ export class LoginService {
         try {
             const token = this.accessTokenService.sign(user);
 
-            const updateUserCommand = new UpdateUserCommand(user.id, {
+            const updateUserCommand = new UpdateUserCommand({
+                id: user.id,
+                updatedAt: new Date(),
                 lastLoginAt: new Date(),
             });
             await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);

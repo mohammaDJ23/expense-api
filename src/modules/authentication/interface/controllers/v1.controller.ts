@@ -29,7 +29,7 @@ import { VerifyVerificationRequestDto } from '@/modules/authentication/interface
 
 import type { ICurrentUser } from '@/core/interfaces/currentUser.interface';
 import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
-import type { TInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/authentication' })
 export class AuthenticationController {
@@ -46,7 +46,7 @@ export class AuthenticationController {
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @Response(SUCCESS_SIGNUP_MESSAGE, HttpStatus.CREATED)
     @SerializeObjectInterceptor(SignupResponseDto)
-    signup(@Body() body: SignupRequestDto): Promise<TInsertUser> {
+    signup(@Body() body: SignupRequestDto): Promise<TSelectUser> {
         return this.signupService.signup(body);
     }
 
