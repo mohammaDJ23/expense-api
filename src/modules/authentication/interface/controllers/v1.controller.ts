@@ -24,12 +24,10 @@ import { LoginResponseDto } from '@/modules/authentication/interface/dtos/login.
 import { ResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/resetPassword.request.dto';
 import { SendVerificationRequestDto } from '@/modules/authentication/interface/dtos/sendVerification.request.dto';
 import { SignupRequestDto } from '@/modules/authentication/interface/dtos/signup.request.dto';
-import { SignupResponseDto } from '@/modules/authentication/interface/dtos/signup.response.dto';
 import { VerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/verifyVerification.request.dto';
 
 import type { ICurrentUser } from '@/core/interfaces/currentUser.interface';
 import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/authentication' })
 export class AuthenticationController {
@@ -45,8 +43,7 @@ export class AuthenticationController {
     @Post('signup')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @Response(SUCCESS_SIGNUP_MESSAGE, HttpStatus.CREATED)
-    @SerializeObjectInterceptor(SignupResponseDto)
-    signup(@Body() body: SignupRequestDto): Promise<TSelectUser> {
+    signup(@Body() body: SignupRequestDto): Promise<boolean> {
         return this.signupService.signup(body);
     }
 
