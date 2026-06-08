@@ -5,6 +5,8 @@ import { Env } from '@humanwhocodes/env';
 import { Strategy, type Profile } from 'passport-google-oauth20';
 
 import { readSecret } from '@/common/utils/readSecret.util';
+import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
@@ -29,14 +31,15 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     async validate(_: string, __: string, profile: Profile): Promise<TSelectUser> {
-        try {
-            const email = profile.emails?.[0];
-            if (!email) {
-                throw new Error();
-            }
+        const email = profile.emails?.[0];
+        if (!email) {
+            throw new UnauthorizedException();
+        }
 
+        let user: TSelectUser | null;
+        try {
             const getUserByEmailQuery = new GetUserByEmailQuery(email.value);
-            const user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
+            user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
                 getUserByEmailQuery,
             );
 
@@ -55,21 +58,25 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
                     createUserCommand,
                 );
             }
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
+        }
 
-            if (!user.verifiedAt) {
-                throw new Error();
-            }
+        if (!user.verifiedAt) {
+            throw new ProcessFailedForbiddenException();
+        }
 
-            if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
-                throw new Error();
-            }
+        if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
+            throw new ProcessFailedForbiddenException();
+        }
 
+        try {
             const updateUserCommand = new UpdateUserCommand(user.id, {
                 lastLoginAt: new Date(),
             });
             return await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
         } catch {
-            throw new UnauthorizedException();
+            throw new ProcessFailedInternalServerErrorException();
         }
     }
 }
