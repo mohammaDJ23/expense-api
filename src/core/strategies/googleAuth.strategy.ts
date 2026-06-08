@@ -11,8 +11,9 @@ import { CreateUserCommand } from '@/modules/user/applications/commands/createUs
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
+import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
@@ -51,10 +52,13 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
                     email: email.value,
                     avatar: profile.photos?.[0]?.value,
                     authProvider: AuthProvider.GOOGLE,
+                    role: UserRoles.USER,
                     verifiedAt: new Date(),
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
                     lastLoginAt: new Date(),
                 });
-                return await this.commandBus.execute<CreateUserCommand, TInsertUser>(
+                return await this.commandBus.execute<CreateUserCommand, TSelectUser>(
                     createUserCommand,
                 );
             }
@@ -71,7 +75,9 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
         }
 
         try {
-            const updateUserCommand = new UpdateUserCommand(user.id, {
+            const updateUserCommand = new UpdateUserCommand({
+                id: user.id,
+                updatedAt: new Date(),
                 lastLoginAt: new Date(),
             });
             return await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
