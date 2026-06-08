@@ -1,8 +1,8 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, timestamp, uuid, pgEnum, varchar } from 'drizzle-orm/pg-core';
 
-import { bills } from '@/modules/bill/infrastructure/schema/bill.schema';
-import { usersConsumers } from '@/modules/consumers/infrastructure/schema/usersConsumers.schema';
+import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import { usersConsumers } from '@/modules/consumers/infrastructure/schemas/usersConsumers.schema';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
