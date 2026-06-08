@@ -1,3 +1,46 @@
+## [1.3.0](https://github.com/mohammaDJ23/expense-api/compare/v1.2.0...v1.3.0) (2026-06-08)
+
+### ✨ Features
+
+- 875092 add the google apis and service ([88b953a](https://github.com/mohammaDJ23/expense-api/commit/88b953a9d0ffacff7c80a563389819fb7947fd8c))
+- 875092 add the google strategy ([0ae8953](https://github.com/mohammaDJ23/expense-api/commit/0ae8953bee2f1ad40e9951e1199695c798f57804))
+
+### 🐛 Bug Fixes
+
+- 875092 store the token ([85ec2ca](https://github.com/mohammaDJ23/expense-api/commit/85ec2caaeff39212d682434e3ed4e534b4f06188))
+
+### 🔧 Chores
+
+- 875092 add and use the user abstract ([15d3b8b](https://github.com/mohammaDJ23/expense-api/commit/15d3b8b5f7530aa34d792ddf924123b113ae5779))
+- 875092 add IHealthEntity ([dd24c51](https://github.com/mohammaDJ23/expense-api/commit/dd24c510f184c32e2a3683280352adb84ad85107))
+- 875092 add IUserEntity ([a6141c7](https://github.com/mohammaDJ23/expense-api/commit/a6141c7d59f422a8877ff95ef91edbe895a453e5))
+- 875092 add more properties ([f4b1c54](https://github.com/mohammaDJ23/expense-api/commit/f4b1c547b62d69e841f2669414d4419cb4b37891))
+- 875092 add the current user ([96960e8](https://github.com/mohammaDJ23/expense-api/commit/96960e815e383f705dcc9d18dc4b8091e25ec2d9))
+- 875092 add the explicit exceptions ([701c8b5](https://github.com/mohammaDJ23/expense-api/commit/701c8b5835ed46a31502256ce50470f7d2cac7f5))
+- 875092 add the explicit exceptions ([d50c26c](https://github.com/mohammaDJ23/expense-api/commit/d50c26c93110277f9a393d6fe1dd2469e8563a64))
+- 875092 add the google account related propeties ([e37c1d7](https://github.com/mohammaDJ23/expense-api/commit/e37c1d7844efc8a7d033e78c0a07a8b4fe88b373))
+- 875092 add the google guard and strategy which is not completed ([6249088](https://github.com/mohammaDJ23/expense-api/commit/62490889c13375675094361088710b0f799a25c6))
+- 875092 add the google oauth envs ([a9a6b0f](https://github.com/mohammaDJ23/expense-api/commit/a9a6b0fe6137ae03ed06872e316f9efe5a976e0a))
+- 875092 add the google service ([9930dcb](https://github.com/mohammaDJ23/expense-api/commit/9930dcbf733df64f76a18abbed814d0bb26127fd))
+- 875092 add the guard for the local users for authentication apis except signup ([26b3611](https://github.com/mohammaDJ23/expense-api/commit/26b361118a3b8b25407817c37f4231cace0f4f42))
+- 875092 add the Throttle ([d8b64ea](https://github.com/mohammaDJ23/expense-api/commit/d8b64ea53e1a40e65333718219307acc59bb4f39))
+- 875092 add the verified user condition ([39c36ed](https://github.com/mohammaDJ23/expense-api/commit/39c36ed8433665ab66d0fdf3f9a85c060bac77b5))
+- 875092 add the verifiedAt condition to the google auth ([af6d02a](https://github.com/mohammaDJ23/expense-api/commit/af6d02a5f6030555ee3f44c2b13ef8ec7abe7ebd))
+- 875092 add TSelectUser ([787fe25](https://github.com/mohammaDJ23/expense-api/commit/787fe25b1a66020f415b3af69ff42502d124d3a7))
+- 875092 add TSelectUser ([c4c6dd9](https://github.com/mohammaDJ23/expense-api/commit/c4c6dd9c0c680a7ab510e10be6ae9eadeb192bc6))
+- 875092 apply the lintter format ([183935b](https://github.com/mohammaDJ23/expense-api/commit/183935bcad2151f3904d86bd5a4afe8e262788fb))
+- 875092 conver to object type ([1a2ff2f](https://github.com/mohammaDJ23/expense-api/commit/1a2ff2fab81e8d4d40eab84d851328b85c26c76a))
+- 875092 define the variable inside trycatch ([0c5316f](https://github.com/mohammaDJ23/expense-api/commit/0c5316f4ca58b888a84e5291e0a4147c0666ff03))
+- 875092 remove the authentication service ([20bad71](https://github.com/mohammaDJ23/expense-api/commit/20bad710391d7f0aa285ff89d71796d5acccf5a5))
+- 875092 rename jwtGuard and jwtStrategy ([0b434f2](https://github.com/mohammaDJ23/expense-api/commit/0b434f299a99d2cd0f3fe6670b2eff6a93c1489b))
+- 875092 rename the exceptions ([0e353c8](https://github.com/mohammaDJ23/expense-api/commit/0e353c812e1c7e042ec3ed36cc0d7ab6fb3500e0))
+- 875092 rename the google apis ([a6336ea](https://github.com/mohammaDJ23/expense-api/commit/a6336ea921d46904ae9a9302ba46adcc3d8b1758))
+- 875092 use CreateUserCommand ([be0d785](https://github.com/mohammaDJ23/expense-api/commit/be0d7858043309999463d297431c7290db53446c))
+- 875092 use LocalAuthProviderForbiddenException ([4648c22](https://github.com/mohammaDJ23/expense-api/commit/4648c22b366dbab05f684a6fa212e384eb3f5478))
+- 875092 use only TSelectUser and add the properties based on the commands ([56b8a46](https://github.com/mohammaDJ23/expense-api/commit/56b8a46ac4599271c8a72adb0e7888fc9f87509c))
+- 875092 use ProcessFailedForbiddenException ([68ec4c5](https://github.com/mohammaDJ23/expense-api/commit/68ec4c536d27e09455a7995a9c713468568433b8))
+- 875092 use UserCommand ([4da0658](https://github.com/mohammaDJ23/expense-api/commit/4da065837e7c9d02b5944a010d2b3474fc7f27e4))
+
 ## [1.2.0](https://github.com/mohammaDJ23/expense-api/compare/v1.1.2...v1.2.0) (2026-06-06)
 
 ### ✨ Features
