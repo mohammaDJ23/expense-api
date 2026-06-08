@@ -3,6 +3,8 @@ import { pgTable, timestamp, uuid, pgEnum, varchar } from 'drizzle-orm/pg-core';
 
 import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import { usersConsumers } from '@/modules/consumers/infrastructure/schemas/usersConsumers.schema';
+import { usersLocations } from '@/modules/location/infrastructure/schemas/usersLocations.schema';
+import { usersReceivers } from '@/modules/receiver/infrastructure/schemas/usersReceivers.schema';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
@@ -29,7 +31,8 @@ export const users = pgTable('users', {
 export const usersRelations = relations(users, ({ many }) => ({
     bills: many(bills),
     usersConsumers: many(usersConsumers),
-    usersReceivers: many(usersRelations),
+    usersReceivers: many(usersReceivers),
+    usersLocations: many(usersLocations),
 }));
 
 export type TSelectUser = typeof users.$inferSelect;
