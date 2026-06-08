@@ -1,3 +1,9 @@
+## [1.3.1](https://github.com/mohammaDJ23/expense-api/compare/v1.3.0...v1.3.1) (2026-06-08)
+
+### 🔧 Chores
+
+- 875092 remove the user data from the signup api ([5bf02af](https://github.com/mohammaDJ23/expense-api/commit/5bf02af4521810ef322702e917720f882a5d2f02))
+
 ## [1.3.0](https://github.com/mohammaDJ23/expense-api/compare/v1.2.0...v1.3.0) (2026-06-08)
 
 ### ✨ Features
