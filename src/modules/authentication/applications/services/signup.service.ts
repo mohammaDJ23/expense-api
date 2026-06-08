@@ -2,6 +2,7 @@ import { ConflictException, Injectable, ServiceUnavailableException } from '@nes
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { IsUserExistsByEmailQuery } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
@@ -23,6 +24,7 @@ export class SignupService {
         private readonly passwordHasherService: PasswordHasherService,
         private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
+        private readonly verificationStorageService: VerificationStorageService,
     ) {}
 
     async signup(data: SignupRequestDto): Promise<TSelectUser> {
@@ -60,6 +62,7 @@ export class SignupService {
 
         try {
             const token = this.verificationTokenService.sign(createdUser);
+            await this.verificationStorageService.set(createdUser.email, token);
             await this.verificationMailerService.sendMail(createdUser, token);
         } catch {
             throw new ServiceUnavailableException(
