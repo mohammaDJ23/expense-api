@@ -1,9 +1,9 @@
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { IUserEntity } from '@/modules/user/domain/interfaces/userEntity.interface';
 
-export class UserEntity implements TInsertUser, TSelectUser {
+export class UserEntity implements IUserEntity {
     public readonly id: string;
     public readonly email: string;
     public readonly role: UserRoles;
@@ -19,7 +19,7 @@ export class UserEntity implements TInsertUser, TSelectUser {
     public readonly updatedAt: Date;
     public readonly lastLoginAt: Date | null;
 
-    private constructor(data: TInsertUser) {
+    private constructor(data: IUserEntity) {
         this.id = data.id;
         this.email = data.email;
         this.role = data.role;
@@ -36,7 +36,7 @@ export class UserEntity implements TInsertUser, TSelectUser {
         this.lastLoginAt = data.lastLoginAt;
     }
 
-    static create(data: Partial<TInsertUser>): UserEntity {
+    static create(data: Partial<IUserEntity>): UserEntity {
         return new UserEntity({
             id: data.id ?? '',
             email: data.email ?? '',
