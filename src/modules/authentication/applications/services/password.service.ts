@@ -6,7 +6,7 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { InvalidCredentialBadRequestException } from '@/core/exceptions/invalidCredentialBadRequest.exception';
-import { LocalAuthProviderBadRequestException } from '@/core/exceptions/localAuthProviderBadRequest.exception';
+import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
@@ -57,7 +57,7 @@ export class PasswordService {
         }
 
         if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderBadRequestException();
+            throw new LocalAuthProviderForbiddenException();
         }
 
         if (user.verifiedAt) {
@@ -102,7 +102,7 @@ export class PasswordService {
         }
 
         if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderBadRequestException();
+            throw new LocalAuthProviderForbiddenException();
         }
 
         if (user.verifiedAt) {
