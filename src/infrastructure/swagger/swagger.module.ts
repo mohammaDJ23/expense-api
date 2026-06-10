@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { AppInstanceModule } from '@/infrastructure/appInstance/appInstance.module';
-import { VersionModule } from '@/infrastructure/version/version.module';
+import { CoreModule } from '@/core/core.module';
 
 import { SwaggerService } from './swagger.service';
 
 @Module({
-    imports: [VersionModule, AppInstanceModule],
+    imports: [CoreModule],
     providers: [SwaggerService],
 })
 export class SwaggerModule {}

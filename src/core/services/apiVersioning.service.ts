@@ -1,11 +1,9 @@
 import { Injectable, VersioningType } from '@nestjs/common';
 
-import { AppInstanceService } from '@/infrastructure/appInstance/appInstance.service';
-
-import type { IApiVersioning } from './apiVersioning.interface';
+import { AppInstanceService } from '@/core/services/appInstance.service';
 
 @Injectable()
-export class ApiVersioningService implements IApiVersioning {
+export class ApiVersioningService {
     constructor(private readonly appInstanceService: AppInstanceService) {}
 
     set(): void {

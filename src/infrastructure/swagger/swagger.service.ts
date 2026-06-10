@@ -1,18 +1,16 @@
-import { Injectable, type OnApplicationBootstrap, Inject } from '@nestjs/common';
+import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule as NestSwaggerModule } from '@nestjs/swagger';
 
-import { AppInstanceService } from '@/infrastructure/appInstance/appInstance.service';
-import { VERSION_PROVIDER } from '@/infrastructure/version/version.constants';
+import { AppInstanceService } from '@/core/services/appInstance.service';
+import { VersionService } from '@/core/services/version.service';
 
 import { DESCRIPTION, JSON_PATH, PATH, TITLE, VERSION } from './swagger.constants';
-
-import type { IVersionProvider } from '@/infrastructure/version/version.interface';
 
 @Injectable()
 export class SwaggerService implements OnApplicationBootstrap {
     constructor(
         private readonly appInstanceService: AppInstanceService,
-        @Inject(VERSION_PROVIDER) private readonly versionProvider: IVersionProvider,
+        private readonly versionService: VersionService,
     ) {}
 
     onApplicationBootstrap(): void {
@@ -20,7 +18,7 @@ export class SwaggerService implements OnApplicationBootstrap {
     }
 
     private setupSwagger(): void {
-        const version = this.versionProvider.getVersion() || VERSION;
+        const version = this.versionService.getVersion() || VERSION;
 
         const configBuilder = new DocumentBuilder()
             .setTitle(TITLE)
