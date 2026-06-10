@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
 
+import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { AccessTokenService } from '@/modules/authentication/applications/services/accessToken.service';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
@@ -18,10 +18,9 @@ import { VerificationMailerService } from '@/modules/authentication/applications
 import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { VerificationTokenService } from '@/modules/authentication/applications/services/verificationToken.service';
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
-import { UserModule } from '@/modules/user/user.module';
 
 @Module({
-    imports: [UserModule, CqrsModule],
+    imports: [CqrsModule],
     controllers: [AuthenticationController],
     providers: [
         AuthenticationService,
