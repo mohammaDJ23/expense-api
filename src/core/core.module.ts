@@ -7,6 +7,9 @@ import { HttpHostHandler } from '@/core/filters/globalException/httpHost.handler
 import { GoogleAuthGuard } from '@/core/guards/googleAuth.guard';
 import { JwtAuthGuard } from '@/core/guards/jwtAuth.guard';
 import { TransformResponseInterceptor } from '@/core/interceptors/transformResponse.interceptor';
+import { ApiVersioningService } from '@/core/services/apiVersioning.service';
+import { AppInstanceService } from '@/core/services/appInstance.service';
+import { VersionService } from '@/core/services/version.service';
 import { GoogleAuthStrategy } from '@/core/strategies/googleAuth.strategy';
 import { JwtAuthStrategy } from '@/core/strategies/jwtAuth.strategy';
 import { UserModule } from '@/modules/user/user.module';
@@ -20,6 +23,9 @@ import { UserModule } from '@/modules/user/user.module';
         JwtAuthStrategy,
         GoogleAuthGuard,
         GoogleAuthStrategy,
+        ApiVersioningService,
+        AppInstanceService,
+        VersionService,
         {
             provide: APP_FILTER,
             useClass: GlobalExceptionFilter,
@@ -37,5 +43,6 @@ import { UserModule } from '@/modules/user/user.module';
             useClass: TransformResponseInterceptor,
         },
     ],
+    exports: [AppInstanceService, VersionService],
 })
 export class CoreModule {}

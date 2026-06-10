@@ -2,10 +2,8 @@ import { Injectable, type INestApplication } from '@nestjs/common';
 
 import { AppException } from '@/core/exceptions/app/exception';
 
-import type { IAppInstance } from './appInstance.interface';
-
 @Injectable()
-export class AppInstanceService implements IAppInstance {
+export class AppInstanceService {
     private app: INestApplication | null = null;
 
     set(app: INestApplication): void {

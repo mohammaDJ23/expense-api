@@ -5,10 +5,8 @@ import { Injectable } from '@nestjs/common';
 
 import { AppException } from '@/core/exceptions/app/exception';
 
-import type { IVersionProvider } from './version.interface';
-
 @Injectable()
-export class VersionProvider implements IVersionProvider {
+export class VersionService {
     private readonly version: string;
 
     constructor() {
