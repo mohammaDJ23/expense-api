@@ -12,10 +12,11 @@ import { AppInstanceService } from '@/core/services/appInstance.service';
 import { VersionService } from '@/core/services/version.service';
 import { GoogleAuthStrategy } from '@/core/strategies/googleAuth.strategy';
 import { JwtAuthStrategy } from '@/core/strategies/jwtAuth.strategy';
+import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { UserModule } from '@/modules/user/user.module';
 
 @Module({
-    imports: [UserModule],
+    imports: [UserModule, CqrsModule],
     providers: [
         HttpHostHandler,
         FallbackHostHandler,
