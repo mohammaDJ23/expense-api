@@ -5,7 +5,6 @@ import { CurrentUser } from '@/core/decorators/currentUser.decorator';
 import { Response } from '@/core/decorators/response.decorator';
 import { SerializeObjectInterceptor } from '@/core/decorators/serializeObjectInterceptor.decorator';
 import { GoogleAuthGuard } from '@/core/guards/googleAuth.guard';
-import { GoogleService } from '@/modules/authentication/applications/services/google.service';
 import { LoginService } from '@/modules/authentication/applications/services/login.service';
 import { PasswordService } from '@/modules/authentication/applications/services/password.service';
 import { SignupService } from '@/modules/authentication/applications/services/signup.service';
@@ -31,13 +30,11 @@ import type { AccessTokenEntity } from '@/modules/authentication/domain/entities
 
 @Controller({ version: '1', path: 'api/authentication' })
 export class AuthenticationController {
-    // eslint-disable-next-line max-params
     constructor(
         private readonly signupService: SignupService,
         private readonly loginService: LoginService,
         private readonly verificationService: VerificationService,
         private readonly passwordService: PasswordService,
-        private readonly googleService: GoogleService,
     ) {}
 
     @Post('signup')
@@ -94,7 +91,7 @@ export class AuthenticationController {
     @UseGuards(GoogleAuthGuard)
     @Response(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializeObjectInterceptor(LoginResponseDto)
-    googleCallback(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
-        return this.googleService.sign(user);
+    loginWithGoogle(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
+        return this.loginService.loginWithGoogle(user);
     }
 }

@@ -76,4 +76,13 @@ export class LoginService {
             throw new ProcessFailedInternalServerErrorException();
         }
     }
+
+    loginWithGoogle(user: TSelectUser): AccessTokenEntity {
+        try {
+            const token = this.accessTokenService.sign(user);
+            return AccessTokenEntity.create(token);
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
+        }
+    }
 }
