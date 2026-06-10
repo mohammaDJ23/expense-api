@@ -5,20 +5,19 @@ import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
 import { consumers } from './consumer.schema';
 
-export const usersConsumers = pgTable('users_consumers', {
-    id: uuid('id').primaryKey().defaultRandom(),
-    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-    userId: uuid('user_id')
-        .notNull()
-        .references(() => users.id, { onDelete: 'cascade' }),
-    consumerId: uuid('consumer_id')
-        .notNull()
-        .references(() => consumers.id, { onDelete: 'cascade' }),
-});
-
-export const uniqueUsersConsumers = uniqueIndex('unique_users_consumers').on(
-    usersConsumers.userId,
-    usersConsumers.consumerId,
+export const usersConsumers = pgTable(
+    'users_consumers',
+    {
+        id: uuid('id').primaryKey().defaultRandom(),
+        createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+        userId: uuid('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+        consumerId: uuid('consumer_id')
+            .notNull()
+            .references(() => consumers.id, { onDelete: 'cascade' }),
+    },
+    (table) => [uniqueIndex('unique_users_consumers').on(table.userId, table.consumerId)],
 );
 
 export const usersConsumersRelations = relations(usersConsumers, ({ one }) => ({
