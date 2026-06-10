@@ -13,11 +13,11 @@ import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { AccessTokenService } from './accessToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
 
-import type { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
+import type { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class LoginService {
+export class LocalLoginService {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
@@ -25,7 +25,7 @@ export class LoginService {
         private readonly accessTokenService: AccessTokenService,
     ) {}
 
-    async login(data: LoginRequestDto): Promise<AccessTokenEntity> {
+    async login(data: LocalLoginRequestDto): Promise<AccessTokenEntity> {
         let user: TSelectUser | null = null;
         try {
             const getUserByEmailQuery = new GetUserByEmailQuery(data.email);
@@ -71,15 +71,6 @@ export class LoginService {
             });
             await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
 
-            return AccessTokenEntity.create(token);
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
-    }
-
-    loginWithGoogle(user: TSelectUser): AccessTokenEntity {
-        try {
-            const token = this.accessTokenService.sign(user);
             return AccessTokenEntity.create(token);
         } catch {
             throw new ProcessFailedInternalServerErrorException();

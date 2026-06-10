@@ -5,10 +5,7 @@ import { CurrentUser } from '@/core/decorators/currentUser.decorator';
 import { Response } from '@/core/decorators/response.decorator';
 import { SerializeObjectInterceptor } from '@/core/decorators/serializeObjectInterceptor.decorator';
 import { GoogleAuthGuard } from '@/core/guards/googleAuth.guard';
-import { LoginService } from '@/modules/authentication/applications/services/login.service';
-import { PasswordService } from '@/modules/authentication/applications/services/password.service';
-import { SignupService } from '@/modules/authentication/applications/services/signup.service';
-import { VerificationService } from '@/modules/authentication/applications/services/verification.service';
+import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import {
     SUCCESS_SIGNUP_MESSAGE,
     SUCCESS_SEND_VERIFICATION_MESSAGE,
@@ -17,67 +14,62 @@ import {
     SUCCESS_FORGOT_PASSWORD_MESSAGE,
     SUCCESS_RESET_PASSWORD_MESSAGE,
 } from '@/modules/authentication/interface/constants/messages.constant';
-import { ForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/forgotPassword.request.dto';
-import { LoginRequestDto } from '@/modules/authentication/interface/dtos/login.request.dto';
+import { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
+import { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
+import { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
+import { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
+import { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
+import { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
 import { LoginResponseDto } from '@/modules/authentication/interface/dtos/login.response.dto';
-import { ResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/resetPassword.request.dto';
-import { SendVerificationRequestDto } from '@/modules/authentication/interface/dtos/sendVerification.request.dto';
-import { SignupRequestDto } from '@/modules/authentication/interface/dtos/signup.request.dto';
-import { VerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/verifyVerification.request.dto';
 
 import type { ICurrentUser } from '@/core/interfaces/currentUser.interface';
 import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 
 @Controller({ version: '1', path: 'api/authentication' })
 export class AuthenticationController {
-    constructor(
-        private readonly signupService: SignupService,
-        private readonly loginService: LoginService,
-        private readonly verificationService: VerificationService,
-        private readonly passwordService: PasswordService,
-    ) {}
+    constructor(private readonly authenticationService: AuthenticationService) {}
 
-    @Post('signup')
+    @Post('local/signup')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @Response(SUCCESS_SIGNUP_MESSAGE, HttpStatus.CREATED)
-    signup(@Body() body: SignupRequestDto): Promise<boolean> {
-        return this.signupService.signup(body);
+    localSignup(@Body() body: LocalSignupRequestDto): Promise<boolean> {
+        return this.authenticationService.localSignup(body);
     }
 
-    @Post('login')
+    @Post('local/login')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @Response(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializeObjectInterceptor(LoginResponseDto)
-    login(@Body() body: LoginRequestDto): Promise<AccessTokenEntity> {
-        return this.loginService.login(body);
+    localLogin(@Body() body: LocalLoginRequestDto): Promise<AccessTokenEntity> {
+        return this.authenticationService.localLogin(body);
     }
 
-    @Post('verification/send')
+    @Post('local/verification/send')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @Response(SUCCESS_SEND_VERIFICATION_MESSAGE, HttpStatus.OK)
-    sendVerification(@Body() body: SendVerificationRequestDto): Promise<boolean> {
-        return this.verificationService.sendVerification(body);
+    localSendVerification(@Body() body: LocalSendVerificationRequestDto): Promise<boolean> {
+        return this.authenticationService.localSendVerification(body);
     }
 
-    @Post('verification/verify')
+    @Post('local/verification/verify')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @Response(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
-    verifyVerification(@Body() body: VerifyVerificationRequestDto): Promise<boolean> {
-        return this.verificationService.verifyVerification(body);
+    localVerifyVerification(@Body() body: LocalVerifyVerificationRequestDto): Promise<boolean> {
+        return this.authenticationService.localVerifyVerification(body);
     }
 
-    @Post('forgot-password')
+    @Post('local/forgot-password')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @Response(SUCCESS_FORGOT_PASSWORD_MESSAGE, HttpStatus.OK)
-    forgotPassword(@Body() body: ForgotPasswordRequestDto): Promise<boolean> {
-        return this.passwordService.forgotPassword(body);
+    localForgotPassword(@Body() body: LocalForgotPasswordRequestDto): Promise<boolean> {
+        return this.authenticationService.localForgotPassword(body);
     }
 
-    @Post('reset-password')
+    @Post('local/reset-password')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @Response(SUCCESS_RESET_PASSWORD_MESSAGE, HttpStatus.OK)
-    resetPassword(@Body() body: ResetPasswordRequestDto): Promise<boolean> {
-        return this.passwordService.resetPassword(body);
+    localResetPassword(@Body() body: LocalResetPasswordRequestDto): Promise<boolean> {
+        return this.authenticationService.localResetPassword(body);
     }
 
     @Get('google')
@@ -91,7 +83,7 @@ export class AuthenticationController {
     @UseGuards(GoogleAuthGuard)
     @Response(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializeObjectInterceptor(LoginResponseDto)
-    loginWithGoogle(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
-        return this.loginService.loginWithGoogle(user);
+    googleLogin(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
+        return this.authenticationService.googleLogin(user);
     }
 }

@@ -2,7 +2,6 @@ import { ConflictException, Injectable, ServiceUnavailableException } from '@nes
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { IsUserExistsByEmailQuery } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
@@ -10,13 +9,14 @@ import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
 import { PasswordHasherService } from './passwordHasher.service';
 import { VerificationMailerService } from './verificationMailer.service';
+import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
-import type { SignupRequestDto } from '@/modules/authentication/interface/dtos/signup.request.dto';
+import type { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class SignupService {
+export class LocalSignupService {
     // eslint-disable-next-line max-params
     constructor(
         private readonly commandBus: CommandBus,
@@ -27,7 +27,7 @@ export class SignupService {
         private readonly verificationStorageService: VerificationStorageService,
     ) {}
 
-    async signup(data: SignupRequestDto): Promise<boolean> {
+    async signup(data: LocalSignupRequestDto): Promise<boolean> {
         let isExists = false;
         try {
             const isUserExistsByEmailQuery = new IsUserExistsByEmailQuery(data.email);
