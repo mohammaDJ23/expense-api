@@ -34,6 +34,12 @@ importers:
             '@nest-lab/throttler-storage-redis':
                 specifier: ^1.2.0
                 version: 1.2.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/throttler@6.5.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2))(ioredis@5.9.2)(reflect-metadata@0.2.2)
+            '@nestjs-cls/transactional':
+                specifier: ^3.2.1
+                version: 3.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(nestjs-cls@6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)
+            '@nestjs-cls/transactional-adapter-drizzle-orm':
+                specifier: ^1.2.4
+                version: 1.2.4(@nestjs-cls/transactional@3.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(nestjs-cls@6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(drizzle-orm@0.45.2(@types/pg@8.20.0)(pg@8.18.0))(nestjs-cls@6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2))
             '@nestjs-modules/mailer':
                 specifier: ^2.3.6
                 version: 2.3.6(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/terminus@11.0.0(@nestjs/axios@4.0.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.16.1)(rxjs@7.8.2))(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/typeorm@11.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(chokidar@4.0.3)(nodemailer@8.0.10)(svgo@4.0.1)(terser@5.46.0)(typescript@5.9.3)
@@ -88,6 +94,9 @@ importers:
             drizzle-orm:
                 specifier: ^0.45.2
                 version: 0.45.2(@types/pg@8.20.0)(pg@8.18.0)
+            nestjs-cls:
+                specifier: ^6.2.1
+                version: 6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)
             nestjs-pino:
                 specifier: ^4.6.0
                 version: 4.6.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(pino-http@11.0.0)(pino@10.3.1)(rxjs@7.8.2)
@@ -2544,6 +2553,30 @@ packages:
             '@nestjs/throttler': '>=6.0.0'
             ioredis: '>=5.0.0'
             reflect-metadata: ^0.2.1
+
+    '@nestjs-cls/transactional-adapter-drizzle-orm@1.2.4':
+        resolution:
+            {
+                integrity: sha512-70IzfSknnwbA5H0WlMMK6IArKhXG3DiVsRiSUT7IarhiC1TyR+shGhn7mGtUWV3DpqPqWQ+6qlYrqocvpvW8Ag==,
+            }
+        engines: { node: '>=18' }
+        peerDependencies:
+            '@nestjs-cls/transactional': ^3.2.0
+            drizzle-orm: ^0
+            nestjs-cls: ^6.2.0
+
+    '@nestjs-cls/transactional@3.2.1':
+        resolution:
+            {
+                integrity: sha512-sFaw9R3xMQ7wZdv2amh9ErhwjAE7uocpsTTAUS5igEqwYwBlC1fB+44Dcpylc0B7Tie7kIKfS7dA4l6WXTHASg==,
+            }
+        engines: { node: '>=18' }
+        peerDependencies:
+            '@nestjs/common': '>= 10 < 12'
+            '@nestjs/core': '>= 10 < 12'
+            nestjs-cls: ^6.2.0
+            reflect-metadata: '*'
+            rxjs: '>= 7'
 
     '@nestjs-modules/mailer@2.3.6':
         resolution:
@@ -9420,6 +9453,18 @@ packages:
                 integrity: sha512-EZSPZB70jiVsivaBLYDCyntd5eH8NTSMOn3rB+HxwdmKThGELLdYv8qVIMWvZEFy9w8ZZpW9h9OB32l1rGtj7g==,
             }
 
+    nestjs-cls@6.2.1:
+        resolution:
+            {
+                integrity: sha512-LTVvreuhH132+rjP4MwnykUS3byBAuN6WQzh2QA3YSYCjy9GfgRyoiSKE5qrzQe+uCB1/TUNHPCxEMYgR3tRlg==,
+            }
+        engines: { node: '>=18' }
+        peerDependencies:
+            '@nestjs/common': '>= 10 < 12'
+            '@nestjs/core': '>= 10 < 12'
+            reflect-metadata: '*'
+            rxjs: '>= 7'
+
     nestjs-pino@4.6.0:
         resolution:
             {
@@ -14340,6 +14385,20 @@ snapshots:
             ioredis: 5.9.2
             reflect-metadata: 0.2.2
             tslib: 2.8.1
+
+    '@nestjs-cls/transactional-adapter-drizzle-orm@1.2.4(@nestjs-cls/transactional@3.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(nestjs-cls@6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(drizzle-orm@0.45.2(@types/pg@8.20.0)(pg@8.18.0))(nestjs-cls@6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2))':
+        dependencies:
+            '@nestjs-cls/transactional': 3.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(nestjs-cls@6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)
+            drizzle-orm: 0.45.2(@types/pg@8.20.0)(pg@8.18.0)
+            nestjs-cls: 6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+
+    '@nestjs-cls/transactional@3.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(nestjs-cls@6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)':
+        dependencies:
+            '@nestjs/common': 11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+            '@nestjs/core': 11.1.17(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.14)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+            nestjs-cls: 6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+            reflect-metadata: 0.2.2
+            rxjs: 7.8.2
 
     '@nestjs-modules/mailer@2.3.6(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/terminus@11.0.0(@nestjs/axios@4.0.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.16.1)(rxjs@7.8.2))(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/typeorm@11.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(chokidar@4.0.3)(nodemailer@8.0.10)(svgo@4.0.1)(terser@5.46.0)(typescript@5.9.3)':
         dependencies:
@@ -19468,6 +19527,13 @@ snapshots:
     neo-async@2.6.2: {}
 
     nerf-dart@1.0.0: {}
+
+    nestjs-cls@6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2):
+        dependencies:
+            '@nestjs/common': 11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+            '@nestjs/core': 11.1.17(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.14)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+            reflect-metadata: 0.2.2
+            rxjs: 7.8.2
 
     nestjs-pino@4.6.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(pino-http@11.0.0)(pino@10.3.1)(rxjs@7.8.2):
         dependencies:
