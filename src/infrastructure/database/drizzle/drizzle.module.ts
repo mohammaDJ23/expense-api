@@ -1,11 +1,30 @@
 import { Global, Module } from '@nestjs/common';
+import { ClsPluginTransactional } from '@nestjs-cls/transactional';
+import { TransactionalAdapterDrizzleOrm } from '@nestjs-cls/transactional-adapter-drizzle-orm';
+import { ClsModule } from 'nestjs-cls';
 
-import { DrizzleClientService } from '@/infrastructure/database/drizzle/drizzleClient.service';
-import { DrizzleConnectionService } from '@/infrastructure/database/drizzle/drizzleConnection.service';
+import { DRIZZLE_CLIENT_TOKEN } from './drizzle.constant';
+import { DrizzleClientModule } from './drizzleClient.module';
 
 @Global()
 @Module({
-    providers: [DrizzleConnectionService, DrizzleClientService],
-    exports: [DrizzleClientService],
+    imports: [
+        DrizzleClientModule,
+        ClsModule.forRoot({
+            global: true,
+            middleware: {
+                mount: true,
+                generateId: true,
+            },
+            plugins: [
+                new ClsPluginTransactional({
+                    adapter: new TransactionalAdapterDrizzleOrm({
+                        drizzleInstanceToken: DRIZZLE_CLIENT_TOKEN,
+                    }),
+                }),
+            ],
+        }),
+    ],
+    exports: [DrizzleClientModule, ClsModule],
 })
 export class DrizzleModule {}
