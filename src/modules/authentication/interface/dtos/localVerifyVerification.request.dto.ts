@@ -1,6 +1,6 @@
 import { IsJWT, IsNotEmpty } from 'class-validator';
 
-export class VerifyVerificationRequestDto {
+export class LocalVerifyVerificationRequestDto {
     @IsJWT()
     @IsNotEmpty()
     token: string;

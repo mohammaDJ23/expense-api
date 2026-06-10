@@ -2,14 +2,18 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
 import { AccessTokenService } from '@/modules/authentication/applications/services/accessToken.service';
-import { LoginService } from '@/modules/authentication/applications/services/login.service';
-import { PasswordService } from '@/modules/authentication/applications/services/password.service';
+import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
+import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
+import { GoogleProviderService } from '@/modules/authentication/applications/services/googleProvider.service';
+import { LocalLoginService } from '@/modules/authentication/applications/services/localLogin.service';
+import { LocalPasswordService } from '@/modules/authentication/applications/services/localPassword.service';
+import { LocalProviderService } from '@/modules/authentication/applications/services/localProvider.service';
+import { LocalSignupService } from '@/modules/authentication/applications/services/localSignup.service';
+import { LocalVerificationService } from '@/modules/authentication/applications/services/localVerification.service';
 import { PasswordHasherService } from '@/modules/authentication/applications/services/passwordHasher.service';
 import { PasswordMailerService } from '@/modules/authentication/applications/services/passwordMailer.service';
 import { PasswordStorageService } from '@/modules/authentication/applications/services/passwordStorage.service';
 import { PasswordTokenService } from '@/modules/authentication/applications/services/passwordToken.service';
-import { SignupService } from '@/modules/authentication/applications/services/signup.service';
-import { VerificationService } from '@/modules/authentication/applications/services/verification.service';
 import { VerificationMailerService } from '@/modules/authentication/applications/services/verificationMailer.service';
 import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { VerificationTokenService } from '@/modules/authentication/applications/services/verificationToken.service';
@@ -20,10 +24,14 @@ import { UserModule } from '@/modules/user/user.module';
     imports: [UserModule, CqrsModule],
     controllers: [AuthenticationController],
     providers: [
-        SignupService,
-        LoginService,
-        PasswordService,
-        VerificationService,
+        AuthenticationService,
+        LocalProviderService,
+        GoogleProviderService,
+        GoogleLoginService,
+        LocalSignupService,
+        LocalLoginService,
+        LocalPasswordService,
+        LocalVerificationService,
         VerificationMailerService,
         VerificationTokenService,
         VerificationStorageService,

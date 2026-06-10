@@ -12,24 +12,26 @@ import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUs
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
-import { VerificationMailerService } from './verificationMailer.service';
-import { VerificationStorageService } from './verificationStorage.service';
-import { VerificationTokenService } from './verificationToken.service';
+import { PasswordHasherService } from './passwordHasher.service';
+import { PasswordMailerService } from './passwordMailer.service';
+import { PasswordStorageService } from './passwordStorage.service';
+import { PasswordTokenService } from './passwordToken.service';
 
-import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
-import type { SendVerificationRequestDto } from '@/modules/authentication/interface/dtos/sendVerification.request.dto';
-import type { VerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/verifyVerification.request.dto';
+import type { INewPasswordPayload } from '@/modules/authentication/domain/interfaces/newPasswordPayload.interface';
+import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
+import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class VerificationService {
+export class LocalPasswordService {
     // eslint-disable-next-line max-params
     constructor(
         private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
-        private readonly verificationMailerService: VerificationMailerService,
-        private readonly verificationTokenService: VerificationTokenService,
-        private readonly verificationStorageService: VerificationStorageService,
+        private readonly passwordHasherService: PasswordHasherService,
+        private readonly passwordMailerService: PasswordMailerService,
+        private readonly passwordTokenService: PasswordTokenService,
+        private readonly passwordStorageService: PasswordStorageService,
     ) {}
 
     private getUserByEmail(email: string): Promise<TSelectUser | null> {
@@ -37,10 +39,10 @@ export class VerificationService {
         return this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(getUserByEmailQuery);
     }
 
-    async sendVerification(data: SendVerificationRequestDto): Promise<boolean> {
-        let user: TSelectUser | null = null;
+    async forgotPassword(data: LocalForgotPasswordRequestDto): Promise<boolean> {
+        let user: TSelectUser | null;
         try {
-            const storedToken = await this.verificationStorageService.get(data.email);
+            const storedToken = await this.passwordStorageService.get(data.email);
             if (storedToken) {
                 return true;
             }
@@ -58,11 +60,11 @@ export class VerificationService {
             throw new LocalAuthProviderForbiddenException();
         }
 
-        if (!user.verifiedAt) {
+        if (user.verifiedAt) {
             try {
-                const token = this.verificationTokenService.sign(user);
-                await this.verificationStorageService.set(user.email, token);
-                await this.verificationMailerService.sendMail(user, token);
+                const token = this.passwordTokenService.sign(user);
+                await this.passwordStorageService.set(user.email, token);
+                await this.passwordMailerService.sendMail(user, token);
             } catch {
                 throw new ServiceUnavailableException('Could not send you a verification link');
             }
@@ -71,17 +73,17 @@ export class VerificationService {
         return true;
     }
 
-    async verifyVerification(data: VerifyVerificationRequestDto): Promise<boolean> {
-        let payload: IVerificationPayload;
+    async resetPassword(data: LocalResetPasswordRequestDto): Promise<boolean> {
+        let payload: INewPasswordPayload;
         try {
-            payload = this.verificationTokenService.verify(data.token);
+            payload = this.passwordTokenService.verify(data.token);
         } catch {
             throw new InvalidCredentialBadRequestException();
         }
 
         let storedToken: string | null = null;
         try {
-            storedToken = await this.verificationStorageService.get(payload.email);
+            storedToken = await this.passwordStorageService.get(payload.email);
             // eslint-disable-next-line no-empty
         } catch {}
         if (storedToken !== data.token) {
@@ -103,20 +105,22 @@ export class VerificationService {
             throw new LocalAuthProviderForbiddenException();
         }
 
-        if (!user.verifiedAt) {
+        if (user.verifiedAt) {
             try {
+                const hashedPassword = await this.passwordHasherService.hash(data.newPassword);
+
                 const updateUserCommand = new UpdateUserCommand({
                     id: user.id,
                     updatedAt: new Date(),
-                    verifiedAt: new Date(),
+                    hashedPassword,
                 });
                 await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
             } catch {
-                throw new InternalServerErrorException('Could not verify your email, try again');
+                throw new InternalServerErrorException('Could not change your password, try again');
             }
 
             try {
-                await this.verificationStorageService.delete(user.email);
+                await this.passwordStorageService.delete(user.email);
                 // eslint-disable-next-line no-empty
             } catch {}
         }
