@@ -7,7 +7,7 @@ import { receivers } from '@/modules/receiver/infrastructure/schemas/receiver.sc
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
 export const bills = pgTable('bills', {
-    id: uuid('id').primaryKey().defaultRandom(),
+    id: uuid('id').primaryKey().defaultRandom().notNull(),
     amount: varchar('amount', { length: 12 }).notNull(),
     description: varchar('description', { length: 500 }).notNull(),
     purchasedAt: timestamp('purchased_at', { withTimezone: true }),

@@ -8,7 +8,7 @@ import { consumers } from './consumer.schema';
 export const usersConsumers = pgTable(
     'users_consumers',
     {
-        id: uuid('id').primaryKey().defaultRandom(),
+        id: uuid('id').primaryKey().defaultRandom().notNull(),
         createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
         userId: uuid('user_id')
             .notNull()
@@ -30,3 +30,6 @@ export const usersConsumersRelations = relations(usersConsumers, ({ one }) => ({
         references: [consumers.id],
     }),
 }));
+
+export type TSelectUserConsumer = typeof usersConsumers.$inferSelect;
+export type TInsertUserConsumer = typeof usersConsumers.$inferInsert;

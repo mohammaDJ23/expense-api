@@ -12,7 +12,7 @@ export const userRolesEnum = pgEnum('user_roles', UserRoles);
 export const authProviderEnum = pgEnum('auth_provider', AuthProvider);
 
 export const users = pgTable('users', {
-    id: uuid('id').primaryKey().defaultRandom(),
+    id: uuid('id').primaryKey().defaultRandom().notNull(),
     email: varchar('email', { length: 150 }).notNull().unique(),
     role: userRolesEnum('role').notNull().default(UserRoles.USER),
     firstName: varchar('first_name', { length: 50 }),
