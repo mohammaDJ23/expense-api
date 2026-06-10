@@ -4,7 +4,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { ProcessFailedUnAuthorizedException } from '@/core/exceptions/processFailedUnauthrized.exception';
+import { ProcessFailedUnAuthorizedException } from '@/core/exceptions/processFailedUnauthorized.exception';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
