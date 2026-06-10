@@ -6,8 +6,8 @@ import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import { usersLocations } from './usersLocations.schema';
 
 export const locations = pgTable('locations', {
-    id: uuid('id').primaryKey().defaultRandom(),
-    name: varchar('name', { length: 50 }).notNull(),
+    id: uuid('id').primaryKey().defaultRandom().notNull(),
+    name: varchar('name', { length: 50 }).notNull().unique(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
@@ -16,3 +16,6 @@ export const locationsRelations = relations(locations, ({ many }) => ({
     bills: many(bills),
     usersLocations: many(usersLocations),
 }));
+
+export type TSelectLocation = typeof locations.$inferSelect;
+export type TInsertLocation = typeof locations.$inferInsert;

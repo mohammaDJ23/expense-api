@@ -8,7 +8,7 @@ import { locations } from './location.schema';
 export const usersLocations = pgTable(
     'users_locations',
     {
-        id: uuid('id').primaryKey().defaultRandom(),
+        id: uuid('id').primaryKey().defaultRandom().notNull(),
         createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
         userId: uuid('user_id')
             .notNull()
@@ -30,3 +30,6 @@ export const usersLocationsRelations = relations(usersLocations, ({ one }) => ({
         references: [locations.id],
     }),
 }));
+
+export type TSelectUserLocation = typeof usersLocations.$inferSelect;
+export type TInsertUserLocation = typeof usersLocations.$inferInsert;

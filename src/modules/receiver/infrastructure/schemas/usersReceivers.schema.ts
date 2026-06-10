@@ -8,7 +8,7 @@ import { receivers } from './receiver.schema';
 export const usersReceivers = pgTable(
     'users_receivers',
     {
-        id: uuid('id').primaryKey().defaultRandom(),
+        id: uuid('id').primaryKey().defaultRandom().notNull(),
         createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
         userId: uuid('user_id')
             .notNull()
@@ -30,3 +30,6 @@ export const usersReceiversRelations = relations(usersReceivers, ({ one }) => ({
         references: [receivers.id],
     }),
 }));
+
+export type TSelectUserReceiver = typeof receivers.$inferSelect;
+export type TInsertUserReceiver = typeof receivers.$inferInsert;
