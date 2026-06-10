@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
 
+import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateUserHandler } from '@/modules/user/applications/commands/createUser/createUser.handler';
 import { DeleteAllNotVerifiedUsersHandler } from '@/modules/user/applications/commands/deleteAllNotVerifiedUsers/deleteNotVerifiedUsers.handler';
 import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUser/updateUser.handler';
@@ -24,6 +24,5 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
         DeleteAllNotVerifiedUsersService,
         DeleteAllNotVerifiedUsersHandler,
     ],
-    exports: [CqrsModule],
 })
 export class UserModule {}
