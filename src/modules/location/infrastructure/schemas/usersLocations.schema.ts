@@ -5,20 +5,19 @@ import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
 import { locations } from './location.schema';
 
-export const usersLocations = pgTable('users_locations', {
-    id: uuid('id').primaryKey().defaultRandom(),
-    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-    userId: uuid('user_id')
-        .notNull()
-        .references(() => users.id, { onDelete: 'cascade' }),
-    locationId: uuid('location_id')
-        .notNull()
-        .references(() => locations.id, { onDelete: 'cascade' }),
-});
-
-export const uniqueUsersLocations = uniqueIndex('unique_users_locations').on(
-    usersLocations.userId,
-    usersLocations.locationId,
+export const usersLocations = pgTable(
+    'users_locations',
+    {
+        id: uuid('id').primaryKey().defaultRandom(),
+        createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+        userId: uuid('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+        locationId: uuid('location_id')
+            .notNull()
+            .references(() => locations.id, { onDelete: 'cascade' }),
+    },
+    (table) => [uniqueIndex('unique_users_locations').on(table.userId, table.locationId)],
 );
 
 export const usersLocationsRelations = relations(usersLocations, ({ one }) => ({
