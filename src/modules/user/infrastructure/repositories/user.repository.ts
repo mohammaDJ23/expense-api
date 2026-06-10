@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, isNull } from 'drizzle-orm';
 
 import {
     isExists,
+    toEntities,
     toEntityOrNull,
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -34,6 +35,12 @@ export class UserRepository implements IUserRepository {
                 .where(eq(users.id, data.id))
                 .returning(),
             'Unable to update',
+        );
+    }
+
+    deleteAllNotVerified(): Promise<TSelectUser[]> {
+        return toEntities(
+            this.drizzleClientService.db.delete(users).where(isNull(users.verifiedAt)).returning(),
         );
     }
 
