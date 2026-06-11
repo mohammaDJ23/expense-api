@@ -1,4 +1,5 @@
 import { Module, ValidationPipe } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
@@ -10,7 +11,12 @@ import { AppInstanceService } from '@/core/services/appInstance.service';
 import { VersionService } from '@/core/services/version.service';
 
 @Module({
-    imports: [ExceptionNormalizerModule, FilterModule, AuthenticationModule],
+    imports: [
+        ConfigModule.forRoot({ isGlobal: true, ignoreEnvFile: true }),
+        ExceptionNormalizerModule,
+        FilterModule,
+        AuthenticationModule,
+    ],
     providers: [
         ApiVersioningService,
         AppInstanceService,
