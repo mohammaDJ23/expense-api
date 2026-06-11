@@ -1,3 +1,55 @@
+## [1.4.0](https://github.com/mohammaDJ23/expense-api/compare/v1.3.1...v1.4.0) (2026-06-11)
+
+### ✨ Features
+
+- 049999 add location schema and relations ([7fa3252](https://github.com/mohammaDJ23/expense-api/commit/7fa3252bf51828e003eeb8240d9dcbd328e89988))
+- 049999 add the bill schema ([468f9ab](https://github.com/mohammaDJ23/expense-api/commit/468f9ab85f2b0da2c7e10589f8271310b7d159b4))
+- 049999 add the bills and users relations ([7e55d91](https://github.com/mohammaDJ23/expense-api/commit/7e55d9169ecc4e1ad58a67db90a609a358d7b237))
+- 049999 add the consumers schema ([a61b808](https://github.com/mohammaDJ23/expense-api/commit/a61b8088dbfa3f1416ca79a4a7c8a32a15c632e4))
+- 049999 add the receiver schema and relations ([95eef88](https://github.com/mohammaDJ23/expense-api/commit/95eef883f78f4e5459cfa0921516c05b31970436))
+- 049999 add the usersConsumers shema and the related relations ([c93e379](https://github.com/mohammaDJ23/expense-api/commit/c93e3794b3dce35397e845bd5eb80246a8d543c3))
+- 335464 add the delete all not verified users api ([3f8f99f](https://github.com/mohammaDJ23/expense-api/commit/3f8f99f38934f9728ecc500cafc42223cd5d3507))
+
+### 🐛 Bug Fixes
+
+- 049999 use the uqniue constraint inside pgTable ([90ad66b](https://github.com/mohammaDJ23/expense-api/commit/90ad66ba8dc19c07b588f704571a5b629e7da225))
+- 692263 delete the cached token ([2a5368d](https://github.com/mohammaDJ23/expense-api/commit/2a5368d99645422e690a98fa4a9865dc39cf3f31))
+- 692263 resolve the issue of a high vulnerability ([895032f](https://github.com/mohammaDJ23/expense-api/commit/895032f9df04709463ecf49052f89c20315d67da))
+
+### 🔧 Chores
+
+- 049999 rename schema to schemas ([e7bd759](https://github.com/mohammaDJ23/expense-api/commit/e7bd7598d353451c11cf7a3d7b3e7a4a34e62a7c))
+- 335464 add the schedual package ([5d5a1d5](https://github.com/mohammaDJ23/expense-api/commit/5d5a1d56d456eb5e81db821fa72230aae691a405))
+- 335464 reorgenize some services from infra to the core services ([63da7ce](https://github.com/mohammaDJ23/expense-api/commit/63da7ce851435ec77528aae07f1803b3ab5f139c))
+- 692263 add the current user file ([aeeb420](https://github.com/mohammaDJ23/expense-api/commit/aeeb420f30eada59b3c04b5f358b5b43adfe3dfc))
+- 692263 add the global filter ([795a206](https://github.com/mohammaDJ23/expense-api/commit/795a2063ce9d0bf7db21884b80a2a79c5acacb59))
+- 692263 add the google files ([2509a81](https://github.com/mohammaDJ23/expense-api/commit/2509a81e53286151b0f981d2648d842007958334))
+- 692263 add the http decorator and entitiy inside core ([303adfc](https://github.com/mohammaDJ23/expense-api/commit/303adfce8f541a5db5567024f933a939c5b4856b))
+- 692263 add the serializer file ([bc508dd](https://github.com/mohammaDJ23/expense-api/commit/bc508dd5f9dc3af84fa6b6a4abe5bbc7e454ad1b))
+- 692263 move all authentication guards into authentication ([c3e833e](https://github.com/mohammaDJ23/expense-api/commit/c3e833eaee5822765234026ab228e4c667e7ff36))
+- 692263 reorgenize the modules ([9395b26](https://github.com/mohammaDJ23/expense-api/commit/9395b26d0a42cb0ae8fa747d4384bfde9b24458b))
+- 692263 use constants better ([b012544](https://github.com/mohammaDJ23/expense-api/commit/b0125448aafb943fd993ebccc127314bbabf4760))
+- 692263 use constants better ([0eac412](https://github.com/mohammaDJ23/expense-api/commit/0eac412f02aed4e863e609350b9c76ebe0f790a8))
+- 692263 use constants instead of constant ([26cb10d](https://github.com/mohammaDJ23/expense-api/commit/26cb10d63aa88b7e19be1dc06f8b3ae671e44ea9))
+- 692263 use filtersModule ([fc119bc](https://github.com/mohammaDJ23/expense-api/commit/fc119bce50c588cd29ec57836f17ab5422ce1f98))
+- 692263 use the base image ([1a0a1d6](https://github.com/mohammaDJ23/expense-api/commit/1a0a1d6e3715820c0c86b66a9a745abe05f7ac9b))
+- 785298 add the cqrs module ([0afdc7f](https://github.com/mohammaDJ23/expense-api/commit/0afdc7ff86379db90d92ba7cb7b96b6b32ecc957))
+- 785298 add the cqrs module ([ac0d75e](https://github.com/mohammaDJ23/expense-api/commit/ac0d75e14f426cbc5c78110991a5d2ae987a988a))
+- 785298 add the related packages ([adcf38c](https://github.com/mohammaDJ23/expense-api/commit/adcf38cfd37aaffa4c84a71515ccb03fc7919193))
+- 785298 make drizzle compatible with transaction database ([3f664ee](https://github.com/mohammaDJ23/expense-api/commit/3f664eee21288ad4d4d33f6073f9730fc8b64d08))
+- 785298 remove the unused transaction ([560fc74](https://github.com/mohammaDJ23/expense-api/commit/560fc74d3bf061acb1e120aa837c74f13138780c))
+- 785298 use the cqrs module ([6e71c7a](https://github.com/mohammaDJ23/expense-api/commit/6e71c7ad959b7258e41b1abed55fc3f4509637de))
+- 785298 use the cqrs module ([a5c747e](https://github.com/mohammaDJ23/expense-api/commit/a5c747e9572401dabcde4a73baf3570d11d54d84))
+- 785298 use the cqrs module ([4d50f2b](https://github.com/mohammaDJ23/expense-api/commit/4d50f2b2bead1906798c4df1cdff9611d79bffff))
+- 785298 use the cqrs module and drizzle repository ([92b40f1](https://github.com/mohammaDJ23/expense-api/commit/92b40f127d3d53e299cdc5f8c4d5a315016ae0b5))
+- 785298 use Transactional ([a752f7e](https://github.com/mohammaDJ23/expense-api/commit/a752f7e50d57218565d3e8779788ab598e99e638))
+- 803920 add the exception normalizer ([e421628](https://github.com/mohammaDJ23/expense-api/commit/e42162828423e188952bf779055d1d3594bc38cc))
+- 803920 do not use the app exception ([bf93ece](https://github.com/mohammaDJ23/expense-api/commit/bf93ece53cce04ff16152ff93a05db59c6dadf2c))
+- 836568 optimize the schemas ([0d0c3c4](https://github.com/mohammaDJ23/expense-api/commit/0d0c3c41373c37bd23016fec9b042a40d0ee515c))
+- 875092 remove the google service ([a84ef6a](https://github.com/mohammaDJ23/expense-api/commit/a84ef6a56cadd00d0d6a92d27beb33f0058046dd))
+- 875092 rename the exception ([7e8a285](https://github.com/mohammaDJ23/expense-api/commit/7e8a285e625357ca1b7a87e38363ea4bc51a38c3))
+- 875092 reorgenize the authentication services ([dc3e45d](https://github.com/mohammaDJ23/expense-api/commit/dc3e45dc403d8778c3c21c2a19f3ca050af01ef8))
+
 ## [1.3.1](https://github.com/mohammaDJ23/expense-api/compare/v1.3.0...v1.3.1) (2026-06-08)
 
 ### 🔧 Chores
