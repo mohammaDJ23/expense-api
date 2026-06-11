@@ -3,7 +3,7 @@ import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
-import { usersConsumers } from './usersConsumers.schema';
+import { usersConsumers } from './userConsumer.schema';
 
 export const consumers = pgTable('consumers', {
     id: uuid('id').primaryKey().defaultRandom().notNull(),
