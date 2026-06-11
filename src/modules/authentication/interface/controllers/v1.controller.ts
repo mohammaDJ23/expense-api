@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/comm
 import { Throttle } from '@nestjs/throttler';
 
 import { CurrentUser } from '@/core/currentUser/currentUser.decorator';
-import { GoogleAuthGuard } from '@/core/guards/googleAuth.guard';
+import { GoogleAuthGuard } from '@/core/google/googleAuth.guard';
 import { HttpResponse } from '@/core/httpResponse/httpResponse.decorator';
 import { ObjectSerializerInterceptor } from '@/core/serializers/objectSerializerInterceptor.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
