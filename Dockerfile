@@ -1,4 +1,7 @@
-FROM node:24-alpine AS base
+FROM node:24-alpine AS node-patched
+RUN apk update && apk upgrade --available
+
+FROM node-patched AS base
 
 ENV COREPACK_INTEGRITY_KEYS=0
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
@@ -25,7 +28,7 @@ COPY --chown=expense-api:nodejs drizzle.config.ts ./
 RUN pnpm install --ignore-scripts --frozen-lockfile && \
     pnpm cache clean
 
-FROM base AS development
+FROM node-patched AS development
 
 ENV NODE_ENV=development
 
@@ -37,7 +40,7 @@ EXPOSE 4000 9229
 
 ENTRYPOINT ["sh", "-c", "pnpm run db:push && pnpm run start:debug"]
 
-FROM base AS production-build
+FROM node-patched AS production-build
 
 ENV NODE_ENV=production
 ENV npm_config_ignore_scripts=true
@@ -48,7 +51,7 @@ RUN pnpm run build && \
     pnpm prune --production && \
     rm -rf src
 
-FROM node:24-alpine AS production
+FROM node-patched AS production
 
 ENV NODE_ENV=production
 
