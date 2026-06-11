@@ -1,6 +1,6 @@
 import type { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import type { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
-import type { IUserAbstract } from '@/modules/user/domain/interfaces/user.interface';
+import type { IUserAbstract } from '@/modules/user/domain/interfaces/userAbstract.interface';
 
 export abstract class UserAbstract implements Partial<IUserAbstract> {
     public readonly id?: string;
