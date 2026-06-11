@@ -6,8 +6,8 @@ export interface IUserRepository {
     deleteAllNotVerified(): Promise<TSelectUser[]>;
     isExistsByEmail(email: string): Promise<boolean>;
     getByEmailOrThrow(email: string): Promise<TSelectUser>;
-    getByEmail(email: string): Promise<TSelectUser | null>;
+    getByEmailOrNull(email: string): Promise<TSelectUser | null>;
     isExistsById(id: string): Promise<boolean>;
     getByIdOrThrow(id: string): Promise<TSelectUser>;
-    getById(id: string): Promise<TSelectUser | null>;
+    getByIdOrNull(id: string): Promise<TSelectUser | null>;
 }

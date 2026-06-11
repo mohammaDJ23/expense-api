@@ -1,3 +1,3 @@
-export class GetUserByIdQuery {
+export class GetUserByIdOrNullQuery {
     constructor(public readonly id: string) {}
 }

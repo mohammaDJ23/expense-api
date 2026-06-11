@@ -7,7 +7,7 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 import { ProcessFailedUnAuthorizedException } from '@/core/exceptions/processFailedUnauthorized.exception';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
-import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
+import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { AccessTokenService } from './accessToken.service';
@@ -28,9 +28,9 @@ export class LocalLoginService {
     async login(data: LocalLoginRequestDto): Promise<AccessTokenEntity> {
         let user: TSelectUser | null = null;
         try {
-            const getUserByEmailQuery = new GetUserByEmailQuery(data.email);
-            user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
-                getUserByEmailQuery,
+            const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(data.email);
+            user = await this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
+                getUserByEmailOrNullQuery,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
