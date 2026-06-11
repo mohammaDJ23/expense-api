@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 
 import { ExceptionNormalizerEntity } from './exceptionNormalizer.entity';
-import { INTERNAL_SERVER_ERROR_MESSAGE } from './normalizerException.constant';
+import { INTERNAL_SERVER_ERROR_MESSAGE } from './normalizerException.constants';
 
 import type { IExceptionNormalizerStrategy } from './exceptionNormalizerStrategy.interface';
 

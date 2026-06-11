@@ -5,7 +5,7 @@ import { Pool } from 'pg';
 
 import { readSecret } from '@/common/utils/readSecret.util';
 
-import { DRIZZLE_CLIENT_TOKEN } from './drizzle.constant';
+import { DRIZZLE_CLIENT_TOKEN } from './drizzle.constants';
 
 @Global()
 @Module({

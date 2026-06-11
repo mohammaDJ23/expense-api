@@ -3,7 +3,7 @@ import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { HttpResponse } from '@/core/httpResponse/httpResponse.decorator';
 import { HealthService } from '@/modules/health/applications/services/health.service';
 
-import { SUCCESS_HEALTH_MESSAGE } from './controllers.constant';
+import { SUCCESS_HEALTH_MESSAGE } from './controllers.constants';
 
 import type { HealthCheckResult } from '@nestjs/terminus';
 
