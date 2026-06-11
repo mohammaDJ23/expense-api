@@ -1,10 +1,8 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { ExceptionNormalizerModule } from '@/core/exceptions/normalizer/exceptionNormalizer.module';
-import { FallbackHostHandler } from '@/core/filters/globalException/fallbackHost.handler';
-import { GlobalExceptionFilter } from '@/core/filters/globalException/globalException.filter';
-import { HttpHostHandler } from '@/core/filters/globalException/httpHost.handler';
+import { FilterModule } from '@/core/filters/filter.module';
 import { GoogleAuthGuard } from '@/core/guards/googleAuth.guard';
 import { JwtAuthGuard } from '@/core/guards/jwtAuth.guard';
 import { TransformResponseInterceptor } from '@/core/interceptors/transformResponse.interceptor';
@@ -17,10 +15,8 @@ import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { UserModule } from '@/modules/user/user.module';
 
 @Module({
-    imports: [UserModule, CqrsModule, ExceptionNormalizerModule],
+    imports: [UserModule, CqrsModule, ExceptionNormalizerModule, FilterModule],
     providers: [
-        HttpHostHandler,
-        FallbackHostHandler,
         JwtAuthGuard,
         JwtAuthStrategy,
         GoogleAuthGuard,
@@ -28,10 +24,6 @@ import { UserModule } from '@/modules/user/user.module';
         ApiVersioningService,
         AppInstanceService,
         VersionService,
-        {
-            provide: APP_FILTER,
-            useClass: GlobalExceptionFilter,
-        },
         {
             provide: APP_PIPE,
             useValue: new ValidationPipe({

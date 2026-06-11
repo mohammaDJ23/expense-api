@@ -1,11 +1,11 @@
 import { Injectable, type ArgumentsHost } from '@nestjs/common';
 
-import type { IGlobalExceptionHostHandler } from './globalExceptionHostHandler.interface';
+import type { IGlobalHostStrategy } from './globalHostStrategy.interface';
 import type { ExceptionNormalizerEntity } from '@/core/exceptions/normalizer/exceptionNormalizer.entity';
 import type { HttpResponseEntity } from '@/core/httpResponse/httpResponse.entity';
 
 @Injectable()
-export class HttpHostHandler implements IGlobalExceptionHostHandler {
+export class GlobalHttpHostStrategy implements IGlobalHostStrategy {
     canHandle(host: ArgumentsHost): boolean {
         return host.getType() === 'http';
     }
