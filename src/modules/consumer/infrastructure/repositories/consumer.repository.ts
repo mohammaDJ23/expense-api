@@ -23,14 +23,6 @@ export class ConsumerRepository extends DrizzleRepository implements IConsumerRe
         );
     }
 
-    private selectById(id: string) {
-        return this.db.select().from(consumers).where(eq(consumers.id, id));
-    }
-
-    getByIdOrNull(id: string): Promise<TSelectConsumer | null> {
-        return toEntityOrNull(this.selectById(id));
-    }
-
     getByNameOrNull(name: string): Promise<TSelectConsumer | null> {
         return toEntityOrNull(this.db.select().from(consumers).where(eq(consumers.name, name)));
     }
