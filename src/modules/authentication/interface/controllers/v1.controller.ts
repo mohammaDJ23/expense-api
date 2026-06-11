@@ -6,14 +6,6 @@ import { CurrentUser } from '@/core/currentUser/currentUser.decorator';
 import { HttpResponse } from '@/core/httpResponse/httpResponse.decorator';
 import { ObjectSerializerInterceptor } from '@/core/serializers/objectSerializerInterceptor.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
-import {
-    SUCCESS_SIGNUP_MESSAGE,
-    SUCCESS_SEND_VERIFICATION_MESSAGE,
-    SUCCESS_VERIFY_VERIFICATION_MESSAGE,
-    SUCCESS_LOGIN_MESSAGE,
-    SUCCESS_FORGOT_PASSWORD_MESSAGE,
-    SUCCESS_RESET_PASSWORD_MESSAGE,
-} from '@/modules/authentication/interface/constants/messages.constant';
 import { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
@@ -21,6 +13,15 @@ import { LocalSendVerificationRequestDto } from '@/modules/authentication/interf
 import { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 import { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
 import { LoginResponseDto } from '@/modules/authentication/interface/dtos/login.response.dto';
+
+import {
+    SUCCESS_SIGNUP_MESSAGE,
+    SUCCESS_SEND_VERIFICATION_MESSAGE,
+    SUCCESS_VERIFY_VERIFICATION_MESSAGE,
+    SUCCESS_LOGIN_MESSAGE,
+    SUCCESS_FORGOT_PASSWORD_MESSAGE,
+    SUCCESS_RESET_PASSWORD_MESSAGE,
+} from './controllers.constant';
 
 import type { ICurrentUser } from '@/core/currentUser/currentUser.interface';
 import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
