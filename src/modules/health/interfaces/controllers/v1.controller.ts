@@ -1,6 +1,6 @@
 import { Controller, Get, HttpStatus } from '@nestjs/common';
 
-import { Response } from '@/core/decorators/response.decorator';
+import { HttpResponse } from '@/core/httpResponse/httpResponse.decorator';
 import { HealthService } from '@/modules/health/applications/services/health.service';
 import { SUCCESS_HEALTH_MESSAGE } from '@/modules/health/interfaces/constants/messages.constant';
 
@@ -11,7 +11,7 @@ export class HealthController {
     constructor(private readonly healthService: HealthService) {}
 
     @Get()
-    @Response(SUCCESS_HEALTH_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_HEALTH_MESSAGE, HttpStatus.OK)
     getHealth(): Promise<HealthCheckResult> {
         return this.healthService.getHealth();
     }

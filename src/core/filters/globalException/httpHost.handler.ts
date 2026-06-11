@@ -1,8 +1,8 @@
 import { Injectable, type ArgumentsHost } from '@nestjs/common';
 
 import type { IGlobalExceptionHostHandler } from './globalExceptionHostHandler.interface';
-import type { ResponseEntity } from '@/common/application/response/response.entity';
 import type { ExceptionNormalizerEntity } from '@/core/exceptions/normalizer/exceptionNormalizer.entity';
+import type { HttpResponseEntity } from '@/core/httpResponse/httpResponse.entity';
 
 @Injectable()
 export class HttpHostHandler implements IGlobalExceptionHostHandler {
@@ -10,7 +10,7 @@ export class HttpHostHandler implements IGlobalExceptionHostHandler {
         return host.getType() === 'http';
     }
 
-    send(host: ArgumentsHost, response: ResponseEntity<ExceptionNormalizerEntity>): void {
+    send(host: ArgumentsHost, response: HttpResponseEntity<ExceptionNormalizerEntity>): void {
         const ctx = host.switchToHttp();
 
         ctx.getResponse().status(response.statusCode).json(response);

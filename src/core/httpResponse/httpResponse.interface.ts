@@ -1,4 +1,4 @@
-export interface IResponse<T = unknown> {
+export interface IHttpResponse<T = unknown> {
     message: string;
     data: T;
     statusCode: number;

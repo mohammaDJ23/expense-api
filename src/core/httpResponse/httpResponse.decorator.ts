@@ -1,16 +1,16 @@
 import { applyDecorators, HttpCode, type HttpStatus } from '@nestjs/common';
 
-import { ResponseMessage } from './responseMessage.decorator';
-import { ResponseStatusCode } from './responseStatusCode.decorator';
+import { HttpResponseMessage } from './httpResponseMessage.decorator';
+import { HttpResponseStatusCode } from './httpResponseStatusCode.decorator';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export function Response(
+export function HttpResponse(
     message: string,
     statusCode: HttpStatus,
 ): ReturnType<typeof applyDecorators> {
     return applyDecorators(
-        ResponseMessage(message),
-        ResponseStatusCode(statusCode),
+        HttpResponseMessage(message),
+        HttpResponseStatusCode(statusCode),
         HttpCode(statusCode),
     );
 }
