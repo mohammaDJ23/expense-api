@@ -1,9 +1,9 @@
 import { UserConsumerAbstract } from '@/modules/consumer/domain/abstracts/userConsumer.abstract';
 
 export class CreateUserConsumerCommand extends UserConsumerAbstract {
-    public readonly userId: string;
-    public readonly consumerId: string;
-    public readonly createdAt: Date;
+    public override readonly userId: string;
+    public override readonly consumerId: string;
+    public override readonly createdAt: Date;
 
     constructor(data: Required<Pick<UserConsumerAbstract, 'userId' | 'consumerId' | 'createdAt'>>) {
         super(data);

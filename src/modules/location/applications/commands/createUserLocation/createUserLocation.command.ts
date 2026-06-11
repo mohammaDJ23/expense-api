@@ -1,9 +1,9 @@
 import { UserLocationAbstract } from '@/modules/location/domain/abstracts/userLocation.abstract';
 
 export class CreateUserLocationCommand extends UserLocationAbstract {
-    public readonly userId: string;
-    public readonly locationId: string;
-    public readonly createdAt: Date;
+    public override readonly userId: string;
+    public override readonly locationId: string;
+    public override readonly createdAt: Date;
 
     constructor(data: Required<Pick<UserLocationAbstract, 'userId' | 'locationId' | 'createdAt'>>) {
         super(data);
