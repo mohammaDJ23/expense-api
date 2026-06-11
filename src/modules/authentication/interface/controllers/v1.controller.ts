@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 
-import { CurrentUser } from '@/core/decorators/currentUser.decorator';
+import { CurrentUser } from '@/core/currentUser/currentUser.decorator';
 import { GoogleAuthGuard } from '@/core/guards/googleAuth.guard';
 import { HttpResponse } from '@/core/httpResponse/httpResponse.decorator';
 import { ObjectSerializerInterceptor } from '@/core/serializers/objectSerializerInterceptor.decorator';
@@ -22,7 +22,7 @@ import { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/l
 import { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
 import { LoginResponseDto } from '@/modules/authentication/interface/dtos/login.response.dto';
 
-import type { ICurrentUser } from '@/core/interfaces/currentUser.interface';
+import type { ICurrentUser } from '@/core/currentUser/currentUser.interface';
 import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 
 @Controller({ version: '1', path: 'api/authentication' })

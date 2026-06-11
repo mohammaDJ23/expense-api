@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { GoogleProviderService } from './googleProvider.service';
 import { LocalProviderService } from './localProvider.service';
 
-import type { ICurrentUser } from '@/core/interfaces/currentUser.interface';
+import type { ICurrentUser } from '@/core/currentUser/currentUser.interface';
 import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import type { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
