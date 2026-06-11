@@ -1,6 +1,7 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
+import { ExceptionNormalizerModule } from '@/core/exceptions/normalizer/exceptionNormalizer.module';
 import { FallbackHostHandler } from '@/core/filters/globalException/fallbackHost.handler';
 import { GlobalExceptionFilter } from '@/core/filters/globalException/globalException.filter';
 import { HttpHostHandler } from '@/core/filters/globalException/httpHost.handler';
@@ -16,7 +17,7 @@ import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { UserModule } from '@/modules/user/user.module';
 
 @Module({
-    imports: [UserModule, CqrsModule],
+    imports: [UserModule, CqrsModule, ExceptionNormalizerModule],
     providers: [
         HttpHostHandler,
         FallbackHostHandler,
