@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 
 import { ResponseEntity } from '@/common/application/response/response.entity';
-import { AppException } from '@/core/exceptions/app/exception';
+import { ExceptionNormalizerService } from '@/core/exceptions/normalizer/exceptionNormalizer.service';
 
 import { FallbackHostHandler } from './fallbackHost.handler';
 import { HttpHostHandler } from './httpHost.handler';
@@ -18,6 +18,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     constructor(
         private readonly httpHostHandler: HttpHostHandler,
         private readonly fallbackHostHandler: FallbackHostHandler,
+        private readonly exceptionNormalizerService: ExceptionNormalizerService,
     ) {}
 
     private get hostHandlers(): IGlobalExceptionHostHandler[] {
@@ -32,8 +33,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
                 throw new InternalServerErrorException('No host handler found.');
             }
 
-            const exceptionData = new AppException(exception);
-            const response = ResponseEntity.error<AppException>({
+            const exceptionData = this.exceptionNormalizerService.normalize(exception);
+            const response = ResponseEntity.error({
                 data: exceptionData,
                 statusCode: exceptionData.statusCode,
             });
