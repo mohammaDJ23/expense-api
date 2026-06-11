@@ -18,4 +18,4 @@ import { GlobalHttpHostStrategy } from './globalHttpHost.strategy';
         },
     ],
 })
-export class FilterModule {}
+export class FiltersModule {}
