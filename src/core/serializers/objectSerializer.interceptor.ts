@@ -8,7 +8,7 @@ import { plainToClass } from 'class-transformer';
 // eslint-disable-next-line import-x/no-deprecated
 import { map, type Observable } from 'rxjs';
 
-import type { TClassConstructor } from '@/common/types';
+import type { TClassConstructor } from '@/common/common.types';
 
 export class ObjectSerializerInterceptor<T> implements NestInterceptor {
     constructor(private readonly dto: TClassConstructor<T>) {}
