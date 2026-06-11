@@ -3,7 +3,7 @@ import { ClsPluginTransactional } from '@nestjs-cls/transactional';
 import { TransactionalAdapterDrizzleOrm } from '@nestjs-cls/transactional-adapter-drizzle-orm';
 import { ClsModule } from 'nestjs-cls';
 
-import { DRIZZLE_CLIENT_TOKEN } from './drizzle.constant';
+import { DRIZZLE_CLIENT_TOKEN } from './drizzle.constants';
 import { DrizzleClientModule } from './drizzleClient.module';
 
 @Global()

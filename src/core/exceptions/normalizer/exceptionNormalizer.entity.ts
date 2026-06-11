@@ -2,7 +2,7 @@ import { HttpStatus } from '@nestjs/common';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
-import { INTERNAL_SERVER_ERROR_MESSAGE } from './normalizerException.constant';
+import { INTERNAL_SERVER_ERROR_MESSAGE } from './normalizerException.constants';
 
 export class ExceptionNormalizerEntity {
     public readonly statusCode: number;

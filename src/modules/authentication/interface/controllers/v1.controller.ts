@@ -21,7 +21,7 @@ import {
     SUCCESS_LOGIN_MESSAGE,
     SUCCESS_FORGOT_PASSWORD_MESSAGE,
     SUCCESS_RESET_PASSWORD_MESSAGE,
-} from './controllers.constant';
+} from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/currentUser/currentUser.interface';
 import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
