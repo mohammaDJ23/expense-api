@@ -66,6 +66,11 @@ export class LocalPasswordService {
                 await this.passwordStorageService.set(user.email, token);
                 await this.passwordMailerService.sendMail(user, token);
             } catch {
+                try {
+                    await this.passwordStorageService.delete(user.email);
+                    // eslint-disable-next-line no-empty
+                } catch {}
+
                 throw new ServiceUnavailableException('Could not send you a verification link');
             }
         }

@@ -64,6 +64,11 @@ export class LocalVerificationService {
                 await this.verificationStorageService.set(user.email, token);
                 await this.verificationMailerService.sendMail(user, token);
             } catch {
+                try {
+                    await this.verificationStorageService.delete(user.email);
+                    // eslint-disable-next-line no-empty
+                } catch {}
+
                 throw new ServiceUnavailableException('Could not send you a verification link');
             }
         }
