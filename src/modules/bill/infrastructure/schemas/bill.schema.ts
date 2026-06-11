@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { uuid, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
-import { consumers } from '@/modules/consumers/infrastructure/schemas/consumer.schema';
+import { consumers } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import { locations } from '@/modules/location/infrastructure/schemas/location.schema';
 import { receivers } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
