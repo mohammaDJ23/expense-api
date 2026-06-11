@@ -4,7 +4,7 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
 import { ExceptionNormalizerModule } from '@/core/exceptions/normalizer/exceptionNormalizer.module';
-import { FilterModule } from '@/core/filters/filter.module';
+import { FiltersModule } from '@/core/filters/filters.module';
 import { TransformResponseInterceptor } from '@/core/interceptors/transformResponse.interceptor';
 import { ApiVersioningService } from '@/core/services/apiVersioning.service';
 import { AppInstanceService } from '@/core/services/appInstance.service';
@@ -14,7 +14,7 @@ import { VersionService } from '@/core/services/version.service';
     imports: [
         ConfigModule.forRoot({ isGlobal: true, ignoreEnvFile: true }),
         ExceptionNormalizerModule,
-        FilterModule,
+        FiltersModule,
         AuthenticationModule,
     ],
     providers: [
