@@ -6,7 +6,7 @@ import {
     ARGON2_MEMORY_COST,
     ARGON2_PARALLELISM,
     ARGON2_TIME_COST,
-} from '@/modules/authentication/applications/services/constants/passwordHasher.constant';
+} from './services.constant';
 
 @Injectable()
 export class PasswordHasherService {
