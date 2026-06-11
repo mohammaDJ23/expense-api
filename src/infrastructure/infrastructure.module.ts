@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { ConfigModule } from '@/infrastructure/config/config.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { DatabaseModule } from '@/infrastructure/database/database.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
@@ -13,7 +12,6 @@ import { ThrottlerModule } from '@/infrastructure/throttler/throttler.module';
 
 @Module({
     imports: [
-        ConfigModule,
         DatabaseModule,
         RedisModule,
         SwaggerModule,
