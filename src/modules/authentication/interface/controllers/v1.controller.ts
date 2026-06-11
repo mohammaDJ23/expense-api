@@ -2,9 +2,9 @@ import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/comm
 import { Throttle } from '@nestjs/throttler';
 
 import { CurrentUser } from '@/core/decorators/currentUser.decorator';
-import { SerializeObjectInterceptor } from '@/core/decorators/serializeObjectInterceptor.decorator';
 import { GoogleAuthGuard } from '@/core/guards/googleAuth.guard';
 import { HttpResponse } from '@/core/httpResponse/httpResponse.decorator';
+import { ObjectSerializerInterceptor } from '@/core/serializers/objectSerializerInterceptor.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import {
     SUCCESS_SIGNUP_MESSAGE,
@@ -39,7 +39,7 @@ export class AuthenticationController {
     @Post('local/login')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
-    @SerializeObjectInterceptor(LoginResponseDto)
+    @ObjectSerializerInterceptor(LoginResponseDto)
     localLogin(@Body() body: LocalLoginRequestDto): Promise<AccessTokenEntity> {
         return this.authenticationService.localLogin(body);
     }
@@ -82,7 +82,7 @@ export class AuthenticationController {
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
-    @SerializeObjectInterceptor(LoginResponseDto)
+    @ObjectSerializerInterceptor(LoginResponseDto)
     googleLogin(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
         return this.authenticationService.googleLogin(user);
     }

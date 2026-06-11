@@ -1,12 +1,12 @@
 import { UseInterceptors } from '@nestjs/common';
 
-import { SerializeObjectInterceptor as CSerializeObjectInterceptor } from '@/core/interceptors/serializeObject.interceptor';
+import { ObjectSerializerInterceptor as SerializeObjectInterceptorClass } from './objectSerializer.interceptor';
 
 import type { TClassConstructor } from '@/common/types';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export function SerializeObjectInterceptor(
+export function ObjectSerializerInterceptor(
     dto: TClassConstructor,
 ): ReturnType<typeof UseInterceptors> {
-    return UseInterceptors(new CSerializeObjectInterceptor(dto));
+    return UseInterceptors(new SerializeObjectInterceptorClass(dto));
 }
