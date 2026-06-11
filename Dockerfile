@@ -28,7 +28,7 @@ COPY --chown=expense-api:nodejs drizzle.config.ts ./
 RUN pnpm install --ignore-scripts --frozen-lockfile && \
     pnpm cache clean
 
-FROM node-patched AS development
+FROM base AS development
 
 ENV NODE_ENV=development
 
@@ -40,7 +40,7 @@ EXPOSE 4000 9229
 
 ENTRYPOINT ["sh", "-c", "pnpm run db:push && pnpm run start:debug"]
 
-FROM node-patched AS production-build
+FROM base AS production-build
 
 ENV NODE_ENV=production
 ENV npm_config_ignore_scripts=true
