@@ -30,4 +30,8 @@ export class ConsumerRepository extends DrizzleRepository implements IConsumerRe
     getByIdOrNull(id: string): Promise<TSelectConsumer | null> {
         return toEntityOrNull(this.selectById(id));
     }
+
+    getByNameOrNull(name: string): Promise<TSelectConsumer | null> {
+        return toEntityOrNull(this.db.select().from(consumers).where(eq(consumers.name, name)));
+    }
 }
