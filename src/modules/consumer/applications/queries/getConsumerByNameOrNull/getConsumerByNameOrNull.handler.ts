@@ -1,8 +1,9 @@
 import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 
+import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
+
 import { GetConsumerByNameOrNullQuery } from './getConsumerByNameOrNull.query';
 
-import type { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
 import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 @QueryHandler(GetConsumerByNameOrNullQuery)
