@@ -13,8 +13,8 @@ import { map } from 'rxjs/operators';
 import {
     HTTP_RESPONSE_MESSAGE_METADATA_KEY,
     HTTP_RESPONSE_STATUS_METADATA_KEY,
-} from '@/core/httpResponse/httpResponse.constants';
-import { HttpResponseEntity } from '@/core/httpResponse/httpResponse.entity';
+} from '@/core/responses/http/httpResponse.constants';
+import { HttpResponseEntity } from '@/core/responses/http/httpResponse.entity';
 
 import type { Observable } from 'rxjs';
 

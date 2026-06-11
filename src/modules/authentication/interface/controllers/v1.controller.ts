@@ -2,9 +2,9 @@ import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/comm
 import { Throttle } from '@nestjs/throttler';
 
 import { GoogleAuthGuard } from '@/core/authentication/googleAuth.guard';
-import { CurrentUser } from '@/core/currentUser/currentUser.decorator';
-import { HttpResponse } from '@/core/httpResponse/httpResponse.decorator';
+import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { ObjectSerializerInterceptor } from '@/core/serializers/objectSerializerInterceptor.decorator';
+import { CurrentUser } from '@/core/user/currentUser.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
@@ -23,7 +23,7 @@ import {
     SUCCESS_RESET_PASSWORD_MESSAGE,
 } from './controllers.constants';
 
-import type { ICurrentUser } from '@/core/currentUser/currentUser.interface';
+import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 
 @Controller({ version: '1', path: 'api/authentication' })
