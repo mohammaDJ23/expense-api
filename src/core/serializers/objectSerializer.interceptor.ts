@@ -10,7 +10,7 @@ import { map, type Observable } from 'rxjs';
 
 import type { TClassConstructor } from '@/common/types';
 
-export class SerializeObjectInterceptor<T> implements NestInterceptor {
+export class ObjectSerializerInterceptor<T> implements NestInterceptor {
     constructor(private readonly dto: TClassConstructor<T>) {}
 
     intercept(_: ExecutionContext, next: CallHandler): Observable<T> {
