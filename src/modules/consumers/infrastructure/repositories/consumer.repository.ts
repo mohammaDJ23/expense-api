@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
-import { toEntityOrThrow } from '@/infrastructure/database/drizzle/drizzle.transformer';
+import {
+    toEntityOrNull,
+    toEntityOrThrow,
+} from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     consumers,
     type TInsertConsumer,
@@ -17,5 +21,13 @@ export class ConsumerRepository extends DrizzleRepository implements IConsumerRe
             this.db.insert(consumers).values(data).returning(),
             'Unable to create',
         );
+    }
+
+    private selectById(id: string) {
+        return this.db.select().from(consumers).where(eq(consumers.id, id));
+    }
+
+    getByIdOrNull(id: string): Promise<TSelectConsumer | null> {
+        return toEntityOrNull(this.selectById(id));
     }
 }
