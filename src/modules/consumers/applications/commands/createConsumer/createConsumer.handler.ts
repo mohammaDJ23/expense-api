@@ -1,7 +1,8 @@
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import { CreateConsumerCommand } from '@/modules/consumers/applications/commands/createConsumer/createConsumer.command';
 import { ConsumerRepository } from '@/modules/consumers/infrastructure/repositories/consumer.repository';
+
+import { CreateConsumerCommand } from './createConsumer.command';
 
 import type { TSelectConsumer } from '@/modules/consumers/infrastructure/schemas/consumer.schema';
 
