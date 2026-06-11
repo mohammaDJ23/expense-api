@@ -3,8 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
 
-import { AppException } from '@/core/exceptions/app/exception';
-
 import { THROTTLE_DEFAULT_NAME } from './throttler.constants';
 
 import type { ThrottlerModuleOptions, ThrottlerOptionsFactory } from '@nestjs/throttler';
@@ -34,8 +32,8 @@ export class ThrottlerConfigService implements ThrottlerOptionsFactory {
                 ],
                 storage: new ThrottlerStorageRedisService(redisClient),
             };
-        } catch (error) {
-            throw new AppException(error);
+        } catch {
+            throw new Error('Could not get the throttle configuration');
         }
     }
 }

@@ -1,4 +1,9 @@
-import { Catch, type ExceptionFilter, type ArgumentsHost } from '@nestjs/common';
+import {
+    Catch,
+    type ExceptionFilter,
+    type ArgumentsHost,
+    InternalServerErrorException,
+} from '@nestjs/common';
 
 import { ResponseEntity } from '@/common/application/response/response.entity';
 import { AppException } from '@/core/exceptions/app/exception';
@@ -24,7 +29,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             const handler = this.hostHandlers.find((handler) => handler.canHandle(host));
 
             if (!handler) {
-                throw new AppException('No host handler for exception handling found.');
+                throw new InternalServerErrorException('No host handler found.');
             }
 
             const exceptionData = new AppException(exception);
@@ -35,7 +40,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
             handler.send(host, response);
         } catch (error) {
-            console.error(error);
+            throw new InternalServerErrorException(error);
         }
     }
 }

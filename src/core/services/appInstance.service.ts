@@ -1,6 +1,4 @@
-import { Injectable, type INestApplication } from '@nestjs/common';
-
-import { AppException } from '@/core/exceptions/app/exception';
+import { Injectable, InternalServerErrorException, type INestApplication } from '@nestjs/common';
 
 @Injectable()
 export class AppInstanceService {
@@ -12,7 +10,9 @@ export class AppInstanceService {
 
     get(): INestApplication {
         if (!this.app) {
-            throw new AppException('App instance not set. Call setApp() during bootstrap.');
+            throw new InternalServerErrorException(
+                'App instance not set. Call setApp() during bootstrap.',
+            );
         }
         return this.app;
     }

@@ -4,7 +4,6 @@ import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 
 import { readSecret } from '@/common/utils/readSecret.util';
-import { AppException } from '@/core/exceptions/app/exception';
 
 import { DRIZZLE_CLIENT_TOKEN } from './drizzle.constant';
 
@@ -27,7 +26,7 @@ import { DRIZZLE_CLIENT_TOKEN } from './drizzle.constant';
                     await pool.connect();
                     return drizzle({ client: pool, casing: 'camelCase' });
                 } catch {
-                    throw new AppException('Could not initiate the database');
+                    throw new Error('Could not initiate the database');
                 }
             },
             inject: [ConfigService],
