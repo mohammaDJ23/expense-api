@@ -7,7 +7,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { readSecret } from '@/common/utils/readSecret.util';
 import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { GetUserByIdQuery } from '@/modules/user/applications/queries/getUserById/getUserById.query';
+import { GetUserByIdOrNullQuery } from '@/modules/user/applications/queries/getUserByIdOrNull/getUserByIdOrNull.query';
 
 import type { IAccessTokenPayload } from '@/modules/authentication/domain/interfaces/accessTokenPayload.interface';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
@@ -31,9 +31,9 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
 
         let user: TSelectUser | null;
         try {
-            const getUserByIdQuery = new GetUserByIdQuery(payload.id);
-            user = await this.queryBus.execute<GetUserByIdQuery, TSelectUser | null>(
-                getUserByIdQuery,
+            const getUserByIdOrNullQuery = new GetUserByIdOrNullQuery(payload.id);
+            user = await this.queryBus.execute<GetUserByIdOrNullQuery, TSelectUser | null>(
+                getUserByIdOrNullQuery,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();

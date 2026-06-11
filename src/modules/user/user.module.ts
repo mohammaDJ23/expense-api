@@ -4,9 +4,9 @@ import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateUserHandler } from '@/modules/user/applications/commands/createUser/createUser.handler';
 import { DeleteAllNotVerifiedUsersHandler } from '@/modules/user/applications/commands/deleteAllNotVerifiedUsers/deleteNotVerifiedUsers.handler';
 import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUser/updateUser.handler';
-import { GetUserByEmailHandler } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.handler';
+import { GetUserByEmailOrNullHandler } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.handler';
 import { GetUserByEmailOrThrowHandler } from '@/modules/user/applications/queries/getUserByEmailOrThrow/getUserByEmailOrThrow.handler';
-import { GetUserByIdHandler } from '@/modules/user/applications/queries/getUserById/getUserById.handler';
+import { GetUserByIdOrNullHandler } from '@/modules/user/applications/queries/getUserByIdOrNull/getUserByIdOrNull.handler';
 import { IsUserExistsByEmailHandler } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.handler';
 import { DeleteAllNotVerifiedUsersService } from '@/modules/user/applications/services/deleteAllNotVerifiedUsers.service';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
@@ -17,9 +17,9 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
         UserRepository,
         CreateUserHandler,
         GetUserByEmailOrThrowHandler,
-        GetUserByEmailHandler,
+        GetUserByEmailOrNullHandler,
         UpdateUserHandler,
-        GetUserByIdHandler,
+        GetUserByIdOrNullHandler,
         IsUserExistsByEmailHandler,
         DeleteAllNotVerifiedUsersService,
         DeleteAllNotVerifiedUsersHandler,

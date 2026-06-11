@@ -45,7 +45,7 @@ export class UserRepository extends DrizzleRepository implements IUserRepository
         return toEntityOrThrow(this.selectByEmail(email), 'User not found');
     }
 
-    getByEmail(email: string): Promise<TSelectUser | null> {
+    getByEmailOrNull(email: string): Promise<TSelectUser | null> {
         return toEntityOrNull(this.selectByEmail(email));
     }
 
@@ -61,7 +61,7 @@ export class UserRepository extends DrizzleRepository implements IUserRepository
         return toEntityOrThrow(this.selectById(id), 'User not found');
     }
 
-    getById(id: string): Promise<TSelectUser | null> {
+    getByIdOrNull(id: string): Promise<TSelectUser | null> {
         return toEntityOrNull(this.selectById(id));
     }
 }

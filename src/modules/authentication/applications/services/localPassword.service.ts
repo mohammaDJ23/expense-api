@@ -9,7 +9,7 @@ import { InvalidCredentialBadRequestException } from '@/core/exceptions/invalidC
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
-import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
+import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { PasswordHasherService } from './passwordHasher.service';
@@ -35,8 +35,10 @@ export class LocalPasswordService {
     ) {}
 
     private getUserByEmail(email: string): Promise<TSelectUser | null> {
-        const getUserByEmailQuery = new GetUserByEmailQuery(email);
-        return this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(getUserByEmailQuery);
+        const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(email);
+        return this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
+            getUserByEmailOrNullQuery,
+        );
     }
 
     async forgotPassword(data: LocalForgotPasswordRequestDto): Promise<boolean> {

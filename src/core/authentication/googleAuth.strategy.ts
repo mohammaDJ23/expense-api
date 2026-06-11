@@ -9,7 +9,7 @@ import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailed
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
-import { GetUserByEmailQuery } from '@/modules/user/applications/queries/getUserByEmail/getUserByEmail.query';
+import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
@@ -39,9 +39,9 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
 
         let user: TSelectUser | null;
         try {
-            const getUserByEmailQuery = new GetUserByEmailQuery(email.value);
-            user = await this.queryBus.execute<GetUserByEmailQuery, TSelectUser | null>(
-                getUserByEmailQuery,
+            const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(email.value);
+            user = await this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
+                getUserByEmailOrNullQuery,
             );
 
             if (!user) {
