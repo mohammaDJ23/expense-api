@@ -1,9 +1,9 @@
 import { UserReceiverAbstract } from '@/modules/receiver/domain/abstracts/userReceiver.abstract';
 
 export class CreateUserReceiverCommand extends UserReceiverAbstract {
-    public readonly userId: string;
-    public readonly receiverId: string;
-    public readonly createdAt: Date;
+    public override readonly userId: string;
+    public override readonly receiverId: string;
+    public override readonly createdAt: Date;
 
     constructor(data: Required<Pick<UserReceiverAbstract, 'userId' | 'receiverId' | 'createdAt'>>) {
         super(data);
