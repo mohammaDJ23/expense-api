@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { GoogleLoginService } from './googleLogin.service';
 
-import type { ICurrentUser } from '@/core/interfaces/currentUser.interface';
+import type { ICurrentUser } from '@/core/currentUser/currentUser.interface';
 import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 
 @Injectable()
