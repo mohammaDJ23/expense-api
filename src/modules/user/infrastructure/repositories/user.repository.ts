@@ -18,7 +18,7 @@ import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepos
 
 @Injectable()
 export class UserRepository extends DrizzleRepository implements IUserRepository {
-    create(data: TInsertUser): Promise<Required<TSelectUser>> {
+    create(data: TInsertUser): Promise<TSelectUser> {
         return toEntityOrThrow(this.db.insert(users).values(data).returning(), 'Unable to create');
     }
 
