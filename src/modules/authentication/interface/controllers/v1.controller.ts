@@ -1,8 +1,8 @@
 import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 
+import { GoogleAuthGuard } from '@/core/authentication/googleAuth.guard';
 import { CurrentUser } from '@/core/currentUser/currentUser.decorator';
-import { GoogleAuthGuard } from '@/core/google/googleAuth.guard';
 import { HttpResponse } from '@/core/httpResponse/httpResponse.decorator';
 import { ObjectSerializerInterceptor } from '@/core/serializers/objectSerializerInterceptor.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';

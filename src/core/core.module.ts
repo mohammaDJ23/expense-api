@@ -1,21 +1,17 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
+import { AuthenticationModule } from '@/core/authentication/authentication.module';
 import { ExceptionNormalizerModule } from '@/core/exceptions/normalizer/exceptionNormalizer.module';
 import { FilterModule } from '@/core/filters/filter.module';
-import { GoogleModule } from '@/core/google/google.module';
-import { JwtAuthGuard } from '@/core/guards/jwtAuth.guard';
 import { TransformResponseInterceptor } from '@/core/interceptors/transformResponse.interceptor';
 import { ApiVersioningService } from '@/core/services/apiVersioning.service';
 import { AppInstanceService } from '@/core/services/appInstance.service';
 import { VersionService } from '@/core/services/version.service';
-import { JwtAuthStrategy } from '@/core/strategies/jwtAuth.strategy';
 
 @Module({
-    imports: [ExceptionNormalizerModule, FilterModule, GoogleModule],
+    imports: [ExceptionNormalizerModule, FilterModule, AuthenticationModule],
     providers: [
-        JwtAuthGuard,
-        JwtAuthStrategy,
         ApiVersioningService,
         AppInstanceService,
         VersionService,
