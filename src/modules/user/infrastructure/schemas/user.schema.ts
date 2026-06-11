@@ -2,9 +2,9 @@ import { relations } from 'drizzle-orm';
 import { pgTable, timestamp, uuid, pgEnum, varchar } from 'drizzle-orm/pg-core';
 
 import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
-import { usersConsumers } from '@/modules/consumers/infrastructure/schemas/usersConsumers.schema';
-import { usersLocations } from '@/modules/location/infrastructure/schemas/usersLocations.schema';
-import { usersReceivers } from '@/modules/receiver/infrastructure/schemas/usersReceivers.schema';
+import { usersConsumers } from '@/modules/consumer/infrastructure/schemas/userConsumer.schema';
+import { usersLocations } from '@/modules/location/infrastructure/schemas/userLocation.schema';
+import { usersReceivers } from '@/modules/receiver/infrastructure/schemas/userReceiver.schema';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
