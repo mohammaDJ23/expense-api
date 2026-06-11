@@ -3,8 +3,6 @@ import { join } from 'path';
 
 import { Injectable } from '@nestjs/common';
 
-import { AppException } from '@/core/exceptions/app/exception';
-
 @Injectable()
 export class VersionService {
     private readonly version: string;
@@ -33,11 +31,10 @@ export class VersionService {
                     continue;
                 }
             }
-        } catch (error) {
-            throw new AppException(error);
-        }
+            // eslint-disable-next-line no-empty
+        } catch {}
 
-        throw new AppException('Unable to find the app version.');
+        throw new Error('Unable to find the app version.');
     }
 
     getVersion(): string {
