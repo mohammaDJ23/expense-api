@@ -1,17 +1,17 @@
 import { HttpStatus } from '@nestjs/common';
 
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from './response.constant';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from './httpResponse.constant';
 
-import type { IResponse } from './response.interface';
+import type { IHttpResponse } from './httpResponse.interface';
 
-export class ResponseEntity<T> implements IResponse<T> {
+export class HttpResponseEntity<T> implements IHttpResponse<T> {
     public message: string;
     public data: T;
     public statusCode: number;
     public success: boolean;
     public error: boolean;
 
-    private constructor(data: ResponseEntity<T>) {
+    private constructor(data: HttpResponseEntity<T>) {
         this.message = data.message;
         this.data = data.data;
         this.statusCode = data.statusCode;
@@ -19,8 +19,8 @@ export class ResponseEntity<T> implements IResponse<T> {
         this.error = data.error;
     }
 
-    static create<K>(data: Partial<ResponseEntity<K>>): ResponseEntity<K> {
-        return new ResponseEntity<K>({
+    static create<K>(data: Partial<HttpResponseEntity<K>>): HttpResponseEntity<K> {
+        return new HttpResponseEntity<K>({
             message: data.message || '',
             data: (data.data || null) as K,
             statusCode: data.statusCode || 0,
@@ -29,8 +29,8 @@ export class ResponseEntity<T> implements IResponse<T> {
         });
     }
 
-    static success<K>(data: Partial<ResponseEntity<K>>): ResponseEntity<K> {
-        return ResponseEntity.create<K>({
+    static success<K>(data: Partial<HttpResponseEntity<K>>): HttpResponseEntity<K> {
+        return HttpResponseEntity.create<K>({
             message: data.message || SUCCESS_MESSAGE,
             data: data.data,
             statusCode: data.statusCode || HttpStatus.OK,
@@ -39,8 +39,8 @@ export class ResponseEntity<T> implements IResponse<T> {
         });
     }
 
-    static error<K>(data: Partial<ResponseEntity<K>>): ResponseEntity<K> {
-        return ResponseEntity.create<K>({
+    static error<K>(data: Partial<HttpResponseEntity<K>>): HttpResponseEntity<K> {
+        return HttpResponseEntity.create<K>({
             message: data.message || ERROR_MESSAGE,
             data: data.data,
             statusCode: data.statusCode || HttpStatus.INTERNAL_SERVER_ERROR,

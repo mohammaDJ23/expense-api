@@ -5,8 +5,8 @@ import {
     InternalServerErrorException,
 } from '@nestjs/common';
 
-import { ResponseEntity } from '@/common/application/response/response.entity';
 import { ExceptionNormalizerService } from '@/core/exceptions/normalizer/exceptionNormalizer.service';
+import { HttpResponseEntity } from '@/core/httpResponse/httpResponse.entity';
 
 import { FallbackHostHandler } from './fallbackHost.handler';
 import { HttpHostHandler } from './httpHost.handler';
@@ -34,7 +34,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             }
 
             const exceptionData = this.exceptionNormalizerService.normalize(exception);
-            const response = ResponseEntity.error({
+            const response = HttpResponseEntity.error({
                 data: exceptionData,
                 statusCode: exceptionData.statusCode,
             });

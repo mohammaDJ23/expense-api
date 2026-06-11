@@ -2,9 +2,9 @@ import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/comm
 import { Throttle } from '@nestjs/throttler';
 
 import { CurrentUser } from '@/core/decorators/currentUser.decorator';
-import { Response } from '@/core/decorators/response.decorator';
 import { SerializeObjectInterceptor } from '@/core/decorators/serializeObjectInterceptor.decorator';
 import { GoogleAuthGuard } from '@/core/guards/googleAuth.guard';
+import { HttpResponse } from '@/core/httpResponse/httpResponse.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import {
     SUCCESS_SIGNUP_MESSAGE,
@@ -31,14 +31,14 @@ export class AuthenticationController {
 
     @Post('local/signup')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
-    @Response(SUCCESS_SIGNUP_MESSAGE, HttpStatus.CREATED)
+    @HttpResponse(SUCCESS_SIGNUP_MESSAGE, HttpStatus.CREATED)
     localSignup(@Body() body: LocalSignupRequestDto): Promise<boolean> {
         return this.authenticationService.localSignup(body);
     }
 
     @Post('local/login')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
-    @Response(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializeObjectInterceptor(LoginResponseDto)
     localLogin(@Body() body: LocalLoginRequestDto): Promise<AccessTokenEntity> {
         return this.authenticationService.localLogin(body);
@@ -46,28 +46,28 @@ export class AuthenticationController {
 
     @Post('local/verification/send')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
-    @Response(SUCCESS_SEND_VERIFICATION_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_SEND_VERIFICATION_MESSAGE, HttpStatus.OK)
     localSendVerification(@Body() body: LocalSendVerificationRequestDto): Promise<boolean> {
         return this.authenticationService.localSendVerification(body);
     }
 
     @Post('local/verification/verify')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
-    @Response(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
     localVerifyVerification(@Body() body: LocalVerifyVerificationRequestDto): Promise<boolean> {
         return this.authenticationService.localVerifyVerification(body);
     }
 
     @Post('local/forgot-password')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
-    @Response(SUCCESS_FORGOT_PASSWORD_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_FORGOT_PASSWORD_MESSAGE, HttpStatus.OK)
     localForgotPassword(@Body() body: LocalForgotPasswordRequestDto): Promise<boolean> {
         return this.authenticationService.localForgotPassword(body);
     }
 
     @Post('local/reset-password')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
-    @Response(SUCCESS_RESET_PASSWORD_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_RESET_PASSWORD_MESSAGE, HttpStatus.OK)
     localResetPassword(@Body() body: LocalResetPasswordRequestDto): Promise<boolean> {
         return this.authenticationService.localResetPassword(body);
     }
@@ -81,7 +81,7 @@ export class AuthenticationController {
     @Get('google/callback')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
-    @Response(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializeObjectInterceptor(LoginResponseDto)
     googleLogin(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
         return this.authenticationService.googleLogin(user);

@@ -10,24 +10,24 @@ import { Reflector } from '@nestjs/core';
 // eslint-disable-next-line import-x/no-deprecated
 import { map } from 'rxjs/operators';
 
-import { ResponseEntity } from '@/common/application/response/response.entity';
 import {
-    RESPONSE_MESSAGE_METADATA_KEY,
-    RESPONSE_STATUS_METADATA_KEY,
-} from '@/core/constants/responseMetadata.constant';
+    HTTP_RESPONSE_MESSAGE_METADATA_KEY,
+    HTTP_RESPONSE_STATUS_METADATA_KEY,
+} from '@/core/httpResponse/httpResponse.constant';
+import { HttpResponseEntity } from '@/core/httpResponse/httpResponse.entity';
 
 import type { Observable } from 'rxjs';
 
 @Injectable()
-export class TransformResponseInterceptor<T> implements NestInterceptor<T, ResponseEntity<T>> {
+export class TransformResponseInterceptor<T> implements NestInterceptor<T, HttpResponseEntity<T>> {
     constructor(private readonly reflector: Reflector) {}
 
-    intercept(context: ExecutionContext, next: CallHandler): Observable<ResponseEntity<T>> {
+    intercept(context: ExecutionContext, next: CallHandler): Observable<HttpResponseEntity<T>> {
         const handler = context.getHandler();
         const controller = context.getClass();
 
         const message = this.reflector.get<string | undefined, string>(
-            RESPONSE_MESSAGE_METADATA_KEY,
+            HTTP_RESPONSE_MESSAGE_METADATA_KEY,
             handler,
         );
         if (!message) {
@@ -37,7 +37,7 @@ export class TransformResponseInterceptor<T> implements NestInterceptor<T, Respo
         }
 
         const statusCode = this.reflector.get<HttpStatus | undefined, string>(
-            RESPONSE_STATUS_METADATA_KEY,
+            HTTP_RESPONSE_STATUS_METADATA_KEY,
             handler,
         );
         if (!statusCode) {
@@ -48,8 +48,8 @@ export class TransformResponseInterceptor<T> implements NestInterceptor<T, Respo
 
         return next.handle().pipe(
             // eslint-disable-next-line import-x/no-deprecated
-            map((data): ResponseEntity<T> => {
-                return ResponseEntity.success<T>({
+            map((data): HttpResponseEntity<T> => {
+                return HttpResponseEntity.success<T>({
                     message,
                     statusCode,
                     data,
