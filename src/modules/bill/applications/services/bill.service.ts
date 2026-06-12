@@ -6,6 +6,7 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
+import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
 import { UserReceiverService } from '@/modules/receiver/applications/services/userReceiver.service';
 
@@ -20,6 +21,7 @@ export class BillService {
         private readonly commandBus: CommandBus,
         private readonly consumerService: ConsumerService,
         private readonly locationService: LocationService,
+        private readonly userLocationService: UserLocationService,
         private readonly receiverService: ReceiverService,
         private readonly userReceiverService: UserReceiverService,
     ) {}
@@ -30,6 +32,7 @@ export class BillService {
             const consumers = await this.consumerService.getOrCreateMany(data.consumers);
 
             const location = await this.locationService.getOrCreate(data.location);
+            const userLocation = await this.userLocationService.getOrCreate(user.id, location.id);
 
             const receiver = await this.receiverService.getOrCreate(data.receiver);
             const userReceiver = await this.userReceiverService.getOrCreate(user.id, receiver.id);
