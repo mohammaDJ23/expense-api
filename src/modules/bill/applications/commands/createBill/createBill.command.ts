@@ -7,7 +7,6 @@ export class CreateBillCommand extends BillAbstract {
     public override readonly createdAt: Date;
     public override readonly updatedAt: Date;
     public override readonly userId: string;
-    public override readonly consumerId: string;
     public override readonly receiverId: string;
     public override readonly locationId: string;
 
@@ -20,7 +19,6 @@ export class CreateBillCommand extends BillAbstract {
         this.createdAt = data.createdAt;
         this.updatedAt = data.updatedAt;
         this.userId = data.userId;
-        this.consumerId = data.consumerId;
         this.receiverId = data.receiverId;
         this.locationId = data.locationId;
     }

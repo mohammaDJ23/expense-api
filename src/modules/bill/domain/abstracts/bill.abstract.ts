@@ -8,7 +8,6 @@ export abstract class BillAbstract implements Partial<IBillAbstract> {
     public readonly createdAt?: Date;
     public readonly updatedAt?: Date;
     public readonly userId?: string;
-    public readonly consumerId?: string;
     public readonly receiverId?: string;
     public readonly locationId?: string;
 
@@ -20,7 +19,6 @@ export abstract class BillAbstract implements Partial<IBillAbstract> {
         this.createdAt = data.createdAt;
         this.updatedAt = data.updatedAt;
         this.userId = data.userId;
-        this.consumerId = data.consumerId;
         this.receiverId = data.receiverId;
         this.locationId = data.locationId;
     }
