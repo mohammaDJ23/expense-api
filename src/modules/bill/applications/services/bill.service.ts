@@ -24,7 +24,7 @@ export class BillService {
         private readonly receiverService: ReceiverService,
     ) {}
 
-    private async getConsumers(names: string[]): Promise<TSelectConsumer[]> {
+    private async getOrCreateConsumers(names: string[]): Promise<TSelectConsumer[]> {
         const existencesConsumers = await this.consumerService.getManyByName(names);
         const consumersToCreate = this.consumerService.getNamesForCreation(
             existencesConsumers,
@@ -40,7 +40,7 @@ export class BillService {
         return existencesConsumers;
     }
 
-    private async getLocation(name: string): Promise<TSelectLocation> {
+    private async getOrCreateLocation(name: string): Promise<TSelectLocation> {
         const location = await this.locationService.getByNameOrNull(name);
         if (location) {
             return location;
@@ -48,7 +48,7 @@ export class BillService {
         return this.locationService.create(name);
     }
 
-    private async getReceiver(name: string): Promise<TSelectReceiver> {
+    private async getOrCreateReceiver(name: string): Promise<TSelectReceiver> {
         const receiver = await this.receiverService.getByNameOrNull(name);
         if (receiver) {
             return receiver;
@@ -59,9 +59,9 @@ export class BillService {
     @Transactional()
     async create(data: CreateBillRequestDto, user: ICurrentUser): Promise<TSelectBill> {
         try {
-            const consumers = await this.getConsumers(data.consumers);
-            const location = await this.getLocation(data.location);
-            const receiver = await this.getReceiver(data.receiver);
+            const consumers = await this.getOrCreateConsumers(data.consumers);
+            const location = await this.getOrCreateLocation(data.location);
+            const receiver = await this.getOrCreateReceiver(data.receiver);
 
             const createBillCommand = new CreateBillCommand({
                 amount: data.amount,
