@@ -4,6 +4,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
+import { BillConsumerService } from '@/modules/consumer/applications/services/billConsumer.service';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
@@ -22,6 +23,7 @@ export class BillService {
         private readonly commandBus: CommandBus,
         private readonly consumerService: ConsumerService,
         private readonly userConsumerService: UserConsumerService,
+        private readonly billConsumerService: BillConsumerService,
         private readonly locationService: LocationService,
         private readonly userLocationService: UserLocationService,
         private readonly receiverService: ReceiverService,
@@ -29,19 +31,16 @@ export class BillService {
     ) {}
 
     @Transactional()
-    async create(data: CreateBillRequestDto, user: ICurrentUser): Promise<TSelectBill> {
+    async create(data: CreateBillRequestDto, user: ICurrentUser): Promise<boolean> {
         try {
             const consumers = await this.consumerService.getOrCreateMany(data.consumers);
-            const userConsumers = await this.userConsumerService.getOrCreateMany(
-                user.id,
-                consumers,
-            );
+            await this.userConsumerService.getOrCreateMany(user.id, consumers);
 
             const location = await this.locationService.getOrCreate(data.location);
-            const userLocation = await this.userLocationService.getOrCreate(user.id, location.id);
+            await this.userLocationService.getOrCreate(user.id, location.id);
 
             const receiver = await this.receiverService.getOrCreate(data.receiver);
-            const userReceiver = await this.userReceiverService.getOrCreate(user.id, receiver.id);
+            await this.userReceiverService.getOrCreate(user.id, receiver.id);
 
             const createBillCommand = new CreateBillCommand({
                 amount: data.amount,
@@ -56,6 +55,9 @@ export class BillService {
             const bill = await this.commandBus.execute<CreateBillCommand, TSelectBill>(
                 createBillCommand,
             );
+            await this.billConsumerService.createMany(bill.id, consumers);
+
+            return true;
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

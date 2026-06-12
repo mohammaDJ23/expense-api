@@ -6,6 +6,7 @@ import { CreateManyConsumersHandler } from '@/modules/consumer/applications/comm
 import { CreateManyUserConsumerHandler } from '@/modules/consumer/applications/commands/createManyUserConsumer/createManyUserConsumer.handler';
 import { GetManyConsumersByNameHandler } from '@/modules/consumer/applications/queries/getManyConsumersByName/getManyConsumersByName.handler';
 import { GetManyUserConsumerByIdHandler } from '@/modules/consumer/applications/queries/getManyUserConsumerById/getManyUserConsumerById.handler';
+import { BillConsumerService } from '@/modules/consumer/applications/services/billConsumer.service';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
@@ -17,6 +18,7 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
     providers: [
         ConsumerService,
         UserConsumerService,
+        BillConsumerService,
         CreateManyUserConsumerHandler,
         CreateManyConsumersHandler,
         CreateManyBillConsumerHandler,
@@ -26,6 +28,6 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
         UserConsumerRepository,
         BillConsumerRepository,
     ],
-    exports: [ConsumerService, UserConsumerService],
+    exports: [ConsumerService, UserConsumerService, BillConsumerService],
 })
 export class ConsumerModule {}
