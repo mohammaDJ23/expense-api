@@ -1,8 +1,9 @@
 import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 
+import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
+
 import { GetReceiverByNameOrNullQuery } from './getReceiverByNameOrNull.query';
 
-import type { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
 import type { TSelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @QueryHandler(GetReceiverByNameOrNullQuery)

@@ -6,7 +6,7 @@ import { AuthenticationModule } from '@/modules/authentication/authentication.mo
 import { ConsumerModule } from '@/modules/consumer/consumer.module';
 import { HealthModule } from '@/modules/health/health.module';
 import { LocationModule } from '@/modules/location/location.module';
-import { ReceiverModule } from '@/modules/receiver/location.module';
+import { ReceiverModule } from '@/modules/receiver/receiver.module';
 import { UserModule } from '@/modules/user/user.module';
 
 @Module({

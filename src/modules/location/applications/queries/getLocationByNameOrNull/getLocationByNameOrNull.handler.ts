@@ -1,8 +1,9 @@
 import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 
+import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
+
 import { GetLocationByNameOrNullQuery } from './getLocationByNameOrNull.query';
 
-import type { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import type { TSelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 @QueryHandler(GetLocationByNameOrNullQuery)
