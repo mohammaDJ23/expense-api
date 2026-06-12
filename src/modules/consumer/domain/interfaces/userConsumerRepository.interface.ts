@@ -4,6 +4,8 @@ import type {
 } from '@/modules/consumer/infrastructure/schemas/userConsumer.schema';
 
 export interface IUserConsumerRepository {
-    create(data: TInsertUserConsumer): Promise<TSelectUserConsumer>;
-    getByIdOrNull(userId: string, consumerId: string): Promise<TSelectUserConsumer | null>;
+    createMany(data: TInsertUserConsumer[]): Promise<TSelectUserConsumer[]>;
+    getManyById(
+        data: Pick<TSelectUserConsumer, 'userId' | 'consumerId'>[],
+    ): Promise<TSelectUserConsumer[]>;
 }

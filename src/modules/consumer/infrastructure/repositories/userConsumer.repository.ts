@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, or } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
-import {
-    toEntityOrNull,
-    toEntityOrThrow,
-} from '@/infrastructure/database/drizzle/drizzle.transformer';
+import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     usersConsumers,
     type TInsertUserConsumer,
@@ -16,22 +13,25 @@ import type { IUserConsumerRepository } from '@/modules/consumer/domain/interfac
 
 @Injectable()
 export class UserConsumerRepository extends DrizzleRepository implements IUserConsumerRepository {
-    create(data: TInsertUserConsumer): Promise<TSelectUserConsumer> {
-        return toEntityOrThrow(
-            this.db.insert(usersConsumers).values(data).returning(),
-            'Unable to create',
-        );
+    createMany(data: TInsertUserConsumer[]): Promise<TSelectUserConsumer[]> {
+        return toEntities(this.db.insert(usersConsumers).values(data).returning());
     }
 
-    getByIdOrNull(userId: string, consumerId: string): Promise<TSelectUserConsumer | null> {
-        return toEntityOrNull(
+    getManyById(
+        data: Pick<TSelectUserConsumer, 'userId' | 'consumerId'>[],
+    ): Promise<TSelectUserConsumer[]> {
+        return toEntities(
             this.db
                 .select()
                 .from(usersConsumers)
                 .where(
-                    and(
-                        eq(usersConsumers.userId, userId),
-                        eq(usersConsumers.consumerId, consumerId),
+                    or(
+                        ...data.map((pair) =>
+                            and(
+                                eq(usersConsumers.userId, pair.userId),
+                                eq(usersConsumers.consumerId, pair.consumerId),
+                            ),
+                        ),
                     ),
                 ),
         );
