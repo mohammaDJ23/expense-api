@@ -14,7 +14,7 @@ export class CreateManyConsumersService {
         private readonly commandBus: CommandBus,
     ) {}
 
-    async create(names: string[]): Promise<TSelectConsumer[]> {
+    async createMany(names: string[]): Promise<TSelectConsumer[]> {
         try {
             const getManyConsumersByNameQuery = new GetManyConsumersByNameQuery(names);
             const existences = await this.queryBus.execute<
