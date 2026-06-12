@@ -44,11 +44,10 @@ export class UserLocationService {
         }
     }
 
-    async getOrCreate(userId: string, locationId: string): Promise<TSelectUserLocation> {
+    async createIfNotExists(userId: string, locationId: string): Promise<void> {
         const userLocation = await this.getByIdOrNull(userId, locationId);
-        if (userLocation) {
-            return userLocation;
+        if (!userLocation) {
+            await this.create(userId, locationId);
         }
-        return this.create(userId, locationId);
     }
 }

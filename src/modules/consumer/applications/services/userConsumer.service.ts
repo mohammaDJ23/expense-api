@@ -46,18 +46,13 @@ export class UserConsumerService {
         }
     }
 
-    async getOrCreateMany(
-        userId: string,
-        consumers: TSelectConsumer[],
-    ): Promise<TSelectUserConsumer[]> {
+    async createManyIfNotExists(userId: string, consumers: TSelectConsumer[]): Promise<void> {
         const ids = consumers.map((consumer) => consumer.id);
         const existences = await this.getManyById(userId, ids);
         const existencesIds = new Set(existences.map((existence) => existence.consumerId));
         const idsToCreate = ids.filter((id) => !existencesIds.has(id));
         if (idsToCreate.length > 0) {
-            const created = await this.createMany(userId, idsToCreate);
-            return existences.concat(created);
+            await this.createMany(userId, idsToCreate);
         }
-        return existences;
     }
 }

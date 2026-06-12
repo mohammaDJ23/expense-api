@@ -34,13 +34,13 @@ export class BillService {
     async create(data: CreateBillRequestDto, user: ICurrentUser): Promise<boolean> {
         try {
             const consumers = await this.consumerService.getOrCreateMany(data.consumers);
-            await this.userConsumerService.getOrCreateMany(user.id, consumers);
+            await this.userConsumerService.createManyIfNotExists(user.id, consumers);
 
             const location = await this.locationService.getOrCreate(data.location);
-            await this.userLocationService.getOrCreate(user.id, location.id);
+            await this.userLocationService.createIfNotExists(user.id, location.id);
 
             const receiver = await this.receiverService.getOrCreate(data.receiver);
-            await this.userReceiverService.getOrCreate(user.id, receiver.id);
+            await this.userReceiverService.createIfNotExists(user.id, receiver.id);
 
             const createBillCommand = new CreateBillCommand({
                 amount: data.amount,

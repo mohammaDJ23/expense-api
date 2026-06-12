@@ -44,11 +44,10 @@ export class UserReceiverService {
         }
     }
 
-    async getOrCreate(userId: string, receiverId: string): Promise<TSelectUserReceiver> {
+    async createIfNotExists(userId: string, receiverId: string): Promise<void> {
         const userReceiver = await this.getByIdOrNull(userId, receiverId);
-        if (userReceiver) {
-            return userReceiver;
+        if (!userReceiver) {
+            await this.create(userId, receiverId);
         }
-        return this.create(userId, receiverId);
     }
 }
