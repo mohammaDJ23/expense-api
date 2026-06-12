@@ -15,7 +15,7 @@ export const usersLocations = pgTable(
             .references(() => users.id, { onDelete: 'cascade' }),
         locationId: uuid('location_id')
             .notNull()
-            .references(() => locations.id, { onDelete: 'cascade' }),
+            .references(() => locations.id, { onDelete: 'restrict' }),
     },
     (table) => [uniqueIndex('unique_users_locations').on(table.userId, table.locationId)],
 );

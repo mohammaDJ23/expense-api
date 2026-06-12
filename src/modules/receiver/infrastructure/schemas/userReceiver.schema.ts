@@ -15,7 +15,7 @@ export const usersReceivers = pgTable(
             .references(() => users.id, { onDelete: 'cascade' }),
         receiverId: uuid('receiver_id')
             .notNull()
-            .references(() => receivers.id, { onDelete: 'cascade' }),
+            .references(() => receivers.id, { onDelete: 'restrict' }),
     },
     (table) => [uniqueIndex('unique_users_receivers').on(table.userId, table.receiverId)],
 );
