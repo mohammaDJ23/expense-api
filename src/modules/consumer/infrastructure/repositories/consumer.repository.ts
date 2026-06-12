@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
+    toEntities,
     toEntityOrNull,
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -23,7 +24,15 @@ export class ConsumerRepository extends DrizzleRepository implements IConsumerRe
         );
     }
 
+    createMany(data: TInsertConsumer[]): Promise<TSelectConsumer[]> {
+        return toEntities(this.db.insert(consumers).values(data).returning());
+    }
+
     getByNameOrNull(name: string): Promise<TSelectConsumer | null> {
         return toEntityOrNull(this.db.select().from(consumers).where(eq(consumers.name, name)));
+    }
+
+    getManyByName(names: string[]): Promise<TSelectConsumer[]> {
+        return toEntities(this.db.select().from(consumers).where(inArray(consumers.name, names)));
     }
 }
