@@ -45,15 +45,7 @@ export class UserRepository extends DrizzleRepository implements IUserRepository
         return toEntityOrNull(this.selectByEmail(email));
     }
 
-    private selectById(id: string) {
-        return this.db.select().from(users).where(eq(users.id, id));
-    }
-
-    isExistsById(id: string): Promise<boolean> {
-        return isExists(this.selectById(id));
-    }
-
     getByIdOrNull(id: string): Promise<TSelectUser | null> {
-        return toEntityOrNull(this.selectById(id));
+        return toEntityOrNull(this.db.select().from(users).where(eq(users.id, id)));
     }
 }
