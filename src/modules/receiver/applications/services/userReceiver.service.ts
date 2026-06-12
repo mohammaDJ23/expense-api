@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateUserReceiverCommand } from '@/modules/receiver/applications/commands/createUserReceiver/createUserReceiver.command';
 import { GetUserReceiverByIdOrNullQuery } from '@/modules/receiver/applications/queries/getUserReceiverByIdOrNull/getUserReceiverByIdOrNull.query';
 
 import type { TSelectUserReceiver } from '@/modules/receiver/infrastructure/schemas/userReceiver.schema';
-import type { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 @Injectable()
 export class UserReceiverService {
