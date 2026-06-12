@@ -11,6 +11,6 @@ export class GetManyUserConsumerByIdHandler implements IQueryHandler<GetManyUser
     constructor(private readonly userConsumerRepository: UserConsumerRepository) {}
 
     execute(query: GetManyUserConsumerByIdQuery): Promise<TSelectUserConsumer[]> {
-        return this.userConsumerRepository.getManyById(query.data);
+        return this.userConsumerRepository.getManyById(query.userId, query.consumerIds);
     }
 }

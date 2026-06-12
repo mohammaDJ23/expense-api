@@ -6,6 +6,7 @@ import { CreateManyUserConsumerHandler } from '@/modules/consumer/applications/c
 import { GetManyConsumersByNameHandler } from '@/modules/consumer/applications/queries/getManyConsumersByName/getManyConsumersByName.handler';
 import { GetManyUserConsumerByIdHandler } from '@/modules/consumer/applications/queries/getManyUserConsumerById/getManyUserConsumerById.handler';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
+import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
 import { UserConsumerRepository } from '@/modules/consumer/infrastructure/repositories/userConsumer.repository';
 
@@ -13,6 +14,7 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
     imports: [CqrsModule],
     providers: [
         ConsumerService,
+        UserConsumerService,
         CreateManyUserConsumerHandler,
         CreateManyConsumersHandler,
         GetManyUserConsumerByIdHandler,
@@ -20,6 +22,6 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
         ConsumerRepository,
         UserConsumerRepository,
     ],
-    exports: [ConsumerService],
+    exports: [ConsumerService, UserConsumerService],
 })
 export class ConsumerModule {}
