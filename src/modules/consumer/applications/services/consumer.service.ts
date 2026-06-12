@@ -40,8 +40,15 @@ export class ConsumerService {
         }
     }
 
-    getNamesToCreate(names: string[], existences: TSelectConsumer[]): string[] {
+    getNamesForCreation(existences: TSelectConsumer[], names: string[]): string[] {
         const existencesNames = new Set(existences.map((existence) => existence.name));
         return names.filter((name) => !existencesNames.has(name));
+    }
+
+    concatExistencesWithCreated(
+        existences: TSelectConsumer[],
+        created: TSelectConsumer[],
+    ): TSelectConsumer[] {
+        return existences.concat(created);
     }
 }
