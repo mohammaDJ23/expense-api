@@ -8,7 +8,7 @@ import { GetManyConsumersByNameQuery } from '@/modules/consumer/applications/que
 import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 @Injectable()
-export class CreateConsumerService {
+export class CreateManyConsumersService {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
