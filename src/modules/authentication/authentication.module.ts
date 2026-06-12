@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { AuthenticationModule as CoreAuthenticationModule } from '@/core/authentication/authentication.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { AccessTokenService } from '@/modules/authentication/applications/services/accessToken.service';
@@ -21,7 +22,7 @@ import { VerificationTokenService } from '@/modules/authentication/applications/
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
 
 @Module({
-    imports: [CqrsModule, JwtModule],
+    imports: [CqrsModule, JwtModule, CoreAuthenticationModule],
     controllers: [AuthenticationController],
     providers: [
         AuthenticationService,

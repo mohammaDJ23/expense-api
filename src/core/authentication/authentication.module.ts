@@ -11,5 +11,6 @@ import { JwtAuthStrategy } from './jwtAuth.strategy';
 @Module({
     imports: [UserModule, CqrsModule],
     providers: [GoogleAuthGuard, GoogleAuthStrategy, JwtAuthGuard, JwtAuthStrategy],
+    exports: [JwtAuthGuard, GoogleAuthGuard],
 })
 export class AuthenticationModule {}
