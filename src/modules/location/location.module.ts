@@ -20,5 +20,6 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
         LocationRepository,
         UserLocationRepository,
     ],
+    exports: [LocationService],
 })
 export class LocationModule {}

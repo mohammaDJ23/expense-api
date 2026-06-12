@@ -20,5 +20,6 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
         ConsumerRepository,
         UserConsumerRepository,
     ],
+    exports: [ConsumerService],
 })
 export class ConsumerModule {}

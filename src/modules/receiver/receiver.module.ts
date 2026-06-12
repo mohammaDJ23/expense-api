@@ -20,5 +20,6 @@ import { UserReceiverRepository } from '@/modules/receiver/infrastructure/reposi
         ReceiverRepository,
         UserReceiverRepository,
     ],
+    exports: [ReceiverService],
 })
 export class ReceiverModule {}
