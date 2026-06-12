@@ -5,7 +5,5 @@ import type {
 
 export interface IUserConsumerRepository {
     createMany(data: TInsertUserConsumer[]): Promise<TSelectUserConsumer[]>;
-    getManyById(
-        data: Pick<TSelectUserConsumer, 'userId' | 'consumerId'>[],
-    ): Promise<TSelectUserConsumer[]>;
+    getManyById(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]>;
 }

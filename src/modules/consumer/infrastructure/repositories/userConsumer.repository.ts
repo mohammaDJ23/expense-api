@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, or } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -17,21 +17,15 @@ export class UserConsumerRepository extends DrizzleRepository implements IUserCo
         return toEntities(this.db.insert(usersConsumers).values(data).returning());
     }
 
-    getManyById(
-        data: Pick<TSelectUserConsumer, 'userId' | 'consumerId'>[],
-    ): Promise<TSelectUserConsumer[]> {
+    getManyById(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]> {
         return toEntities(
             this.db
                 .select()
                 .from(usersConsumers)
                 .where(
-                    or(
-                        ...data.map((pair) =>
-                            and(
-                                eq(usersConsumers.userId, pair.userId),
-                                eq(usersConsumers.consumerId, pair.consumerId),
-                            ),
-                        ),
+                    and(
+                        eq(usersConsumers.userId, userId),
+                        inArray(usersConsumers.consumerId, consumerIds),
                     ),
                 ),
         );
