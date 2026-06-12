@@ -6,6 +6,7 @@ import { CreateUserLocationHandler } from '@/modules/location/applications/comma
 import { GetLocationByNameOrNullHandler } from '@/modules/location/applications/queries/getLocationByNameOrNull/getLocationByNameOrNull.handler';
 import { GetUserLocationByIdOrNullHandler } from '@/modules/location/applications/queries/getUserLocationByIdOrNull/getUserLocationByIdOrNull.handler';
 import { LocationService } from '@/modules/location/applications/services/location.service';
+import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import { UserLocationRepository } from '@/modules/location/infrastructure/repositories/userLocation.repository';
 
@@ -13,6 +14,7 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
     imports: [CqrsModule],
     providers: [
         LocationService,
+        UserLocationService,
         CreateLocationHandler,
         CreateUserLocationHandler,
         GetLocationByNameOrNullHandler,
@@ -20,6 +22,6 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
         LocationRepository,
         UserLocationRepository,
     ],
-    exports: [LocationService],
+    exports: [LocationService, UserLocationService],
 })
 export class LocationModule {}
