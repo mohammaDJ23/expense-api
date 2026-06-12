@@ -8,6 +8,7 @@ import {
     Matches,
     ValidateIf,
     IsDateString,
+    ArrayUnique,
 } from 'class-validator';
 
 export class CreateBillRequestDto {
@@ -19,14 +20,15 @@ export class CreateBillRequestDto {
     @IsString()
     @Length(3, 50)
     // eslint-disable-next-line security/detect-unsafe-regex
-    @Matches(/^[a-zA-Z_]+( [a-zA-Z_]+)*$/, { message: 'Invalid receiver.' })
+    @Matches(/^[a-zA-Z_]+( [a-zA-Z_]+)*$/, { message: 'Invalid receiver' })
     receiver: string;
 
     @IsArray()
     @IsString({ each: true })
-    @Length(3, 50, { each: true, message: 'Invalid consumer' })
+    @Length(3, 50)
     @ArrayMinSize(1)
     @ArrayMaxSize(20)
+    @ArrayUnique()
     // eslint-disable-next-line security/detect-unsafe-regex
     @Matches(/^[a-zA-Z_]+( [a-zA-Z_]+)*$/, { each: true, message: 'Invalid consumers' })
     consumers: string[];
@@ -47,6 +49,6 @@ export class CreateBillRequestDto {
     @IsString()
     @Length(3, 50)
     // eslint-disable-next-line security/detect-unsafe-regex
-    @Matches(/^[a-zA-Z_]+( [a-zA-Z_]+)*$/, { message: 'Invalid location.' })
+    @Matches(/^[a-zA-Z_]+( [a-zA-Z_]+)*$/, { message: 'Invalid location' })
     location: string;
 }
