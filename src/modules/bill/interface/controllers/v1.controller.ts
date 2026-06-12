@@ -17,7 +17,7 @@ export class BillController {
     @Post('create')
     @UseGuards(JwtAuthGuard)
     @HttpResponse(SUCCESS_CREATE_BILL_MESSAGE, HttpStatus.CREATED)
-    localSignup(
+    create(
         @Body() body: CreateBillRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<boolean> {
