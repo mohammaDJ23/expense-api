@@ -39,4 +39,12 @@ export class ReceiverService {
             throw new ProcessFailedInternalServerErrorException();
         }
     }
+
+    async getOrCreate(name: string): Promise<TSelectReceiver> {
+        const receiver = await this.getByNameOrNull(name);
+        if (receiver) {
+            return receiver;
+        }
+        return this.create(name);
+    }
 }

@@ -39,4 +39,12 @@ export class LocationService {
             throw new ProcessFailedInternalServerErrorException();
         }
     }
+
+    async getOrCreate(name: string): Promise<TSelectLocation> {
+        const location = await this.getByNameOrNull(name);
+        if (location) {
+            return location;
+        }
+        return this.create(name);
+    }
 }

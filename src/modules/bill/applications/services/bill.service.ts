@@ -11,9 +11,6 @@ import { ReceiverService } from '@/modules/receiver/applications/services/receiv
 import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
-import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
-import type { TSelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
-import type { TSelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @Injectable()
 export class BillService {
@@ -24,44 +21,12 @@ export class BillService {
         private readonly receiverService: ReceiverService,
     ) {}
 
-    private async getOrCreateConsumers(names: string[]): Promise<TSelectConsumer[]> {
-        const existencesConsumers = await this.consumerService.getManyByName(names);
-        const consumersToCreate = this.consumerService.getNamesForCreation(
-            existencesConsumers,
-            names,
-        );
-        if (consumersToCreate.length > 0) {
-            const createdConsumers = await this.consumerService.createMany(consumersToCreate);
-            return this.consumerService.concatExistencesWithCreated(
-                existencesConsumers,
-                createdConsumers,
-            );
-        }
-        return existencesConsumers;
-    }
-
-    private async getOrCreateLocation(name: string): Promise<TSelectLocation> {
-        const location = await this.locationService.getByNameOrNull(name);
-        if (location) {
-            return location;
-        }
-        return this.locationService.create(name);
-    }
-
-    private async getOrCreateReceiver(name: string): Promise<TSelectReceiver> {
-        const receiver = await this.receiverService.getByNameOrNull(name);
-        if (receiver) {
-            return receiver;
-        }
-        return this.receiverService.create(name);
-    }
-
     @Transactional()
     async create(data: CreateBillRequestDto, user: ICurrentUser): Promise<TSelectBill> {
         try {
-            const consumers = await this.getOrCreateConsumers(data.consumers);
-            const location = await this.getOrCreateLocation(data.location);
-            const receiver = await this.getOrCreateReceiver(data.receiver);
+            const consumers = await this.consumerService.getOrCreateMany(data.consumers);
+            const location = await this.locationService.getOrCreate(data.location);
+            const receiver = await this.receiverService.getOrCreate(data.receiver);
 
             const createBillCommand = new CreateBillCommand({
                 amount: data.amount,

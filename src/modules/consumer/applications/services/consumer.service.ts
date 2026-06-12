@@ -40,15 +40,14 @@ export class ConsumerService {
         }
     }
 
-    getNamesForCreation(existences: TSelectConsumer[], names: string[]): string[] {
+    async getOrCreateMany(names: string[]): Promise<TSelectConsumer[]> {
+        const existences = await this.getManyByName(names);
         const existencesNames = new Set(existences.map((existence) => existence.name));
-        return names.filter((name) => !existencesNames.has(name));
-    }
-
-    concatExistencesWithCreated(
-        existences: TSelectConsumer[],
-        created: TSelectConsumer[],
-    ): TSelectConsumer[] {
-        return existences.concat(created);
+        const namesToCreate = names.filter((name) => !existencesNames.has(name));
+        if (namesToCreate.length > 0) {
+            const created = await this.createMany(namesToCreate);
+            return existences.concat(created);
+        }
+        return existences;
     }
 }
