@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { uuid, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
-import { consumers } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
+import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 import { locations } from '@/modules/location/infrastructure/schemas/location.schema';
 import { receivers } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
@@ -16,9 +16,6 @@ export const bills = pgTable('bills', {
     userId: uuid('user_id')
         .notNull()
         .references(() => users.id, { onDelete: 'cascade' }),
-    consumerId: uuid('consumer_id')
-        .notNull()
-        .references(() => consumers.id),
     receiverId: uuid('receiver_id')
         .notNull()
         .references(() => receivers.id),
@@ -27,14 +24,10 @@ export const bills = pgTable('bills', {
         .references(() => locations.id),
 });
 
-export const billsRelations = relations(bills, ({ one }) => ({
+export const billsRelations = relations(bills, ({ one, many }) => ({
     user: one(users, {
         fields: [bills.userId],
         references: [users.id],
-    }),
-    consumer: one(consumers, {
-        fields: [bills.consumerId],
-        references: [consumers.id],
     }),
     receiver: one(receivers, {
         fields: [bills.receiverId],
@@ -44,6 +37,7 @@ export const billsRelations = relations(bills, ({ one }) => ({
         fields: [bills.locationId],
         references: [locations.id],
     }),
+    billsConsumers: many(billsConsumers),
 }));
 
 export type TSelectBill = typeof bills.$inferSelect;

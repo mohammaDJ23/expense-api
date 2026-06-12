@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
-import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
 import { usersConsumers } from './userConsumer.schema';
 
@@ -13,7 +13,7 @@ export const consumers = pgTable('consumers', {
 });
 
 export const consumersRelations = relations(consumers, ({ many }) => ({
-    bills: many(bills),
+    billsConsumers: many(billsConsumers),
     usersConsumers: many(usersConsumers),
 }));
 
