@@ -53,7 +53,9 @@ export class BillService {
                 locationId: location.id,
                 receiverId: receiver.id,
             });
-            return await this.commandBus.execute<CreateBillCommand, TSelectBill>(createBillCommand);
+            const bill = await this.commandBus.execute<CreateBillCommand, TSelectBill>(
+                createBillCommand,
+            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
