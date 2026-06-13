@@ -29,7 +29,7 @@ export class UserRepository extends DrizzleRepository implements IUserRepository
         );
     }
 
-    deleteAllNotVerified(): Promise<TSelectUser[]> {
+    deleteManyNotVerified(): Promise<TSelectUser[]> {
         return toEntities(this.db.delete(users).where(isNull(users.verifiedAt)).returning());
     }
 
