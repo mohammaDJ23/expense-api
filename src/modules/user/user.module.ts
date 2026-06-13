@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateUserHandler } from '@/modules/user/applications/commands/createUser/createUser.handler';
-import { DeleteAllNotVerifiedUsersHandler } from '@/modules/user/applications/commands/deleteAllNotVerifiedUsers/deleteNotVerifiedUsers.handler';
+import { DeleteManyNotVerifiedUsersHandler } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.handler';
 import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUser/updateUser.handler';
 import { GetUserByEmailOrNullHandler } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.handler';
 import { GetUserByIdOrNullHandler } from '@/modules/user/applications/queries/getUserByIdOrNull/getUserByIdOrNull.handler';
 import { IsUserExistsByEmailHandler } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.handler';
-import { DeleteAllNotVerifiedUsersService } from '@/modules/user/applications/services/deleteAllNotVerifiedUsers.service';
+import { DeleteManyNotVerifiedUsersService } from '@/modules/user/applications/services/deleteManyNotVerifiedUsers.service';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 
 @Module({
@@ -19,8 +19,8 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
         UpdateUserHandler,
         GetUserByIdOrNullHandler,
         IsUserExistsByEmailHandler,
-        DeleteAllNotVerifiedUsersService,
-        DeleteAllNotVerifiedUsersHandler,
+        DeleteManyNotVerifiedUsersService,
+        DeleteManyNotVerifiedUsersHandler,
     ],
 })
 export class UserModule {}

@@ -2,20 +2,20 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
-import { DeleteAllNotVerifiedUsersCommand } from '@/modules/user/applications/commands/deleteAllNotVerifiedUsers/deleteAllNotVerifiedUsers.command';
+import { DeleteManyNotVerifiedUsersCommand } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.command';
 
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class DeleteAllNotVerifiedUsersService {
+export class DeleteManyNotVerifiedUsersService {
     constructor(private readonly commandBus: CommandBus) {}
 
     @Cron(CronExpression.EVERY_WEEK)
-    async deleteNotVerifiedUsers(): Promise<void> {
+    async deleteManyNotVerifiedUsers(): Promise<void> {
         try {
-            const deleteAllNotVerifiedUsersCommand = new DeleteAllNotVerifiedUsersCommand();
-            await this.commandBus.execute<DeleteAllNotVerifiedUsersCommand, TSelectUser>(
-                deleteAllNotVerifiedUsersCommand,
+            const deleteManyNotVerifiedUsersCommand = new DeleteManyNotVerifiedUsersCommand();
+            await this.commandBus.execute<DeleteManyNotVerifiedUsersCommand, TSelectUser>(
+                deleteManyNotVerifiedUsersCommand,
             );
         } catch (error) {
             throw new InternalServerErrorException(error);
