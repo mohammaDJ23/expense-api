@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { CreateManyBillConsumerCommand } from '@/modules/consumer/applications/commands/createManyBillConsumer/createManyBillConsumer.command';
+import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
 
 import type { TSelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
@@ -13,15 +13,15 @@ export class BillConsumerService {
 
     createMany(billId: string, consumers: TSelectConsumer[]): Promise<TSelectBillConsumer[]> {
         try {
-            const createManyBillConsumerCommand = new CreateManyBillConsumerCommand(
+            const createManyBillsConsumersCommand = new CreateManyBillsConsumersCommand(
                 consumers.map((consumer) => ({
                     billId,
                     consumerId: consumer.id,
                     createdAt: new Date(),
                 })),
             );
-            return this.commandBus.execute<CreateManyBillConsumerCommand, TSelectBillConsumer[]>(
-                createManyBillConsumerCommand,
+            return this.commandBus.execute<CreateManyBillsConsumersCommand, TSelectBillConsumer[]>(
+                createManyBillsConsumersCommand,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
