@@ -23,7 +23,9 @@ export class ConsumerService {
                     updatedAt: new Date(),
                 })),
             );
-            return this.commandBus.execute(createManyConsumersCommand);
+            return this.commandBus.execute<CreateManyConsumersCommand, TSelectConsumer[]>(
+                createManyConsumersCommand,
+            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
