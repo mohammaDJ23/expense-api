@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { CreateManyUserConsumerCommand } from '@/modules/consumer/applications/commands/createManyUserConsumer/createManyUserConsumer.command';
+import { CreateManyUsersConsumersCommand } from '@/modules/consumer/applications/commands/createManyUsersConsumers/createManyUsersConsumers.command';
 import { GetManyUserConsumerByIdQuery } from '@/modules/consumer/applications/queries/getManyUserConsumerById/getManyUserConsumerById.query';
 
 import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
@@ -17,15 +17,15 @@ export class UserConsumerService {
 
     createMany(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]> {
         try {
-            const createManyUserConsumerCommand = new CreateManyUserConsumerCommand(
+            const createManyUsersConsumersCommand = new CreateManyUsersConsumersCommand(
                 consumerIds.map((consumerId) => ({
                     userId,
                     consumerId,
                     createdAt: new Date(),
                 })),
             );
-            return this.commandBus.execute<CreateManyUserConsumerCommand, TSelectUserConsumer[]>(
-                createManyUserConsumerCommand,
+            return this.commandBus.execute<CreateManyUsersConsumersCommand, TSelectUserConsumer[]>(
+                createManyUsersConsumersCommand,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
