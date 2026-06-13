@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
-import { CreateManyBillConsumerHandler } from '@/modules/consumer/applications/commands/createManyBillConsumer/createManyBillConsumer.handler';
+import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.handler';
 import { CreateManyConsumersHandler } from '@/modules/consumer/applications/commands/createManyConsumers/createManyConsumers.handler';
 import { CreateManyUserConsumerHandler } from '@/modules/consumer/applications/commands/createManyUserConsumer/createManyUserConsumer.handler';
 import { GetManyConsumersByNameHandler } from '@/modules/consumer/applications/queries/getManyConsumersByName/getManyConsumersByName.handler';
@@ -21,7 +21,7 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
         BillConsumerService,
         CreateManyUserConsumerHandler,
         CreateManyConsumersHandler,
-        CreateManyBillConsumerHandler,
+        CreateManyBillsConsumersHandler,
         GetManyUserConsumerByIdHandler,
         GetManyConsumersByNameHandler,
         ConsumerRepository,
