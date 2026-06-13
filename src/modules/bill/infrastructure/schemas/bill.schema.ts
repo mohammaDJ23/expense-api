@@ -18,10 +18,10 @@ export const bills = pgTable('bills', {
         .references(() => users.id, { onDelete: 'cascade' }),
     receiverId: uuid('receiver_id')
         .notNull()
-        .references(() => receivers.id),
+        .references(() => receivers.id, { onDelete: 'restrict' }),
     locationId: uuid('location_id')
         .notNull()
-        .references(() => locations.id),
+        .references(() => locations.id, { onDelete: 'restrict' }),
 });
 
 export const billsRelations = relations(bills, ({ one, many }) => ({
