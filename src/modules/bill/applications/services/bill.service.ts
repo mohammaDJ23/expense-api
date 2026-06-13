@@ -15,6 +15,9 @@ import { UserReceiverService } from '@/modules/receiver/applications/services/us
 import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
+import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
+import type { TSelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
+import type { TSelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @Injectable()
 export class BillService {
@@ -30,32 +33,57 @@ export class BillService {
         private readonly userReceiverService: UserReceiverService,
     ) {}
 
+    private getOrCreateRequirement(
+        data: CreateBillRequestDto,
+    ): Promise<[TSelectConsumer[], TSelectLocation, TSelectReceiver]> {
+        return Promise.all([
+            this.consumerService.getOrCreateMany(data.consumers),
+            this.locationService.getOrCreate(data.location),
+            this.receiverService.getOrCreate(data.receiver),
+        ]);
+    }
+
+    private createEntity(
+        data: CreateBillRequestDto,
+        locationId: string,
+        receiverId: string,
+        userId: string,
+    ): Promise<TSelectBill> {
+        const createBillCommand = new CreateBillCommand({
+            amount: data.amount,
+            description: data.description,
+            purchasedAt: data.purchasedAt ? new Date(data.purchasedAt) : null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            userId,
+            locationId,
+            receiverId,
+        });
+        return this.commandBus.execute<CreateBillCommand, TSelectBill>(createBillCommand);
+    }
+
+    // eslint-disable-next-line max-params
+    private async createAssociations(
+        billId: string,
+        locationId: string,
+        receiverId: string,
+        userId: string,
+        consumers: TSelectConsumer[],
+    ): Promise<void> {
+        await Promise.all([
+            this.billConsumerService.createMany(billId, consumers),
+            this.userConsumerService.createManyIfNotExists(userId, consumers),
+            this.userLocationService.createIfNotExists(userId, locationId),
+            this.userReceiverService.createIfNotExists(userId, receiverId),
+        ]);
+    }
+
     @Transactional()
     async create(data: CreateBillRequestDto, user: ICurrentUser): Promise<boolean> {
         try {
-            const consumers = await this.consumerService.getOrCreateMany(data.consumers);
-            const location = await this.locationService.getOrCreate(data.location);
-            const receiver = await this.receiverService.getOrCreate(data.receiver);
-
-            const createBillCommand = new CreateBillCommand({
-                amount: data.amount,
-                description: data.description,
-                purchasedAt: data.purchasedAt ? new Date(data.purchasedAt) : null,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                userId: user.id,
-                locationId: location.id,
-                receiverId: receiver.id,
-            });
-            const bill = await this.commandBus.execute<CreateBillCommand, TSelectBill>(
-                createBillCommand,
-            );
-
-            await this.billConsumerService.createMany(bill.id, consumers);
-            await this.userConsumerService.createManyIfNotExists(user.id, consumers);
-            await this.userLocationService.createIfNotExists(user.id, location.id);
-            await this.userReceiverService.createIfNotExists(user.id, receiver.id);
-
+            const [consumers, location, receiver] = await this.getOrCreateRequirement(data);
+            const bill = await this.createEntity(data, location.id, receiver.id, user.id);
+            await this.createAssociations(bill.id, location.id, receiver.id, user.id, consumers);
             return true;
         } catch {
             throw new ProcessFailedInternalServerErrorException();
