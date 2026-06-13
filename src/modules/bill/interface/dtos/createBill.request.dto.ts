@@ -25,7 +25,7 @@ export class CreateBillRequestDto {
 
     @IsArray()
     @IsString({ each: true })
-    @Length(3, 50)
+    @Length(3, 50, { each: true })
     @ArrayMinSize(1)
     @ArrayMaxSize(20)
     @ArrayUnique()
