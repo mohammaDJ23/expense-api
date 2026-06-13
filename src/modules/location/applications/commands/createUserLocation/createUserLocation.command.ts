@@ -5,7 +5,7 @@ export class CreateUserLocationCommand extends UserLocationAbstract {
     public override readonly locationId: string;
     public override readonly createdAt: Date;
 
-    constructor(data: Required<Pick<UserLocationAbstract, 'userId' | 'locationId' | 'createdAt'>>) {
+    constructor(data: Required<Omit<UserLocationAbstract, 'id'>>) {
         super(data);
 
         this.userId = data.userId;
