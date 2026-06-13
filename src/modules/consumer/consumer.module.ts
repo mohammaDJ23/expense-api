@@ -5,7 +5,7 @@ import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications
 import { CreateManyConsumersHandler } from '@/modules/consumer/applications/commands/createManyConsumers/createManyConsumers.handler';
 import { CreateManyUsersConsumersHandler } from '@/modules/consumer/applications/commands/createManyUsersConsumers/createManyUsersConsumers.handler';
 import { GetManyConsumersByNameHandler } from '@/modules/consumer/applications/queries/getManyConsumersByName/getManyConsumersByName.handler';
-import { GetManyUserConsumerByIdHandler } from '@/modules/consumer/applications/queries/getManyUserConsumerById/getManyUserConsumerById.handler';
+import { GetManyUsersConsumersByIdHandler } from '@/modules/consumer/applications/queries/getManyUsersConsumersById/getManyUsersConsumersById.handler';
 import { BillConsumerService } from '@/modules/consumer/applications/services/billConsumer.service';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
@@ -22,7 +22,7 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
         CreateManyUsersConsumersHandler,
         CreateManyConsumersHandler,
         CreateManyBillsConsumersHandler,
-        GetManyUserConsumerByIdHandler,
+        GetManyUsersConsumersByIdHandler,
         GetManyConsumersByNameHandler,
         ConsumerRepository,
         UserConsumerRepository,

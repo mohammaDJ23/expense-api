@@ -3,7 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateManyUsersConsumersCommand } from '@/modules/consumer/applications/commands/createManyUsersConsumers/createManyUsersConsumers.command';
-import { GetManyUserConsumerByIdQuery } from '@/modules/consumer/applications/queries/getManyUserConsumerById/getManyUserConsumerById.query';
+import { GetManyUsersConsumersByIdQuery } from '@/modules/consumer/applications/queries/getManyUsersConsumersById/getManyUsersConsumersById.query';
 
 import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { TSelectUserConsumer } from '@/modules/consumer/infrastructure/schemas/userConsumer.schema';
@@ -34,12 +34,12 @@ export class UserConsumerService {
 
     getManyById(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]> {
         try {
-            const getManyConsumersByNameQuery = new GetManyUserConsumerByIdQuery(
+            const getManyUsersConsumersByIdQuery = new GetManyUsersConsumersByIdQuery(
                 userId,
                 consumerIds,
             );
-            return this.queryBus.execute<GetManyUserConsumerByIdQuery, TSelectUserConsumer[]>(
-                getManyConsumersByNameQuery,
+            return this.queryBus.execute<GetManyUsersConsumersByIdQuery, TSelectUserConsumer[]>(
+                getManyUsersConsumersByIdQuery,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
