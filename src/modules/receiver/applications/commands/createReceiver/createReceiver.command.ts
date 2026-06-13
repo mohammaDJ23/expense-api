@@ -5,7 +5,7 @@ export class CreateReceiverCommand extends ReceiverAbstract {
     public override readonly createdAt: Date;
     public override readonly updatedAt: Date;
 
-    constructor(data: Required<Pick<ReceiverAbstract, 'name' | 'createdAt' | 'updatedAt'>>) {
+    constructor(data: Required<Omit<ReceiverAbstract, 'id'>>) {
         super(data);
 
         this.name = data.name;
