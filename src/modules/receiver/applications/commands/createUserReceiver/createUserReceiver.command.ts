@@ -5,7 +5,7 @@ export class CreateUserReceiverCommand extends UserReceiverAbstract {
     public override readonly receiverId: string;
     public override readonly createdAt: Date;
 
-    constructor(data: Required<Pick<UserReceiverAbstract, 'userId' | 'receiverId' | 'createdAt'>>) {
+    constructor(data: Required<Omit<UserReceiverAbstract, 'id'>>) {
         super(data);
 
         this.userId = data.userId;
