@@ -2,8 +2,8 @@ import { ReceiverAbstract } from '@/modules/receiver/domain/abstracts/receiver.a
 
 export class CreateReceiverCommand extends ReceiverAbstract {
     public override readonly name: string;
-    public override readonly createdAt: Date;
-    public override readonly updatedAt: Date;
+    public override readonly createdAt: string;
+    public override readonly updatedAt: string;
 
     constructor(data: Required<Omit<ReceiverAbstract, 'id'>>) {
         super(data);

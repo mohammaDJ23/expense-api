@@ -4,7 +4,7 @@ export abstract class UserReceiverAbstract implements Partial<IUserReceiverAbstr
     public readonly id?: string;
     public readonly userId?: string;
     public readonly receiverId?: string;
-    public readonly createdAt?: Date;
+    public readonly createdAt?: string;
 
     constructor(data: Partial<IUserReceiverAbstract>) {
         this.id = data.id;

@@ -9,7 +9,9 @@ export const usersReceivers = pgTable(
     'users_receivers',
     {
         id: uuid('id').primaryKey().defaultRandom().notNull(),
-        createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+        createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
+            .notNull()
+            .defaultNow(),
         userId: uuid('user_id')
             .notNull()
             .references(() => users.id, { onDelete: 'cascade' }),
