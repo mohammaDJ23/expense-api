@@ -4,7 +4,7 @@ export abstract class UserLocationAbstract implements Partial<IUserLocationAbstr
     public readonly id?: string;
     public readonly userId?: string;
     public readonly locationId?: string;
-    public readonly createdAt?: Date;
+    public readonly createdAt?: string;
 
     constructor(data: Partial<IUserLocationAbstract>) {
         this.id = data.id;

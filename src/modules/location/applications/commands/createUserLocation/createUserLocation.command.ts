@@ -3,7 +3,7 @@ import { UserLocationAbstract } from '@/modules/location/domain/abstracts/userLo
 export class CreateUserLocationCommand extends UserLocationAbstract {
     public override readonly userId: string;
     public override readonly locationId: string;
-    public override readonly createdAt: Date;
+    public override readonly createdAt: string;
 
     constructor(data: Required<Omit<UserLocationAbstract, 'id'>>) {
         super(data);
