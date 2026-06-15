@@ -3,8 +3,8 @@ import type { IReceiverAbstract } from '@/modules/receiver/domain/interfaces/rec
 export abstract class ReceiverAbstract implements Partial<IReceiverAbstract> {
     public readonly id?: string;
     public readonly name?: string;
-    public readonly createdAt?: Date;
-    public readonly updatedAt?: Date;
+    public readonly createdAt?: string;
+    public readonly updatedAt?: string;
 
     constructor(data: Partial<IReceiverAbstract>) {
         this.id = data.id;

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateReceiverCommand } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.command';
 import { GetReceiverByNameOrNullQuery } from '@/modules/receiver/applications/queries/getReceiverByNameOrNull/getReceiverByNameOrNull.query';
@@ -18,8 +19,8 @@ export class ReceiverService {
         try {
             const createReceiverCommand = new CreateReceiverCommand({
                 name,
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: getCurrentUTCTimestamp(),
+                updatedAt: getCurrentUTCTimestamp(),
             });
             return this.commandBus.execute<CreateReceiverCommand, TSelectReceiver>(
                 createReceiverCommand,
