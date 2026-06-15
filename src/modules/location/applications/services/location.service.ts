@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateLocationCommand } from '@/modules/location/applications/commands/createLocation/createLocation.command';
 import { GetLocationByNameOrNullQuery } from '@/modules/location/applications/queries/getLocationByNameOrNull/getLocationByNameOrNull.query';
@@ -18,8 +19,8 @@ export class LocationService {
         try {
             const createLocationCommand = new CreateLocationCommand({
                 name,
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: getCurrentUTCTimestamp(),
+                updatedAt: getCurrentUTCTimestamp(),
             });
             return this.commandBus.execute<CreateLocationCommand, TSelectLocation>(
                 createLocationCommand,

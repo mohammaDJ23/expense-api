@@ -2,8 +2,8 @@ import { LocationAbstract } from '@/modules/location/domain/abstracts/location.a
 
 export class CreateLocationCommand extends LocationAbstract {
     public override readonly name: string;
-    public override readonly createdAt: Date;
-    public override readonly updatedAt: Date;
+    public override readonly createdAt: string;
+    public override readonly updatedAt: string;
 
     constructor(data: Required<Omit<LocationAbstract, 'id'>>) {
         super(data);

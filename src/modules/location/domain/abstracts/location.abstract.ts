@@ -3,8 +3,8 @@ import type { ILocationAbstract } from '@/modules/location/domain/interfaces/loc
 export abstract class LocationAbstract implements Partial<ILocationAbstract> {
     public readonly id?: string;
     public readonly name?: string;
-    public readonly createdAt?: Date;
-    public readonly updatedAt?: Date;
+    public readonly createdAt?: string;
+    public readonly updatedAt?: string;
 
     constructor(data: Partial<ILocationAbstract>) {
         this.id = data.id;
