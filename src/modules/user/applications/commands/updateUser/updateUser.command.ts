@@ -2,7 +2,7 @@ import { UserAbstract } from '@/modules/user/domain/abstracts/user.abstract';
 
 export class UpdateUserCommand extends UserAbstract {
     public override readonly id: string;
-    public override readonly updatedAt: Date;
+    public override readonly updatedAt: string;
 
     constructor(data: UserAbstract & Required<Pick<UserAbstract, 'updatedAt' | 'id'>>) {
         super(data);
