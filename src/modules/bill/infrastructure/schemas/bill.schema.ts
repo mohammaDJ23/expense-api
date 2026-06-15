@@ -10,9 +10,13 @@ export const bills = pgTable('bills', {
     id: uuid('id').primaryKey().defaultRandom().notNull(),
     amount: varchar('amount', { length: 12 }).notNull(),
     description: varchar('description', { length: 500 }).notNull(),
-    purchasedAt: timestamp('purchased_at', { withTimezone: true }),
-    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+    purchasedAt: timestamp('purchased_at', { withTimezone: true, mode: 'string' }),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
+        .notNull()
+        .defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' })
+        .notNull()
+        .defaultNow(),
     userId: uuid('user_id')
         .notNull()
         .references(() => users.id, { onDelete: 'cascade' }),
