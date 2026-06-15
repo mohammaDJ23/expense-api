@@ -15,14 +15,14 @@ export class LocationService {
         private readonly commandBus: CommandBus,
     ) {}
 
-    create(name: string): Promise<TSelectLocation> {
+    async create(name: string): Promise<TSelectLocation> {
         try {
             const createLocationCommand = new CreateLocationCommand({
                 name,
                 createdAt: getCurrentUTCTimestamp(),
                 updatedAt: getCurrentUTCTimestamp(),
             });
-            return this.commandBus.execute<CreateLocationCommand, TSelectLocation>(
+            return await this.commandBus.execute<CreateLocationCommand, TSelectLocation>(
                 createLocationCommand,
             );
         } catch {
@@ -30,12 +30,13 @@ export class LocationService {
         }
     }
 
-    getByNameOrNull(name: string): Promise<TSelectLocation | null> {
+    async getByNameOrNull(name: string): Promise<TSelectLocation | null> {
         try {
             const getLocationByNameOrNullQuery = new GetLocationByNameOrNullQuery(name);
-            return this.queryBus.execute<GetLocationByNameOrNullQuery, TSelectLocation | null>(
-                getLocationByNameOrNullQuery,
-            );
+            return await this.queryBus.execute<
+                GetLocationByNameOrNullQuery,
+                TSelectLocation | null
+            >(getLocationByNameOrNullQuery);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

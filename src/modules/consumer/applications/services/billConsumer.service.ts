@@ -12,7 +12,7 @@ import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/
 export class BillConsumerService {
     constructor(private readonly commandBus: CommandBus) {}
 
-    createMany(billId: string, consumers: TSelectConsumer[]): Promise<TSelectBillConsumer[]> {
+    async createMany(billId: string, consumers: TSelectConsumer[]): Promise<TSelectBillConsumer[]> {
         try {
             const createManyBillsConsumersCommand = new CreateManyBillsConsumersCommand(
                 consumers.map((consumer) => ({
@@ -21,9 +21,10 @@ export class BillConsumerService {
                     createdAt: getCurrentUTCTimestamp(),
                 })),
             );
-            return this.commandBus.execute<CreateManyBillsConsumersCommand, TSelectBillConsumer[]>(
-                createManyBillsConsumersCommand,
-            );
+            return await this.commandBus.execute<
+                CreateManyBillsConsumersCommand,
+                TSelectBillConsumer[]
+            >(createManyBillsConsumersCommand);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

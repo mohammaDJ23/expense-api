@@ -16,7 +16,7 @@ export class UserConsumerService {
         private readonly commandBus: CommandBus,
     ) {}
 
-    createMany(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]> {
+    async createMany(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]> {
         try {
             const createManyUsersConsumersCommand = new CreateManyUsersConsumersCommand(
                 consumerIds.map((consumerId) => ({
@@ -25,23 +25,25 @@ export class UserConsumerService {
                     createdAt: getCurrentUTCTimestamp(),
                 })),
             );
-            return this.commandBus.execute<CreateManyUsersConsumersCommand, TSelectUserConsumer[]>(
-                createManyUsersConsumersCommand,
-            );
+            return await this.commandBus.execute<
+                CreateManyUsersConsumersCommand,
+                TSelectUserConsumer[]
+            >(createManyUsersConsumersCommand);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
     }
 
-    getManyById(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]> {
+    async getManyById(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]> {
         try {
             const getManyUsersConsumersByIdQuery = new GetManyUsersConsumersByIdQuery(
                 userId,
                 consumerIds,
             );
-            return this.queryBus.execute<GetManyUsersConsumersByIdQuery, TSelectUserConsumer[]>(
-                getManyUsersConsumersByIdQuery,
-            );
+            return await this.queryBus.execute<
+                GetManyUsersConsumersByIdQuery,
+                TSelectUserConsumer[]
+            >(getManyUsersConsumersByIdQuery);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

@@ -15,14 +15,14 @@ export class ReceiverService {
         private readonly commandBus: CommandBus,
     ) {}
 
-    create(name: string): Promise<TSelectReceiver> {
+    async create(name: string): Promise<TSelectReceiver> {
         try {
             const createReceiverCommand = new CreateReceiverCommand({
                 name,
                 createdAt: getCurrentUTCTimestamp(),
                 updatedAt: getCurrentUTCTimestamp(),
             });
-            return this.commandBus.execute<CreateReceiverCommand, TSelectReceiver>(
+            return await this.commandBus.execute<CreateReceiverCommand, TSelectReceiver>(
                 createReceiverCommand,
             );
         } catch {
@@ -30,12 +30,13 @@ export class ReceiverService {
         }
     }
 
-    getByNameOrNull(name: string): Promise<TSelectReceiver | null> {
+    async getByNameOrNull(name: string): Promise<TSelectReceiver | null> {
         try {
             const getReceiverByNameOrNullQuery = new GetReceiverByNameOrNullQuery(name);
-            return this.queryBus.execute<GetReceiverByNameOrNullQuery, TSelectReceiver | null>(
-                getReceiverByNameOrNullQuery,
-            );
+            return await this.queryBus.execute<
+                GetReceiverByNameOrNullQuery,
+                TSelectReceiver | null
+            >(getReceiverByNameOrNullQuery);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

@@ -15,14 +15,14 @@ export class UserLocationService {
         private readonly commandBus: CommandBus,
     ) {}
 
-    create(userId: string, locationId: string): Promise<TSelectUserLocation> {
+    async create(userId: string, locationId: string): Promise<TSelectUserLocation> {
         try {
             const createUserLocationCommand = new CreateUserLocationCommand({
                 userId,
                 locationId,
                 createdAt: getCurrentUTCTimestamp(),
             });
-            return this.commandBus.execute<CreateUserLocationCommand, TSelectUserLocation>(
+            return await this.commandBus.execute<CreateUserLocationCommand, TSelectUserLocation>(
                 createUserLocationCommand,
             );
         } catch {
@@ -30,13 +30,13 @@ export class UserLocationService {
         }
     }
 
-    getByIdOrNull(userId: string, locationId: string): Promise<TSelectUserLocation | null> {
+    async getByIdOrNull(userId: string, locationId: string): Promise<TSelectUserLocation | null> {
         try {
             const getUserLocationByIdOrNullQuery = new GetUserLocationByIdOrNullQuery(
                 userId,
                 locationId,
             );
-            return this.queryBus.execute<
+            return await this.queryBus.execute<
                 GetUserLocationByIdOrNullQuery,
                 TSelectUserLocation | null
             >(getUserLocationByIdOrNullQuery);

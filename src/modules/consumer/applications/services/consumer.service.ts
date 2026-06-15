@@ -15,7 +15,7 @@ export class ConsumerService {
         private readonly commandBus: CommandBus,
     ) {}
 
-    createMany(names: string[]): Promise<TSelectConsumer[]> {
+    async createMany(names: string[]): Promise<TSelectConsumer[]> {
         try {
             const createManyConsumersCommand = new CreateManyConsumersCommand(
                 names.map((name) => ({
@@ -24,7 +24,7 @@ export class ConsumerService {
                     updatedAt: getCurrentUTCTimestamp(),
                 })),
             );
-            return this.commandBus.execute<CreateManyConsumersCommand, TSelectConsumer[]>(
+            return await this.commandBus.execute<CreateManyConsumersCommand, TSelectConsumer[]>(
                 createManyConsumersCommand,
             );
         } catch {
@@ -32,10 +32,10 @@ export class ConsumerService {
         }
     }
 
-    getManyByName(names: string[]): Promise<TSelectConsumer[]> {
+    async getManyByName(names: string[]): Promise<TSelectConsumer[]> {
         try {
             const getManyConsumersByNameQuery = new GetManyConsumersByNameQuery(names);
-            return this.queryBus.execute<GetManyConsumersByNameQuery, TSelectConsumer[]>(
+            return await this.queryBus.execute<GetManyConsumersByNameQuery, TSelectConsumer[]>(
                 getManyConsumersByNameQuery,
             );
         } catch {
