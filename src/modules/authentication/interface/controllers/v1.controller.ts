@@ -3,7 +3,7 @@ import { Throttle } from '@nestjs/throttler';
 
 import { GoogleAuthGuard } from '@/core/authentication/googleAuth.guard';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
-import { ObjectSerializerInterceptor } from '@/core/serializers/objectSerializerInterceptor.decorator';
+import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { CurrentUser } from '@/core/user/currentUser.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
@@ -40,7 +40,7 @@ export class AuthenticationController {
     @Post('local/login')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
-    @ObjectSerializerInterceptor(LoginResponseDto)
+    @SerializerInterceptor(LoginResponseDto)
     localLogin(@Body() body: LocalLoginRequestDto): Promise<AccessTokenEntity> {
         return this.authenticationService.localLogin(body);
     }
@@ -83,7 +83,7 @@ export class AuthenticationController {
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
-    @ObjectSerializerInterceptor(LoginResponseDto)
+    @SerializerInterceptor(LoginResponseDto)
     googleLogin(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
         return this.authenticationService.googleLogin(user);
     }
