@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { Strategy, type Profile } from 'passport-google-oauth20';
 
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { readSecret } from '@/common/utils/readSecret.util';
 import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
@@ -53,10 +54,10 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
                     avatar: profile.photos?.[0]?.value,
                     authProvider: AuthProvider.GOOGLE,
                     role: UserRoles.USER,
-                    verifiedAt: new Date(),
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                    lastLoginAt: new Date(),
+                    verifiedAt: getCurrentUTCTimestamp(),
+                    createdAt: getCurrentUTCTimestamp(),
+                    updatedAt: getCurrentUTCTimestamp(),
+                    lastLoginAt: getCurrentUTCTimestamp(),
                 });
                 return await this.commandBus.execute<CreateUserCommand, TSelectUser>(
                     createUserCommand,
@@ -77,8 +78,8 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
         try {
             const updateUserCommand = new UpdateUserCommand({
                 id: user.id,
-                updatedAt: new Date(),
-                lastLoginAt: new Date(),
+                updatedAt: getCurrentUTCTimestamp(),
+                lastLoginAt: getCurrentUTCTimestamp(),
             });
             return await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
         } catch {

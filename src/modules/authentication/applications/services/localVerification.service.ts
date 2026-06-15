@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { InvalidCredentialBadRequestException } from '@/core/exceptions/invalidCredentialBadRequest.exception';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
@@ -114,8 +115,8 @@ export class LocalVerificationService {
             try {
                 const updateUserCommand = new UpdateUserCommand({
                     id: user.id,
-                    updatedAt: new Date(),
-                    verifiedAt: new Date(),
+                    updatedAt: getCurrentUTCTimestamp(),
+                    verifiedAt: getCurrentUTCTimestamp(),
                 });
                 await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
             } catch {
