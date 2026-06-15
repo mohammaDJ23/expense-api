@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
+import { GetManyBillsQuery } from '@/modules/bill/applications/queries/getManyBills/getManyBills.query';
 import { BillConsumerService } from '@/modules/consumer/applications/services/billConsumer.service';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
@@ -15,6 +17,7 @@ import { UserReceiverService } from '@/modules/receiver/applications/services/us
 import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
+import type { GetManyBillsQueryRequestDto } from '@/modules/bill/interface/dtos/getManyBillsQuery.request.dto';
 import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { TSelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { TSelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
@@ -23,6 +26,7 @@ import type { TSelectReceiver } from '@/modules/receiver/infrastructure/schemas/
 export class BillService {
     // eslint-disable-next-line max-params
     constructor(
+        private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
         private readonly consumerService: ConsumerService,
         private readonly userConsumerService: UserConsumerService,
@@ -52,9 +56,9 @@ export class BillService {
         const createBillCommand = new CreateBillCommand({
             amount: data.amount,
             description: data.description,
-            purchasedAt: data.purchasedAt ? new Date(data.purchasedAt) : null,
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            purchasedAt: data.purchasedAt ? getCurrentUTCTimestamp(data.purchasedAt) : null,
+            createdAt: getCurrentUTCTimestamp(),
+            updatedAt: getCurrentUTCTimestamp(),
             userId,
             locationId,
             receiverId,
@@ -85,6 +89,15 @@ export class BillService {
             const bill = await this.createEntity(data, location.id, receiver.id, user.id);
             await this.createAssociations(bill.id, location.id, receiver.id, user.id, consumers);
             return true;
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
+        }
+    }
+
+    async getMany(userId: string, options: GetManyBillsQueryRequestDto): Promise<TSelectBill[]> {
+        try {
+            const getManyBillsQuery = new GetManyBillsQuery(userId, options.offset, options.limit);
+            return await this.queryBus.execute<GetManyBillsQuery, TSelectBill[]>(getManyBillsQuery);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
