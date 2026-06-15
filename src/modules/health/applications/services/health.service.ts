@@ -9,10 +9,10 @@ import type { HealthCheckResult } from '@nestjs/terminus';
 export class HealthService {
     constructor(private readonly queryBus: QueryBus) {}
 
-    getHealth(): Promise<HealthCheckResult> {
+    async getHealth(): Promise<HealthCheckResult> {
         try {
             const getHealthQuery = new GetHealthQuery();
-            return this.queryBus.execute(getHealthQuery);
+            return await this.queryBus.execute(getHealthQuery);
         } catch {
             throw new ServiceUnavailableException('Health check failed');
         }

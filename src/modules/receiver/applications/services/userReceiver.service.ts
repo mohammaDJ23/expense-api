@@ -15,14 +15,14 @@ export class UserReceiverService {
         private readonly commandBus: CommandBus,
     ) {}
 
-    create(userId: string, receiverId: string): Promise<TSelectUserReceiver> {
+    async create(userId: string, receiverId: string): Promise<TSelectUserReceiver> {
         try {
             const createUserReceiverCommand = new CreateUserReceiverCommand({
                 userId,
                 receiverId,
                 createdAt: getCurrentUTCTimestamp(),
             });
-            return this.commandBus.execute<CreateUserReceiverCommand, TSelectUserReceiver>(
+            return await this.commandBus.execute<CreateUserReceiverCommand, TSelectUserReceiver>(
                 createUserReceiverCommand,
             );
         } catch {
@@ -30,13 +30,13 @@ export class UserReceiverService {
         }
     }
 
-    getByIdOrNull(userId: string, receiverId: string): Promise<TSelectUserReceiver | null> {
+    async getByIdOrNull(userId: string, receiverId: string): Promise<TSelectUserReceiver | null> {
         try {
             const getUserReceiverByIdOrNullQuery = new GetUserReceiverByIdOrNullQuery(
                 userId,
                 receiverId,
             );
-            return this.queryBus.execute<
+            return await this.queryBus.execute<
                 GetUserReceiverByIdOrNullQuery,
                 TSelectUserReceiver | null
             >(getUserReceiverByIdOrNullQuery);
