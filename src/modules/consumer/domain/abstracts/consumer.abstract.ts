@@ -3,8 +3,8 @@ import type { IConsumerAbstract } from '@/modules/consumer/domain/interfaces/con
 export abstract class ConsumerAbstract implements Partial<IConsumerAbstract> {
     public readonly id?: string;
     public readonly name?: string;
-    public readonly createdAt?: Date;
-    public readonly updatedAt?: Date;
+    public readonly createdAt?: string;
+    public readonly updatedAt?: string;
 
     constructor(data: Partial<IConsumerAbstract>) {
         this.id = data.id;

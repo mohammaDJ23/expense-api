@@ -9,7 +9,9 @@ export const billsConsumers = pgTable(
     'bills_consumers',
     {
         id: uuid('id').primaryKey().defaultRandom().notNull(),
-        createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+        createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
+            .notNull()
+            .defaultNow(),
         billId: uuid('bill_id')
             .notNull()
             .references(() => bills.id, { onDelete: 'cascade' }),

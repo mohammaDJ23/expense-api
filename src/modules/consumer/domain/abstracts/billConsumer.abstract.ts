@@ -4,7 +4,7 @@ export abstract class BillConsumerAbstract implements Partial<IBillConsumerAbstr
     public readonly id?: string;
     public readonly billId?: string;
     public readonly consumerId?: string;
-    public readonly createdAt?: Date;
+    public readonly createdAt?: string;
 
     constructor(data: Partial<IBillConsumerAbstract>) {
         this.id = data.id;
