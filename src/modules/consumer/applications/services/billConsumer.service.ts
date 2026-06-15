@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
 
@@ -17,7 +18,7 @@ export class BillConsumerService {
                 consumers.map((consumer) => ({
                     billId,
                     consumerId: consumer.id,
-                    createdAt: new Date(),
+                    createdAt: getCurrentUTCTimestamp(),
                 })),
             );
             return this.commandBus.execute<CreateManyBillsConsumersCommand, TSelectBillConsumer[]>(

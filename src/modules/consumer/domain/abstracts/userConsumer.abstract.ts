@@ -4,7 +4,7 @@ export abstract class UserConsumerAbstract implements Partial<IUserConsumerAbstr
     public readonly id?: string;
     public readonly userId?: string;
     public readonly consumerId?: string;
-    public readonly createdAt?: Date;
+    public readonly createdAt?: string;
 
     constructor(data: Partial<IUserConsumerAbstract>) {
         this.id = data.id;

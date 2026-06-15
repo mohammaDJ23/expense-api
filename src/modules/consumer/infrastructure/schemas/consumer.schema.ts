@@ -8,8 +8,12 @@ import { usersConsumers } from './userConsumer.schema';
 export const consumers = pgTable('consumers', {
     id: uuid('id').primaryKey().defaultRandom().notNull(),
     name: varchar('name', { length: 50 }).notNull().unique(),
-    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
+        .notNull()
+        .defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' })
+        .notNull()
+        .defaultNow(),
 });
 
 export const consumersRelations = relations(consumers, ({ many }) => ({

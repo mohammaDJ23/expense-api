@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateManyConsumersCommand } from '@/modules/consumer/applications/commands/createManyConsumers/createManyConsumers.command';
 import { GetManyConsumersByNameQuery } from '@/modules/consumer/applications/queries/getManyConsumersByName/getManyConsumersByName.query';
@@ -19,8 +20,8 @@ export class ConsumerService {
             const createManyConsumersCommand = new CreateManyConsumersCommand(
                 names.map((name) => ({
                     name,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
+                    createdAt: getCurrentUTCTimestamp(),
+                    updatedAt: getCurrentUTCTimestamp(),
                 })),
             );
             return this.commandBus.execute<CreateManyConsumersCommand, TSelectConsumer[]>(
