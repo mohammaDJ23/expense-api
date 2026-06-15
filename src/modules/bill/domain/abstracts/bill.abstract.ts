@@ -4,9 +4,9 @@ export abstract class BillAbstract implements Partial<IBillAbstract> {
     public readonly id?: string;
     public readonly amount?: string;
     public readonly description?: string;
-    public readonly purchasedAt?: Date | null;
-    public readonly createdAt?: Date;
-    public readonly updatedAt?: Date;
+    public readonly purchasedAt?: string | null;
+    public readonly createdAt?: string;
+    public readonly updatedAt?: string;
     public readonly userId?: string;
     public readonly receiverId?: string;
     public readonly locationId?: string;
