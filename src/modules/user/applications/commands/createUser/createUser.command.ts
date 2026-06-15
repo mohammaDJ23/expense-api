@@ -7,8 +7,8 @@ export class CreateUserCommand extends UserAbstract {
     public override readonly email: string;
     public override readonly role: UserRoles;
     public override readonly authProvider: AuthProvider;
-    public override readonly createdAt: Date;
-    public override readonly updatedAt: Date;
+    public override readonly createdAt: string;
+    public override readonly updatedAt: string;
 
     constructor(
         data: UserAbstract &

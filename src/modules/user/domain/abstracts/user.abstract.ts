@@ -13,10 +13,10 @@ export abstract class UserAbstract implements Partial<IUserAbstract> {
     public readonly hashedPassword?: string | null;
     public readonly googleId?: string | null;
     public readonly authProvider?: AuthProvider;
-    public readonly verifiedAt?: Date | null;
-    public readonly createdAt?: Date;
-    public readonly updatedAt?: Date;
-    public readonly lastLoginAt?: Date | null;
+    public readonly verifiedAt?: string | null;
+    public readonly createdAt?: string;
+    public readonly updatedAt?: string;
+    public readonly lastLoginAt?: string | null;
 
     constructor(data: Partial<IUserAbstract>) {
         this.id = data.id;

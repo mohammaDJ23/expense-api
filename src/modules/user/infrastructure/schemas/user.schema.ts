@@ -22,10 +22,14 @@ export const users = pgTable('users', {
     hashedPassword: varchar('hashed_password', { length: 255 }),
     googleId: varchar('google_id', { length: 255 }).unique(),
     authProvider: authProviderEnum('auth_provider').notNull().default(AuthProvider.LOCAL),
-    verifiedAt: timestamp('verified_at', { withTimezone: true }),
-    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
-    lastLoginAt: timestamp('last_login_at', { withTimezone: true }),
+    verifiedAt: timestamp('verified_at', { withTimezone: true, mode: 'string' }),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
+        .notNull()
+        .defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' })
+        .notNull()
+        .defaultNow(),
+    lastLoginAt: timestamp('last_login_at', { withTimezone: true, mode: 'string' }),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
