@@ -1,6 +1,7 @@
 import { ConflictException, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { IsUserExistsByEmailQuery } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.query';
@@ -50,8 +51,8 @@ export class LocalSignupService {
                 hashedPassword,
                 role: UserRoles.USER,
                 authProvider: AuthProvider.LOCAL,
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: getCurrentUTCTimestamp(),
+                updatedAt: getCurrentUTCTimestamp(),
             });
             createdUser = await this.commandBus.execute<CreateUserCommand, TSelectUser>(
                 createUserCommand,
