@@ -11,7 +11,7 @@ import { ConsumerService } from '@/modules/consumer/applications/services/consum
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
 import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
-import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
+import { GetReceiverByNameOrCreateService } from '@/modules/receiver/applications/services/getReceiverByNameOrCreate.service';
 import { UserReceiverService } from '@/modules/receiver/applications/services/userReceiver.service';
 
 import type { ICurrentUser } from '@/core/user/currentUser.interface';
@@ -33,7 +33,7 @@ export class BillService {
         private readonly billConsumerService: BillConsumerService,
         private readonly locationService: LocationService,
         private readonly userLocationService: UserLocationService,
-        private readonly receiverService: ReceiverService,
+        private readonly getReceiverByNameOrCreateService: GetReceiverByNameOrCreateService,
         private readonly userReceiverService: UserReceiverService,
     ) {}
 
@@ -43,7 +43,7 @@ export class BillService {
         return Promise.all([
             this.consumerService.getOrCreateMany(data.consumers),
             this.locationService.getOrCreate(data.location),
-            this.receiverService.getOrCreate(data.receiver),
+            this.getReceiverByNameOrCreateService.execute(data.receiver),
         ]);
     }
 
