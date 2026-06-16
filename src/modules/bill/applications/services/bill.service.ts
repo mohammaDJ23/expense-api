@@ -9,7 +9,7 @@ import { GetManyBillsQuery } from '@/modules/bill/applications/queries/getManyBi
 import { BillConsumerService } from '@/modules/consumer/applications/services/billConsumer.service';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
-import { LocationService } from '@/modules/location/applications/services/location.service';
+import { GetLocationByNameOrCreateService } from '@/modules/location/applications/services/getLocationByNameOrCreate.service';
 import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
 import { CreateUserReceiverIfNotExistsService } from '@/modules/receiver/applications/services/createUserReceiverIfNotExists.service';
 import { GetReceiverByNameOrCreateService } from '@/modules/receiver/applications/services/getReceiverByNameOrCreate.service';
@@ -31,7 +31,7 @@ export class BillService {
         private readonly consumerService: ConsumerService,
         private readonly userConsumerService: UserConsumerService,
         private readonly billConsumerService: BillConsumerService,
-        private readonly locationService: LocationService,
+        private readonly getLocationByNameOrCreateService: GetLocationByNameOrCreateService,
         private readonly userLocationService: UserLocationService,
         private readonly getReceiverByNameOrCreateService: GetReceiverByNameOrCreateService,
         private readonly createUserReceiverIfNotExistsService: CreateUserReceiverIfNotExistsService,
@@ -42,7 +42,7 @@ export class BillService {
     ): Promise<[TSelectConsumer[], TSelectLocation, TSelectReceiver]> {
         return Promise.all([
             this.consumerService.getOrCreateMany(data.consumers),
-            this.locationService.getOrCreate(data.location),
+            this.getLocationByNameOrCreateService.execute(data.location),
             this.getReceiverByNameOrCreateService.execute(data.receiver),
         ]);
     }

@@ -5,7 +5,9 @@ import { CreateLocationHandler } from '@/modules/location/applications/commands/
 import { CreateUserLocationHandler } from '@/modules/location/applications/commands/createUserLocation/createUserLocation.handler';
 import { GetLocationByNameOrNullHandler } from '@/modules/location/applications/queries/getLocationByNameOrNull/getLocationByNameOrNull.handler';
 import { GetUserLocationByIdOrNullHandler } from '@/modules/location/applications/queries/getUserLocationByIdOrNull/getUserLocationByIdOrNull.handler';
-import { LocationService } from '@/modules/location/applications/services/location.service';
+import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
+import { GetLocationByNameOrCreateService } from '@/modules/location/applications/services/getLocationByNameOrCreate.service';
+import { GetLocationByNameOrNullService } from '@/modules/location/applications/services/getLocationByNameOrNull.service';
 import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import { UserLocationRepository } from '@/modules/location/infrastructure/repositories/userLocation.repository';
@@ -13,8 +15,10 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
 @Module({
     imports: [CqrsModule],
     providers: [
-        LocationService,
         UserLocationService,
+        CreateLocationService,
+        GetLocationByNameOrNullService,
+        GetLocationByNameOrCreateService,
         CreateLocationHandler,
         CreateUserLocationHandler,
         GetLocationByNameOrNullHandler,
@@ -22,6 +26,6 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
         LocationRepository,
         UserLocationRepository,
     ],
-    exports: [LocationService, UserLocationService],
+    exports: [UserLocationService, GetLocationByNameOrCreateService],
 })
 export class LocationModule {}
