@@ -6,8 +6,8 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { GetManyBillsQuery } from '@/modules/bill/applications/queries/getManyBills/getManyBills.query';
-import { BillConsumerService } from '@/modules/consumer/applications/services/billConsumer.service';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
+import { CreateManyBillsConsumersService } from '@/modules/consumer/applications/services/createManybillsConsumers.service';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { CreateUserLocationIfNotExistsService } from '@/modules/location/applications/services/createUserLocationIfNotExists.service';
 import { GetLocationByNameOrCreateService } from '@/modules/location/applications/services/getLocationByNameOrCreate.service';
@@ -30,7 +30,7 @@ export class BillService {
         private readonly commandBus: CommandBus,
         private readonly consumerService: ConsumerService,
         private readonly userConsumerService: UserConsumerService,
-        private readonly billConsumerService: BillConsumerService,
+        private readonly createManyBillsConsumersService: CreateManyBillsConsumersService,
         private readonly getLocationByNameOrCreateService: GetLocationByNameOrCreateService,
         private readonly createUserLocationIfNotExistsService: CreateUserLocationIfNotExistsService,
         private readonly getReceiverByNameOrCreateService: GetReceiverByNameOrCreateService,
@@ -75,7 +75,7 @@ export class BillService {
         consumers: TSelectConsumer[],
     ): Promise<void> {
         await Promise.all([
-            this.billConsumerService.createMany(billId, consumers),
+            this.createManyBillsConsumersService.execute(billId, consumers),
             this.userConsumerService.createManyIfNotExists(userId, consumers),
             this.createUserLocationIfNotExistsService.execute(userId, locationId),
             this.createUserReceiverIfNotExistsService.execute(userId, receiverId),
