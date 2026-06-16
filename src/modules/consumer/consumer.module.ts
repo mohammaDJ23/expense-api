@@ -8,9 +8,11 @@ import { GetManyConsumersByNameHandler } from '@/modules/consumer/applications/q
 import { GetManyUsersConsumersByIdHandler } from '@/modules/consumer/applications/queries/getManyUsersConsumersById/getManyUsersConsumersById.handler';
 import { CreateManyBillsConsumersService } from '@/modules/consumer/applications/services/createManybillsConsumers.service';
 import { CreateManyConsumersService } from '@/modules/consumer/applications/services/createManyConsumers.service';
+import { CreateManyUsersConsumersService } from '@/modules/consumer/applications/services/createManyUsersConsumers.service';
+import { CreateManyUsersConsumersIfNotExistsService } from '@/modules/consumer/applications/services/createManyUsersConsumersIfNotExists.service';
 import { GetManyConsumersByNameService } from '@/modules/consumer/applications/services/getManyConsumersByName.service';
 import { GetManyConsumersByNameOrCreateService } from '@/modules/consumer/applications/services/getManyConsumersByNameOrCreate.service';
-import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
+import { GetManyUsersConsumersByIdService } from '@/modules/consumer/applications/services/getManyUsersConsumersById.service';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
 import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
 import { UserConsumerRepository } from '@/modules/consumer/infrastructure/repositories/userConsumer.repository';
@@ -18,12 +20,14 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
 @Module({
     imports: [CqrsModule],
     providers: [
-        UserConsumerService,
         CreateManyBillsConsumersService,
         CreateManyUsersConsumersHandler,
         CreateManyConsumersHandler,
         CreateManyBillsConsumersHandler,
         CreateManyConsumersService,
+        CreateManyUsersConsumersService,
+        CreateManyUsersConsumersIfNotExistsService,
+        GetManyUsersConsumersByIdService,
         GetManyConsumersByNameService,
         GetManyConsumersByNameOrCreateService,
         GetManyUsersConsumersByIdHandler,
@@ -33,8 +37,8 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
         BillConsumerRepository,
     ],
     exports: [
-        UserConsumerService,
         CreateManyBillsConsumersService,
+        CreateManyUsersConsumersIfNotExistsService,
         GetManyConsumersByNameOrCreateService,
     ],
 })
