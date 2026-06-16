@@ -5,14 +5,15 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
 
+import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { TSelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 @Injectable()
-export class BillConsumerService {
+export class CreateManyBillsConsumersService implements IServiceHandler {
     constructor(private readonly commandBus: CommandBus) {}
 
-    async createMany(billId: string, consumers: TSelectConsumer[]): Promise<TSelectBillConsumer[]> {
+    async execute(billId: string, consumers: TSelectConsumer[]): Promise<TSelectBillConsumer[]> {
         try {
             const createManyBillsConsumersCommand = new CreateManyBillsConsumersCommand(
                 consumers.map((consumer) => ({
