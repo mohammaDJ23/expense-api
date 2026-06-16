@@ -6,19 +6,23 @@ import { CreateUserReceiverHandler } from '@/modules/receiver/applications/comma
 import { GetReceiverByNameOrNullHandler } from '@/modules/receiver/applications/queries/getReceiverByNameOrNull/getReceiverByNameOrNull.handler';
 import { GetUserReceiverByIdOrNullHandler } from '@/modules/receiver/applications/queries/getUserReceiverByIdOrNull/getUserReceiverByIdOrNull.handler';
 import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
+import { CreateUserReceiverService } from '@/modules/receiver/applications/services/createUserReceiver.service';
+import { CreateUserReceiverIfNotExistsService } from '@/modules/receiver/applications/services/createUserReceiverIfNotExists.service';
 import { GetReceiverByNameOrCreateService } from '@/modules/receiver/applications/services/getReceiverByNameOrCreate.service';
 import { GetReceiverByNameOrNullService } from '@/modules/receiver/applications/services/getReceiverByNameOrNull.service';
-import { UserReceiverService } from '@/modules/receiver/applications/services/userReceiver.service';
+import { GetUserReceiverByIdOrNullService } from '@/modules/receiver/applications/services/getUserReceiverByIdOrNull.service';
 import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
 import { UserReceiverRepository } from '@/modules/receiver/infrastructure/repositories/userReceiver.repository';
 
 @Module({
     imports: [CqrsModule],
     providers: [
-        UserReceiverService,
         CreateReceiverService,
         GetReceiverByNameOrNullService,
         GetReceiverByNameOrCreateService,
+        CreateUserReceiverService,
+        CreateUserReceiverIfNotExistsService,
+        GetUserReceiverByIdOrNullService,
         CreateReceiverHandler,
         CreateUserReceiverHandler,
         GetReceiverByNameOrNullHandler,
@@ -26,6 +30,6 @@ import { UserReceiverRepository } from '@/modules/receiver/infrastructure/reposi
         ReceiverRepository,
         UserReceiverRepository,
     ],
-    exports: [GetReceiverByNameOrCreateService, UserReceiverService],
+    exports: [GetReceiverByNameOrCreateService, CreateUserReceiverIfNotExistsService],
 })
 export class ReceiverModule {}
