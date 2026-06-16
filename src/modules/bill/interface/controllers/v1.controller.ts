@@ -4,7 +4,8 @@ import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { CurrentUser } from '@/core/user/currentUser.decorator';
-import { BillService } from '@/modules/bill/applications/services/bill.service';
+import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
+import { GetManyBillsService } from '@/modules/bill/applications/services/getManyBills.service';
 import { BillResponseDto } from '@/modules/bill/interface/dtos/bill.response.dto';
 import { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import { GetManyBillsQueryRequestDto } from '@/modules/bill/interface/dtos/getManyBillsQuery.request.dto';
@@ -16,7 +17,10 @@ import type { TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.sch
 
 @Controller({ version: '1', path: 'api/bills' })
 export class BillController {
-    constructor(private readonly billService: BillService) {}
+    constructor(
+        private readonly createBillService: CreateBillService,
+        private readonly getManyBillsService: GetManyBillsService,
+    ) {}
 
     @Post()
     @UseGuards(JwtAuthGuard)
@@ -25,7 +29,7 @@ export class BillController {
         @Body() body: CreateBillRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<boolean> {
-        return this.billService.create(body, user);
+        return this.createBillService.execute(body, user.id);
     }
 
     @Get()
@@ -36,6 +40,6 @@ export class BillController {
         @Query() query: GetManyBillsQueryRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<TSelectBill[]> {
-        return this.billService.getMany(user.id, query);
+        return this.getManyBillsService.execute(user.id, query);
     }
 }
