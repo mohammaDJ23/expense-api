@@ -5,7 +5,9 @@ import { CreateReceiverHandler } from '@/modules/receiver/applications/commands/
 import { CreateUserReceiverHandler } from '@/modules/receiver/applications/commands/createUserReceiver/createUserReceiver.handler';
 import { GetReceiverByNameOrNullHandler } from '@/modules/receiver/applications/queries/getReceiverByNameOrNull/getReceiverByNameOrNull.handler';
 import { GetUserReceiverByIdOrNullHandler } from '@/modules/receiver/applications/queries/getUserReceiverByIdOrNull/getUserReceiverByIdOrNull.handler';
-import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
+import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
+import { GetReceiverByNameOrCreateService } from '@/modules/receiver/applications/services/getReceiverByNameOrCreate.service';
+import { GetReceiverByNameOrNullService } from '@/modules/receiver/applications/services/getReceiverByNameOrNull.service';
 import { UserReceiverService } from '@/modules/receiver/applications/services/userReceiver.service';
 import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
 import { UserReceiverRepository } from '@/modules/receiver/infrastructure/repositories/userReceiver.repository';
@@ -13,8 +15,10 @@ import { UserReceiverRepository } from '@/modules/receiver/infrastructure/reposi
 @Module({
     imports: [CqrsModule],
     providers: [
-        ReceiverService,
         UserReceiverService,
+        CreateReceiverService,
+        GetReceiverByNameOrNullService,
+        GetReceiverByNameOrCreateService,
         CreateReceiverHandler,
         CreateUserReceiverHandler,
         GetReceiverByNameOrNullHandler,
@@ -22,6 +26,6 @@ import { UserReceiverRepository } from '@/modules/receiver/infrastructure/reposi
         ReceiverRepository,
         UserReceiverRepository,
     ],
-    exports: [ReceiverService, UserReceiverService],
+    exports: [GetReceiverByNameOrCreateService, UserReceiverService],
 })
 export class ReceiverModule {}
