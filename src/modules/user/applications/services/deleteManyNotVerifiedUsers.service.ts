@@ -4,17 +4,18 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 
 import { DeleteManyNotVerifiedUsersCommand } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.command';
 
+import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class DeleteManyNotVerifiedUsersService {
+export class DeleteManyNotVerifiedUsersService implements IServiceHandler {
     constructor(private readonly commandBus: CommandBus) {}
 
     @Cron(CronExpression.EVERY_WEEK)
-    async deleteManyNotVerifiedUsers(): Promise<void> {
+    async execute(): Promise<void> {
         try {
             const deleteManyNotVerifiedUsersCommand = new DeleteManyNotVerifiedUsersCommand();
-            await this.commandBus.execute<DeleteManyNotVerifiedUsersCommand, TSelectUser>(
+            await this.commandBus.execute<DeleteManyNotVerifiedUsersCommand, TSelectUser[]>(
                 deleteManyNotVerifiedUsersCommand,
             );
         } catch (error) {
