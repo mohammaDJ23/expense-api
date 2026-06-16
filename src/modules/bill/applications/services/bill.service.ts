@@ -7,8 +7,8 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { GetManyBillsQuery } from '@/modules/bill/applications/queries/getManyBills/getManyBills.query';
 import { CreateManyBillsConsumersService } from '@/modules/consumer/applications/services/createManybillsConsumers.service';
+import { CreateManyUsersConsumersIfNotExistsService } from '@/modules/consumer/applications/services/createManyUsersConsumersIfNotExists.service';
 import { GetManyConsumersByNameOrCreateService } from '@/modules/consumer/applications/services/getManyConsumersByNameOrCreate.service';
-import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { CreateUserLocationIfNotExistsService } from '@/modules/location/applications/services/createUserLocationIfNotExists.service';
 import { GetLocationByNameOrCreateService } from '@/modules/location/applications/services/getLocationByNameOrCreate.service';
 import { CreateUserReceiverIfNotExistsService } from '@/modules/receiver/applications/services/createUserReceiverIfNotExists.service';
@@ -29,7 +29,7 @@ export class BillService {
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
         private readonly getManyConsumersByNameOrCreateService: GetManyConsumersByNameOrCreateService,
-        private readonly userConsumerService: UserConsumerService,
+        private readonly createManyUsersConsumersIfNotExistsService: CreateManyUsersConsumersIfNotExistsService,
         private readonly createManyBillsConsumersService: CreateManyBillsConsumersService,
         private readonly getLocationByNameOrCreateService: GetLocationByNameOrCreateService,
         private readonly createUserLocationIfNotExistsService: CreateUserLocationIfNotExistsService,
@@ -76,7 +76,7 @@ export class BillService {
     ): Promise<void> {
         await Promise.all([
             this.createManyBillsConsumersService.execute(billId, consumers),
-            this.userConsumerService.createManyIfNotExists(userId, consumers),
+            this.createManyUsersConsumersIfNotExistsService.execute(userId, consumers),
             this.createUserLocationIfNotExistsService.execute(userId, locationId),
             this.createUserReceiverIfNotExistsService.execute(userId, receiverId),
         ]);
