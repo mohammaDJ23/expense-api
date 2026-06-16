@@ -11,8 +11,8 @@ import { ConsumerService } from '@/modules/consumer/applications/services/consum
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
 import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
+import { CreateUserReceiverIfNotExistsService } from '@/modules/receiver/applications/services/createUserReceiverIfNotExists.service';
 import { GetReceiverByNameOrCreateService } from '@/modules/receiver/applications/services/getReceiverByNameOrCreate.service';
-import { UserReceiverService } from '@/modules/receiver/applications/services/userReceiver.service';
 
 import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
@@ -34,7 +34,7 @@ export class BillService {
         private readonly locationService: LocationService,
         private readonly userLocationService: UserLocationService,
         private readonly getReceiverByNameOrCreateService: GetReceiverByNameOrCreateService,
-        private readonly userReceiverService: UserReceiverService,
+        private readonly createUserReceiverIfNotExistsService: CreateUserReceiverIfNotExistsService,
     ) {}
 
     private getOrCreateRequirement(
@@ -78,7 +78,7 @@ export class BillService {
             this.billConsumerService.createMany(billId, consumers),
             this.userConsumerService.createManyIfNotExists(userId, consumers),
             this.userLocationService.createIfNotExists(userId, locationId),
-            this.userReceiverService.createIfNotExists(userId, receiverId),
+            this.createUserReceiverIfNotExistsService.execute(userId, receiverId),
         ]);
     }
 
