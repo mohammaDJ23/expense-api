@@ -9,8 +9,8 @@ import { GetManyBillsQuery } from '@/modules/bill/applications/queries/getManyBi
 import { BillConsumerService } from '@/modules/consumer/applications/services/billConsumer.service';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
+import { CreateUserLocationIfNotExistsService } from '@/modules/location/applications/services/createUserLocationIfNotExists.service';
 import { GetLocationByNameOrCreateService } from '@/modules/location/applications/services/getLocationByNameOrCreate.service';
-import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
 import { CreateUserReceiverIfNotExistsService } from '@/modules/receiver/applications/services/createUserReceiverIfNotExists.service';
 import { GetReceiverByNameOrCreateService } from '@/modules/receiver/applications/services/getReceiverByNameOrCreate.service';
 
@@ -32,7 +32,7 @@ export class BillService {
         private readonly userConsumerService: UserConsumerService,
         private readonly billConsumerService: BillConsumerService,
         private readonly getLocationByNameOrCreateService: GetLocationByNameOrCreateService,
-        private readonly userLocationService: UserLocationService,
+        private readonly createUserLocationIfNotExistsService: CreateUserLocationIfNotExistsService,
         private readonly getReceiverByNameOrCreateService: GetReceiverByNameOrCreateService,
         private readonly createUserReceiverIfNotExistsService: CreateUserReceiverIfNotExistsService,
     ) {}
@@ -77,7 +77,7 @@ export class BillService {
         await Promise.all([
             this.billConsumerService.createMany(billId, consumers),
             this.userConsumerService.createManyIfNotExists(userId, consumers),
-            this.userLocationService.createIfNotExists(userId, locationId),
+            this.createUserLocationIfNotExistsService.execute(userId, locationId),
             this.createUserReceiverIfNotExistsService.execute(userId, receiverId),
         ]);
     }
