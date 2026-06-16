@@ -6,8 +6,8 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { GetManyBillsQuery } from '@/modules/bill/applications/queries/getManyBills/getManyBills.query';
-import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { CreateManyBillsConsumersService } from '@/modules/consumer/applications/services/createManybillsConsumers.service';
+import { GetManyConsumersByNameOrCreateService } from '@/modules/consumer/applications/services/getManyConsumersByNameOrCreate.service';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { CreateUserLocationIfNotExistsService } from '@/modules/location/applications/services/createUserLocationIfNotExists.service';
 import { GetLocationByNameOrCreateService } from '@/modules/location/applications/services/getLocationByNameOrCreate.service';
@@ -28,7 +28,7 @@ export class BillService {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
-        private readonly consumerService: ConsumerService,
+        private readonly getManyConsumersByNameOrCreateService: GetManyConsumersByNameOrCreateService,
         private readonly userConsumerService: UserConsumerService,
         private readonly createManyBillsConsumersService: CreateManyBillsConsumersService,
         private readonly getLocationByNameOrCreateService: GetLocationByNameOrCreateService,
@@ -41,7 +41,7 @@ export class BillService {
         data: CreateBillRequestDto,
     ): Promise<[TSelectConsumer[], TSelectLocation, TSelectReceiver]> {
         return Promise.all([
-            this.consumerService.getOrCreateMany(data.consumers),
+            this.getManyConsumersByNameOrCreateService.execute(data.consumers),
             this.getLocationByNameOrCreateService.execute(data.location),
             this.getReceiverByNameOrCreateService.execute(data.receiver),
         ]);

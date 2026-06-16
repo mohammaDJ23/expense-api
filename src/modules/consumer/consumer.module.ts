@@ -6,8 +6,10 @@ import { CreateManyConsumersHandler } from '@/modules/consumer/applications/comm
 import { CreateManyUsersConsumersHandler } from '@/modules/consumer/applications/commands/createManyUsersConsumers/createManyUsersConsumers.handler';
 import { GetManyConsumersByNameHandler } from '@/modules/consumer/applications/queries/getManyConsumersByName/getManyConsumersByName.handler';
 import { GetManyUsersConsumersByIdHandler } from '@/modules/consumer/applications/queries/getManyUsersConsumersById/getManyUsersConsumersById.handler';
-import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { CreateManyBillsConsumersService } from '@/modules/consumer/applications/services/createManybillsConsumers.service';
+import { CreateManyConsumersService } from '@/modules/consumer/applications/services/createManyConsumers.service';
+import { GetManyConsumersByNameService } from '@/modules/consumer/applications/services/getManyConsumersByName.service';
+import { GetManyConsumersByNameOrCreateService } from '@/modules/consumer/applications/services/getManyConsumersByNameOrCreate.service';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
 import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
@@ -16,18 +18,24 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
 @Module({
     imports: [CqrsModule],
     providers: [
-        ConsumerService,
         UserConsumerService,
         CreateManyBillsConsumersService,
         CreateManyUsersConsumersHandler,
         CreateManyConsumersHandler,
         CreateManyBillsConsumersHandler,
+        CreateManyConsumersService,
+        GetManyConsumersByNameService,
+        GetManyConsumersByNameOrCreateService,
         GetManyUsersConsumersByIdHandler,
         GetManyConsumersByNameHandler,
         ConsumerRepository,
         UserConsumerRepository,
         BillConsumerRepository,
     ],
-    exports: [ConsumerService, UserConsumerService, CreateManyBillsConsumersService],
+    exports: [
+        UserConsumerService,
+        CreateManyBillsConsumersService,
+        GetManyConsumersByNameOrCreateService,
+    ],
 })
 export class ConsumerModule {}
