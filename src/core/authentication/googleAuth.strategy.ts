@@ -1,11 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { Strategy, type Profile } from 'passport-google-oauth20';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { readSecret } from '@/common/utils/readSecret.util';
-import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { GetUserByEmailOrNullService } from '@/modules/user/applications/services/getUserByEmailOrNull.service';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
@@ -56,11 +55,11 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
         }
 
         if (!user.verifiedAt) {
-            throw new ProcessFailedForbiddenException();
+            throw new ForbiddenException();
         }
 
         if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
-            throw new ProcessFailedForbiddenException();
+            throw new ForbiddenException();
         }
 
         return this.updateUserService.execute({

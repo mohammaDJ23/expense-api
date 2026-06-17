@@ -1,10 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { readSecret } from '@/common/utils/readSecret.util';
-import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
 import { GetUserByIdOrNullService } from '@/modules/user/applications/services/getUserByIdOrNull.service';
 
 import type { IAccessTokenPayload } from '@/modules/authentication/domain/interfaces/accessTokenPayload.interface';
@@ -34,7 +33,7 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
         }
 
         if (!user.verifiedAt) {
-            throw new ProcessFailedForbiddenException();
+            throw new ForbiddenException();
         }
 
         return user;
