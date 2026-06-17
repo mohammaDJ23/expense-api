@@ -64,7 +64,7 @@ export class LocalSignupService {
         try {
             const token = this.verificationTokenService.sign(createdUser);
             await this.verificationStorageService.set(createdUser.email, token);
-            await this.verificationMailerService.sendMail(createdUser, token);
+            await this.verificationMailerService.execute(createdUser, token);
         } catch {
             throw new ServiceUnavailableException(
                 'Your email has been saved but we could not send you the verification link, send the verification link manually',

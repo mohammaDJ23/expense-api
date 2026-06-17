@@ -65,7 +65,7 @@ export class LocalVerificationService {
             try {
                 const token = this.verificationTokenService.sign(user);
                 await this.verificationStorageService.set(user.email, token);
-                await this.verificationMailerService.sendMail(user, token);
+                await this.verificationMailerService.execute(user, token);
             } catch {
                 try {
                     await this.verificationStorageService.delete(user.email);
