@@ -63,7 +63,7 @@ export class LocalLoginService {
         }
 
         try {
-            const token = this.accessTokenService.sign(user);
+            const token = this.accessTokenService.execute(user);
 
             const updateUserCommand = new UpdateUserCommand({
                 id: user.id,

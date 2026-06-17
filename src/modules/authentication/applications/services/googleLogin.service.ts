@@ -13,7 +13,7 @@ export class GoogleLoginService {
 
     login(user: TSelectUser): AccessTokenEntity {
         try {
-            const token = this.accessTokenService.sign(user);
+            const token = this.accessTokenService.execute(user);
             return AccessTokenEntity.create(token);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
