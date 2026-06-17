@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 import { UserModule } from '@/modules/user/user.module';
 
@@ -8,7 +8,7 @@ import { JwtAuthGuard } from './jwtAuth.guard';
 import { JwtAuthStrategy } from './jwtAuth.strategy';
 
 @Module({
-    imports: [UserModule],
+    imports: [forwardRef(() => UserModule)],
     providers: [GoogleAuthGuard, GoogleAuthStrategy, JwtAuthGuard, JwtAuthStrategy],
     exports: [JwtAuthGuard, GoogleAuthGuard],
 })

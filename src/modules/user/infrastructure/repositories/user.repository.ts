@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { eq, isNull } from 'drizzle-orm';
+import { eq, isNull, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
@@ -33,19 +33,27 @@ export class UserRepository extends DrizzleRepository implements IUserRepository
         return toEntities(this.db.delete(users).where(isNull(users.verifiedAt)).returning());
     }
 
-    private selectByEmail(email: string) {
-        return this.db.select().from(users).where(eq(users.email, email));
-    }
-
     isExistsByEmail(email: string): Promise<boolean> {
-        return isExists(this.selectByEmail(email));
+        return isExists(this.db.select().from(users).where(eq(users.email, email)));
     }
 
     getByEmailOrNull(email: string): Promise<TSelectUser | null> {
-        return toEntityOrNull(this.selectByEmail(email));
+        return toEntityOrNull(this.db.select().from(users).where(eq(users.email, email)));
     }
 
     getByIdOrNull(id: string): Promise<TSelectUser | null> {
         return toEntityOrNull(this.db.select().from(users).where(eq(users.id, id)));
+    }
+
+    getByIdOrThrow(id: string): Promise<TSelectUser> {
+        return toEntityOrThrow(
+            this.db
+                .select()
+                .from(users)
+                .where(eq(users.id, sql.placeholder('id')))
+                .prepare('get_user_by_id_or_throw')
+                .execute({ id }),
+            'Unable to find',
+        );
     }
 }

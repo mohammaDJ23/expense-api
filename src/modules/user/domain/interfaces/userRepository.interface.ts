@@ -7,4 +7,5 @@ export interface IUserRepository {
     isExistsByEmail(email: string): Promise<boolean>;
     getByEmailOrNull(email: string): Promise<TSelectUser | null>;
     getByIdOrNull(id: string): Promise<TSelectUser | null>;
+    getByIdOrThrow(id: string): Promise<TSelectUser>;
 }
