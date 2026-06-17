@@ -1,11 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { InvalidCredentialBadRequestException } from '@/core/exceptions/invalidCredentialBadRequest.exception';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
-import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
+import { GetUserByEmailOrNullService } from '@/modules/user/applications/services/getUserByEmailOrNull.service';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
@@ -16,18 +14,16 @@ import { PasswordTokenService } from './passwordToken.service';
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { INewPasswordPayload } from '@/modules/authentication/domain/interfaces/newPasswordPayload.interface';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class LocalResetPasswordService implements IServiceHandler {
     // eslint-disable-next-line max-params
     constructor(
-        private readonly commandBus: CommandBus,
-        private readonly queryBus: QueryBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly passwordTokenService: PasswordTokenService,
         private readonly passwordStorageService: PasswordStorageService,
         private readonly updateUserService: UpdateUserService,
+        private readonly getUserByEmailOrNullService: GetUserByEmailOrNullService,
     ) {}
 
     async execute(data: LocalResetPasswordRequestDto): Promise<boolean> {
@@ -47,15 +43,7 @@ export class LocalResetPasswordService implements IServiceHandler {
             throw new InvalidCredentialBadRequestException();
         }
 
-        let user: TSelectUser | null = null;
-        try {
-            const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(payload.email);
-            user = await this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
-                getUserByEmailOrNullQuery,
-            );
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
+        const user = await this.getUserByEmailOrNullService.execute(payload.email);
 
         if (!user) {
             return true;

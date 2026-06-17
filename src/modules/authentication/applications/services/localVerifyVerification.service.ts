@@ -1,11 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { InvalidCredentialBadRequestException } from '@/core/exceptions/invalidCredentialBadRequest.exception';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
-import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
+import { GetUserByEmailOrNullService } from '@/modules/user/applications/services/getUserByEmailOrNull.service';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
@@ -15,15 +13,14 @@ import { VerificationTokenService } from './verificationToken.service';
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
 import type { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class LocalVerifyVerificationService implements IServiceHandler {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
         private readonly updateUserService: UpdateUserService,
+        private readonly getUserByEmailOrNullService: GetUserByEmailOrNullService,
     ) {}
 
     async execute(data: LocalVerifyVerificationRequestDto): Promise<boolean> {
@@ -43,15 +40,7 @@ export class LocalVerifyVerificationService implements IServiceHandler {
             throw new InvalidCredentialBadRequestException();
         }
 
-        let user: TSelectUser | null = null;
-        try {
-            const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(payload.email);
-            user = await this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
-                getUserByEmailOrNullQuery,
-            );
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
+        const user = await this.getUserByEmailOrNullService.execute(payload.email);
 
         if (!user) {
             return true;
