@@ -19,9 +19,10 @@ import { VerificationMailerService } from '@/modules/authentication/applications
 import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { VerificationTokenService } from '@/modules/authentication/applications/services/verificationToken.service';
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
+import { UserModule } from '@/modules/user/user.module';
 
 @Module({
-    imports: [CqrsModule, JwtModule, CoreAuthenticationModule],
+    imports: [CqrsModule, JwtModule, UserModule, CoreAuthenticationModule],
     controllers: [AuthenticationController],
     providers: [
         GoogleLoginService,
