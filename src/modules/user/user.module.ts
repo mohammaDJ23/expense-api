@@ -10,6 +10,7 @@ import { IsUserExistsByEmailHandler } from '@/modules/user/applications/queries/
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { DeleteManyNotVerifiedUsersService } from '@/modules/user/applications/services/deleteManyNotVerifiedUsers.service';
 import { GetUserByEmailOrNullService } from '@/modules/user/applications/services/getUserByEmailOrNull.service';
+import { GetUserByIdOrNullService } from '@/modules/user/applications/services/getUserByIdOrNull.service';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 
@@ -22,12 +23,18 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
         UpdateUserService,
         GetUserByEmailOrNullHandler,
         GetUserByEmailOrNullService,
+        GetUserByIdOrNullService,
         UpdateUserHandler,
         GetUserByIdOrNullHandler,
         IsUserExistsByEmailHandler,
         DeleteManyNotVerifiedUsersService,
         DeleteManyNotVerifiedUsersHandler,
     ],
-    exports: [CreateUserService, UpdateUserService, GetUserByEmailOrNullService],
+    exports: [
+        CreateUserService,
+        UpdateUserService,
+        GetUserByEmailOrNullService,
+        GetUserByIdOrNullService,
+    ],
 })
 export class UserModule {}

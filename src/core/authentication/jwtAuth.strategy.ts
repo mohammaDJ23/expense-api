@@ -1,20 +1,18 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { readSecret } from '@/common/utils/readSecret.util';
 import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
-import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { GetUserByIdOrNullQuery } from '@/modules/user/applications/queries/getUserByIdOrNull/getUserByIdOrNull.query';
+import { GetUserByIdOrNullService } from '@/modules/user/applications/services/getUserByIdOrNull.service';
 
 import type { IAccessTokenPayload } from '@/modules/authentication/domain/interfaces/accessTokenPayload.interface';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class JwtAuthStrategy extends PassportStrategy(Strategy) {
-    constructor(private readonly queryBus: QueryBus) {
+    constructor(private readonly getUserByIdOrNullService: GetUserByIdOrNullService) {
         const env = new Env();
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -29,15 +27,7 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
             throw new UnauthorizedException();
         }
 
-        let user: TSelectUser | null;
-        try {
-            const getUserByIdOrNullQuery = new GetUserByIdOrNullQuery(payload.id);
-            user = await this.queryBus.execute<GetUserByIdOrNullQuery, TSelectUser | null>(
-                getUserByIdOrNullQuery,
-            );
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
+        const user = await this.getUserByIdOrNullService.execute(payload.id);
 
         if (!user) {
             throw new UnauthorizedException();
