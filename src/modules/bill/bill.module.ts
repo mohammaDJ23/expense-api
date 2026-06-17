@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
-import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
 import { GetManyBillsHandler } from '@/modules/bill/applications/queries/getManyBills/getManyBills.handler';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
