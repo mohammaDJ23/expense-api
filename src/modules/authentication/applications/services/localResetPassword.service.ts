@@ -1,8 +1,4 @@
-import {
-    Injectable,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
@@ -14,74 +10,26 @@ import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/g
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { PasswordHasherService } from './passwordHasher.service';
-import { PasswordMailerService } from './passwordMailer.service';
 import { PasswordStorageService } from './passwordStorage.service';
 import { PasswordTokenService } from './passwordToken.service';
 
+import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { INewPasswordPayload } from '@/modules/authentication/domain/interfaces/newPasswordPayload.interface';
-import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class LocalPasswordService {
+export class LocalResetPasswordService implements IServiceHandler {
     // eslint-disable-next-line max-params
     constructor(
         private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
         private readonly passwordHasherService: PasswordHasherService,
-        private readonly passwordMailerService: PasswordMailerService,
         private readonly passwordTokenService: PasswordTokenService,
         private readonly passwordStorageService: PasswordStorageService,
     ) {}
 
-    private getUserByEmail(email: string): Promise<TSelectUser | null> {
-        const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(email);
-        return this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
-            getUserByEmailOrNullQuery,
-        );
-    }
-
-    async forgotPassword(data: LocalForgotPasswordRequestDto): Promise<boolean> {
-        let user: TSelectUser | null;
-        try {
-            const storedToken = await this.passwordStorageService.get(data.email);
-            if (storedToken) {
-                return true;
-            }
-
-            user = await this.getUserByEmail(data.email);
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
-
-        if (!user) {
-            return true;
-        }
-
-        if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderForbiddenException();
-        }
-
-        if (user.verifiedAt) {
-            try {
-                const token = this.passwordTokenService.sign(user);
-                await this.passwordStorageService.set(user.email, token);
-                await this.passwordMailerService.execute(user, token);
-            } catch {
-                try {
-                    await this.passwordStorageService.delete(user.email);
-                    // eslint-disable-next-line no-empty
-                } catch {}
-
-                throw new ServiceUnavailableException('Could not send you a verification link');
-            }
-        }
-
-        return true;
-    }
-
-    async resetPassword(data: LocalResetPasswordRequestDto): Promise<boolean> {
+    async execute(data: LocalResetPasswordRequestDto): Promise<boolean> {
         let payload: INewPasswordPayload;
         try {
             payload = this.passwordTokenService.verify(data.token);
@@ -100,7 +48,10 @@ export class LocalPasswordService {
 
         let user: TSelectUser | null = null;
         try {
-            user = await this.getUserByEmail(payload.email);
+            const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(payload.email);
+            user = await this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
+                getUserByEmailOrNullQuery,
+            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
