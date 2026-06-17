@@ -9,6 +9,7 @@ import { GetUserByIdOrNullHandler } from '@/modules/user/applications/queries/ge
 import { IsUserExistsByEmailHandler } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.handler';
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { DeleteManyNotVerifiedUsersService } from '@/modules/user/applications/services/deleteManyNotVerifiedUsers.service';
+import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 
 @Module({
@@ -17,6 +18,7 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
         UserRepository,
         CreateUserHandler,
         CreateUserService,
+        UpdateUserService,
         GetUserByEmailOrNullHandler,
         UpdateUserHandler,
         GetUserByIdOrNullHandler,
@@ -24,6 +26,6 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
         DeleteManyNotVerifiedUsersService,
         DeleteManyNotVerifiedUsersHandler,
     ],
-    exports: [CreateUserService],
+    exports: [CreateUserService, UpdateUserService],
 })
 export class UserModule {}

@@ -1,12 +1,12 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { InvalidCredentialBadRequestException } from '@/core/exceptions/invalidCredentialBadRequest.exception';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
+import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { VerificationStorageService } from './verificationStorage.service';
@@ -20,10 +20,10 @@ import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 @Injectable()
 export class LocalVerifyVerificationService implements IServiceHandler {
     constructor(
-        private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
+        private readonly updateUserService: UpdateUserService,
     ) {}
 
     async execute(data: LocalVerifyVerificationRequestDto): Promise<boolean> {
@@ -63,12 +63,11 @@ export class LocalVerifyVerificationService implements IServiceHandler {
 
         if (!user.verifiedAt) {
             try {
-                const updateUserCommand = new UpdateUserCommand({
+                await this.updateUserService.execute({
                     id: user.id,
                     updatedAt: getCurrentUTCTimestamp(),
                     verifiedAt: getCurrentUTCTimestamp(),
                 });
-                await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
             } catch {
                 throw new InternalServerErrorException('Could not verify your email, try again');
             }

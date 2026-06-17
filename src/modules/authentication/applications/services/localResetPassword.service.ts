@@ -5,8 +5,8 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { InvalidCredentialBadRequestException } from '@/core/exceptions/invalidCredentialBadRequest.exception';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
+import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { PasswordHasherService } from './passwordHasher.service';
@@ -27,6 +27,7 @@ export class LocalResetPasswordService implements IServiceHandler {
         private readonly passwordHasherService: PasswordHasherService,
         private readonly passwordTokenService: PasswordTokenService,
         private readonly passwordStorageService: PasswordStorageService,
+        private readonly updateUserService: UpdateUserService,
     ) {}
 
     async execute(data: LocalResetPasswordRequestDto): Promise<boolean> {
@@ -68,12 +69,11 @@ export class LocalResetPasswordService implements IServiceHandler {
             try {
                 const hashedPassword = await this.passwordHasherService.hash(data.newPassword);
 
-                const updateUserCommand = new UpdateUserCommand({
+                await this.updateUserService.execute({
                     id: user.id,
                     updatedAt: getCurrentUTCTimestamp(),
                     hashedPassword,
                 });
-                await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
             } catch {
                 throw new InternalServerErrorException('Could not change your password, try again');
             }
