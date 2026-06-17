@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
@@ -7,8 +7,8 @@ import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailed
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { ProcessFailedUnAuthorizedException } from '@/core/exceptions/processFailedUnauthorized.exception';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
-import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
+import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { AccessTokenService } from './accessToken.service';
@@ -21,10 +21,10 @@ import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 @Injectable()
 export class LocalLoginService implements IServiceHandler {
     constructor(
-        private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly accessTokenService: AccessTokenService,
+        private readonly updateUserService: UpdateUserService,
     ) {}
 
     async execute(data: LocalLoginRequestDto): Promise<AccessTokenEntity> {
@@ -63,19 +63,15 @@ export class LocalLoginService implements IServiceHandler {
             throw new ProcessFailedForbiddenException();
         }
 
-        try {
-            const token = this.accessTokenService.execute(user);
+        const token = this.accessTokenService.execute(user);
+        const accessToken = AccessTokenEntity.create(token);
 
-            const updateUserCommand = new UpdateUserCommand({
-                id: user.id,
-                updatedAt: getCurrentUTCTimestamp(),
-                lastLoginAt: getCurrentUTCTimestamp(),
-            });
-            await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
+        await this.updateUserService.execute({
+            id: user.id,
+            updatedAt: getCurrentUTCTimestamp(),
+            lastLoginAt: getCurrentUTCTimestamp(),
+        });
 
-            return AccessTokenEntity.create(token);
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
+        return accessToken;
     }
 }

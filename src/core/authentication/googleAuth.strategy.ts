@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { Strategy, type Profile } from 'passport-google-oauth20';
@@ -8,9 +8,9 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { readSecret } from '@/common/utils/readSecret.util';
 import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
+import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
@@ -19,9 +19,9 @@ import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
     constructor(
-        private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
         private readonly createUserService: CreateUserService,
+        private readonly updateUserService: UpdateUserService,
     ) {
         const env = new Env();
         super({
@@ -73,15 +73,10 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
             throw new ProcessFailedForbiddenException();
         }
 
-        try {
-            const updateUserCommand = new UpdateUserCommand({
-                id: user.id,
-                updatedAt: getCurrentUTCTimestamp(),
-                lastLoginAt: getCurrentUTCTimestamp(),
-            });
-            return await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
+        return this.updateUserService.execute({
+            id: user.id,
+            updatedAt: getCurrentUTCTimestamp(),
+            lastLoginAt: getCurrentUTCTimestamp(),
+        });
     }
 }
