@@ -1,3 +1,9 @@
+## [2.2.0](https://github.com/mohammaDJ23/expense-api/compare/v2.1.0...v2.2.0) (2026-06-17)
+
+### ✨ Features
+
+- 955211 add the get user (me) api ([5bad6dc](https://github.com/mohammaDJ23/expense-api/commit/5bad6dcfc1f295059353cb749f644e41c3e4d60c))
+
 ## [2.1.0](https://github.com/mohammaDJ23/expense-api/compare/v2.0.0...v2.1.0) (2026-06-17)
 
 ### ✨ Features
