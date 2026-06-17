@@ -1,3 +1,13 @@
+## [2.1.0](https://github.com/mohammaDJ23/expense-api/compare/v2.0.0...v2.1.0) (2026-06-17)
+
+### ✨ Features
+
+- 905315 add the get bill api ([6127b90](https://github.com/mohammaDJ23/expense-api/commit/6127b902a2bd92548d5ddd2d0a8d8034f51e1be2))
+
+### 🔧 Chores
+
+- 479011 remove the extra exceptions ([3609a74](https://github.com/mohammaDJ23/expense-api/commit/3609a743b80b3712111b5628239bf0c36c23bb49))
+
 ## [2.0.0](https://github.com/mohammaDJ23/expense-api/compare/v1.4.0...v2.0.0) (2026-06-17)
 
 ### ✨ Features
