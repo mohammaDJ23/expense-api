@@ -13,11 +13,12 @@ import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
+import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class LocalSignupService {
+export class LocalSignupService implements IServiceHandler {
     // eslint-disable-next-line max-params
     constructor(
         private readonly commandBus: CommandBus,
@@ -28,7 +29,7 @@ export class LocalSignupService {
         private readonly verificationStorageService: VerificationStorageService,
     ) {}
 
-    async signup(data: LocalSignupRequestDto): Promise<boolean> {
+    async execute(data: LocalSignupRequestDto): Promise<boolean> {
         let isExists = false;
         try {
             const isUserExistsByEmailQuery = new IsUserExistsByEmailQuery(data.email);
