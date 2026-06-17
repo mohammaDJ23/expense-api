@@ -3,4 +3,5 @@ import type { TInsertBill, TSelectBill } from '@/modules/bill/infrastructure/sch
 export interface IBillRepository {
     create(data: TInsertBill): Promise<TSelectBill>;
     getMany(userId: string, offset: number, limit: number): Promise<TSelectBill[]>;
+    getByIdOrThrow(userId: string, billId: string): Promise<TSelectBill>;
 }

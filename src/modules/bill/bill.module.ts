@@ -3,8 +3,10 @@ import { CqrsModule } from '@nestjs/cqrs';
 
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
+import { GetBillByIdOrThrowHandler } from '@/modules/bill/applications/queries/getBillByIdOrThrow/getBillByIdOrThrow.handler';
 import { GetManyBillsHandler } from '@/modules/bill/applications/queries/getManyBills/getManyBills.handler';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
+import { GetBillByIdOrThrowService } from '@/modules/bill/applications/services/getBillByIdOrThrow.service';
 import { GetManyBillsService } from '@/modules/bill/applications/services/getManyBills.service';
 import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.repository';
 import { BillController } from '@/modules/bill/interface/controllers/v1.controller';
@@ -17,6 +19,8 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
     providers: [
         CreateBillService,
         GetManyBillsService,
+        GetBillByIdOrThrowService,
+        GetBillByIdOrThrowHandler,
         CreateBillHandler,
         GetManyBillsHandler,
         BillRepository,
