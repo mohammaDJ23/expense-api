@@ -1,10 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
-import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { ProcessFailedUnAuthorizedException } from '@/core/exceptions/processFailedUnauthorized.exception';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import { GetUserByEmailOrNullService } from '@/modules/user/applications/services/getUserByEmailOrNull.service';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
@@ -29,7 +27,7 @@ export class LocalLoginService implements IServiceHandler {
         const user = await this.getUserByEmailOrNullService.execute(data.email);
 
         if (!user) {
-            throw new ProcessFailedUnAuthorizedException();
+            throw new UnauthorizedException();
         }
 
         if (user.authProvider !== AuthProvider.LOCAL || !user.hashedPassword) {
@@ -37,7 +35,7 @@ export class LocalLoginService implements IServiceHandler {
         }
 
         if (!user.verifiedAt) {
-            throw new ProcessFailedForbiddenException();
+            throw new ForbiddenException();
         }
 
         let isPasswordValid = false;
@@ -50,7 +48,7 @@ export class LocalLoginService implements IServiceHandler {
             throw new ProcessFailedInternalServerErrorException();
         }
         if (!isPasswordValid) {
-            throw new ProcessFailedForbiddenException();
+            throw new ForbiddenException();
         }
 
         const token = this.accessTokenService.execute(user);

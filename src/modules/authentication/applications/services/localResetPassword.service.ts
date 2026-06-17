@@ -1,7 +1,6 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { InvalidCredentialBadRequestException } from '@/core/exceptions/invalidCredentialBadRequest.exception';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { GetUserByEmailOrNullService } from '@/modules/user/applications/services/getUserByEmailOrNull.service';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
@@ -31,7 +30,7 @@ export class LocalResetPasswordService implements IServiceHandler {
         try {
             payload = this.passwordTokenService.verify(data.token);
         } catch {
-            throw new InvalidCredentialBadRequestException();
+            throw new BadRequestException();
         }
 
         let storedToken: string | null = null;
@@ -40,7 +39,7 @@ export class LocalResetPasswordService implements IServiceHandler {
             // eslint-disable-next-line no-empty
         } catch {}
         if (storedToken !== data.token) {
-            throw new InvalidCredentialBadRequestException();
+            throw new BadRequestException();
         }
 
         const user = await this.getUserByEmailOrNullService.execute(payload.email);
