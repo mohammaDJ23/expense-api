@@ -1,5 +1,4 @@
 import { ConflictException, Injectable, ServiceUnavailableException } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
@@ -21,7 +20,6 @@ import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 export class LocalSignupService implements IServiceHandler {
     // eslint-disable-next-line max-params
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly createUserService: CreateUserService,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly verificationMailerService: VerificationMailerService,
