@@ -8,6 +8,7 @@ import { GoogleLoginService } from '@/modules/authentication/applications/servic
 import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
 import { LocalLoginService } from '@/modules/authentication/applications/services/localLogin.service';
 import { LocalResetPasswordService } from '@/modules/authentication/applications/services/localResetPassword.service';
+import { LocalSendVerificationService } from '@/modules/authentication/applications/services/localSendVerification.service';
 import { LocalSignupService } from '@/modules/authentication/applications/services/localSignup.service';
 import { LocalVerificationService } from '@/modules/authentication/applications/services/localVerification.service';
 import { PasswordHasherService } from '@/modules/authentication/applications/services/passwordHasher.service';
@@ -29,6 +30,7 @@ import { AuthenticationController } from '@/modules/authentication/interface/con
         LocalForgotPasswordService,
         LocalResetPasswordService,
         LocalVerificationService,
+        LocalSendVerificationService,
         VerificationMailerService,
         VerificationTokenService,
         VerificationStorageService,
