@@ -14,11 +14,12 @@ import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { AccessTokenService } from './accessToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
 
+import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class LocalLoginService {
+export class LocalLoginService implements IServiceHandler {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
@@ -26,7 +27,7 @@ export class LocalLoginService {
         private readonly accessTokenService: AccessTokenService,
     ) {}
 
-    async login(data: LocalLoginRequestDto): Promise<AccessTokenEntity> {
+    async execute(data: LocalLoginRequestDto): Promise<AccessTokenEntity> {
         let user: TSelectUser | null = null;
         try {
             const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(data.email);
