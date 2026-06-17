@@ -8,9 +8,9 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { readSecret } from '@/common/utils/readSecret.util';
 import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailedForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
+import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
@@ -21,6 +21,7 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
+        private readonly createUserService: CreateUserService,
     ) {
         const env = new Env();
         super({
@@ -46,7 +47,7 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
             );
 
             if (!user) {
-                const createUserCommand = new CreateUserCommand({
+                return await this.createUserService.execute({
                     firstName: profile.name?.givenName,
                     lastName: profile.name?.familyName,
                     googleId: profile.id,
@@ -59,9 +60,6 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
                     updatedAt: getCurrentUTCTimestamp(),
                     lastLoginAt: getCurrentUTCTimestamp(),
                 });
-                return await this.commandBus.execute<CreateUserCommand, TSelectUser>(
-                    createUserCommand,
-                );
             }
         } catch {
             throw new ProcessFailedInternalServerErrorException();
