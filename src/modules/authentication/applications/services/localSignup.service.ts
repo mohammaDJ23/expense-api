@@ -3,7 +3,6 @@ import { QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { IsUserExistsByEmailQuery } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.query';
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
@@ -15,6 +14,7 @@ import { VerificationTokenService } from './verificationToken.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
+import type { IsUserExistsByEmailService } from '@/modules/user/applications/services/isUserExistsByEmail.service';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
@@ -27,18 +27,12 @@ export class LocalSignupService implements IServiceHandler {
         private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
+        private readonly isUserExistsByEmailService: IsUserExistsByEmailService,
     ) {}
 
     async execute(data: LocalSignupRequestDto): Promise<boolean> {
-        let isExists = false;
-        try {
-            const isUserExistsByEmailQuery = new IsUserExistsByEmailQuery(data.email);
-            isExists = await this.queryBus.execute<IsUserExistsByEmailQuery, boolean>(
-                isUserExistsByEmailQuery,
-            );
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
+        const isExists = await this.isUserExistsByEmailService.execute(data.email);
+
         if (isExists) {
             throw new ConflictException('The Email already exists.');
         }
