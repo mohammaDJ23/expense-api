@@ -1,8 +1,4 @@
-import {
-    Injectable,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
@@ -13,73 +9,24 @@ import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUs
 import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
-import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
+import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
-import type { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
 import type { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class LocalVerificationService {
-    // eslint-disable-next-line max-params
+export class LocalVerifyVerificationService implements IServiceHandler {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
-        private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
     ) {}
 
-    private getUserByEmail(email: string): Promise<TSelectUser | null> {
-        const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(email);
-        return this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
-            getUserByEmailOrNullQuery,
-        );
-    }
-
-    async sendVerification(data: LocalSendVerificationRequestDto): Promise<boolean> {
-        let user: TSelectUser | null = null;
-        try {
-            const storedToken = await this.verificationStorageService.get(data.email);
-            if (storedToken) {
-                return true;
-            }
-
-            user = await this.getUserByEmail(data.email);
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
-
-        if (!user) {
-            return true;
-        }
-
-        if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderForbiddenException();
-        }
-
-        if (!user.verifiedAt) {
-            try {
-                const token = this.verificationTokenService.sign(user);
-                await this.verificationStorageService.set(user.email, token);
-                await this.verificationMailerService.execute(user, token);
-            } catch {
-                try {
-                    await this.verificationStorageService.delete(user.email);
-                    // eslint-disable-next-line no-empty
-                } catch {}
-
-                throw new ServiceUnavailableException('Could not send you a verification link');
-            }
-        }
-
-        return true;
-    }
-
-    async verifyVerification(data: LocalVerifyVerificationRequestDto): Promise<boolean> {
+    async execute(data: LocalVerifyVerificationRequestDto): Promise<boolean> {
         let payload: IVerificationPayload;
         try {
             payload = this.verificationTokenService.verify(data.token);
@@ -98,7 +45,10 @@ export class LocalVerificationService {
 
         let user: TSelectUser | null = null;
         try {
-            user = await this.getUserByEmail(payload.email);
+            const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(payload.email);
+            user = await this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
+                getUserByEmailOrNullQuery,
+            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
