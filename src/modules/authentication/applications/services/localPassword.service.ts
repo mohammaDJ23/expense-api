@@ -67,7 +67,7 @@ export class LocalPasswordService {
             try {
                 const token = this.passwordTokenService.sign(user);
                 await this.passwordStorageService.set(user.email, token);
-                await this.passwordMailerService.sendMail(user, token);
+                await this.passwordMailerService.execute(user, token);
             } catch {
                 try {
                     await this.passwordStorageService.delete(user.email);
