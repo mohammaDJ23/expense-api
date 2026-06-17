@@ -3,6 +3,7 @@ import { ConflictException, Injectable, ServiceUnavailableException } from '@nes
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
+import { IsUserExistsByEmailService } from '@/modules/user/applications/services/isUserExistsByEmail.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
@@ -13,7 +14,6 @@ import { VerificationTokenService } from './verificationToken.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
-import type { IsUserExistsByEmailService } from '@/modules/user/applications/services/isUserExistsByEmail.service';
 import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
