@@ -4,12 +4,10 @@ import { AuthenticationModule as CoreAuthenticationModule } from '@/core/authent
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { AccessTokenService } from '@/modules/authentication/applications/services/accessToken.service';
-import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
-import { GoogleProviderService } from '@/modules/authentication/applications/services/googleProvider.service';
+import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
 import { LocalLoginService } from '@/modules/authentication/applications/services/localLogin.service';
 import { LocalPasswordService } from '@/modules/authentication/applications/services/localPassword.service';
-import { LocalProviderService } from '@/modules/authentication/applications/services/localProvider.service';
 import { LocalSignupService } from '@/modules/authentication/applications/services/localSignup.service';
 import { LocalVerificationService } from '@/modules/authentication/applications/services/localVerification.service';
 import { PasswordHasherService } from '@/modules/authentication/applications/services/passwordHasher.service';
@@ -25,13 +23,11 @@ import { AuthenticationController } from '@/modules/authentication/interface/con
     imports: [CqrsModule, JwtModule, CoreAuthenticationModule],
     controllers: [AuthenticationController],
     providers: [
-        AuthenticationService,
-        LocalProviderService,
-        GoogleProviderService,
         GoogleLoginService,
         LocalSignupService,
         LocalLoginService,
         LocalPasswordService,
+        LocalForgotPasswordService,
         LocalVerificationService,
         VerificationMailerService,
         VerificationTokenService,
