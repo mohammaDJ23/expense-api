@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
@@ -7,7 +6,7 @@ import { ProcessFailedForbiddenException } from '@/core/exceptions/processFailed
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { ProcessFailedUnAuthorizedException } from '@/core/exceptions/processFailedUnauthorized.exception';
 import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
-import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
+import { GetUserByEmailOrNullService } from '@/modules/user/applications/services/getUserByEmailOrNull.service';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
@@ -16,27 +15,18 @@ import { PasswordHasherService } from './passwordHasher.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class LocalLoginService implements IServiceHandler {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly accessTokenService: AccessTokenService,
         private readonly updateUserService: UpdateUserService,
+        private readonly getUserByEmailOrNullService: GetUserByEmailOrNullService,
     ) {}
 
     async execute(data: LocalLoginRequestDto): Promise<AccessTokenEntity> {
-        let user: TSelectUser | null = null;
-        try {
-            const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(data.email);
-            user = await this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
-                getUserByEmailOrNullQuery,
-            );
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
+        const user = await this.getUserByEmailOrNullService.execute(data.email);
 
         if (!user) {
             throw new ProcessFailedUnAuthorizedException();

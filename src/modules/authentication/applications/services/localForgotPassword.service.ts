@@ -1,9 +1,8 @@
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { GetUserByEmailOrNullQuery } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.query';
+import { GetUserByEmailOrNullService } from '@/modules/user/applications/services/getUserByEmailOrNull.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { PasswordMailerService } from './passwordMailer.service';
@@ -12,32 +11,27 @@ import { PasswordTokenService } from './passwordToken.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class LocalForgotPasswordService implements IServiceHandler {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly passwordMailerService: PasswordMailerService,
         private readonly passwordTokenService: PasswordTokenService,
         private readonly passwordStorageService: PasswordStorageService,
+        private readonly getUserByEmailOrNullService: GetUserByEmailOrNullService,
     ) {}
 
     async execute(data: LocalForgotPasswordRequestDto): Promise<boolean> {
-        let user: TSelectUser | null;
         try {
             const storedToken = await this.passwordStorageService.get(data.email);
             if (storedToken) {
                 return true;
             }
-
-            const getUserByEmailOrNullQuery = new GetUserByEmailOrNullQuery(data.email);
-            user = await this.queryBus.execute<GetUserByEmailOrNullQuery, TSelectUser | null>(
-                getUserByEmailOrNullQuery,
-            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
+
+        const user = await this.getUserByEmailOrNullService.execute(data.email);
 
         if (!user) {
             return true;
