@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 
-import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateUserHandler } from '@/modules/user/applications/commands/createUser/createUser.handler';
 import { DeleteManyNotVerifiedUsersHandler } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.handler';
 import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUser/updateUser.handler';

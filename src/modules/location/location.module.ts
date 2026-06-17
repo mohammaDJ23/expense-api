@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 
-import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
 import { CreateUserLocationHandler } from '@/modules/location/applications/commands/createUserLocation/createUserLocation.handler';
 import { GetLocationByNameOrNullHandler } from '@/modules/location/applications/queries/getLocationByNameOrNull/getLocationByNameOrNull.handler';

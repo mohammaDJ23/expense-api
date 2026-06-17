@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { DatabaseModule } from '@/infrastructure/database/database.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { MailerModule } from '@/infrastructure/mailer/mailer.module';
@@ -20,7 +19,6 @@ import { ThrottlerModule } from '@/infrastructure/throttler/throttler.module';
         MailerModule,
         JwtModule,
         ScheduleModule,
-        CqrsModule,
     ],
 })
 export class InfrastructureModule {}
