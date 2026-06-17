@@ -1,10 +1,10 @@
 import { ConflictException, Injectable, ServiceUnavailableException } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { IsUserExistsByEmailQuery } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.query';
+import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
@@ -21,8 +21,8 @@ import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 export class LocalSignupService implements IServiceHandler {
     // eslint-disable-next-line max-params
     constructor(
-        private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
+        private readonly createUserService: CreateUserService,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
@@ -47,7 +47,7 @@ export class LocalSignupService implements IServiceHandler {
         try {
             const hashedPassword = await this.passwordHasherService.hash(data.password);
 
-            const createUserCommand = new CreateUserCommand({
+            createdUser = await this.createUserService.execute({
                 email: data.email,
                 hashedPassword,
                 role: UserRoles.USER,
@@ -55,9 +55,6 @@ export class LocalSignupService implements IServiceHandler {
                 createdAt: getCurrentUTCTimestamp(),
                 updatedAt: getCurrentUTCTimestamp(),
             });
-            createdUser = await this.commandBus.execute<CreateUserCommand, TSelectUser>(
-                createUserCommand,
-            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

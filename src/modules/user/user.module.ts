@@ -7,6 +7,7 @@ import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUs
 import { GetUserByEmailOrNullHandler } from '@/modules/user/applications/queries/getUserByEmailOrNull/getUserByEmailOrNull.handler';
 import { GetUserByIdOrNullHandler } from '@/modules/user/applications/queries/getUserByIdOrNull/getUserByIdOrNull.handler';
 import { IsUserExistsByEmailHandler } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.handler';
+import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { DeleteManyNotVerifiedUsersService } from '@/modules/user/applications/services/deleteManyNotVerifiedUsers.service';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 
@@ -15,6 +16,7 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
     providers: [
         UserRepository,
         CreateUserHandler,
+        CreateUserService,
         GetUserByEmailOrNullHandler,
         UpdateUserHandler,
         GetUserByIdOrNullHandler,
@@ -22,5 +24,6 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
         DeleteManyNotVerifiedUsersService,
         DeleteManyNotVerifiedUsersHandler,
     ],
+    exports: [CreateUserService],
 })
 export class UserModule {}
