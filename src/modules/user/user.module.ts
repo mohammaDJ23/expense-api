@@ -2,6 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
+import { OwnerGuard } from '@/core/guards/owner.guard';
 import { CreateUserHandler } from '@/modules/user/applications/commands/createUser/createUser.handler';
 import { DeleteManyNotVerifiedUsersHandler } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.handler';
 import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUser/updateUser.handler';
@@ -20,7 +21,6 @@ import { IsUserExistsByEmailService } from '@/modules/user/applications/services
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 import { UserController } from '@/modules/user/interfaces/controllers/v1.controller';
-import { OwnerGuard } from '@/modules/user/interfaces/guards/owner.guard';
 
 @Module({
     imports: [CqrsModule, forwardRef(() => AuthenticationModule)],
