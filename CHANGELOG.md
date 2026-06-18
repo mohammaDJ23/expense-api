@@ -1,3 +1,14 @@
+## [2.4.1](https://github.com/mohammaDJ23/expense-api/compare/v2.4.0...v2.4.1) (2026-06-18)
+
+### ♻️ Code Refactoring
+
+- 614766 add the bill interface which has joind properties ([fb53868](https://github.com/mohammaDJ23/expense-api/commit/fb5386834f60714274a545c0f70378da2fefa2ac))
+- 614766 move omitUndefined to the service ([87170cd](https://github.com/mohammaDJ23/expense-api/commit/87170cdfc55335e2d6fd08581e897a60cdbc8640))
+- 614766 move out owner guard to core ([69e9df2](https://github.com/mohammaDJ23/expense-api/commit/69e9df2d02d3ba40bedfac29d66889ba9ea5decc))
+- 614766 rename the dtos ([136d628](https://github.com/mohammaDJ23/expense-api/commit/136d62829b199075a700cba87ce1777df48e06ef))
+- 614766 rename the prepare ([a60e71e](https://github.com/mohammaDJ23/expense-api/commit/a60e71e72d6963a2858e65030e691cc2b0c1fab5))
+- 614766 use prepare and exexute ([749affb](https://github.com/mohammaDJ23/expense-api/commit/749affbfffac0416aabc454b9d4af29187740aa2))
+
 ## [2.4.0](https://github.com/mohammaDJ23/expense-api/compare/v2.3.0...v2.4.0) (2026-06-18)
 
 ### ✨ Features
