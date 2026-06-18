@@ -25,6 +25,8 @@ overrides:
     tmp: '>=0.2.7'
     ws: '>=8.21.0'
     form-data: '>=4.0.6'
+    piscina: '>=4.9.3'
+    nodemailer: '>=9.0.1'
 
 importers:
     .:
@@ -105,7 +107,7 @@ importers:
                 specifier: ^4.6.0
                 version: 4.6.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(pino-http@11.0.0)(pino@10.3.1)(rxjs@7.8.2)
             nodemailer:
-                specifier: ^9.0.1
+                specifier: '>=9.0.1'
                 version: 9.0.1
             passport:
                 specifier: ^0.7.0
@@ -2161,7 +2163,7 @@ packages:
             '@nestjs/event-emitter': '>=2.0.0'
             '@nestjs/terminus': '>=10.0.0'
             bullmq: '>=4.0.0'
-            nodemailer: '>=8.0.5'
+            nodemailer: '>=9.0.1'
         peerDependenciesMeta:
             '@nestjs/event-emitter':
                 optional: true
@@ -9092,13 +9094,6 @@ packages:
             }
         engines: { node: '>=18' }
 
-    nodemailer@8.0.10:
-        resolution:
-            {
-                integrity: sha512-BLFuSth7QtHOkBzyqTehWWyub0NTRDuK2Q2SQfnGLsrJnzyU+Yeh4WpV1eZGuARFj1xQJHIdnTuJZLP+b9R1GQ==,
-            }
-        engines: { node: '>=6.0.0' }
-
     nodemailer@9.0.1:
         resolution:
             {
@@ -9883,11 +9878,12 @@ packages:
             }
         engines: { node: '>= 6' }
 
-    piscina@4.9.2:
+    piscina@5.2.0:
         resolution:
             {
-                integrity: sha512-Fq0FERJWFEUpB4eSY59wSNwXD4RYqR+nR/WiEVcZW8IWfVBxJJafcgTEZDQo8k3w0sUarJ8RyVbbUF4GQ2LGbQ==,
+                integrity: sha512-DszUCKeVN/5G5QKo6jAVHL8fmKnkJvQ0ACiVgY7YGCq3TUB2oznAOayvZPIAdEThvhczkXR+qm3IHsNXpFCYfA==,
             }
+        engines: { node: '>=20.x' }
 
     pkg-conf@2.1.0:
         resolution:
@@ -14279,7 +14275,7 @@ snapshots:
             '@xhmikosr/bin-wrapper': 13.2.0
             commander: 8.3.0
             minimatch: 10.2.4
-            piscina: 4.9.2
+            piscina: 5.2.0
             semver: 7.7.3
             slash: 3.0.0
             source-map: 0.7.6
@@ -18239,7 +18235,7 @@ snapshots:
             iconv-lite: 0.7.2
             libmime: 5.3.8
             linkify-it: 5.0.1
-            nodemailer: 8.0.10
+            nodemailer: 9.0.1
             punycode.js: 2.3.1
             tlds: 1.261.0
         optional: true
@@ -18942,9 +18938,6 @@ snapshots:
     node-releases@2.0.47:
         optional: true
 
-    nodemailer@8.0.10:
-        optional: true
-
     nodemailer@9.0.1: {}
 
     nopt@7.2.1:
@@ -19374,7 +19367,7 @@ snapshots:
 
     pirates@4.0.7: {}
 
-    piscina@4.9.2:
+    piscina@5.2.0:
         optionalDependencies:
             '@napi-rs/nice': 1.1.1
 
@@ -19637,7 +19630,7 @@ snapshots:
             fixpack: 4.0.0
             get-port: 5.1.1
             mailparser: 3.9.9
-            nodemailer: 8.0.10
+            nodemailer: 9.0.1
             open: 7.4.2
             p-event: 4.2.0
             p-wait-for: 3.2.0
