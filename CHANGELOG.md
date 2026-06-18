@@ -1,3 +1,14 @@
+## [2.3.0](https://github.com/mohammaDJ23/expense-api/compare/v2.2.0...v2.3.0) (2026-06-18)
+
+### ✨ Features
+
+- 150819 add the get user api ([483b326](https://github.com/mohammaDJ23/expense-api/commit/483b3263f403b3c9f2a576f1e0db7ebc7554c939))
+- 992985 add the get many users api ([9e35c65](https://github.com/mohammaDJ23/expense-api/commit/9e35c654fad13eec413aaa2abbc173344fa1fe65))
+
+### 🔧 Chores
+
+- 299674 add the owner guard ([a5b9b29](https://github.com/mohammaDJ23/expense-api/commit/a5b9b29e2c5a8669aff83d1110cf9e5227806ca8))
+
 ## [2.2.0](https://github.com/mohammaDJ23/expense-api/compare/v2.1.0...v2.2.0) (2026-06-17)
 
 ### ✨ Features
