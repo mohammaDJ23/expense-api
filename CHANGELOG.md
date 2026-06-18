@@ -1,3 +1,9 @@
+## [2.4.0](https://github.com/mohammaDJ23/expense-api/compare/v2.3.0...v2.4.0) (2026-06-18)
+
+### ✨ Features
+
+- 603816 add get receiver api ([8a4c228](https://github.com/mohammaDJ23/expense-api/commit/8a4c22869f318f78dbf21f374645c60bfacd71b2))
+
 ## [2.3.0](https://github.com/mohammaDJ23/expense-api/compare/v2.2.0...v2.3.0) (2026-06-18)
 
 ### ✨ Features
