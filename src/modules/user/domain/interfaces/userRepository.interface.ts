@@ -8,4 +8,5 @@ export interface IUserRepository {
     getByEmailOrNull(email: string): Promise<TSelectUser | null>;
     getByIdOrNull(id: string): Promise<TSelectUser | null>;
     getByIdOrThrow(id: string): Promise<TSelectUser>;
+    getMany(offset: number, limit: number): Promise<TSelectUser[]>;
 }

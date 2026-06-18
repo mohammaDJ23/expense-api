@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { eq, isNull, sql } from 'drizzle-orm';
+import { desc, eq, isNull, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
@@ -54,6 +54,19 @@ export class UserRepository extends DrizzleRepository implements IUserRepository
                 .prepare('get_user_by_id_or_throw')
                 .execute({ id }),
             'Unable to find',
+        );
+    }
+
+    getMany(offset: number, limit: number): Promise<TSelectUser[]> {
+        return toEntities(
+            this.db
+                .select()
+                .from(users)
+                .orderBy(desc(users.createdAt))
+                .limit(sql.placeholder('limit'))
+                .offset(sql.placeholder('offset'))
+                .prepare('get_many_users')
+                .execute({ offset, limit }),
         );
     }
 }
