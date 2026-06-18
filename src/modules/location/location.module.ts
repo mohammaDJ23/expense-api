@@ -3,11 +3,13 @@ import { CqrsModule } from '@nestjs/cqrs';
 
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
 import { CreateUserLocationHandler } from '@/modules/location/applications/commands/createUserLocation/createUserLocation.handler';
+import { GetJoinedUserLocationByIdOrThrowHandler } from '@/modules/location/applications/queries/getJoinedUserLocationByIdOrThrow/getJoinedUserLocationByIdOrThrow.handler';
 import { GetLocationByNameOrNullHandler } from '@/modules/location/applications/queries/getLocationByNameOrNull/getLocationByNameOrNull.handler';
 import { GetUserLocationByIdOrNullHandler } from '@/modules/location/applications/queries/getUserLocationByIdOrNull/getUserLocationByIdOrNull.handler';
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { CreateUserLocationService } from '@/modules/location/applications/services/createUserLocation.service';
 import { CreateUserLocationIfNotExistsService } from '@/modules/location/applications/services/createUserLocationIfNotExists.service';
+import { GetJoinedUserLocationByIdOrThrowService } from '@/modules/location/applications/services/GetJoinedUserLocationByIdOrThrow.service';
 import { GetLocationByNameOrCreateService } from '@/modules/location/applications/services/getLocationByNameOrCreate.service';
 import { GetLocationByNameOrNullService } from '@/modules/location/applications/services/getLocationByNameOrNull.service';
 import { GetUserLocationByIdOrNullService } from '@/modules/location/applications/services/getUserLocationByIdOrNull.service';
@@ -22,6 +24,8 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
         GetLocationByNameOrCreateService,
         CreateUserLocationService,
         CreateUserLocationIfNotExistsService,
+        GetJoinedUserLocationByIdOrThrowService,
+        GetJoinedUserLocationByIdOrThrowHandler,
         GetUserLocationByIdOrNullService,
         CreateLocationHandler,
         CreateUserLocationHandler,
@@ -30,6 +34,10 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
         LocationRepository,
         UserLocationRepository,
     ],
-    exports: [GetLocationByNameOrCreateService, CreateUserLocationIfNotExistsService],
+    exports: [
+        GetLocationByNameOrCreateService,
+        CreateUserLocationIfNotExistsService,
+        GetJoinedUserLocationByIdOrThrowService,
+    ],
 })
 export class LocationModule {}
