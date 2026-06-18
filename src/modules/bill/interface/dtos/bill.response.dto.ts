@@ -1,4 +1,4 @@
-import { Expose, Type } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 
 import { ConsumerResponseDto } from '@/modules/consumer/interfaces/dtos/consumer.response.dto';
 import { LocationResponseDto } from '@/modules/location/interfaces/dtos/location.response.dto';
@@ -22,6 +22,15 @@ export class BillResponseDto {
 
     @Expose()
     updatedAt: string;
+
+    @Exclude()
+    userId: string;
+
+    @Exclude()
+    receiverId: string;
+
+    @Exclude()
+    locationId: string;
 
     @Expose()
     @Type(() => LocationResponseDto)
