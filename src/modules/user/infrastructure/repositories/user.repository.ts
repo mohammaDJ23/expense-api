@@ -19,42 +19,68 @@ import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepos
 @Injectable()
 export class UserRepository extends DrizzleRepository implements IUserRepository {
     create(data: TInsertUser): Promise<TSelectUser> {
-        return toEntityOrThrow(this.db.insert(users).values(data).returning(), 'Unable to create');
+        return toEntityOrThrow(
+            this.db.insert(users).values(data).returning().prepare('create_user').execute(),
+            'Unable to create',
+        );
     }
 
     update(data: Partial<TSelectUser> & Required<Pick<TSelectUser, 'id'>>): Promise<TSelectUser> {
         return toEntityOrThrow(
-            this.db.update(users).set(data).where(eq(users.id, data.id)).returning(),
+            this.db
+                .update(users)
+                .set(data)
+                .where(eq(users.id, sql.placeholder('id')))
+                .returning()
+                .prepare('update_user')
+                .execute({ id: data.id }),
             'Unable to update',
         );
     }
 
     deleteManyNotVerified(): Promise<TSelectUser[]> {
-        return toEntities(this.db.delete(users).where(isNull(users.verifiedAt)).returning());
+        return toEntities(
+            this.db
+                .delete(users)
+                .where(isNull(users.verifiedAt))
+                .returning()
+                .prepare('delete_many_users_not_verified')
+                .execute(),
+        );
+    }
+
+    private getByEmail(email: string) {
+        return this.db
+            .select()
+            .from(users)
+            .where(eq(users.email, sql.placeholder('email')))
+            .prepare('get_user_by_email')
+            .execute({ email });
     }
 
     isExistsByEmail(email: string): Promise<boolean> {
-        return isExists(this.db.select().from(users).where(eq(users.email, email)));
+        return isExists(this.getByEmail(email));
     }
 
     getByEmailOrNull(email: string): Promise<TSelectUser | null> {
-        return toEntityOrNull(this.db.select().from(users).where(eq(users.email, email)));
+        return toEntityOrNull(this.getByEmail(email));
+    }
+
+    private getById(id: string) {
+        return this.db
+            .select()
+            .from(users)
+            .where(eq(users.id, sql.placeholder('id')))
+            .prepare('get_user_by_id')
+            .execute({ id });
     }
 
     getByIdOrNull(id: string): Promise<TSelectUser | null> {
-        return toEntityOrNull(this.db.select().from(users).where(eq(users.id, id)));
+        return toEntityOrNull(this.getById(id));
     }
 
     getByIdOrThrow(id: string): Promise<TSelectUser> {
-        return toEntityOrThrow(
-            this.db
-                .select()
-                .from(users)
-                .where(eq(users.id, sql.placeholder('id')))
-                .prepare('get_user_by_id_or_throw')
-                .execute({ id }),
-            'Unable to find',
-        );
+        return toEntityOrThrow(this.getById(id), 'Unable to find');
     }
 
     getMany(offset: number, limit: number): Promise<TSelectUser[]> {

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
@@ -18,7 +18,12 @@ import type { IUserReceiverRepository } from '@/modules/receiver/domain/interfac
 export class UserReceiverRepository extends DrizzleRepository implements IUserReceiverRepository {
     create(data: TInsertUserReceiver): Promise<TSelectUserReceiver> {
         return toEntityOrThrow(
-            this.db.insert(usersReceivers).values(data).returning(),
+            this.db
+                .insert(usersReceivers)
+                .values(data)
+                .returning()
+                .prepare('create_user_receiver')
+                .execute(),
             'Unable to create',
         );
     }
@@ -30,10 +35,12 @@ export class UserReceiverRepository extends DrizzleRepository implements IUserRe
                 .from(usersReceivers)
                 .where(
                     and(
-                        eq(usersReceivers.userId, userId),
-                        eq(usersReceivers.receiverId, receiverId),
+                        eq(usersReceivers.userId, sql.placeholder('userId')),
+                        eq(usersReceivers.receiverId, sql.placeholder('receiverId')),
                     ),
-                ),
+                )
+                .prepare('get_receiver_by_id')
+                .execute({ userId, receiverId }),
         );
     }
 }

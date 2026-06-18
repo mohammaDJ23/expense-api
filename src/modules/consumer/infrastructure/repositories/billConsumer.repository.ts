@@ -13,6 +13,13 @@ import type { IBillConsumerRepository } from '@/modules/consumer/domain/interfac
 @Injectable()
 export class BillConsumerRepository extends DrizzleRepository implements IBillConsumerRepository {
     createMany(data: TInsertBillConsumer[]): Promise<TSelectBillConsumer[]> {
-        return toEntities(this.db.insert(billsConsumers).values(data).returning());
+        return toEntities(
+            this.db
+                .insert(billsConsumers)
+                .values(data)
+                .returning()
+                .prepare('create_many_bills_consumers')
+                .execute(),
+        );
     }
 }

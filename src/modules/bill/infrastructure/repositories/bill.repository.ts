@@ -28,7 +28,10 @@ import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepos
 @Injectable()
 export class BillRepository extends DrizzleRepository implements IBillRepository {
     create(data: TInsertBill): Promise<TSelectBill> {
-        return toEntityOrThrow(this.db.insert(bills).values(data).returning(), 'Unable to create');
+        return toEntityOrThrow(
+            this.db.insert(bills).values(data).returning().prepare('create_bill').execute(),
+            'Unable to create',
+        );
     }
 
     getMany(userId: string, offset: number, limit: number): Promise<IBill[]> {
@@ -77,11 +80,7 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
                 .limit(sql.placeholder('limit'))
                 .offset(sql.placeholder('offset'))
                 .prepare('get_many_bills')
-                .execute({
-                    limit,
-                    offset,
-                    userId,
-                }),
+                .execute({ limit, offset, userId }),
         );
     }
 
@@ -132,11 +131,8 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
                     ),
                 )
                 .groupBy(bills.id, locations.id, receivers.id)
-                .prepare('get_bill_by_id_or_throw')
-                .execute({
-                    userId,
-                    billId,
-                }),
+                .prepare('get_bill_by_id')
+                .execute({ userId, billId }),
             'Unable to find',
         );
     }

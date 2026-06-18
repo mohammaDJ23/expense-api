@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
@@ -18,7 +18,12 @@ import type { IUserLocationRepository } from '@/modules/location/domain/interfac
 export class UserLocationRepository extends DrizzleRepository implements IUserLocationRepository {
     create(data: TInsertUserLocation): Promise<TSelectUserLocation> {
         return toEntityOrThrow(
-            this.db.insert(usersLocations).values(data).returning(),
+            this.db
+                .insert(usersLocations)
+                .values(data)
+                .returning()
+                .prepare('create_user_location')
+                .execute(),
             'Unable to create',
         );
     }
@@ -30,10 +35,12 @@ export class UserLocationRepository extends DrizzleRepository implements IUserLo
                 .from(usersLocations)
                 .where(
                     and(
-                        eq(usersLocations.userId, userId),
-                        eq(usersLocations.locationId, locationId),
+                        eq(usersLocations.userId, sql.placeholder('userId')),
+                        eq(usersLocations.locationId, sql.placeholder('locationId')),
                     ),
-                ),
+                )
+                .prepare('get_user_location_by_id')
+                .execute({ userId, locationId }),
         );
     }
 }

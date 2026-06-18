@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -14,7 +14,14 @@ import type { IUserConsumerRepository } from '@/modules/consumer/domain/interfac
 @Injectable()
 export class UserConsumerRepository extends DrizzleRepository implements IUserConsumerRepository {
     createMany(data: TInsertUserConsumer[]): Promise<TSelectUserConsumer[]> {
-        return toEntities(this.db.insert(usersConsumers).values(data).returning());
+        return toEntities(
+            this.db
+                .insert(usersConsumers)
+                .values(data)
+                .returning()
+                .prepare('create_many_users_consumers')
+                .execute(),
+        );
     }
 
     getManyById(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]> {
@@ -24,10 +31,12 @@ export class UserConsumerRepository extends DrizzleRepository implements IUserCo
                 .from(usersConsumers)
                 .where(
                     and(
-                        eq(usersConsumers.userId, userId),
+                        eq(usersConsumers.userId, sql.placeholder('userId')),
                         inArray(usersConsumers.consumerId, consumerIds),
                     ),
-                ),
+                )
+                .prepare('get_many_users_consumers_by_id')
+                .execute({ userId }),
         );
     }
 }
