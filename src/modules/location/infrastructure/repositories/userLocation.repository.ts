@@ -7,6 +7,10 @@ import {
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
+    locations,
+    type TSelectLocation,
+} from '@/modules/location/infrastructure/schemas/location.schema';
+import {
     usersLocations,
     type TInsertUserLocation,
     type TSelectUserLocation,
@@ -41,6 +45,29 @@ export class UserLocationRepository extends DrizzleRepository implements IUserLo
                 )
                 .prepare('get_user_location_by_id')
                 .execute({ userId, locationId }),
+        );
+    }
+
+    getJoinedByIdOrThrow(userId: string, locationId: string): Promise<TSelectLocation> {
+        return toEntityOrThrow(
+            this.db
+                .select({
+                    id: locations.id,
+                    name: locations.id,
+                    createdAt: locations.createdAt,
+                    updatedAt: locations.updatedAt,
+                })
+                .from(usersLocations)
+                .innerJoin(locations, eq(usersLocations.locationId, locations.id))
+                .where(
+                    and(
+                        eq(usersLocations.userId, sql.placeholder('userId')),
+                        eq(usersLocations.locationId, sql.placeholder('locationId')),
+                    ),
+                )
+                .prepare('get_joined_user_location_by_id')
+                .execute({ userId, locationId }),
+            'Unable to find',
         );
     }
 }
