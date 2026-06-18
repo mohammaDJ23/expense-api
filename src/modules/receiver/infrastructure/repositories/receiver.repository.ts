@@ -33,4 +33,16 @@ export class ReceiverRepository extends DrizzleRepository implements IReceiverRe
                 .execute({ name }),
         );
     }
+
+    getByIdOrThrow(id: string): Promise<TSelectReceiver> {
+        return toEntityOrThrow(
+            this.db
+                .select()
+                .from(receivers)
+                .where(eq(receivers.id, sql.placeholder('id')))
+                .prepare('get_receiver_by_id_or_throw')
+                .execute({ id }),
+            'Unable to find',
+        );
+    }
 }
