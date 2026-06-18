@@ -19,7 +19,7 @@ import {
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/user/currentUser.interface';
-import type { TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 
 @Controller({ version: '1', path: 'api/bills' })
 export class BillController {
@@ -46,7 +46,7 @@ export class BillController {
     getMany(
         @Query() query: GetManyBillsRequestDto,
         @CurrentUser() user: ICurrentUser,
-    ): Promise<TSelectBill[]> {
+    ): Promise<IBill[]> {
         return this.getManyBillsService.execute(user.id, query);
     }
 
@@ -54,10 +54,7 @@ export class BillController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(BillResponseDto)
     @HttpResponse(SUCCESS_GET_BILL_MESSAGE, HttpStatus.OK)
-    getById(
-        @Param() param: GetBillRequestDto,
-        @CurrentUser() user: ICurrentUser,
-    ): Promise<TSelectBill> {
+    getById(@Param() param: GetBillRequestDto, @CurrentUser() user: ICurrentUser): Promise<IBill> {
         return this.getBillByIdOrThrowService.execute(user.id, param.id);
     }
 }

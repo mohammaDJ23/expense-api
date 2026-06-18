@@ -5,16 +5,16 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 import { GetBillByIdOrThrowQuery } from '@/modules/bill/applications/queries/getBillByIdOrThrow/getBillByIdOrThrow.query';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 
 @Injectable()
 export class GetBillByIdOrThrowService implements IServiceHandler {
     constructor(private readonly queryBus: QueryBus) {}
 
-    async execute(userId: string, billId: string): Promise<TSelectBill> {
+    async execute(userId: string, billId: string): Promise<IBill> {
         try {
             const getBillByIdOrThrowQuery = new GetBillByIdOrThrowQuery(userId, billId);
-            return await this.queryBus.execute<GetBillByIdOrThrowQuery, TSelectBill>(
+            return await this.queryBus.execute<GetBillByIdOrThrowQuery, IBill>(
                 getBillByIdOrThrowQuery,
             );
         } catch (error) {

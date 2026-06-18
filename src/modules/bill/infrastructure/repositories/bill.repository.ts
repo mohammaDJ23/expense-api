@@ -9,10 +9,20 @@ import {
     type TSelectBill,
 } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
-import { consumers } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
-import { locations } from '@/modules/location/infrastructure/schemas/location.schema';
-import { receivers } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
+import {
+    consumers,
+    type TSelectConsumer,
+} from '@/modules/consumer/infrastructure/schemas/consumer.schema';
+import {
+    locations,
+    type TSelectLocation,
+} from '@/modules/location/infrastructure/schemas/location.schema';
+import {
+    receivers,
+    type TSelectReceiver,
+} from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
+import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepository.interface';
 
 @Injectable()
@@ -21,12 +31,12 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
         return toEntityOrThrow(this.db.insert(bills).values(data).returning(), 'Unable to create');
     }
 
-    getMany(userId: string, offset: number, limit: number): Promise<TSelectBill[]> {
+    getMany(userId: string, offset: number, limit: number): Promise<IBill[]> {
         return toEntities(
             this.db
                 .select({
                     ...getTableColumns(bills),
-                    location: sql`
+                    location: sql<TSelectLocation>`
                     jsonb_build_object(
                         'id', ${locations.id},
                         'name', ${locations.name},
@@ -34,7 +44,7 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
                         'updatedAt', ${locations.updatedAt}
                     )
                 `.as('location'),
-                    receiver: sql`
+                    receiver: sql<TSelectReceiver>`
                     jsonb_build_object(
                         'id', ${receivers.id},
                         'name', ${receivers.name},
@@ -42,7 +52,7 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
                         'updatedAt', ${receivers.updatedAt}
                     )
                 `.as('receiver'),
-                    consumers: sql`
+                    consumers: sql<TSelectConsumer[]>`
                     COALESCE(
                         jsonb_agg(
                             DISTINCT jsonb_build_object(
@@ -75,12 +85,12 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
         );
     }
 
-    getByIdOrThrow(userId: string, billId: string): Promise<TSelectBill> {
+    getByIdOrThrow(userId: string, billId: string): Promise<IBill> {
         return toEntityOrThrow(
             this.db
                 .select({
                     ...getTableColumns(bills),
-                    location: sql`
+                    location: sql<TSelectLocation>`
                     jsonb_build_object(
                         'id', ${locations.id},
                         'name', ${locations.name},
@@ -88,7 +98,7 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
                         'updatedAt', ${locations.updatedAt}
                     )
                 `.as('location'),
-                    receiver: sql`
+                    receiver: sql<TSelectReceiver>`
                     jsonb_build_object(
                         'id', ${receivers.id},
                         'name', ${receivers.name},
@@ -96,7 +106,7 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
                         'updatedAt', ${receivers.updatedAt}
                     )
                 `.as('receiver'),
-                    consumers: sql`
+                    consumers: sql<TSelectConsumer[]>`
                     COALESCE(
                         jsonb_agg(
                             DISTINCT jsonb_build_object(
