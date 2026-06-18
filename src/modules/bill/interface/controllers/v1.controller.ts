@@ -9,8 +9,8 @@ import { GetBillByIdOrThrowService } from '@/modules/bill/applications/services/
 import { GetManyBillsService } from '@/modules/bill/applications/services/getManyBills.service';
 import { BillResponseDto } from '@/modules/bill/interface/dtos/bill.response.dto';
 import { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
-import { GetBillParam } from '@/modules/bill/interface/dtos/getBillParam.request.dto';
-import { GetManyBillsQueryRequestDto } from '@/modules/bill/interface/dtos/getManyBillsQuery.request.dto';
+import { GetBillRequestDto } from '@/modules/bill/interface/dtos/getBill.request.dto';
+import { GetManyBillsRequestDto } from '@/modules/bill/interface/dtos/getManyBills.request.dto';
 
 import {
     SUCCESS_CREATE_BILL_MESSAGE,
@@ -44,7 +44,7 @@ export class BillController {
     @SerializerInterceptor(BillResponseDto)
     @HttpResponse(SUCCESS_GET_MANY_MESSAGE, HttpStatus.OK)
     getMany(
-        @Query() query: GetManyBillsQueryRequestDto,
+        @Query() query: GetManyBillsRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<TSelectBill[]> {
         return this.getManyBillsService.execute(user.id, query);
@@ -54,7 +54,10 @@ export class BillController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(BillResponseDto)
     @HttpResponse(SUCCESS_GET_BILL_MESSAGE, HttpStatus.OK)
-    getById(@Param() param: GetBillParam, @CurrentUser() user: ICurrentUser): Promise<TSelectBill> {
+    getById(
+        @Param() param: GetBillRequestDto,
+        @CurrentUser() user: ICurrentUser,
+    ): Promise<TSelectBill> {
         return this.getBillByIdOrThrowService.execute(user.id, param.id);
     }
 }
