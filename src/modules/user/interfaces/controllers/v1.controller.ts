@@ -1,6 +1,7 @@
 import { Controller, Get, HttpStatus, Param, Query, UseGuards } from '@nestjs/common';
 
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
+import { OwnerGuard } from '@/core/guards/owner.guard';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { CurrentUser } from '@/core/user/currentUser.decorator';
@@ -9,7 +10,6 @@ import { GetUserByIdOrThrowService } from '@/modules/user/applications/services/
 import { GetManyUsersRequestDto } from '@/modules/user/interfaces/dtos/getManyUsers.request.dto';
 import { GetUserRequestDto } from '@/modules/user/interfaces/dtos/getUser.request.dto';
 import { UserResponseDto } from '@/modules/user/interfaces/dtos/user.response.dto';
-import { OwnerGuard } from '@/modules/user/interfaces/guards/owner.guard';
 
 import { SUCCESS_GET_USER_MESSAGE, SUCCESS_GET_USERS_MESSAGE } from './controllers.constants';
 
