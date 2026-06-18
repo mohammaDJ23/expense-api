@@ -11,7 +11,7 @@ overrides:
     qs: '>=6.14.2'
     handlebars: '>=4.7.9'
     multer: '>=2.2.0'
-    undici: '>=7.24.0'
+    undici: '>=7.28.0'
     serialize-javascript: '>=7.0.3'
     flatted: '>=3.4.2'
     picomatch: '>=4.0.4'
@@ -46,7 +46,7 @@ importers:
                 version: 1.2.4(@nestjs-cls/transactional@3.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(nestjs-cls@6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(drizzle-orm@0.45.2(@types/pg@8.20.0)(pg@8.18.0))(nestjs-cls@6.2.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2))
             '@nestjs-modules/mailer':
                 specifier: ^2.3.6
-                version: 2.3.6(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/terminus@11.0.0(@nestjs/axios@4.0.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.16.1)(rxjs@7.8.2))(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/typeorm@11.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(chokidar@4.0.3)(nodemailer@8.0.10)(svgo@4.0.1)(terser@5.46.0)(typescript@5.9.3)
+                version: 2.3.6(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/terminus@11.0.0(@nestjs/axios@4.0.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.16.1)(rxjs@7.8.2))(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/typeorm@11.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(chokidar@4.0.3)(nodemailer@9.0.1)(svgo@4.0.1)(terser@5.46.0)(typescript@5.9.3)
             '@nestjs/axios':
                 specifier: ^4.0.1
                 version: 4.0.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.16.1)(rxjs@7.8.2)
@@ -105,8 +105,8 @@ importers:
                 specifier: ^4.6.0
                 version: 4.6.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(pino-http@11.0.0)(pino@10.3.1)(rxjs@7.8.2)
             nodemailer:
-                specifier: ^8.0.10
-                version: 8.0.10
+                specifier: ^9.0.1
+                version: 9.0.1
             passport:
                 specifier: ^0.7.0
                 version: 0.7.0
@@ -9099,6 +9099,13 @@ packages:
             }
         engines: { node: '>=6.0.0' }
 
+    nodemailer@9.0.1:
+        resolution:
+            {
+                integrity: sha512-Gwv8SQewT616ZM/URn0H54b8PWo/Wum7md3EW2aWy1lO27+WZCX+Xyak3J+NlmHUjDh5ME+uesJUDRbR3Ye8Bw==,
+            }
+        engines: { node: '>=6.0.0' }
+
     nopt@7.2.1:
         resolution:
             {
@@ -12113,12 +12120,12 @@ packages:
                 integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==,
             }
 
-    undici@7.24.6:
+    undici@8.5.0:
         resolution:
             {
-                integrity: sha512-Xi4agocCbRzt0yYMZGMA6ApD7gvtUFaxm4ZmeacWI4cZxaF6C+8I8QfofC20NAePiB/IcvZmzkJ7XPa471AEtA==,
+                integrity: sha512-xamtWoB1EshgjpmlXd7GGm2VfdDtw1+rD8uhry8pSNW3If6S8E0m2T2+orSKeZXEn/aPJMviCpDBA65WJt8zhg==,
             }
-        engines: { node: '>=20.18.1' }
+        engines: { node: '>=22.19.0' }
 
     unicode-emoji-modifier-base@1.0.0:
         resolution:
@@ -12617,7 +12624,7 @@ snapshots:
     '@actions/http-client@3.0.2':
         dependencies:
             tunnel: 0.0.6
-            undici: 7.24.6
+            undici: 8.5.0
 
     '@actions/io@2.0.0': {}
 
@@ -13819,13 +13826,13 @@ snapshots:
             reflect-metadata: 0.2.2
             rxjs: 7.8.2
 
-    '@nestjs-modules/mailer@2.3.6(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/terminus@11.0.0(@nestjs/axios@4.0.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.16.1)(rxjs@7.8.2))(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/typeorm@11.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(chokidar@4.0.3)(nodemailer@8.0.10)(svgo@4.0.1)(terser@5.46.0)(typescript@5.9.3)':
+    '@nestjs-modules/mailer@2.3.6(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/terminus@11.0.0(@nestjs/axios@4.0.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.16.1)(rxjs@7.8.2))(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/typeorm@11.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(chokidar@4.0.3)(nodemailer@9.0.1)(svgo@4.0.1)(terser@5.46.0)(typescript@5.9.3)':
         dependencies:
             '@css-inline/css-inline': 0.20.0
             '@nestjs/common': 11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
             '@nestjs/core': 11.1.17(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.14)(reflect-metadata@0.2.2)(rxjs@7.8.2)
             glob: 13.0.6
-            nodemailer: 8.0.10
+            nodemailer: 9.0.1
             tslib: 2.8.1
         optionalDependencies:
             '@nestjs/terminus': 11.0.0(@nestjs/axios@4.0.1(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.16.1)(rxjs@7.8.2))(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(@nestjs/typeorm@11.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3))))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(ioredis@5.9.2)(pg@8.18.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.7)(typescript@5.9.3)))
@@ -14204,7 +14211,7 @@ snapshots:
             p-filter: 4.1.0
             semantic-release: 25.0.2(typescript@5.9.3)
             tinyglobby: 0.2.15
-            undici: 7.24.6
+            undici: 8.5.0
             url-join: 5.0.0
         transitivePeerDependencies:
             - supports-color
@@ -15461,7 +15468,7 @@ snapshots:
             parse5: 7.3.0
             parse5-htmlparser2-tree-adapter: 7.1.0
             parse5-parser-stream: 7.1.2
-            undici: 7.24.6
+            undici: 8.5.0
             whatwg-mimetype: 4.0.0
         optional: true
 
@@ -18935,7 +18942,10 @@ snapshots:
     node-releases@2.0.47:
         optional: true
 
-    nodemailer@8.0.10: {}
+    nodemailer@8.0.10:
+        optional: true
+
+    nodemailer@9.0.1: {}
 
     nopt@7.2.1:
         dependencies:
@@ -20875,7 +20885,7 @@ snapshots:
 
     undici-types@6.21.0: {}
 
-    undici@7.24.6: {}
+    undici@8.5.0: {}
 
     unicode-emoji-modifier-base@1.0.0: {}
 
