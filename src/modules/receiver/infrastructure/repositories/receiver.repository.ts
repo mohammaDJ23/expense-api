@@ -19,13 +19,20 @@ import type { IReceiverRepository } from '@/modules/receiver/domain/interfaces/r
 export class ReceiverRepository extends DrizzleRepository implements IReceiverRepository {
     create(data: TInsertReceiver): Promise<TSelectReceiver> {
         return toEntityOrThrow(
-            this.db.insert(receivers).values(data).returning(),
+            this.db.insert(receivers).values(data).returning().prepare('create_receiver').execute(),
             'Unable to create',
         );
     }
 
     getByNameOrNull(name: string): Promise<TSelectReceiver | null> {
-        return toEntityOrNull(this.db.select().from(receivers).where(eq(receivers.name, name)));
+        return toEntityOrNull(
+            this.db
+                .select()
+                .from(receivers)
+                .where(eq(receivers.name, sql.placeholder('name')))
+                .prepare('get_receiver_by_name')
+                .execute({ name }),
+        );
     }
 
     getByIdAndUserIdOrThrow(userId: string, receiverId: string): Promise<TSelectReceiver> {
@@ -47,7 +54,7 @@ export class ReceiverRepository extends DrizzleRepository implements IReceiverRe
                             ),
                     ),
                 )
-                .prepare('get_receiver_by_id_and_user_id_or_throw')
+                .prepare('get_receiver_by_id_and_user_id')
                 .execute({ userId, receiverId }),
             'Unable to find',
         );
