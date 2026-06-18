@@ -7,6 +7,10 @@ import {
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
+    receivers,
+    type TSelectReceiver,
+} from '@/modules/receiver/infrastructure/schemas/receiver.schema';
+import {
     usersReceivers,
     type TInsertUserReceiver,
     type TSelectUserReceiver,
@@ -41,6 +45,29 @@ export class UserReceiverRepository extends DrizzleRepository implements IUserRe
                 )
                 .prepare('get_user_receiver_by_id')
                 .execute({ userId, receiverId }),
+        );
+    }
+
+    getJoinedByIdOThrow(userId: string, receiverId: string): Promise<TSelectReceiver> {
+        return toEntityOrThrow(
+            this.db
+                .select({
+                    id: receivers.id,
+                    name: receivers.name,
+                    createdAt: receivers.createdAt,
+                    updatedAt: receivers.updatedAt,
+                })
+                .from(usersReceivers)
+                .innerJoin(receivers, eq(usersReceivers.receiverId, receivers.id))
+                .where(
+                    and(
+                        eq(usersReceivers.userId, sql.placeholder('userId')),
+                        eq(usersReceivers.receiverId, sql.placeholder('receiverId')),
+                    ),
+                )
+                .prepare('get_joined_user_receiver_by_id')
+                .execute({ userId, receiverId }),
+            'Unable to find',
         );
     }
 }
