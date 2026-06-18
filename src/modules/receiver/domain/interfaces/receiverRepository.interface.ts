@@ -6,4 +6,5 @@ import type {
 export interface IReceiverRepository {
     create(data: TInsertReceiver): Promise<TSelectReceiver>;
     getByNameOrNull(name: string): Promise<TSelectReceiver | null>;
+    getByIdAndUserIdOrThrow(userId: string, receiverId: string): Promise<TSelectReceiver>;
 }
