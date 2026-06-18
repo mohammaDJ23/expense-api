@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, exists, sql } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
@@ -11,7 +11,6 @@ import {
     type TInsertReceiver,
     type TSelectReceiver,
 } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
-import { usersReceivers } from '@/modules/receiver/infrastructure/schemas/userReceiver.schema';
 
 import type { IReceiverRepository } from '@/modules/receiver/domain/interfaces/receiverRepository.interface';
 
@@ -32,31 +31,6 @@ export class ReceiverRepository extends DrizzleRepository implements IReceiverRe
                 .where(eq(receivers.name, sql.placeholder('name')))
                 .prepare('get_receiver_by_name')
                 .execute({ name }),
-        );
-    }
-
-    getByIdAndUserIdOrThrow(userId: string, receiverId: string): Promise<TSelectReceiver> {
-        return toEntityOrThrow(
-            this.db
-                .select()
-                .from(receivers)
-                .where(
-                    exists(
-                        this.db
-                            .select({ value: sql<number>`1` })
-                            .from(usersReceivers)
-                            .where(
-                                and(
-                                    eq(usersReceivers.userId, sql.placeholder('userId')),
-                                    eq(usersReceivers.receiverId, sql.placeholder('receiverId')),
-                                    eq(usersReceivers.receiverId, receivers.id),
-                                ),
-                            ),
-                    ),
-                )
-                .prepare('get_receiver_by_id_and_user_id')
-                .execute({ userId, receiverId }),
-            'Unable to find',
         );
     }
 }
