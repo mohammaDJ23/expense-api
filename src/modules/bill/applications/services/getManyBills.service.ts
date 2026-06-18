@@ -6,13 +6,13 @@ import { GetManyBillsQuery } from '@/modules/bill/applications/queries/getManyBi
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
-import type { GetManyBillsQueryRequestDto } from '@/modules/bill/interface/dtos/getManyBillsQuery.request.dto';
+import type { GetManyBillsRequestDto } from '@/modules/bill/interface/dtos/getManyBills.request.dto';
 
 @Injectable()
 export class GetManyBillsService implements IServiceHandler {
     constructor(private readonly queryBus: QueryBus) {}
 
-    async execute(userId: string, options: GetManyBillsQueryRequestDto): Promise<TSelectBill[]> {
+    async execute(userId: string, options: GetManyBillsRequestDto): Promise<TSelectBill[]> {
         try {
             const getManyBillsQuery = new GetManyBillsQuery(userId, options.offset, options.limit);
             return await this.queryBus.execute<GetManyBillsQuery, TSelectBill[]>(getManyBillsQuery);

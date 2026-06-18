@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator';
 
-export class GetBillParam {
+export class GetBillRequestDto {
     @IsUUID()
     id: string;
 }
