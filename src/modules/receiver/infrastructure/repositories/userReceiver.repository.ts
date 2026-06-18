@@ -39,7 +39,7 @@ export class UserReceiverRepository extends DrizzleRepository implements IUserRe
                         eq(usersReceivers.receiverId, sql.placeholder('receiverId')),
                     ),
                 )
-                .prepare('get_receiver_by_id')
+                .prepare('get_user_receiver_by_id')
                 .execute({ userId, receiverId }),
         );
     }
