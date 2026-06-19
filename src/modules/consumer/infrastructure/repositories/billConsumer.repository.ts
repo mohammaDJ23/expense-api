@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
-import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
+import {
+    toEntities,
+    toEntitiesOrThrow,
+} from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     billsConsumers,
     type TInsertBillConsumer,
@@ -19,8 +22,8 @@ export class BillConsumerRepository extends DrizzleRepository implements IBillCo
         return toEntities(this.db.insert(billsConsumers).values(data).returning().execute());
     }
 
-    getManyJoinedById(billIds: string[]): Promise<IJoinedBillConsumer[]> {
-        return toEntities(
+    getManyJoinedByIdOrThrow(billIds: string[]): Promise<IJoinedBillConsumer[]> {
+        return toEntitiesOrThrow(
             this.db
                 .select({
                     billId: billsConsumers.billId,
@@ -33,6 +36,7 @@ export class BillConsumerRepository extends DrizzleRepository implements IBillCo
                 .innerJoin(consumers, eq(billsConsumers.consumerId, consumers.id))
                 .where(inArray(billsConsumers.billId, billIds))
                 .execute(),
+            'Unable to load the consumer',
         );
     }
 }

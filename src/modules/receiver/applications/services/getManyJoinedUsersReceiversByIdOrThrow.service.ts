@@ -1,27 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
+import { NotFoundError } from 'rxjs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { GetManyJoinedUsersReceiversByIdQuery } from '@/modules/receiver/applications/queries/getManyJoinedUsersReceiversById/getManyJoinedUsersReceiversById.query';
+import { GetManyJoinedUsersReceiversByIdOrThrowQuery } from '@/modules/receiver/applications/queries/getManyJoinedUsersReceiversByIdOrThrow/getManyJoinedUsersReceiversByIdOrThrow.query';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { TSelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @Injectable()
-export class GetManyJoinedUsersReceiversByIdService implements IServiceHandler {
+export class GetManyJoinedUsersReceiversByIdOrThrowService implements IServiceHandler {
     constructor(private readonly queryBus: QueryBus) {}
 
     async execute(userId: string, receiverIds: string[]): Promise<TSelectReceiver[]> {
         try {
-            const getManyJoinedUsersReceiversByIdQuery = new GetManyJoinedUsersReceiversByIdQuery(
-                userId,
-                receiverIds,
-            );
+            const getManyJoinedUsersReceiversByIdOrThrowQuery =
+                new GetManyJoinedUsersReceiversByIdOrThrowQuery(userId, receiverIds);
             return await this.queryBus.execute<
-                GetManyJoinedUsersReceiversByIdQuery,
+                GetManyJoinedUsersReceiversByIdOrThrowQuery,
                 TSelectReceiver[]
-            >(getManyJoinedUsersReceiversByIdQuery);
-        } catch {
+            >(getManyJoinedUsersReceiversByIdOrThrowQuery);
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                throw error;
+            }
             throw new ProcessFailedInternalServerErrorException();
         }
     }

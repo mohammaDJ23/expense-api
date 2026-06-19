@@ -2,24 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { GetManyJoinedBillsConsumersByIdQuery } from '@/modules/consumer/applications/queries/getManyJoinedBillsConsumersById/getManyJoinedBillsConsumersById.query';
+import { GetManyJoinedBillsConsumersByIdOrThrowQuery } from '@/modules/consumer/applications/queries/getManyJoinedBillsConsumersByIdOrThrow/getManyJoinedBillsConsumersByIdOrThrow.query';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IJoinedBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
 
 @Injectable()
-export class GetManyJoinedBillsConsumersByIdService implements IServiceHandler {
+export class GetManyJoinedBillsConsumersByIdOrThrowService implements IServiceHandler {
     constructor(private readonly queryBus: QueryBus) {}
 
     async execute(billIds: string[]): Promise<IJoinedBillConsumer[]> {
         try {
-            const getManyJoinedBillsConsumersByIdQuery = new GetManyJoinedBillsConsumersByIdQuery(
-                billIds,
-            );
+            const getManyJoinedBillsConsumersByIdOrThrowQuery =
+                new GetManyJoinedBillsConsumersByIdOrThrowQuery(billIds);
             return await this.queryBus.execute<
-                GetManyJoinedBillsConsumersByIdQuery,
+                GetManyJoinedBillsConsumersByIdOrThrowQuery,
                 IJoinedBillConsumer[]
-            >(getManyJoinedBillsConsumersByIdQuery);
+            >(getManyJoinedBillsConsumersByIdOrThrowQuery);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
