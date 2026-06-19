@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
+    toEntities,
     toEntityOrNull,
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -68,6 +69,28 @@ export class UserLocationRepository extends DrizzleRepository implements IUserLo
                 .prepare('get_joined_user_location_by_id')
                 .execute({ userId, locationId }),
             'Unable to find',
+        );
+    }
+
+    getManyJoinedById(userId: string, locationIds: string[]): Promise<TSelectLocation[]> {
+        return toEntities(
+            this.db
+                .select({
+                    id: locations.id,
+                    name: locations.id,
+                    createdAt: locations.createdAt,
+                    updatedAt: locations.updatedAt,
+                })
+                .from(usersLocations)
+                .innerJoin(locations, eq(usersLocations.locationId, locations.id))
+                .where(
+                    and(
+                        eq(usersLocations.userId, sql.placeholder('userId')),
+                        inArray(usersLocations.locationId, locationIds),
+                    ),
+                )
+                .prepare('get_joined_user_location_by_id')
+                .execute({ userId }),
         );
     }
 }
