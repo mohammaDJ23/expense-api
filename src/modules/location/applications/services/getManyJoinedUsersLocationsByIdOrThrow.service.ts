@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
@@ -19,7 +19,10 @@ export class GetManyJoinedUsersLocationsByIdOrThrowService implements IServiceHa
                 GetManyJoinedUsersLocationsByIdOrThrowQuery,
                 TSelectLocation[]
             >(getManyJoinedUsersLocationsByIdOrThrowQuery);
-        } catch {
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
             throw new ProcessFailedInternalServerErrorException();
         }
     }
