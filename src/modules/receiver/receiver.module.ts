@@ -4,15 +4,13 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
 import { CreateReceiverHandler } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.handler';
 import { CreateUserReceiverHandler } from '@/modules/receiver/applications/commands/createUserReceiver/createUserReceiver.handler';
-import { GetJoinedUserReceiverByIdOrThrowHandler } from '@/modules/receiver/applications/queries/getJoinedUserReceiverByIdOrThrow/getJoinedUserReceiverByIdOrThrow.handler';
-import { GetManyJoinedUsersReceiversByIdHandler } from '@/modules/receiver/applications/queries/getManyJoinedUsersReceiversById/getManyJoinedUsersReceiversById.handler';
+import { GetManyJoinedUsersReceiversByIdOrThrowHandler } from '@/modules/receiver/applications/queries/getManyJoinedUsersReceiversByIdOrThrow/getManyJoinedUsersReceiversByIdOrThrow.handler';
 import { GetReceiverByNameOrNullHandler } from '@/modules/receiver/applications/queries/getReceiverByNameOrNull/getReceiverByNameOrNull.handler';
 import { GetUserReceiverByIdOrNullHandler } from '@/modules/receiver/applications/queries/getUserReceiverByIdOrNull/getUserReceiverByIdOrNull.handler';
 import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
 import { CreateUserReceiverService } from '@/modules/receiver/applications/services/createUserReceiver.service';
 import { CreateUserReceiverIfNotExistsService } from '@/modules/receiver/applications/services/createUserReceiverIfNotExists.service';
-import { GetJoinedUserReceiverByIdOrThrowService } from '@/modules/receiver/applications/services/getJoinedUserReceiverByIdOrThrow.service';
-import { GetManyJoinedUsersReceiversByIdService } from '@/modules/receiver/applications/services/getManyJoinedUsersReceiversById.service';
+import { GetManyJoinedUsersReceiversByIdOrThrowService } from '@/modules/receiver/applications/services/getManyJoinedUsersReceiversByIdOrThrow.service';
 import { GetReceiverByNameOrCreateService } from '@/modules/receiver/applications/services/getReceiverByNameOrCreate.service';
 import { GetReceiverByNameOrNullService } from '@/modules/receiver/applications/services/getReceiverByNameOrNull.service';
 import { GetUserReceiverByIdOrNullService } from '@/modules/receiver/applications/services/getUserReceiverByIdOrNull.service';
@@ -30,10 +28,8 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         CreateUserReceiverService,
         CreateUserReceiverIfNotExistsService,
         GetUserReceiverByIdOrNullService,
-        GetJoinedUserReceiverByIdOrThrowHandler,
-        GetJoinedUserReceiverByIdOrThrowService,
-        GetManyJoinedUsersReceiversByIdService,
-        GetManyJoinedUsersReceiversByIdHandler,
+        GetManyJoinedUsersReceiversByIdOrThrowService,
+        GetManyJoinedUsersReceiversByIdOrThrowHandler,
         CreateReceiverHandler,
         CreateUserReceiverHandler,
         GetReceiverByNameOrNullHandler,
@@ -44,8 +40,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
     exports: [
         GetReceiverByNameOrCreateService,
         CreateUserReceiverIfNotExistsService,
-        GetJoinedUserReceiverByIdOrThrowService,
-        GetManyJoinedUsersReceiversByIdService,
+        GetManyJoinedUsersReceiversByIdOrThrowService,
     ],
 })
 export class ReceiverModule {}

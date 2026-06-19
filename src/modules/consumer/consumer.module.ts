@@ -5,7 +5,7 @@ import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications
 import { CreateManyConsumersHandler } from '@/modules/consumer/applications/commands/createManyConsumers/createManyConsumers.handler';
 import { CreateManyUsersConsumersHandler } from '@/modules/consumer/applications/commands/createManyUsersConsumers/createManyUsersConsumers.handler';
 import { GetManyConsumersByNameHandler } from '@/modules/consumer/applications/queries/getManyConsumersByName/getManyConsumersByName.handler';
-import { GetManyJoinedBillsConsumersByIdHandler } from '@/modules/consumer/applications/queries/getManyJoinedBillsConsumersById/getManyJoinedBillsConsumersById.handler';
+import { GetManyJoinedBillsConsumersByIdOrThrowHandler } from '@/modules/consumer/applications/queries/getManyJoinedBillsConsumersByIdOrThrow/getManyJoinedBillsConsumersByIdOrThrow.handler';
 import { GetManyUsersConsumersByIdHandler } from '@/modules/consumer/applications/queries/getManyUsersConsumersById/getManyUsersConsumersById.handler';
 import { CreateManyBillsConsumersService } from '@/modules/consumer/applications/services/createManybillsConsumers.service';
 import { CreateManyConsumersService } from '@/modules/consumer/applications/services/createManyConsumers.service';
@@ -13,7 +13,7 @@ import { CreateManyUsersConsumersService } from '@/modules/consumer/applications
 import { CreateManyUsersConsumersIfNotExistsService } from '@/modules/consumer/applications/services/createManyUsersConsumersIfNotExists.service';
 import { GetManyConsumersByNameService } from '@/modules/consumer/applications/services/getManyConsumersByName.service';
 import { GetManyConsumersByNameOrCreateService } from '@/modules/consumer/applications/services/getManyConsumersByNameOrCreate.service';
-import { GetManyJoinedBillsConsumersByIdService } from '@/modules/consumer/applications/services/getManyJoinedBillsConsumersById.service';
+import { GetManyJoinedBillsConsumersByIdOrThrowService } from '@/modules/consumer/applications/services/getManyJoinedBillsConsumersByIdOrThrow.service';
 import { GetManyUsersConsumersByIdService } from '@/modules/consumer/applications/services/getManyUsersConsumersById.service';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
 import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
@@ -29,8 +29,8 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
         CreateManyConsumersService,
         CreateManyUsersConsumersService,
         CreateManyUsersConsumersIfNotExistsService,
-        GetManyJoinedBillsConsumersByIdService,
-        GetManyJoinedBillsConsumersByIdHandler,
+        GetManyJoinedBillsConsumersByIdOrThrowService,
+        GetManyJoinedBillsConsumersByIdOrThrowHandler,
         GetManyUsersConsumersByIdService,
         GetManyConsumersByNameService,
         GetManyConsumersByNameOrCreateService,
@@ -44,7 +44,7 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
         CreateManyBillsConsumersService,
         CreateManyUsersConsumersIfNotExistsService,
         GetManyConsumersByNameOrCreateService,
-        GetManyJoinedBillsConsumersByIdService,
+        GetManyJoinedBillsConsumersByIdOrThrowService,
     ],
 })
 export class ConsumerModule {}

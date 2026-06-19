@@ -7,6 +7,5 @@ import type {
 export interface IUserLocationRepository {
     create(data: TInsertUserLocation): Promise<TSelectUserLocation>;
     getByIdOrNull(userId: string, locationId: string): Promise<TSelectUserLocation | null>;
-    getJoinedByIdOrThrow(userId: string, locationId: string): Promise<TSelectLocation>;
-    getManyJoinedById(userId: string, locationIds: string[]): Promise<TSelectLocation[]>;
+    getManyJoinedByIdOrThrow(userId: string, locationIds: string[]): Promise<TSelectLocation[]>;
 }

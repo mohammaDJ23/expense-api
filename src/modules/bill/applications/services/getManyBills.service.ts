@@ -3,9 +3,9 @@ import { QueryBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { GetManyBillsQuery } from '@/modules/bill/applications/queries/getManyBills/getManyBills.query';
-import { GetManyJoinedBillsConsumersByIdService } from '@/modules/consumer/applications/services/getManyJoinedBillsConsumersById.service';
-import { GetManyJoinedUsersLocationsByIdService } from '@/modules/location/applications/services/getManyJoinedUsersLocationsById.service';
-import { GetManyJoinedUsersReceiversByIdService } from '@/modules/receiver/applications/services/getManyJoinedUsersReceiversById.service';
+import { GetManyJoinedBillsConsumersByIdOrThrowService } from '@/modules/consumer/applications/services/getManyJoinedBillsConsumersByIdOrThrow.service';
+import { GetManyJoinedUsersLocationsByIdOrThrowService } from '@/modules/location/applications/services/getManyJoinedUsersLocationsByIdOrThrow.service';
+import { GetManyJoinedUsersReceiversByIdOrThrowService } from '@/modules/receiver/applications/services/getManyJoinedUsersReceiversByIdOrThrow.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
@@ -17,9 +17,9 @@ import type { IJoinedBillConsumer } from '@/modules/consumer/domain/interfaces/b
 export class GetManyBillsService implements IServiceHandler {
     constructor(
         private readonly queryBus: QueryBus,
-        private readonly getManyJoinedUsersLocationsByIdService: GetManyJoinedUsersLocationsByIdService,
-        private readonly getManyJoinedUsersReceiversByIdService: GetManyJoinedUsersReceiversByIdService,
-        private readonly getManyJoinedBillsConsumersByIdService: GetManyJoinedBillsConsumersByIdService,
+        private readonly getManyJoinedUsersReceiversByIdOrThrowService: GetManyJoinedUsersReceiversByIdOrThrowService,
+        private readonly getManyJoinedUsersLocationsByIdOrThrowService: GetManyJoinedUsersLocationsByIdOrThrowService,
+        private readonly getManyJoinedBillsConsumersByIdOrThrowService: GetManyJoinedBillsConsumersByIdOrThrowService,
     ) {}
 
     async execute(userId: string, options: GetManyBillsRequestDto): Promise<IBill[]> {
@@ -39,9 +39,9 @@ export class GetManyBillsService implements IServiceHandler {
         });
 
         const [locations, receivers, consumers] = await Promise.all([
-            this.getManyJoinedUsersLocationsByIdService.execute(userId, locationIds),
-            this.getManyJoinedUsersReceiversByIdService.execute(userId, receiverIds),
-            this.getManyJoinedBillsConsumersByIdService.execute(billIds),
+            this.getManyJoinedUsersLocationsByIdOrThrowService.execute(userId, locationIds),
+            this.getManyJoinedUsersReceiversByIdOrThrowService.execute(userId, receiverIds),
+            this.getManyJoinedBillsConsumersByIdOrThrowService.execute(billIds),
         ]);
 
         const locationMap = new Map(locations.map((location) => [location.id, location]));
@@ -55,27 +55,10 @@ export class GetManyBillsService implements IServiceHandler {
 
         return bills.map((bill) => ({
             ...bill,
-            location: this.require(locationMap.get(bill.locationId)),
-            receiver: this.require(receiverMap.get(bill.receiverId)),
-            consumers: this.requireArr(consumersMap.get(bill.id)),
+            location: locationMap.get(bill.locationId)!,
+            receiver: receiverMap.get(bill.receiverId)!,
+            consumers: consumersMap.get(bill.id)!,
         }));
-    }
-
-    private require<T>(data: T | undefined): T {
-        if (!data) {
-            throw new ProcessFailedInternalServerErrorException();
-        }
-        return data;
-    }
-
-    private requireArr<T>(arr: T[] | undefined): T[] {
-        if (!arr) {
-            throw new ProcessFailedInternalServerErrorException();
-        }
-        if (arr.length <= 0) {
-            throw new ProcessFailedInternalServerErrorException();
-        }
-        return arr;
     }
 
     private async getEntities(

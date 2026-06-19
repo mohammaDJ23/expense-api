@@ -6,5 +6,5 @@ import type {
 
 export interface IBillConsumerRepository {
     createMany(data: TInsertBillConsumer[]): Promise<TSelectBillConsumer[]>;
-    getManyJoinedById(billIds: string[]): Promise<IJoinedBillConsumer[]>;
+    getManyJoinedByIdOrThrow(billIds: string[]): Promise<IJoinedBillConsumer[]>;
 }

@@ -3,7 +3,7 @@ import { and, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
-    toEntities,
+    toEntitiesOrThrow,
     toEntityOrNull,
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -43,30 +43,8 @@ export class UserReceiverRepository extends DrizzleRepository implements IUserRe
         );
     }
 
-    getJoinedByIdOThrow(userId: string, receiverId: string): Promise<TSelectReceiver> {
-        return toEntityOrThrow(
-            this.db
-                .select({
-                    id: receivers.id,
-                    name: receivers.name,
-                    createdAt: receivers.createdAt,
-                    updatedAt: receivers.updatedAt,
-                })
-                .from(usersReceivers)
-                .innerJoin(receivers, eq(usersReceivers.receiverId, receivers.id))
-                .where(
-                    and(
-                        eq(usersReceivers.userId, userId),
-                        eq(usersReceivers.receiverId, receiverId),
-                    ),
-                )
-                .execute(),
-            'Unable to find',
-        );
-    }
-
-    getManyJoinedById(userId: string, receiverIds: string[]): Promise<TSelectReceiver[]> {
-        return toEntities(
+    getManyJoinedByIdOrThrow(userId: string, receiverIds: string[]): Promise<TSelectReceiver[]> {
+        return toEntitiesOrThrow(
             this.db
                 .select({
                     id: receivers.id,
@@ -83,6 +61,7 @@ export class UserReceiverRepository extends DrizzleRepository implements IUserRe
                     ),
                 )
                 .execute(),
+            'Unable to load the receiver',
         );
     }
 }

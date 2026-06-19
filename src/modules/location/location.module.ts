@@ -3,17 +3,15 @@ import { CqrsModule } from '@nestjs/cqrs';
 
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
 import { CreateUserLocationHandler } from '@/modules/location/applications/commands/createUserLocation/createUserLocation.handler';
-import { GetJoinedUserLocationByIdOrThrowHandler } from '@/modules/location/applications/queries/getJoinedUserLocationByIdOrThrow/getJoinedUserLocationByIdOrThrow.handler';
 import { GetLocationByNameOrNullHandler } from '@/modules/location/applications/queries/getLocationByNameOrNull/getLocationByNameOrNull.handler';
-import { GetManyJoinedUsersLocationsByIdHandler } from '@/modules/location/applications/queries/getManyJoinedUsersLocationsById/getManyJoinedUsersLocationsById.handler';
+import { GetManyJoinedUsersLocationsByIdOrThrowHandler } from '@/modules/location/applications/queries/getManyJoinedUsersLocationsByIdOrThrow/getManyJoinedUsersLocationsByIdOrThrow.handler';
 import { GetUserLocationByIdOrNullHandler } from '@/modules/location/applications/queries/getUserLocationByIdOrNull/getUserLocationByIdOrNull.handler';
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { CreateUserLocationService } from '@/modules/location/applications/services/createUserLocation.service';
 import { CreateUserLocationIfNotExistsService } from '@/modules/location/applications/services/createUserLocationIfNotExists.service';
-import { GetJoinedUserLocationByIdOrThrowService } from '@/modules/location/applications/services/GetJoinedUserLocationByIdOrThrow.service';
 import { GetLocationByNameOrCreateService } from '@/modules/location/applications/services/getLocationByNameOrCreate.service';
 import { GetLocationByNameOrNullService } from '@/modules/location/applications/services/getLocationByNameOrNull.service';
-import { GetManyJoinedUsersLocationsByIdService } from '@/modules/location/applications/services/getManyJoinedUsersLocationsById.service';
+import { GetManyJoinedUsersLocationsByIdOrThrowService } from '@/modules/location/applications/services/getManyJoinedUsersLocationsByIdOrThrow.service';
 import { GetUserLocationByIdOrNullService } from '@/modules/location/applications/services/getUserLocationByIdOrNull.service';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import { UserLocationRepository } from '@/modules/location/infrastructure/repositories/userLocation.repository';
@@ -26,10 +24,8 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
         GetLocationByNameOrCreateService,
         CreateUserLocationService,
         CreateUserLocationIfNotExistsService,
-        GetJoinedUserLocationByIdOrThrowService,
-        GetJoinedUserLocationByIdOrThrowHandler,
-        GetManyJoinedUsersLocationsByIdService,
-        GetManyJoinedUsersLocationsByIdHandler,
+        GetManyJoinedUsersLocationsByIdOrThrowService,
+        GetManyJoinedUsersLocationsByIdOrThrowHandler,
         GetUserLocationByIdOrNullService,
         CreateLocationHandler,
         CreateUserLocationHandler,
@@ -41,8 +37,7 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
     exports: [
         GetLocationByNameOrCreateService,
         CreateUserLocationIfNotExistsService,
-        GetJoinedUserLocationByIdOrThrowService,
-        GetManyJoinedUsersLocationsByIdService,
+        GetManyJoinedUsersLocationsByIdOrThrowService,
     ],
 })
 export class LocationModule {}

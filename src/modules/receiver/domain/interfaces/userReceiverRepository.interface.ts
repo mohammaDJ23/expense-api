@@ -7,6 +7,5 @@ import type {
 export interface IUserReceiverRepository {
     create(data: TInsertUserReceiver): Promise<TSelectUserReceiver>;
     getByIdOrNull(userId: string, receiverId: string): Promise<TSelectUserReceiver | null>;
-    getJoinedByIdOThrow(userId: string, receiverId: string): Promise<TSelectReceiver>;
-    getManyJoinedById(userId: string, receiverIds: string[]): Promise<TSelectReceiver[]>;
+    getManyJoinedByIdOrThrow(userId: string, receiverIds: string[]): Promise<TSelectReceiver[]>;
 }

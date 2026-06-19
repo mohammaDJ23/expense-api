@@ -3,7 +3,7 @@ import { and, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
-    toEntities,
+    toEntitiesOrThrow,
     toEntityOrNull,
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -43,30 +43,8 @@ export class UserLocationRepository extends DrizzleRepository implements IUserLo
         );
     }
 
-    getJoinedByIdOrThrow(userId: string, locationId: string): Promise<TSelectLocation> {
-        return toEntityOrThrow(
-            this.db
-                .select({
-                    id: locations.id,
-                    name: locations.id,
-                    createdAt: locations.createdAt,
-                    updatedAt: locations.updatedAt,
-                })
-                .from(usersLocations)
-                .innerJoin(locations, eq(usersLocations.locationId, locations.id))
-                .where(
-                    and(
-                        eq(usersLocations.userId, userId),
-                        eq(usersLocations.locationId, locationId),
-                    ),
-                )
-                .execute(),
-            'Unable to find',
-        );
-    }
-
-    getManyJoinedById(userId: string, locationIds: string[]): Promise<TSelectLocation[]> {
-        return toEntities(
+    getManyJoinedByIdOrThrow(userId: string, locationIds: string[]): Promise<TSelectLocation[]> {
+        return toEntitiesOrThrow(
             this.db
                 .select({
                     id: locations.id,
@@ -83,6 +61,7 @@ export class UserLocationRepository extends DrizzleRepository implements IUserLo
                     ),
                 )
                 .execute(),
+            'Unable to load the location',
         );
     }
 }
