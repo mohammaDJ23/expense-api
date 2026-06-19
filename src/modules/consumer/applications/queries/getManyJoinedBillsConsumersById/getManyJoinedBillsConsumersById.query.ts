@@ -1,3 +1,3 @@
 export class GetManyJoinedBillsConsumersByIdQuery {
-    constructor(public readonly billId: string) {}
+    constructor(public readonly billIds: string[]) {}
 }
