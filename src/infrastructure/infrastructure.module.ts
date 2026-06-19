@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { CompressionModule } from '@/infrastructure/compression/compression.module';
 import { DatabaseModule } from '@/infrastructure/database/database.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { MailerModule } from '@/infrastructure/mailer/mailer.module';
@@ -19,6 +20,7 @@ import { ThrottlerModule } from '@/infrastructure/throttler/throttler.module';
         MailerModule,
         JwtModule,
         ScheduleModule,
+        CompressionModule,
     ],
 })
 export class InfrastructureModule {}
