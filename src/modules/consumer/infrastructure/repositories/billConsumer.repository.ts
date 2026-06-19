@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -7,6 +8,10 @@ import {
     type TInsertBillConsumer,
     type TSelectBillConsumer,
 } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
+import {
+    consumers,
+    type TSelectConsumer,
+} from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 import type { IBillConsumerRepository } from '@/modules/consumer/domain/interfaces/billConsumerRepository.interface';
 
@@ -20,6 +25,28 @@ export class BillConsumerRepository extends DrizzleRepository implements IBillCo
                 .returning()
                 .prepare('create_many_bills_consumers')
                 .execute(),
+        );
+    }
+
+    getManyJoinedById(billId: string, consumerIds: string[]): Promise<TSelectConsumer[]> {
+        return toEntities(
+            this.db
+                .select({
+                    id: consumers.id,
+                    name: consumers.name,
+                    createdAt: consumers.createdAt,
+                    updatedAt: consumers.updatedAt,
+                })
+                .from(billsConsumers)
+                .innerJoin(consumers, eq(billsConsumers.consumerId, consumers.id))
+                .where(
+                    and(
+                        eq(billsConsumers.billId, sql.placeholder('billId')),
+                        inArray(billsConsumers.consumerId, consumerIds),
+                    ),
+                )
+                .prepare('get_many_joined_bills_consumers_by_id')
+                .execute({ billId }),
         );
     }
 }
