@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
+    toEntities,
     toEntityOrNull,
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -68,6 +69,28 @@ export class UserReceiverRepository extends DrizzleRepository implements IUserRe
                 .prepare('get_joined_user_receiver_by_id')
                 .execute({ userId, receiverId }),
             'Unable to find',
+        );
+    }
+
+    getManyJoinedById(userId: string, receiverIds: string[]): Promise<TSelectReceiver[]> {
+        return toEntities(
+            this.db
+                .select({
+                    id: receivers.id,
+                    name: receivers.name,
+                    createdAt: receivers.createdAt,
+                    updatedAt: receivers.updatedAt,
+                })
+                .from(usersReceivers)
+                .innerJoin(receivers, eq(usersReceivers.receiverId, receivers.id))
+                .where(
+                    and(
+                        eq(usersReceivers.userId, sql.placeholder('userId')),
+                        inArray(usersReceivers.receiverId, receiverIds),
+                    ),
+                )
+                .prepare('get_many_joined_user_receiver_by_id')
+                .execute({ userId }),
         );
     }
 }
