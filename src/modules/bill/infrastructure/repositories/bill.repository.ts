@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities, toEntityOrThrow } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -15,7 +15,7 @@ import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepos
 export class BillRepository extends DrizzleRepository implements IBillRepository {
     create(data: TInsertBill): Promise<TSelectBill> {
         return toEntityOrThrow(
-            this.db.insert(bills).values(data).returning().prepare('create_bill').execute(),
+            this.db.insert(bills).values(data).returning().execute(),
             'Unable to create',
         );
     }
@@ -25,12 +25,11 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
             this.db
                 .select()
                 .from(bills)
-                .where(eq(bills.userId, sql.placeholder('userId')))
+                .where(eq(bills.userId, userId))
                 .orderBy(desc(bills.createdAt))
-                .limit(sql.placeholder('limit'))
-                .offset(sql.placeholder('offset'))
-                .prepare('get_many_bills')
-                .execute({ limit, offset, userId }),
+                .limit(limit)
+                .offset(offset)
+                .execute(),
         );
     }
 
@@ -39,14 +38,8 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
             this.db
                 .select()
                 .from(bills)
-                .where(
-                    and(
-                        eq(bills.id, sql.placeholder('billId')),
-                        eq(bills.userId, sql.placeholder('userId')),
-                    ),
-                )
-                .prepare('get_bill_by_id')
-                .execute({ userId, billId }),
+                .where(and(eq(bills.id, billId), eq(bills.userId, userId)))
+                .execute(),
             'Unable to find',
         );
     }

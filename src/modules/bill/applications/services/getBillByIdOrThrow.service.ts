@@ -25,7 +25,7 @@ export class GetBillByIdOrThrowService implements IServiceHandler {
         const [receiver, location, consumers] = await Promise.all([
             this.getJoinedUserReceiverByIdOrThrowService.execute(userId, bill.receiverId),
             this.getJoinedUserLocationByIdOrThrowService.execute(userId, bill.locationId),
-            this.getManyJoinedBillsConsumersByIdService.execute(billId),
+            this.getManyJoinedBillsConsumersByIdService.execute([billId]),
         ]);
         return Object.assign(bill, {
             receiver,

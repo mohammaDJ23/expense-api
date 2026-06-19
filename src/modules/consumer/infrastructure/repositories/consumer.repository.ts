@@ -14,24 +14,12 @@ import type { IConsumerRepository } from '@/modules/consumer/domain/interfaces/c
 @Injectable()
 export class ConsumerRepository extends DrizzleRepository implements IConsumerRepository {
     createMany(data: TInsertConsumer[]): Promise<TSelectConsumer[]> {
-        return toEntities(
-            this.db
-                .insert(consumers)
-                .values(data)
-                .returning()
-                .prepare('create_many_consumers')
-                .execute(),
-        );
+        return toEntities(this.db.insert(consumers).values(data).returning().execute());
     }
 
     getManyByName(names: string[]): Promise<TSelectConsumer[]> {
         return toEntities(
-            this.db
-                .select()
-                .from(consumers)
-                .where(inArray(consumers.name, names))
-                .prepare('get_many_consumers_by_name')
-                .execute(),
+            this.db.select().from(consumers).where(inArray(consumers.name, names)).execute(),
         );
     }
 }
