@@ -5,6 +5,7 @@ import { CreateLocationHandler } from '@/modules/location/applications/commands/
 import { CreateUserLocationHandler } from '@/modules/location/applications/commands/createUserLocation/createUserLocation.handler';
 import { GetJoinedUserLocationByIdOrThrowHandler } from '@/modules/location/applications/queries/getJoinedUserLocationByIdOrThrow/getJoinedUserLocationByIdOrThrow.handler';
 import { GetLocationByNameOrNullHandler } from '@/modules/location/applications/queries/getLocationByNameOrNull/getLocationByNameOrNull.handler';
+import { GetManyJoinedUsersLocationsByIdHandler } from '@/modules/location/applications/queries/getManyJoinedUsersLocationsById/getManyJoinedUsersLocationsById.handler';
 import { GetUserLocationByIdOrNullHandler } from '@/modules/location/applications/queries/getUserLocationByIdOrNull/getUserLocationByIdOrNull.handler';
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { CreateUserLocationService } from '@/modules/location/applications/services/createUserLocation.service';
@@ -12,6 +13,7 @@ import { CreateUserLocationIfNotExistsService } from '@/modules/location/applica
 import { GetJoinedUserLocationByIdOrThrowService } from '@/modules/location/applications/services/GetJoinedUserLocationByIdOrThrow.service';
 import { GetLocationByNameOrCreateService } from '@/modules/location/applications/services/getLocationByNameOrCreate.service';
 import { GetLocationByNameOrNullService } from '@/modules/location/applications/services/getLocationByNameOrNull.service';
+import { GetManyJoinedUsersLocationsByIdService } from '@/modules/location/applications/services/getManyJoinedUsersLocationsById.service';
 import { GetUserLocationByIdOrNullService } from '@/modules/location/applications/services/getUserLocationByIdOrNull.service';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import { UserLocationRepository } from '@/modules/location/infrastructure/repositories/userLocation.repository';
@@ -26,6 +28,8 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
         CreateUserLocationIfNotExistsService,
         GetJoinedUserLocationByIdOrThrowService,
         GetJoinedUserLocationByIdOrThrowHandler,
+        GetManyJoinedUsersLocationsByIdService,
+        GetManyJoinedUsersLocationsByIdHandler,
         GetUserLocationByIdOrNullService,
         CreateLocationHandler,
         CreateUserLocationHandler,
@@ -38,6 +42,7 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
         GetLocationByNameOrCreateService,
         CreateUserLocationIfNotExistsService,
         GetJoinedUserLocationByIdOrThrowService,
+        GetManyJoinedUsersLocationsByIdService,
     ],
 })
 export class LocationModule {}
