@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { NotFoundError } from 'rxjs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { GetManyJoinedUsersReceiversByIdOrThrowQuery } from '@/modules/receiver/applications/queries/getManyJoinedUsersReceiversByIdOrThrow/getManyJoinedUsersReceiversByIdOrThrow.query';
@@ -21,7 +20,7 @@ export class GetManyJoinedUsersReceiversByIdOrThrowService implements IServiceHa
                 TSelectReceiver[]
             >(getManyJoinedUsersReceiversByIdOrThrowQuery);
         } catch (error) {
-            if (error instanceof NotFoundError) {
+            if (error instanceof NotFoundException) {
                 throw error;
             }
             throw new ProcessFailedInternalServerErrorException();
