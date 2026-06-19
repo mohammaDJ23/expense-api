@@ -39,31 +39,35 @@ export class CreateBillService implements IServiceHandler {
                 this.getLocationByNameOrCreateService.execute(data.location),
                 this.getReceiverByNameOrCreateService.execute(data.receiver),
             ]);
-
-            const createBillCommand = new CreateBillCommand({
-                amount: data.amount,
-                description: data.description,
-                purchasedAt: data.purchasedAt ? getCurrentUTCTimestamp(data.purchasedAt) : null,
-                createdAt: getCurrentUTCTimestamp(),
-                updatedAt: getCurrentUTCTimestamp(),
-                userId,
-                locationId: location.id,
-                receiverId: receiver.id,
-            });
-            const bill = await this.commandBus.execute<CreateBillCommand, TSelectBill>(
-                createBillCommand,
-            );
-
+            const bill = await this.createEntity(data, userId, location.id, receiver.id);
             await Promise.all([
                 this.createManyBillsConsumersService.execute(bill.id, consumers),
                 this.createManyUsersConsumersIfNotExistsService.execute(userId, consumers),
                 this.createUserLocationIfNotExistsService.execute(userId, location.id),
                 this.createUserReceiverIfNotExistsService.execute(userId, receiver.id),
             ]);
-
             return true;
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
+    }
+
+    private createEntity(
+        data: CreateBillRequestDto,
+        userId: string,
+        locationId: string,
+        receiverId: string,
+    ): Promise<TSelectBill> {
+        const createBillCommand = new CreateBillCommand({
+            amount: data.amount,
+            description: data.description,
+            purchasedAt: data.purchasedAt ? getCurrentUTCTimestamp(data.purchasedAt) : null,
+            createdAt: getCurrentUTCTimestamp(),
+            updatedAt: getCurrentUTCTimestamp(),
+            userId,
+            locationId,
+            receiverId,
+        });
+        return this.commandBus.execute<CreateBillCommand, TSelectBill>(createBillCommand);
     }
 }
