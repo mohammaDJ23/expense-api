@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { omitUndefined } from '@/common/utils/omitUndefined.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 
@@ -15,8 +14,7 @@ export class UpdateUserService implements IServiceHandler {
     async execute(data: UpdateUserCommand): Promise<TSelectUser> {
         try {
             const updateUserCommand = new UpdateUserCommand(data);
-            const updatedProperties = omitUndefined(updateUserCommand);
-            return await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updatedProperties);
+            return await this.commandBus.execute<UpdateUserCommand, TSelectUser>(updateUserCommand);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

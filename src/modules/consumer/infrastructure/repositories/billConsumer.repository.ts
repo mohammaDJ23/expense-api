@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, inArray, sql } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -28,7 +28,7 @@ export class BillConsumerRepository extends DrizzleRepository implements IBillCo
         );
     }
 
-    getManyJoinedById(billId: string, consumerIds: string[]): Promise<TSelectConsumer[]> {
+    getManyJoinedById(billId: string): Promise<TSelectConsumer[]> {
         return toEntities(
             this.db
                 .select({
@@ -39,12 +39,7 @@ export class BillConsumerRepository extends DrizzleRepository implements IBillCo
                 })
                 .from(billsConsumers)
                 .innerJoin(consumers, eq(billsConsumers.consumerId, consumers.id))
-                .where(
-                    and(
-                        eq(billsConsumers.billId, sql.placeholder('billId')),
-                        inArray(billsConsumers.consumerId, consumerIds),
-                    ),
-                )
+                .where(eq(billsConsumers.billId, sql.placeholder('billId')))
                 .prepare('get_many_joined_bills_consumers_by_id')
                 .execute({ billId }),
         );

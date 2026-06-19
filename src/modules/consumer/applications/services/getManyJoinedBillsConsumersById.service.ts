@@ -11,11 +11,10 @@ import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/
 export class GetManyJoinedBillsConsumersByIdService implements IServiceHandler {
     constructor(private readonly queryBus: QueryBus) {}
 
-    async execute(billId: string, consumerIds: string[]): Promise<TSelectConsumer[]> {
+    async execute(billId: string): Promise<TSelectConsumer[]> {
         try {
             const getManyJoinedBillsConsumersByIdQuery = new GetManyJoinedBillsConsumersByIdQuery(
                 billId,
-                consumerIds,
             );
             return await this.queryBus.execute<
                 GetManyJoinedBillsConsumersByIdQuery,

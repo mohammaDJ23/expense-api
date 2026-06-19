@@ -11,6 +11,6 @@ export class GetManyJoinedBillsConsumersByIdHandler implements IQueryHandler<Get
     constructor(private readonly billConsumerRepository: BillConsumerRepository) {}
 
     execute(query: GetManyJoinedBillsConsumersByIdQuery): Promise<TSelectConsumer[]> {
-        return this.billConsumerRepository.getManyJoinedById(query.billId, query.consumerIds);
+        return this.billConsumerRepository.getManyJoinedById(query.billId);
     }
 }
