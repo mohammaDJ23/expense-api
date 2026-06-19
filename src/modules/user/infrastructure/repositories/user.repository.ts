@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { desc, eq, isNull, sql } from 'drizzle-orm';
+import { desc, eq, isNull } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
@@ -20,42 +20,26 @@ import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepos
 export class UserRepository extends DrizzleRepository implements IUserRepository {
     create(data: TInsertUser): Promise<TSelectUser> {
         return toEntityOrThrow(
-            this.db.insert(users).values(data).returning().prepare('create_user').execute(),
+            this.db.insert(users).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
     update(data: Partial<TSelectUser> & Required<Pick<TSelectUser, 'id'>>): Promise<TSelectUser> {
         return toEntityOrThrow(
-            this.db
-                .update(users)
-                .set(data)
-                .where(eq(users.id, sql.placeholder('id')))
-                .returning()
-                .prepare('update_user')
-                .execute({ id: data.id }),
+            this.db.update(users).set(data).where(eq(users.id, data.id)).returning().execute(),
             'Unable to update',
         );
     }
 
     deleteManyNotVerified(): Promise<TSelectUser[]> {
         return toEntities(
-            this.db
-                .delete(users)
-                .where(isNull(users.verifiedAt))
-                .returning()
-                .prepare('delete_many_users_not_verified')
-                .execute(),
+            this.db.delete(users).where(isNull(users.verifiedAt)).returning().execute(),
         );
     }
 
     private getByEmail(email: string) {
-        return this.db
-            .select()
-            .from(users)
-            .where(eq(users.email, sql.placeholder('email')))
-            .prepare('get_user_by_email')
-            .execute({ email });
+        return this.db.select().from(users).where(eq(users.email, email)).execute();
     }
 
     isExistsByEmail(email: string): Promise<boolean> {
@@ -67,12 +51,7 @@ export class UserRepository extends DrizzleRepository implements IUserRepository
     }
 
     private getById(id: string) {
-        return this.db
-            .select()
-            .from(users)
-            .where(eq(users.id, sql.placeholder('id')))
-            .prepare('get_user_by_id')
-            .execute({ id });
+        return this.db.select().from(users).where(eq(users.id, id)).execute();
     }
 
     getByIdOrNull(id: string): Promise<TSelectUser | null> {
@@ -89,10 +68,9 @@ export class UserRepository extends DrizzleRepository implements IUserRepository
                 .select()
                 .from(users)
                 .orderBy(desc(users.createdAt))
-                .limit(sql.placeholder('limit'))
-                .offset(sql.placeholder('offset'))
-                .prepare('get_many_users')
-                .execute({ offset, limit }),
+                .limit(limit)
+                .offset(offset)
+                .execute(),
         );
     }
 }

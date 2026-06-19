@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, inArray, sql } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
@@ -23,12 +23,7 @@ import type { IUserLocationRepository } from '@/modules/location/domain/interfac
 export class UserLocationRepository extends DrizzleRepository implements IUserLocationRepository {
     create(data: TInsertUserLocation): Promise<TSelectUserLocation> {
         return toEntityOrThrow(
-            this.db
-                .insert(usersLocations)
-                .values(data)
-                .returning()
-                .prepare('create_user_location')
-                .execute(),
+            this.db.insert(usersLocations).values(data).returning().execute(),
             'Unable to create',
         );
     }
@@ -40,12 +35,11 @@ export class UserLocationRepository extends DrizzleRepository implements IUserLo
                 .from(usersLocations)
                 .where(
                     and(
-                        eq(usersLocations.userId, sql.placeholder('userId')),
-                        eq(usersLocations.locationId, sql.placeholder('locationId')),
+                        eq(usersLocations.userId, userId),
+                        eq(usersLocations.locationId, locationId),
                     ),
                 )
-                .prepare('get_user_location_by_id')
-                .execute({ userId, locationId }),
+                .execute(),
         );
     }
 
@@ -62,12 +56,11 @@ export class UserLocationRepository extends DrizzleRepository implements IUserLo
                 .innerJoin(locations, eq(usersLocations.locationId, locations.id))
                 .where(
                     and(
-                        eq(usersLocations.userId, sql.placeholder('userId')),
-                        eq(usersLocations.locationId, sql.placeholder('locationId')),
+                        eq(usersLocations.userId, userId),
+                        eq(usersLocations.locationId, locationId),
                     ),
                 )
-                .prepare('get_joined_user_location_by_id')
-                .execute({ userId, locationId }),
+                .execute(),
             'Unable to find',
         );
     }
@@ -77,7 +70,7 @@ export class UserLocationRepository extends DrizzleRepository implements IUserLo
             this.db
                 .select({
                     id: locations.id,
-                    name: locations.id,
+                    name: locations.name,
                     createdAt: locations.createdAt,
                     updatedAt: locations.updatedAt,
                 })
@@ -85,12 +78,11 @@ export class UserLocationRepository extends DrizzleRepository implements IUserLo
                 .innerJoin(locations, eq(usersLocations.locationId, locations.id))
                 .where(
                     and(
-                        eq(usersLocations.userId, sql.placeholder('userId')),
+                        eq(usersLocations.userId, userId),
                         inArray(usersLocations.locationId, locationIds),
                     ),
                 )
-                .prepare('get_joined_user_location_by_id')
-                .execute({ userId }),
+                .execute(),
         );
     }
 }

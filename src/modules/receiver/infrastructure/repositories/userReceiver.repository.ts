@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, inArray, sql } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
@@ -23,12 +23,7 @@ import type { IUserReceiverRepository } from '@/modules/receiver/domain/interfac
 export class UserReceiverRepository extends DrizzleRepository implements IUserReceiverRepository {
     create(data: TInsertUserReceiver): Promise<TSelectUserReceiver> {
         return toEntityOrThrow(
-            this.db
-                .insert(usersReceivers)
-                .values(data)
-                .returning()
-                .prepare('create_user_receiver')
-                .execute(),
+            this.db.insert(usersReceivers).values(data).returning().execute(),
             'Unable to create',
         );
     }
@@ -40,12 +35,11 @@ export class UserReceiverRepository extends DrizzleRepository implements IUserRe
                 .from(usersReceivers)
                 .where(
                     and(
-                        eq(usersReceivers.userId, sql.placeholder('userId')),
-                        eq(usersReceivers.receiverId, sql.placeholder('receiverId')),
+                        eq(usersReceivers.userId, userId),
+                        eq(usersReceivers.receiverId, receiverId),
                     ),
                 )
-                .prepare('get_user_receiver_by_id')
-                .execute({ userId, receiverId }),
+                .execute(),
         );
     }
 
@@ -62,12 +56,11 @@ export class UserReceiverRepository extends DrizzleRepository implements IUserRe
                 .innerJoin(receivers, eq(usersReceivers.receiverId, receivers.id))
                 .where(
                     and(
-                        eq(usersReceivers.userId, sql.placeholder('userId')),
-                        eq(usersReceivers.receiverId, sql.placeholder('receiverId')),
+                        eq(usersReceivers.userId, userId),
+                        eq(usersReceivers.receiverId, receiverId),
                     ),
                 )
-                .prepare('get_joined_user_receiver_by_id')
-                .execute({ userId, receiverId }),
+                .execute(),
             'Unable to find',
         );
     }
@@ -85,12 +78,11 @@ export class UserReceiverRepository extends DrizzleRepository implements IUserRe
                 .innerJoin(receivers, eq(usersReceivers.receiverId, receivers.id))
                 .where(
                     and(
-                        eq(usersReceivers.userId, sql.placeholder('userId')),
+                        eq(usersReceivers.userId, userId),
                         inArray(usersReceivers.receiverId, receiverIds),
                     ),
                 )
-                .prepare('get_many_joined_user_receiver_by_id')
-                .execute({ userId }),
+                .execute(),
         );
     }
 }
