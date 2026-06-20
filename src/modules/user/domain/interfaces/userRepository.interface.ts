@@ -1,12 +1,19 @@
-import type { TInsertUser, TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { IList } from '@/core/interfaces/list.interface';
+import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
+import type { IFindByIdOrNullRepository } from '@/core/interfaces/repositories/findByIdOrNullRepository.interface';
+import type { IFindByIdOrThrowRepository } from '@/core/interfaces/repositories/findByIdOrThrowRepository.interface';
+import type { IFindListRepository } from '@/core/interfaces/repositories/findListRepository.interface';
+import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
+import type { IInsertUser, ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
-export interface IUserRepository {
-    create(data: TInsertUser): Promise<TSelectUser>;
-    update(data: Partial<TSelectUser> & Required<Pick<TSelectUser, 'id'>>): Promise<TSelectUser>;
-    deleteManyNotVerified(): Promise<TSelectUser[]>;
+export interface IUserRepository
+    extends
+        ICreateRepository<IInsertUser, ISelectUser>,
+        IUpdateRepository<Partial<ISelectUser> & Required<Pick<ISelectUser, 'id'>>, ISelectUser>,
+        IFindByIdOrNullRepository<ISelectUser>,
+        IFindByIdOrThrowRepository<ISelectUser>,
+        IFindListRepository<IList, ISelectUser> {
+    deleteManyNotVerified(): Promise<ISelectUser[]>;
     isExistsByEmail(email: string): Promise<boolean>;
-    getByEmailOrNull(email: string): Promise<TSelectUser | null>;
-    getByIdOrNull(id: string): Promise<TSelectUser | null>;
-    getByIdOrThrow(id: string): Promise<TSelectUser>;
-    getMany(offset: number, limit: number): Promise<TSelectUser[]>;
+    findByEmailOrNull(email: string): Promise<ISelectUser | null>;
 }

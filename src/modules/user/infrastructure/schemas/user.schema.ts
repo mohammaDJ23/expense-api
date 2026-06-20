@@ -39,5 +39,8 @@ export const usersRelations = relations(users, ({ many }) => ({
     usersLocations: many(usersLocations),
 }));
 
-export type TSelectUser = typeof users.$inferSelect;
-export type TInsertUser = typeof users.$inferInsert;
+type TSelectUser = typeof users.$inferSelect;
+type TInsertUser = typeof users.$inferInsert;
+
+export interface ISelectUser extends TSelectUser {}
+export interface IInsertUser extends TInsertUser {}

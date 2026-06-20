@@ -1,19 +1,19 @@
-import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
+import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 
-import { DeleteManyNotVerifiedUsersCommand } from './deleteManyNotVerifiedUsers.command';
+import { FindUserListQuery } from './findUserList.query';
 
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
-@CommandHandler(DeleteManyNotVerifiedUsersCommand)
-export class DeleteManyNotVerifiedUsersHandler implements ICommandHandler<DeleteManyNotVerifiedUsersCommand> {
+@QueryHandler(FindUserListQuery)
+export class FindUserListHandler implements IQueryHandler<FindUserListQuery> {
     constructor(private readonly userRepository: UserRepository) {}
 
-    async execute(): Promise<ISelectUser[]> {
+    async execute(query: FindUserListQuery): Promise<ISelectUser[]> {
         try {
-            return await this.userRepository.deleteManyNotVerified();
+            return await this.userRepository.findList(query);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
