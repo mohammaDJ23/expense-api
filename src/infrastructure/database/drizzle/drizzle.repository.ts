@@ -5,12 +5,12 @@ import type { TransactionalAdapterDrizzleOrm } from '@nestjs-cls/transactional-a
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 
 @Injectable()
-export abstract class DrizzleRepository {
+export class DrizzleRepository {
     constructor(
         protected readonly txHost: TransactionHost<TransactionalAdapterDrizzleOrm<NodePgDatabase>>,
     ) {}
 
-    protected get db(): NodePgDatabase {
+    get db(): NodePgDatabase {
         return this.txHost.tx;
     }
 }

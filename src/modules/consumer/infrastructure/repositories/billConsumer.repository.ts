@@ -17,14 +17,18 @@ import type { IJoinedBillConsumer } from '@/modules/consumer/domain/interfaces/b
 import type { IBillConsumerRepository } from '@/modules/consumer/domain/interfaces/billConsumerRepository.interface';
 
 @Injectable()
-export class BillConsumerRepository extends DrizzleRepository implements IBillConsumerRepository {
+export class BillConsumerRepository implements IBillConsumerRepository {
+    constructor(private readonly drizzleRepository: DrizzleRepository) {}
+
     createMany(data: TInsertBillConsumer[]): Promise<TSelectBillConsumer[]> {
-        return toEntities(this.db.insert(billsConsumers).values(data).returning().execute());
+        return toEntities(
+            this.drizzleRepository.db.insert(billsConsumers).values(data).returning().execute(),
+        );
     }
 
     getManyJoinedByIdOrThrow(billIds: string[]): Promise<IJoinedBillConsumer[]> {
         return toEntitiesOrThrow(
-            this.db
+            this.drizzleRepository.db
                 .select({
                     billId: billsConsumers.billId,
                     id: consumers.id,

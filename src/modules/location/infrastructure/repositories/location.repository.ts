@@ -15,17 +15,23 @@ import {
 import type { ILocationRepository } from '@/modules/location/domain/interfaces/locationRepository.interface';
 
 @Injectable()
-export class LocationRepository extends DrizzleRepository implements ILocationRepository {
+export class LocationRepository implements ILocationRepository {
+    constructor(private readonly drizzleRepository: DrizzleRepository) {}
+
     create(data: TInsertLocation): Promise<TSelectLocation> {
         return toEntityOrThrow(
-            this.db.insert(locations).values(data).returning().execute(),
+            this.drizzleRepository.db.insert(locations).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
     getByNameOrNull(name: string): Promise<TSelectLocation | null> {
         return toEntityOrNull(
-            this.db.select().from(locations).where(eq(locations.name, name)).execute(),
+            this.drizzleRepository.db
+                .select()
+                .from(locations)
+                .where(eq(locations.name, name))
+                .execute(),
         );
     }
 }

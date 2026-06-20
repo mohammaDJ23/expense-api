@@ -12,14 +12,22 @@ import {
 import type { IConsumerRepository } from '@/modules/consumer/domain/interfaces/consumerRepository.interface';
 
 @Injectable()
-export class ConsumerRepository extends DrizzleRepository implements IConsumerRepository {
+export class ConsumerRepository implements IConsumerRepository {
+    constructor(private readonly drizzleRepository: DrizzleRepository) {}
+
     createMany(data: TInsertConsumer[]): Promise<TSelectConsumer[]> {
-        return toEntities(this.db.insert(consumers).values(data).returning().execute());
+        return toEntities(
+            this.drizzleRepository.db.insert(consumers).values(data).returning().execute(),
+        );
     }
 
     getManyByName(names: string[]): Promise<TSelectConsumer[]> {
         return toEntities(
-            this.db.select().from(consumers).where(inArray(consumers.name, names)).execute(),
+            this.drizzleRepository.db
+                .select()
+                .from(consumers)
+                .where(inArray(consumers.name, names))
+                .execute(),
         );
     }
 }

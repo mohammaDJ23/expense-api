@@ -12,17 +12,19 @@ import {
 import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepository.interface';
 
 @Injectable()
-export class BillRepository extends DrizzleRepository implements IBillRepository {
+export class BillRepository implements IBillRepository {
+    constructor(private readonly drizzleRepository: DrizzleRepository) {}
+
     create(data: TInsertBill): Promise<TSelectBill> {
         return toEntityOrThrow(
-            this.db.insert(bills).values(data).returning().execute(),
+            this.drizzleRepository.db.insert(bills).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
     getMany(userId: string, offset: number, limit: number): Promise<TSelectBill[]> {
         return toEntities(
-            this.db
+            this.drizzleRepository.db
                 .select()
                 .from(bills)
                 .where(eq(bills.userId, userId))
@@ -35,7 +37,7 @@ export class BillRepository extends DrizzleRepository implements IBillRepository
 
     getByIdOrThrow(userId: string, billId: string): Promise<TSelectBill> {
         return toEntityOrThrow(
-            this.db
+            this.drizzleRepository.db
                 .select()
                 .from(bills)
                 .where(and(eq(bills.id, billId), eq(bills.userId, userId)))

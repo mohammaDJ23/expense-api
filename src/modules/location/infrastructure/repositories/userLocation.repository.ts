@@ -20,17 +20,19 @@ import {
 import type { IUserLocationRepository } from '@/modules/location/domain/interfaces/userLocationRepository.interface';
 
 @Injectable()
-export class UserLocationRepository extends DrizzleRepository implements IUserLocationRepository {
+export class UserLocationRepository implements IUserLocationRepository {
+    constructor(private readonly drizzleRepository: DrizzleRepository) {}
+
     create(data: TInsertUserLocation): Promise<TSelectUserLocation> {
         return toEntityOrThrow(
-            this.db.insert(usersLocations).values(data).returning().execute(),
+            this.drizzleRepository.db.insert(usersLocations).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
     getByIdOrNull(userId: string, locationId: string): Promise<TSelectUserLocation | null> {
         return toEntityOrNull(
-            this.db
+            this.drizzleRepository.db
                 .select()
                 .from(usersLocations)
                 .where(
@@ -45,7 +47,7 @@ export class UserLocationRepository extends DrizzleRepository implements IUserLo
 
     getManyJoinedByIdOrThrow(userId: string, locationIds: string[]): Promise<TSelectLocation[]> {
         return toEntitiesOrThrow(
-            this.db
+            this.drizzleRepository.db
                 .select({
                     id: locations.id,
                     name: locations.name,
