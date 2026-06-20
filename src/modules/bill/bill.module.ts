@@ -10,12 +10,9 @@ import { GetBillByIdOrThrowService } from '@/modules/bill/applications/services/
 import { GetManyBillsService } from '@/modules/bill/applications/services/getManyBills.service';
 import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.repository';
 import { BillController } from '@/modules/bill/interface/controllers/v1.controller';
-import { ConsumerModule } from '@/modules/consumer/consumer.module';
-import { LocationModule } from '@/modules/location/location.module';
-import { ReceiverModule } from '@/modules/receiver/receiver.module';
 
 @Module({
-    imports: [CqrsModule, ConsumerModule, LocationModule, ReceiverModule, AuthenticationModule],
+    imports: [CqrsModule, AuthenticationModule],
     providers: [
         CreateBillService,
         GetManyBillsService,

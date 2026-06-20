@@ -8,8 +8,8 @@ import {
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     locations,
-    type TInsertLocation,
-    type TSelectLocation,
+    type IInsertLocation,
+    type ISelectLocation,
 } from '@/modules/location/infrastructure/schemas/location.schema';
 
 import type { ILocationRepository } from '@/modules/location/domain/interfaces/locationRepository.interface';
@@ -18,14 +18,14 @@ import type { ILocationRepository } from '@/modules/location/domain/interfaces/l
 export class LocationRepository implements ILocationRepository {
     constructor(private readonly drizzleRepository: DrizzleRepository) {}
 
-    create(data: TInsertLocation): Promise<TSelectLocation> {
+    create(data: IInsertLocation): Promise<ISelectLocation> {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(locations).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
-    getByNameOrNull(name: string): Promise<TSelectLocation | null> {
+    findByNameOrNull(name: string): Promise<ISelectLocation | null> {
         return toEntityOrNull(
             this.drizzleRepository.db
                 .select()

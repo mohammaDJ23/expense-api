@@ -1,9 +1,11 @@
+import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
+import type { IFindByNameOrNullRepository } from '@/core/interfaces/repositories/findByNameOrNullRepository.interface';
 import type {
-    TInsertLocation,
-    TSelectLocation,
+    IInsertLocation,
+    ISelectLocation,
 } from '@/modules/location/infrastructure/schemas/location.schema';
 
-export interface ILocationRepository {
-    create(data: TInsertLocation): Promise<TSelectLocation>;
-    getByNameOrNull(name: string): Promise<TSelectLocation | null>;
-}
+export interface ILocationRepository
+    extends
+        ICreateRepository<IInsertLocation, ISelectLocation>,
+        IFindByNameOrNullRepository<ISelectLocation> {}
