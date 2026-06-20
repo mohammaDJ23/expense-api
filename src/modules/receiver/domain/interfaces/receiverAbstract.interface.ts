@@ -1,3 +1,3 @@
-import type { TSelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
+import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
-export interface IReceiverAbstract extends TSelectReceiver {}
+export interface IReceiverAbstract extends ISelectReceiver {}

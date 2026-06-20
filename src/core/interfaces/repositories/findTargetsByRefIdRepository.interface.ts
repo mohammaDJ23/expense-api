@@ -1,3 +1,3 @@
-export interface IFindTargetsByRefIdRepository<TOutput> {
-    findTargetsByRefId(refId: string): Promise<TOutput[]>;
+export interface IFindTargetsByRefIdRepository<TOutput, TOptions> {
+    findTargetsByRefId(refId: string, options: TOptions): Promise<TOutput[]>;
 }

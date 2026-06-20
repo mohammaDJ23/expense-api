@@ -1,9 +1,11 @@
+import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
+import type { IFindByNameOrNullRepository } from '@/core/interfaces/repositories/findByNameOrNullRepository.interface';
 import type {
-    TInsertReceiver,
-    TSelectReceiver,
+    IInsertReceiver,
+    ISelectReceiver,
 } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
-export interface IReceiverRepository {
-    create(data: TInsertReceiver): Promise<TSelectReceiver>;
-    getByNameOrNull(name: string): Promise<TSelectReceiver | null>;
-}
+export interface IReceiverRepository
+    extends
+        ICreateRepository<IInsertReceiver, ISelectReceiver>,
+        IFindByNameOrNullRepository<ISelectReceiver> {}

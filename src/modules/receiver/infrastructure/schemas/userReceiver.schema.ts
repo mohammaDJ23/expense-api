@@ -33,5 +33,8 @@ export const usersReceiversRelations = relations(usersReceivers, ({ one }) => ({
     }),
 }));
 
-export type TSelectUserReceiver = typeof usersReceivers.$inferSelect;
-export type TInsertUserReceiver = typeof usersReceivers.$inferInsert;
+type TSelectUserReceiver = typeof usersReceivers.$inferSelect;
+type TInsertUserReceiver = typeof usersReceivers.$inferInsert;
+
+export interface ISelectUserReceiver extends TSelectUserReceiver {}
+export interface IInsertUserReceiver extends TInsertUserReceiver {}
