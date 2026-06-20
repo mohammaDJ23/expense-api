@@ -27,11 +27,12 @@ export class GetBillByIdOrThrowService implements IServiceHandler {
             this.getManyJoinedUsersLocationsByIdOrThrowService.execute(userId, [bill.locationId]),
             this.getManyJoinedBillsConsumersByIdOrThrowService.execute([billId]),
         ]);
-        return Object.assign(bill, {
+        return {
+            ...bill,
             receiver: receivers[0],
             location: locations[0],
             consumers,
-        });
+        };
     }
 
     private async getEntity(userId: string, billId: string): Promise<TSelectBill> {
