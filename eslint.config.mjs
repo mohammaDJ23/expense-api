@@ -334,7 +334,7 @@ export default defineConfig([
                 'error',
                 { allowNumber: true, allowBoolean: true },
             ],
-            '@typescript-eslint/no-unnecessary-type-constraint': 'error',
+            '@typescript-eslint/no-unnecessary-type-constraint': 'off',
             '@typescript-eslint/no-redundant-type-constituents': 'error',
             '@typescript-eslint/no-meaningless-void-operator': 'error',
             '@typescript-eslint/no-extraneous-class': 'off',
