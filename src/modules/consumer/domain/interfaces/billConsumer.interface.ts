@@ -1,5 +1,5 @@
-import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
+import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
-export interface IJoinedBillConsumer extends TSelectConsumer {
+export interface ITargetBillConsumer extends ISelectConsumer {
     billId: string;
 }

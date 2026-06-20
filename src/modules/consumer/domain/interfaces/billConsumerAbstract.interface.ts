@@ -1,3 +1,3 @@
-import type { TSelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
+import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
-export interface IBillConsumerAbstract extends TSelectBillConsumer {}
+export interface IBillConsumerAbstract extends ISelectBillConsumer {}

@@ -1,9 +1,11 @@
+import type { ICreateManyRepository } from '@/core/interfaces/repositories/createManyRepository.interface';
+import type { IFindManyByRefIdAndTargetIdsRepository } from '@/core/interfaces/repositories/findManyByRefIdAndTargetIdsRepository.interface';
 import type {
-    TInsertUserConsumer,
-    TSelectUserConsumer,
+    IInsertUserConsumer,
+    ISelectUserConsumer,
 } from '@/modules/consumer/infrastructure/schemas/userConsumer.schema';
 
-export interface IUserConsumerRepository {
-    createMany(data: TInsertUserConsumer[]): Promise<TSelectUserConsumer[]>;
-    getManyById(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]>;
-}
+export interface IUserConsumerRepository
+    extends
+        ICreateManyRepository<IInsertUserConsumer, ISelectUserConsumer>,
+        IFindManyByRefIdAndTargetIdsRepository<ISelectUserConsumer> {}

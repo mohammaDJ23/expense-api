@@ -1,3 +1,3 @@
-import type { TSelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
+import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
-export interface IConsumerAbstract extends TSelectConsumer {}
+export interface IConsumerAbstract extends ISelectConsumer {}

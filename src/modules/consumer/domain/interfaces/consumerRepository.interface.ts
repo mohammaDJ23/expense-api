@@ -1,9 +1,11 @@
+import type { ICreateManyRepository } from '@/core/interfaces/repositories/createManyRepository.interface';
+import type { IFindManyByNamesRepository } from '@/core/interfaces/repositories/findManyByNamesRepository.interface';
 import type {
-    TInsertConsumer,
-    TSelectConsumer,
+    IInsertConsumer,
+    ISelectConsumer,
 } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
-export interface IConsumerRepository {
-    createMany(data: TInsertConsumer[]): Promise<TSelectConsumer[]>;
-    getManyByName(names: string[]): Promise<TSelectConsumer[]>;
-}
+export interface IConsumerRepository
+    extends
+        ICreateManyRepository<IInsertConsumer, ISelectConsumer>,
+        IFindManyByNamesRepository<ISelectConsumer> {}
