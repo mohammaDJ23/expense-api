@@ -1,16 +1,22 @@
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import { omitUndefined } from '@/common/utils/omitUndefined.util';
-import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import { UpdateUserCommand } from './updateUser.command';
+
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     constructor(private readonly userRepository: UserRepository) {}
 
-    execute(command: UpdateUserCommand): Promise<TSelectUser> {
-        return this.userRepository.update(omitUndefined(command));
+    async execute(command: UpdateUserCommand): Promise<ISelectUser> {
+        try {
+            return await this.userRepository.update(omitUndefined(command));
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
+        }
     }
 }

@@ -5,45 +5,41 @@ import { OwnerGuard } from '@/core/guards/owner.guard';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { CurrentUser } from '@/core/user/currentUser.decorator';
-import { GetManyUsersService } from '@/modules/user/applications/services/getManyUsers.service';
-import { GetUserByIdOrThrowService } from '@/modules/user/applications/services/getUserByIdOrThrow.service';
-import { GetManyUsersRequestDto } from '@/modules/user/interfaces/dtos/getManyUsers.request.dto';
-import { GetUserRequestDto } from '@/modules/user/interfaces/dtos/getUser.request.dto';
+import { UserService } from '@/modules/user/applications/services/user.service';
+import { FindUserByIdRequestDto } from '@/modules/user/interfaces/dtos/findUserById.request.dto';
+import { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
 import { UserResponseDto } from '@/modules/user/interfaces/dtos/user.response.dto';
 
 import { SUCCESS_GET_USER_MESSAGE, SUCCESS_GET_USERS_MESSAGE } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/user/currentUser.interface';
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/users' })
 export class UserController {
-    constructor(
-        private readonly getUserByIdOrThrowService: GetUserByIdOrThrowService,
-        private readonly getManyUsersService: GetManyUsersService,
-    ) {}
+    constructor(private readonly userService: UserService) {}
 
     @Get()
     @UseGuards(JwtAuthGuard, OwnerGuard)
     @SerializerInterceptor(UserResponseDto)
     @HttpResponse(SUCCESS_GET_USERS_MESSAGE, HttpStatus.OK)
-    getMany(@Query() query: GetManyUsersRequestDto): Promise<TSelectUser[]> {
-        return this.getManyUsersService.execute(query);
+    findList(@Query() query: FindUserListRequestDto): Promise<ISelectUser[]> {
+        return this.userService.findList(query);
     }
 
     @Get(':id')
     @UseGuards(JwtAuthGuard, OwnerGuard)
     @SerializerInterceptor(UserResponseDto)
     @HttpResponse(SUCCESS_GET_USER_MESSAGE, HttpStatus.OK)
-    getById(@Param() param: GetUserRequestDto): Promise<TSelectUser> {
-        return this.getUserByIdOrThrowService.execute(param.id);
+    findById(@Param() param: FindUserByIdRequestDto): Promise<ISelectUser> {
+        return this.userService.findById(param.id);
     }
 
     @Get('me')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(UserResponseDto)
     @HttpResponse(SUCCESS_GET_USER_MESSAGE, HttpStatus.OK)
-    getMe(@CurrentUser() user: ICurrentUser): Promise<TSelectUser> {
-        return this.getUserByIdOrThrowService.execute(user.id);
+    findMe(@CurrentUser() user: ICurrentUser): Promise<ISelectUser> {
+        return this.userService.findById(user.id);
     }
 }

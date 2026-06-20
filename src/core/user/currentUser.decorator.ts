@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 
 import type { IRequest } from '@/core/interfaces/request.interface';
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const CurrentUser = createParamDecorator((_: never, ctx: ExecutionContext): TSelectUser => {
+export const CurrentUser = createParamDecorator((_: never, ctx: ExecutionContext): ISelectUser => {
     const request = ctx.switchToHttp().getRequest<IRequest>();
     const user = request.user;
 

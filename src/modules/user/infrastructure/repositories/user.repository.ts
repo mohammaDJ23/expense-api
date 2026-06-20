@@ -10,24 +10,25 @@ import {
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     users,
-    type TInsertUser,
-    type TSelectUser,
+    type IInsertUser,
+    type ISelectUser,
 } from '@/modules/user/infrastructure/schemas/user.schema';
 
+import type { IList } from '@/core/interfaces/list.interface';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
     constructor(private readonly drizzleRepository: DrizzleRepository) {}
 
-    create(data: TInsertUser): Promise<TSelectUser> {
+    create(data: IInsertUser): Promise<ISelectUser> {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(users).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
-    update(data: Partial<TSelectUser> & Required<Pick<TSelectUser, 'id'>>): Promise<TSelectUser> {
+    update(data: Partial<ISelectUser> & Required<Pick<ISelectUser, 'id'>>): Promise<ISelectUser> {
         return toEntityOrThrow(
             this.drizzleRepository.db
                 .update(users)
@@ -39,7 +40,7 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    deleteManyNotVerified(): Promise<TSelectUser[]> {
+    deleteManyNotVerified(): Promise<ISelectUser[]> {
         return toEntities(
             this.drizzleRepository.db
                 .delete(users)
@@ -49,7 +50,7 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    private getByEmail(email: string) {
+    private findByEmail(email: string): Promise<ISelectUser[]> {
         return this.drizzleRepository.db
             .select()
             .from(users)
@@ -58,33 +59,33 @@ export class UserRepository implements IUserRepository {
     }
 
     isExistsByEmail(email: string): Promise<boolean> {
-        return isExists(this.getByEmail(email));
+        return isExists(this.findByEmail(email));
     }
 
-    getByEmailOrNull(email: string): Promise<TSelectUser | null> {
-        return toEntityOrNull(this.getByEmail(email));
+    findByEmailOrNull(email: string): Promise<ISelectUser | null> {
+        return toEntityOrNull(this.findByEmail(email));
     }
 
-    private getById(id: string) {
+    private findById(id: string): Promise<ISelectUser[]> {
         return this.drizzleRepository.db.select().from(users).where(eq(users.id, id)).execute();
     }
 
-    getByIdOrNull(id: string): Promise<TSelectUser | null> {
-        return toEntityOrNull(this.getById(id));
+    findByIdOrNull(id: string): Promise<ISelectUser | null> {
+        return toEntityOrNull(this.findById(id));
     }
 
-    getByIdOrThrow(id: string): Promise<TSelectUser> {
-        return toEntityOrThrow(this.getById(id), 'Unable to find');
+    findByIdOrThrow(id: string): Promise<ISelectUser> {
+        return toEntityOrThrow(this.findById(id), 'Unable to find');
     }
 
-    getMany(offset: number, limit: number): Promise<TSelectUser[]> {
+    findList(options: IList): Promise<ISelectUser[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()
                 .from(users)
                 .orderBy(desc(users.createdAt))
-                .limit(limit)
-                .offset(offset)
+                .limit(options.limit)
+                .offset(options.offset)
                 .execute(),
         );
     }

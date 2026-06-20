@@ -1,3 +1,3 @@
-export class GetUserByEmailOrNullQuery {
+export class FindUserByEmailOrNullQuery {
     constructor(public readonly email: string) {}
 }

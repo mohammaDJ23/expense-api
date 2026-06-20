@@ -1,3 +1,3 @@
-export class GetUserByIdOrThrowQuery {
+export class FindUserByIdOrThrowQuery {
     constructor(public readonly id: string) {}
 }

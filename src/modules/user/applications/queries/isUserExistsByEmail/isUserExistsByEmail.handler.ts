@@ -1,5 +1,6 @@
 import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 
 import { IsUserExistsByEmailQuery } from './isUserExistsByEmail.query';
@@ -8,7 +9,11 @@ import { IsUserExistsByEmailQuery } from './isUserExistsByEmail.query';
 export class IsUserExistsByEmailHandler implements IQueryHandler<IsUserExistsByEmailQuery> {
     constructor(private readonly userRepository: UserRepository) {}
 
-    execute(query: IsUserExistsByEmailQuery): Promise<boolean> {
-        return this.userRepository.isExistsByEmail(query.email);
+    async execute(query: IsUserExistsByEmailQuery): Promise<boolean> {
+        try {
+            return await this.userRepository.isExistsByEmail(query.email);
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
+        }
     }
 }

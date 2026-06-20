@@ -1,3 +1,3 @@
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
-export interface IUserAbstract extends TSelectUser {}
+export interface IUserAbstract extends ISelectUser {}
