@@ -33,5 +33,8 @@ export const usersLocationsRelations = relations(usersLocations, ({ one }) => ({
     }),
 }));
 
-export type TSelectUserLocation = typeof usersLocations.$inferSelect;
-export type TInsertUserLocation = typeof usersLocations.$inferInsert;
+type TSelectUserLocation = typeof usersLocations.$inferSelect;
+type TInsertUserLocation = typeof usersLocations.$inferInsert;
+
+export interface ISelectUserLocation extends TSelectUserLocation {}
+export interface IInsertUserLocation extends TInsertUserLocation {}

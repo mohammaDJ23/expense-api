@@ -1,3 +1,3 @@
-export class GetLocationByNameOrNullQuery {
+export class FindLocationByNameOrNullQuery {
     constructor(public readonly name: string) {}
 }

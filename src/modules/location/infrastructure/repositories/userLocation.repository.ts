@@ -1,52 +1,53 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
-    toEntitiesOrThrow,
+    toEntities,
     toEntityOrNull,
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     locations,
-    type TSelectLocation,
+    type ISelectLocation,
 } from '@/modules/location/infrastructure/schemas/location.schema';
 import {
     usersLocations,
-    type TInsertUserLocation,
-    type TSelectUserLocation,
+    type IInsertUserLocation,
+    type ISelectUserLocation,
 } from '@/modules/location/infrastructure/schemas/userLocation.schema';
 
+import type { IList } from '@/core/interfaces/list.interface';
 import type { IUserLocationRepository } from '@/modules/location/domain/interfaces/userLocationRepository.interface';
 
 @Injectable()
 export class UserLocationRepository implements IUserLocationRepository {
     constructor(private readonly drizzleRepository: DrizzleRepository) {}
 
-    create(data: TInsertUserLocation): Promise<TSelectUserLocation> {
+    create(data: IInsertUserLocation): Promise<ISelectUserLocation> {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(usersLocations).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
-    getByIdOrNull(userId: string, locationId: string): Promise<TSelectUserLocation | null> {
+    findByRefIdAndTargetIdOrNull(
+        refId: string,
+        targetId: string,
+    ): Promise<ISelectUserLocation | null> {
         return toEntityOrNull(
             this.drizzleRepository.db
                 .select()
                 .from(usersLocations)
                 .where(
-                    and(
-                        eq(usersLocations.userId, userId),
-                        eq(usersLocations.locationId, locationId),
-                    ),
+                    and(eq(usersLocations.userId, refId), eq(usersLocations.locationId, targetId)),
                 )
                 .execute(),
         );
     }
 
-    getManyJoinedByIdOrThrow(userId: string, locationIds: string[]): Promise<TSelectLocation[]> {
-        return toEntitiesOrThrow(
+    findTargetsByRefId(refId: string, options: IList): Promise<ISelectLocation[]> {
+        return toEntities(
             this.drizzleRepository.db
                 .select({
                     id: locations.id,
@@ -56,14 +57,10 @@ export class UserLocationRepository implements IUserLocationRepository {
                 })
                 .from(usersLocations)
                 .innerJoin(locations, eq(usersLocations.locationId, locations.id))
-                .where(
-                    and(
-                        eq(usersLocations.userId, userId),
-                        inArray(usersLocations.locationId, locationIds),
-                    ),
-                )
+                .where(and(eq(usersLocations.userId, refId)))
+                .offset(options.offset)
+                .limit(options.limit)
                 .execute(),
-            'Unable to load the location',
         );
     }
 }

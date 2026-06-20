@@ -1,3 +1,3 @@
-import type { TSelectUserLocation } from '@/modules/location/infrastructure/schemas/userLocation.schema';
+import type { ISelectUserLocation } from '@/modules/location/infrastructure/schemas/userLocation.schema';
 
-export interface IUserLocationAbstract extends TSelectUserLocation {}
+export interface IUserLocationAbstract extends ISelectUserLocation {}
