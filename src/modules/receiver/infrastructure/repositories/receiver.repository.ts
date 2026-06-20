@@ -8,8 +8,8 @@ import {
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     receivers,
-    type TInsertReceiver,
-    type TSelectReceiver,
+    type IInsertReceiver,
+    type ISelectReceiver,
 } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 import type { IReceiverRepository } from '@/modules/receiver/domain/interfaces/receiverRepository.interface';
@@ -18,14 +18,14 @@ import type { IReceiverRepository } from '@/modules/receiver/domain/interfaces/r
 export class ReceiverRepository implements IReceiverRepository {
     constructor(private readonly drizzleRepository: DrizzleRepository) {}
 
-    create(data: TInsertReceiver): Promise<TSelectReceiver> {
+    create(data: IInsertReceiver): Promise<ISelectReceiver> {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(receivers).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
-    getByNameOrNull(name: string): Promise<TSelectReceiver | null> {
+    findByNameOrNull(name: string): Promise<ISelectReceiver | null> {
         return toEntityOrNull(
             this.drizzleRepository.db
                 .select()

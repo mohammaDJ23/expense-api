@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import { omitUndefined } from '@/common/utils/omitUndefined.util';
@@ -15,7 +16,10 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     async execute(command: UpdateUserCommand): Promise<ISelectUser> {
         try {
             return await this.userRepository.update(omitUndefined(command));
-        } catch {
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
             throw new ProcessFailedInternalServerErrorException();
         }
     }

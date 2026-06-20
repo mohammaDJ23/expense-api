@@ -21,5 +21,8 @@ export const receiversRelations = relations(receivers, ({ many }) => ({
     usersReceivers: many(usersReceivers),
 }));
 
-export type TSelectReceiver = typeof receivers.$inferSelect;
-export type TInsertReceiver = typeof receivers.$inferInsert;
+type TSelectReceiver = typeof receivers.$inferSelect;
+type TInsertReceiver = typeof receivers.$inferInsert;
+
+export interface ISelectReceiver extends TSelectReceiver {}
+export interface IInsertReceiver extends TInsertReceiver {}

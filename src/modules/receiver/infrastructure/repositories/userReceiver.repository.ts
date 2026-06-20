@@ -1,52 +1,53 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
-    toEntitiesOrThrow,
+    toEntities,
     toEntityOrNull,
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     receivers,
-    type TSelectReceiver,
+    type ISelectReceiver,
 } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import {
     usersReceivers,
-    type TInsertUserReceiver,
-    type TSelectUserReceiver,
+    type IInsertUserReceiver,
+    type ISelectUserReceiver,
 } from '@/modules/receiver/infrastructure/schemas/userReceiver.schema';
 
+import type { IList } from '@/core/interfaces/list.interface';
 import type { IUserReceiverRepository } from '@/modules/receiver/domain/interfaces/userReceiverRepository.interface';
 
 @Injectable()
 export class UserReceiverRepository implements IUserReceiverRepository {
     constructor(private readonly drizzleRepository: DrizzleRepository) {}
 
-    create(data: TInsertUserReceiver): Promise<TSelectUserReceiver> {
+    create(data: IInsertUserReceiver): Promise<ISelectUserReceiver> {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(usersReceivers).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
-    getByIdOrNull(userId: string, receiverId: string): Promise<TSelectUserReceiver | null> {
+    findByRefIdAndTargetIdOrNull(
+        refId: string,
+        targetId: string,
+    ): Promise<ISelectUserReceiver | null> {
         return toEntityOrNull(
             this.drizzleRepository.db
                 .select()
                 .from(usersReceivers)
                 .where(
-                    and(
-                        eq(usersReceivers.userId, userId),
-                        eq(usersReceivers.receiverId, receiverId),
-                    ),
+                    and(eq(usersReceivers.userId, refId), eq(usersReceivers.receiverId, targetId)),
                 )
                 .execute(),
         );
     }
 
-    getManyJoinedByIdOrThrow(userId: string, receiverIds: string[]): Promise<TSelectReceiver[]> {
-        return toEntitiesOrThrow(
+    findTargetsByRefId(refId: string, options: IList): Promise<ISelectReceiver[]> {
+        return toEntities(
             this.drizzleRepository.db
                 .select({
                     id: receivers.id,
@@ -56,14 +57,10 @@ export class UserReceiverRepository implements IUserReceiverRepository {
                 })
                 .from(usersReceivers)
                 .innerJoin(receivers, eq(usersReceivers.receiverId, receivers.id))
-                .where(
-                    and(
-                        eq(usersReceivers.userId, userId),
-                        inArray(usersReceivers.receiverId, receiverIds),
-                    ),
-                )
+                .where(and(eq(usersReceivers.userId, refId)))
+                .offset(options.offset)
+                .limit(options.limit)
                 .execute(),
-            'Unable to load the receiver',
         );
     }
 }

@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
@@ -14,7 +15,10 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     async execute(command: CreateUserCommand): Promise<ISelectUser> {
         try {
             return await this.userRepository.create(command);
-        } catch {
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
             throw new ProcessFailedInternalServerErrorException();
         }
     }
