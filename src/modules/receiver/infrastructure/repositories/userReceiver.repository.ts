@@ -20,17 +20,19 @@ import {
 import type { IUserReceiverRepository } from '@/modules/receiver/domain/interfaces/userReceiverRepository.interface';
 
 @Injectable()
-export class UserReceiverRepository extends DrizzleRepository implements IUserReceiverRepository {
+export class UserReceiverRepository implements IUserReceiverRepository {
+    constructor(private readonly drizzleRepository: DrizzleRepository) {}
+
     create(data: TInsertUserReceiver): Promise<TSelectUserReceiver> {
         return toEntityOrThrow(
-            this.db.insert(usersReceivers).values(data).returning().execute(),
+            this.drizzleRepository.db.insert(usersReceivers).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
     getByIdOrNull(userId: string, receiverId: string): Promise<TSelectUserReceiver | null> {
         return toEntityOrNull(
-            this.db
+            this.drizzleRepository.db
                 .select()
                 .from(usersReceivers)
                 .where(
@@ -45,7 +47,7 @@ export class UserReceiverRepository extends DrizzleRepository implements IUserRe
 
     getManyJoinedByIdOrThrow(userId: string, receiverIds: string[]): Promise<TSelectReceiver[]> {
         return toEntitiesOrThrow(
-            this.db
+            this.drizzleRepository.db
                 .select({
                     id: receivers.id,
                     name: receivers.name,

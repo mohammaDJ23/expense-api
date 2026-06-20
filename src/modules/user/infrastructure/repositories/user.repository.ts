@@ -17,29 +17,44 @@ import {
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
 
 @Injectable()
-export class UserRepository extends DrizzleRepository implements IUserRepository {
+export class UserRepository implements IUserRepository {
+    constructor(private readonly drizzleRepository: DrizzleRepository) {}
+
     create(data: TInsertUser): Promise<TSelectUser> {
         return toEntityOrThrow(
-            this.db.insert(users).values(data).returning().execute(),
+            this.drizzleRepository.db.insert(users).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
     update(data: Partial<TSelectUser> & Required<Pick<TSelectUser, 'id'>>): Promise<TSelectUser> {
         return toEntityOrThrow(
-            this.db.update(users).set(data).where(eq(users.id, data.id)).returning().execute(),
+            this.drizzleRepository.db
+                .update(users)
+                .set(data)
+                .where(eq(users.id, data.id))
+                .returning()
+                .execute(),
             'Unable to update',
         );
     }
 
     deleteManyNotVerified(): Promise<TSelectUser[]> {
         return toEntities(
-            this.db.delete(users).where(isNull(users.verifiedAt)).returning().execute(),
+            this.drizzleRepository.db
+                .delete(users)
+                .where(isNull(users.verifiedAt))
+                .returning()
+                .execute(),
         );
     }
 
     private getByEmail(email: string) {
-        return this.db.select().from(users).where(eq(users.email, email)).execute();
+        return this.drizzleRepository.db
+            .select()
+            .from(users)
+            .where(eq(users.email, email))
+            .execute();
     }
 
     isExistsByEmail(email: string): Promise<boolean> {
@@ -51,7 +66,7 @@ export class UserRepository extends DrizzleRepository implements IUserRepository
     }
 
     private getById(id: string) {
-        return this.db.select().from(users).where(eq(users.id, id)).execute();
+        return this.drizzleRepository.db.select().from(users).where(eq(users.id, id)).execute();
     }
 
     getByIdOrNull(id: string): Promise<TSelectUser | null> {
@@ -64,7 +79,7 @@ export class UserRepository extends DrizzleRepository implements IUserRepository
 
     getMany(offset: number, limit: number): Promise<TSelectUser[]> {
         return toEntities(
-            this.db
+            this.drizzleRepository.db
                 .select()
                 .from(users)
                 .orderBy(desc(users.createdAt))

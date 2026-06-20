@@ -12,14 +12,18 @@ import {
 import type { IUserConsumerRepository } from '@/modules/consumer/domain/interfaces/userConsumerRepository.interface';
 
 @Injectable()
-export class UserConsumerRepository extends DrizzleRepository implements IUserConsumerRepository {
+export class UserConsumerRepository implements IUserConsumerRepository {
+    constructor(private readonly drizzleRepository: DrizzleRepository) {}
+
     createMany(data: TInsertUserConsumer[]): Promise<TSelectUserConsumer[]> {
-        return toEntities(this.db.insert(usersConsumers).values(data).returning().execute());
+        return toEntities(
+            this.drizzleRepository.db.insert(usersConsumers).values(data).returning().execute(),
+        );
     }
 
     getManyById(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]> {
         return toEntities(
-            this.db
+            this.drizzleRepository.db
                 .select()
                 .from(usersConsumers)
                 .where(

@@ -15,17 +15,23 @@ import {
 import type { IReceiverRepository } from '@/modules/receiver/domain/interfaces/receiverRepository.interface';
 
 @Injectable()
-export class ReceiverRepository extends DrizzleRepository implements IReceiverRepository {
+export class ReceiverRepository implements IReceiverRepository {
+    constructor(private readonly drizzleRepository: DrizzleRepository) {}
+
     create(data: TInsertReceiver): Promise<TSelectReceiver> {
         return toEntityOrThrow(
-            this.db.insert(receivers).values(data).returning().execute(),
+            this.drizzleRepository.db.insert(receivers).values(data).returning().execute(),
             'Unable to create',
         );
     }
 
     getByNameOrNull(name: string): Promise<TSelectReceiver | null> {
         return toEntityOrNull(
-            this.db.select().from(receivers).where(eq(receivers.name, name)).execute(),
+            this.drizzleRepository.db
+                .select()
+                .from(receivers)
+                .where(eq(receivers.name, name))
+                .execute(),
         );
     }
 }

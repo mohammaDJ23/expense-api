@@ -4,6 +4,7 @@ import { TransactionalAdapterDrizzleOrm } from '@nestjs-cls/transactional-adapte
 import { ClsModule } from 'nestjs-cls';
 
 import { DRIZZLE_CLIENT_TOKEN } from './drizzle.constants';
+import { DrizzleRepository } from './drizzle.repository';
 import { DrizzleClientModule } from './drizzleClient.module';
 
 @Global()
@@ -25,6 +26,7 @@ import { DrizzleClientModule } from './drizzleClient.module';
             ],
         }),
     ],
+    providers: [DrizzleRepository],
     exports: [DrizzleClientModule, ClsModule],
 })
 export class DrizzleModule {}
