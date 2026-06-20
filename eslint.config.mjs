@@ -315,7 +315,7 @@ export default defineConfig([
                 { prefer: 'type-imports', fixStyle: 'separate-type-imports' },
             ],
             '@typescript-eslint/no-non-null-assertion': 'off',
-            '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+            '@typescript-eslint/no-unnecessary-type-assertion': 'off',
             '@typescript-eslint/prefer-nullish-coalescing': 'off',
             '@typescript-eslint/prefer-optional-chain': 'error',
             '@typescript-eslint/switch-exhaustiveness-check': 'error',

@@ -29,8 +29,8 @@ export class GetBillByIdOrThrowService implements IServiceHandler {
         ]);
         return {
             ...bill,
-            receiver: receivers[0],
-            location: locations[0],
+            receiver: receivers[0]!,
+            location: locations[0]!,
             consumers,
         };
     }
