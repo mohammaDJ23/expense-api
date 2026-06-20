@@ -11,7 +11,6 @@ import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 import type { TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { GetManyBillsRequestDto } from '@/modules/bill/interface/dtos/getManyBills.request.dto';
-import type { IJoinedBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
 
 @Injectable()
 export class GetManyBillsService implements IServiceHandler {
@@ -44,20 +43,11 @@ export class GetManyBillsService implements IServiceHandler {
             this.getManyJoinedBillsConsumersByIdOrThrowService.execute(billIds),
         ]);
 
-        const locationMap = new Map(locations.map((location) => [location.id, location]));
-        const receiverMap = new Map(receivers.map((receiver) => [receiver.id, receiver]));
-        const consumersMap = new Map<string, IJoinedBillConsumer[]>();
-        consumers.forEach((consumer) => {
-            const existing = consumersMap.get(consumer.billId) || [];
-            existing.push(consumer);
-            consumersMap.set(consumer.billId, existing);
-        });
-
         return bills.map((bill) => ({
             ...bill,
-            location: locationMap.get(bill.locationId)!,
-            receiver: receiverMap.get(bill.receiverId)!,
-            consumers: consumersMap.get(bill.id)!,
+            location: locations.find((location) => location.id === bill.locationId)!,
+            receiver: receivers.find((receiver) => receiver.id === bill.receiverId)!,
+            consumers: consumers.filter((consumer) => consumer.billId === consumer.id),
         }));
     }
 
