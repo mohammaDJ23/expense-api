@@ -5,8 +5,8 @@ import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.rep
 import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     consumers,
-    type TInsertConsumer,
-    type TSelectConsumer,
+    type IInsertConsumer,
+    type ISelectConsumer,
 } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 import type { IConsumerRepository } from '@/modules/consumer/domain/interfaces/consumerRepository.interface';
@@ -15,13 +15,13 @@ import type { IConsumerRepository } from '@/modules/consumer/domain/interfaces/c
 export class ConsumerRepository implements IConsumerRepository {
     constructor(private readonly drizzleRepository: DrizzleRepository) {}
 
-    createMany(data: TInsertConsumer[]): Promise<TSelectConsumer[]> {
+    createMany(data: IInsertConsumer[]): Promise<ISelectConsumer[]> {
         return toEntities(
             this.drizzleRepository.db.insert(consumers).values(data).returning().execute(),
         );
     }
 
-    getManyByName(names: string[]): Promise<TSelectConsumer[]> {
+    findManyByNames(names: string[]): Promise<ISelectConsumer[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()

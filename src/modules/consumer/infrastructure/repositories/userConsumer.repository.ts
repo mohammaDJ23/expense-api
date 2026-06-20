@@ -5,8 +5,8 @@ import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.rep
 import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     usersConsumers,
-    type TInsertUserConsumer,
-    type TSelectUserConsumer,
+    type ISelectUserConsumer,
+    type IInsertUserConsumer,
 } from '@/modules/consumer/infrastructure/schemas/userConsumer.schema';
 
 import type { IUserConsumerRepository } from '@/modules/consumer/domain/interfaces/userConsumerRepository.interface';
@@ -15,21 +15,24 @@ import type { IUserConsumerRepository } from '@/modules/consumer/domain/interfac
 export class UserConsumerRepository implements IUserConsumerRepository {
     constructor(private readonly drizzleRepository: DrizzleRepository) {}
 
-    createMany(data: TInsertUserConsumer[]): Promise<TSelectUserConsumer[]> {
+    createMany(data: IInsertUserConsumer[]): Promise<ISelectUserConsumer[]> {
         return toEntities(
             this.drizzleRepository.db.insert(usersConsumers).values(data).returning().execute(),
         );
     }
 
-    getManyById(userId: string, consumerIds: string[]): Promise<TSelectUserConsumer[]> {
+    findManyByRefIdAndTargetIds(
+        refId: string,
+        targetIds: string[],
+    ): Promise<ISelectUserConsumer[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()
                 .from(usersConsumers)
                 .where(
                     and(
-                        eq(usersConsumers.userId, userId),
-                        inArray(usersConsumers.consumerId, consumerIds),
+                        eq(usersConsumers.userId, refId),
+                        inArray(usersConsumers.consumerId, targetIds),
                     ),
                 )
                 .execute(),

@@ -21,5 +21,8 @@ export const consumersRelations = relations(consumers, ({ many }) => ({
     usersConsumers: many(usersConsumers),
 }));
 
-export type TSelectConsumer = typeof consumers.$inferSelect;
-export type TInsertConsumer = typeof consumers.$inferInsert;
+type TSelectConsumer = typeof consumers.$inferSelect;
+type TInsertConsumer = typeof consumers.$inferInsert;
+
+export interface ISelectConsumer extends TSelectConsumer {}
+export interface IInsertConsumer extends TInsertConsumer {}

@@ -33,5 +33,8 @@ export const billsConsumersRelations = relations(billsConsumers, ({ one }) => ({
     }),
 }));
 
-export type TSelectBillConsumer = typeof billsConsumers.$inferSelect;
-export type TInsertBillConsumer = typeof billsConsumers.$inferInsert;
+type TSelectBillConsumer = typeof billsConsumers.$inferSelect;
+type TInsertBillConsumer = typeof billsConsumers.$inferInsert;
+
+export interface ISelectBillConsumer extends TSelectBillConsumer {}
+export interface IInsertBillConsumer extends TInsertBillConsumer {}

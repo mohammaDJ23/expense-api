@@ -1,10 +1,12 @@
-import type { IJoinedBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
+import type { ICreateManyRepository } from '@/core/interfaces/repositories/createManyRepository.interface';
+import type { IFindTargetsByRefIdsRepository } from '@/core/interfaces/repositories/findTargetsByRefIdsRepository.interface';
+import type { ITargetBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
 import type {
-    TInsertBillConsumer,
-    TSelectBillConsumer,
+    IInsertBillConsumer,
+    ISelectBillConsumer,
 } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
-export interface IBillConsumerRepository {
-    createMany(data: TInsertBillConsumer[]): Promise<TSelectBillConsumer[]>;
-    getManyJoinedByIdOrThrow(billIds: string[]): Promise<IJoinedBillConsumer[]>;
-}
+export interface IBillConsumerRepository
+    extends
+        ICreateManyRepository<IInsertBillConsumer, ISelectBillConsumer>,
+        IFindTargetsByRefIdsRepository<ITargetBillConsumer> {}

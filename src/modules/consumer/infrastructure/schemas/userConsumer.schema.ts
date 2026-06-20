@@ -33,5 +33,8 @@ export const usersConsumersRelations = relations(usersConsumers, ({ one }) => ({
     }),
 }));
 
-export type TSelectUserConsumer = typeof usersConsumers.$inferSelect;
-export type TInsertUserConsumer = typeof usersConsumers.$inferInsert;
+type TSelectUserConsumer = typeof usersConsumers.$inferSelect;
+type TInsertUserConsumer = typeof usersConsumers.$inferInsert;
+
+export interface ISelectUserConsumer extends TSelectUserConsumer {}
+export interface IInsertUserConsumer extends TInsertUserConsumer {}
