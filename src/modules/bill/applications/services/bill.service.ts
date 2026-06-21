@@ -1,0 +1,30 @@
+import { Injectable } from '@nestjs/common';
+
+import { CreateBillService } from './createBill.service';
+import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
+import { FindBillListByUserIdService } from './findBillListByUserId.service';
+
+import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
+import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
+import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
+
+@Injectable()
+export class BillService {
+    constructor(
+        private readonly createBillService: CreateBillService,
+        private readonly findBillByUserIdAndIdOrThrowService: FindBillByUserIdAndIdOrThrowService,
+        private readonly findBillListByUserIdService: FindBillListByUserIdService,
+    ) {}
+
+    create(data: CreateBillRequestDto, userId: string): Promise<boolean> {
+        return this.createBillService.execute(data, userId);
+    }
+
+    findManyByUserId(userId: string, query: FindBillListRequestDto): Promise<IBill[]> {
+        return this.findBillListByUserIdService.execute(userId, query);
+    }
+
+    findByUserIdAndId(userId: string, billId: string): Promise<IBill> {
+        return this.findBillByUserIdAndIdOrThrowService.execute(userId, billId);
+    }
+}

@@ -1,7 +1,11 @@
-import type { TInsertBill, TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import type { IList } from '@/core/interfaces/list.interface';
+import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
+import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrThrowRepository.interface';
+import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories/findListByUserIdRepository.interface';
+import type { IInsertBill, ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
-export interface IBillRepository {
-    create(data: TInsertBill): Promise<TSelectBill>;
-    getMany(userId: string, offset: number, limit: number): Promise<TSelectBill[]>;
-    getByIdOrThrow(userId: string, billId: string): Promise<TSelectBill>;
-}
+export interface IBillRepository
+    extends
+        ICreateRepository<IInsertBill, ISelectBill>,
+        IFindListByUserIdRepository<IList, ISelectBill>,
+        IFindByUserIdAndIdOrThrowRepository<ISelectBill> {}

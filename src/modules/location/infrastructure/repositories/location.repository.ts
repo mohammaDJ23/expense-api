@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
+    toEntities,
     toEntityOrNull,
     toEntityOrThrow,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
@@ -31,6 +32,27 @@ export class LocationRepository implements ILocationRepository {
                 .select()
                 .from(locations)
                 .where(eq(locations.name, name))
+                .execute(),
+        );
+    }
+
+    findByIdOrThrow(id: string): Promise<ISelectLocation> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .select()
+                .from(locations)
+                .where(eq(locations.id, id))
+                .execute(),
+            'Unable to find',
+        );
+    }
+
+    findManyByIds(ids: string[]): Promise<ISelectLocation[]> {
+        return toEntities(
+            this.drizzleRepository.db
+                .select()
+                .from(locations)
+                .where(inArray(locations.id, ids))
                 .execute(),
         );
     }

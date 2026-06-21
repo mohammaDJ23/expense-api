@@ -19,7 +19,7 @@ import { FindReceiverByNameOrNullQuery } from '@/modules/receiver/applications/q
 import { FindUserReceiverByRefIdAndTargetIdOrNullQuery } from '@/modules/receiver/applications/queries/findUserReceiverByRefIdAndTargetIdOrNull/findUserReceiverByRefIdAndTargetIdOrNull.query';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { TSelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
@@ -243,7 +243,7 @@ export class CreateBillService implements IServiceHandler {
         userId: string,
         locationId: string,
         receiverId: string,
-    ): Promise<TSelectBill> {
+    ): Promise<ISelectBill> {
         const createBillCommand = new CreateBillCommand({
             amount: data.amount,
             description: data.description,
@@ -254,6 +254,6 @@ export class CreateBillService implements IServiceHandler {
             locationId,
             receiverId,
         });
-        return this.commandBus.execute<CreateBillCommand, TSelectBill>(createBillCommand);
+        return this.commandBus.execute<CreateBillCommand, ISelectBill>(createBillCommand);
     }
 }
