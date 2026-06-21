@@ -1,17 +1,18 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { readSecret } from '@/common/utils/readSecret.util';
-import { GetUserByIdOrNullService } from '@/modules/user/applications/services/getUserByIdOrNull.service';
+import { FindUserByIdOrNullQuery } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.query';
 
 import type { IAccessTokenPayload } from '@/modules/authentication/domain/interfaces/accessTokenPayload.interface';
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class JwtAuthStrategy extends PassportStrategy(Strategy) {
-    constructor(private readonly getUserByIdOrNullService: GetUserByIdOrNullService) {
+    constructor(private readonly queryBus: QueryBus) {
         const env = new Env();
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -20,13 +21,15 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate(payload: IAccessTokenPayload): Promise<TSelectUser> {
+    async validate(payload: IAccessTokenPayload): Promise<ISelectUser> {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (payload.type !== 'ACCESS_TOKEN') {
             throw new UnauthorizedException();
         }
 
-        const user = await this.getUserByIdOrNullService.execute(payload.id);
+        const user = await this.queryBus.execute<FindUserByIdOrNullQuery, ISelectUser | null>(
+            new FindUserByIdOrNullQuery(payload.id),
+        );
 
         if (!user) {
             throw new UnauthorizedException();
