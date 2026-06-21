@@ -1,3 +1,58 @@
+## [3.0.0](https://github.com/mohammaDJ23/expense-api/compare/v2.4.1...v3.0.0) (2026-06-21)
+
+### ✨ Features
+
+- 380591 add the joined bill consumer api ([75e2b5b](https://github.com/mohammaDJ23/expense-api/commit/75e2b5b6fda8199d89ff1ab196f7ed653a359023))
+- 380591 add the joined user location api ([28aaadc](https://github.com/mohammaDJ23/expense-api/commit/28aaadc4145839665651af305288b0751e892bd9))
+- 380591 add the joined user receiver api ([5bbb20c](https://github.com/mohammaDJ23/expense-api/commit/5bbb20c68cbf0bfc50b522cbbd5160e048b21bd7))
+- 649960 add GetManyJoinedUsersLocationsById ([be3bd7d](https://github.com/mohammaDJ23/expense-api/commit/be3bd7dd9267a632ea05c962968c63ce8af04cfa))
+- 649960 add GetManyJoinedUsersReceiversById ([8c47a8c](https://github.com/mohammaDJ23/expense-api/commit/8c47a8c386b293616c0158924c5fb022ada354f3))
+- 649960 update the get and get many of bill with new queries and services ([f4491ab](https://github.com/mohammaDJ23/expense-api/commit/f4491ab84c56e876ebd83bd4cd115bbec295d54d))
+
+### 🐛 Bug Fixes
+
+- 649960 use ! sign ([db62082](https://github.com/mohammaDJ23/expense-api/commit/db620827dadd4593712a111eb4655f9149476227))
+- 649960 use plain object ([78fcfd7](https://github.com/mohammaDJ23/expense-api/commit/78fcfd7fd10456ebcfdd6a3514e68862e27e3e6e))
+- 874920 conver to protected ([1bf04b3](https://github.com/mohammaDJ23/expense-api/commit/1bf04b3d67040b7052ed52da4b35a1a6c8b929b1))
+- 874920 get just location and receiver ([2ec046e](https://github.com/mohammaDJ23/expense-api/commit/2ec046e7c407248345608fc9dc16ee0181a8d724))
+- 874920 use bill id ([66c5543](https://github.com/mohammaDJ23/expense-api/commit/66c5543c42abde380e8cd7141b0e5c46bd0ad159))
+
+### ♻️ Code Refactoring
+
+- 614766 remove the receiver api ([af73c0d](https://github.com/mohammaDJ23/expense-api/commit/af73c0d85b575d8b59fe1b09c052e1b0d9127d06))
+
+### 💄 Breaking changes
+
+- 874920 remove the services, rename the commands and queries and redefine the repository types ([1c9da0e](https://github.com/mohammaDJ23/expense-api/commit/1c9da0e368397583342ce86b724029c9d30186d1))
+- 874920 remove the services, rename the commands and queries and redefine the repository types of the authentication module ([6bcd203](https://github.com/mohammaDJ23/expense-api/commit/6bcd2030698f66472a2f5641e81def68985b6b9b))
+- 874920 remove the services, rename the commands and queries and redefine the repository types of the bill module ([92489b2](https://github.com/mohammaDJ23/expense-api/commit/92489b2231c337a4f868f4bc26fe502946887e29))
+- 874920 remove the services, rename the commands and queries and redefine the repository types of the consumer module ([55fe746](https://github.com/mohammaDJ23/expense-api/commit/55fe74615ff21657992be4baa78cc41ada38849b))
+- 874920 remove the services, rename the commands and queries and redefine the repository types of the location module ([05ee1c3](https://github.com/mohammaDJ23/expense-api/commit/05ee1c309877422c9f3a8bbbbc7b5e350fd6d72e))
+- 874920 remove the services, rename the commands and queries and redefine the repository types of the receiver module ([224615e](https://github.com/mohammaDJ23/expense-api/commit/224615e02cee1d5e5770e9afabc146fe4ac7d74e))
+- 874920 rename the service of the health module ([a4f299a](https://github.com/mohammaDJ23/expense-api/commit/a4f299a643a7942260f57f9be9ecb26a71c1734a))
+- 874920 use the commands and quries in the core files ([6b64b54](https://github.com/mohammaDJ23/expense-api/commit/6b64b5421af7b3af5f1281b6995a472e19a3fc90))
+
+### 🔧 Chores
+
+- 614766 update the packages ([c8a50d8](https://github.com/mohammaDJ23/expense-api/commit/c8a50d8a3a7b9a1271ea0e7b2a5458088c5d3bec))
+- 614766 update the packages ([e9fc221](https://github.com/mohammaDJ23/expense-api/commit/e9fc221635d2bac76141b3c4b470af8228f2bab8))
+- 649960 add compression ([2831dde](https://github.com/mohammaDJ23/expense-api/commit/2831dde83affd23bd127a35511b2776681544326))
+- 649960 add IJunctionRepository ([f61384d](https://github.com/mohammaDJ23/expense-api/commit/f61384d1795efc70810f4f145066e7d06fe5a361))
+- 649960 add the get many bills api ([254cce6](https://github.com/mohammaDJ23/expense-api/commit/254cce665483785cbade153474689aabccc465f2))
+- 649960 add the types of comprassion ([d894e65](https://github.com/mohammaDJ23/expense-api/commit/d894e65b30f4ac39c952997f14a3b0f6920bac56))
+- 649960 check the not found exception ([f324369](https://github.com/mohammaDJ23/expense-api/commit/f3243691362888f113d060183758051254f7b503))
+- 649960 remove prepare at all ([5a88881](https://github.com/mohammaDJ23/expense-api/commit/5a88881cc959317e2264c0f38e58fb992b270c70))
+- 649960 remove the maps ([436b9df](https://github.com/mohammaDJ23/expense-api/commit/436b9df6289dcf9bb1aa978b1072e7fa5265014e))
+- 649960 run linter to the file ([a92173f](https://github.com/mohammaDJ23/expense-api/commit/a92173f7c6bcbe54fd2ac242b95cdf4d9c1a9c1e))
+- 694960 do not extends to DrizzleRepository ([f949429](https://github.com/mohammaDJ23/expense-api/commit/f94942977a6d5226c76732d6654600dbdba2c837))
+- 874920 add the repository interfaceses ([5eba70a](https://github.com/mohammaDJ23/expense-api/commit/5eba70a17005713d096d9ad14f8c64e5b90249be))
+- 874920 import the injectable services ([a151a61](https://github.com/mohammaDJ23/expense-api/commit/a151a6162bfcec379b39265b81f3c72ad532fd60))
+- 874920 move the me api ([083907f](https://github.com/mohammaDJ23/expense-api/commit/083907fdf0a5bfccf4acfe0ff9d7d303158d2d05))
+- 874920 remove unused moduels inside core ([712604a](https://github.com/mohammaDJ23/expense-api/commit/712604a885e8bf11fef4000f87033af8ef37502b))
+- 874920 use maximum limit ([e87ff89](https://github.com/mohammaDJ23/expense-api/commit/e87ff890b442d9be95f66d04e1bc3fe6c8890e07))
+- 896074 update the logic of create bill ([227348c](https://github.com/mohammaDJ23/expense-api/commit/227348caaba7fff0851e205f96f825a6ac415e09))
+- 896074 update the service of get bill ([3330447](https://github.com/mohammaDJ23/expense-api/commit/3330447526fdb7f94f0c3b62ead9dd03082dedb7))
+
 ## [2.4.1](https://github.com/mohammaDJ23/expense-api/compare/v2.4.0...v2.4.1) (2026-06-18)
 
 ### ♻️ Code Refactoring
