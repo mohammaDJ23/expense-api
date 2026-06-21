@@ -20,7 +20,7 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
     async execute(userId: string, billId: string): Promise<IBill> {
         const bill = await this.findBillEntity(userId, billId);
 
-        const [receivers, locations, consumers] = await Promise.all([
+        const [receiver, location, consumers] = await Promise.all([
             this.findReceiverByIdOrThrow(bill.receiverId),
             this.findLocationByIdOrThrow(bill.locationId),
             this.findBillConsumerTargetsByRefId(billId),
@@ -28,8 +28,8 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
 
         return {
             ...bill,
-            receiver: receivers[0]!,
-            location: locations[0]!,
+            receiver,
+            location,
             consumers,
         };
     }
