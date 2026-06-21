@@ -9,6 +9,7 @@ import { FindReceiverByIdOrThrowHandler } from '@/modules/receiver/applications/
 import { FindReceiverByNameOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByNameOrNull/findReceiverByNameOrNull.handler';
 import { FindUserReceiverByRefIdAndTargetIdOrNullHandler } from '@/modules/receiver/applications/queries/findUserReceiverByRefIdAndTargetIdOrNull/findUserReceiverByRefIdAndTargetIdOrNull.handler';
 import { FindUserReceiverTargetsByRefIdHandler } from '@/modules/receiver/applications/queries/findUserReceiverTargetsByRefId/findUserReceiverTargetsByRefId.handler';
+import { UserReceiverService } from '@/modules/receiver/applications/services/userReceiver.service';
 import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
 import { UserReceiverRepository } from '@/modules/receiver/infrastructure/repositories/userReceiver.repository';
 import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1.controller';
@@ -17,6 +18,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
     imports: [CqrsModule, AuthenticationModule],
     controllers: [ReceiverController],
     providers: [
+        UserReceiverService,
         CreateReceiverHandler,
         CreateUserReceiverHandler,
         FindReceiverByNameOrNullHandler,
