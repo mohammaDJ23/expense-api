@@ -1,14 +1,18 @@
-import { Controller, Get, HttpStatus, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query, UseGuards } from '@nestjs/common';
 
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { CurrentUser } from '@/core/user/currentUser.decorator';
 import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
+import { FindUserLocationTargetRequestDto } from '@/modules/location/interfaces/dtos/findUserLocationTarget.request.dto';
 import { FindUserLocationTargetsRequestDto } from '@/modules/location/interfaces/dtos/findUserLocationTargets.request.dto';
 import { LocationResponseDto } from '@/modules/location/interfaces/dtos/location.response.dto';
 
-import { SUCCESS_GET_LOCATIONS_MESSAGE } from './controllers.constants';
+import {
+    SUCCESS_GET_LOCATIONS_MESSAGE,
+    SUCCESS_GET_LOCATION_MESSAGE,
+} from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
@@ -26,5 +30,16 @@ export class LocationController {
         @CurrentUser() user: ICurrentUser,
     ): Promise<ISelectLocation[]> {
         return this.userLocationService.findTargetsByRefId(user.id, query);
+    }
+
+    @Get(':id')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(LocationResponseDto)
+    @HttpResponse(SUCCESS_GET_LOCATION_MESSAGE, HttpStatus.OK)
+    findByRefIdAndTargetId(
+        @Param() param: FindUserLocationTargetRequestDto,
+        @CurrentUser() user: ICurrentUser,
+    ): Promise<ISelectLocation> {
+        return this.userLocationService.findTargetByRefIdAndTargetId(user.id, param.id);
     }
 }

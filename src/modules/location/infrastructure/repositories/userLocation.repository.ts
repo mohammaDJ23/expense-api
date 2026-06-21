@@ -46,6 +46,25 @@ export class UserLocationRepository implements IUserLocationRepository {
         );
     }
 
+    findTargetByRefIdAndTargetIdOrThrow(refId: string, targetId: string): Promise<ISelectLocation> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .select({
+                    id: locations.id,
+                    name: locations.name,
+                    createdAt: locations.createdAt,
+                    updatedAt: locations.updatedAt,
+                })
+                .from(usersLocations)
+                .innerJoin(locations, eq(usersLocations.locationId, locations.id))
+                .where(
+                    and(eq(usersLocations.userId, refId), eq(usersLocations.locationId, targetId)),
+                )
+                .execute(),
+            'Unable to find',
+        );
+    }
+
     findTargetsByRefId(refId: string, options: IList): Promise<ISelectLocation[]> {
         return toEntities(
             this.drizzleRepository.db
