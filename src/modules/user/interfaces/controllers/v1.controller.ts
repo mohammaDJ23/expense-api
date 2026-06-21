@@ -27,19 +27,19 @@ export class UserController {
         return this.userService.findList(query);
     }
 
-    @Get(':id')
-    @UseGuards(JwtAuthGuard, OwnerGuard)
-    @SerializerInterceptor(UserResponseDto)
-    @HttpResponse(SUCCESS_GET_USER_MESSAGE, HttpStatus.OK)
-    findById(@Param() param: FindUserByIdRequestDto): Promise<ISelectUser> {
-        return this.userService.findById(param.id);
-    }
-
     @Get('me')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(UserResponseDto)
     @HttpResponse(SUCCESS_GET_USER_MESSAGE, HttpStatus.OK)
     findMe(@CurrentUser() user: ICurrentUser): Promise<ISelectUser> {
         return this.userService.findById(user.id);
+    }
+
+    @Get(':id')
+    @UseGuards(JwtAuthGuard, OwnerGuard)
+    @SerializerInterceptor(UserResponseDto)
+    @HttpResponse(SUCCESS_GET_USER_MESSAGE, HttpStatus.OK)
+    findById(@Param() param: FindUserByIdRequestDto): Promise<ISelectUser> {
+        return this.userService.findById(param.id);
     }
 }
