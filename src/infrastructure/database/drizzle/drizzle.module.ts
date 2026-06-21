@@ -27,6 +27,6 @@ import { DrizzleClientModule } from './drizzleClient.module';
         }),
     ],
     providers: [DrizzleRepository],
-    exports: [DrizzleClientModule, ClsModule],
+    exports: [DrizzleClientModule, ClsModule, DrizzleRepository],
 })
 export class DrizzleModule {}

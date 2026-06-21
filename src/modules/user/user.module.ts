@@ -11,6 +11,7 @@ import { FindUserByIdOrNullHandler } from '@/modules/user/applications/queries/f
 import { FindUserByIdOrThrowHandler } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.handler';
 import { FindUserListHandler } from '@/modules/user/applications/queries/findUserList/findUserList.handler';
 import { IsUserExistsByEmailHandler } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.handler';
+import { UserService } from '@/modules/user/applications/services/user.service';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 import { UserController } from '@/modules/user/interfaces/controllers/v1.controller';
 
@@ -18,6 +19,7 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
     imports: [CqrsModule, AuthenticationModule],
     controllers: [UserController],
     providers: [
+        UserService,
         UserRepository,
         CreateUserHandler,
         UpdateUserHandler,
