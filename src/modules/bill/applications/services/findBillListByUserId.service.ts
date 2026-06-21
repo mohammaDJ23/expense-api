@@ -44,7 +44,7 @@ export class FindBillListByUserIdService implements IServiceHandler {
             ...bill,
             location: locations.find((location) => location.id === bill.locationId)!,
             receiver: receivers.find((receiver) => receiver.id === bill.receiverId)!,
-            consumers: consumers.filter((consumer) => consumer.billId === consumer.id),
+            consumers: consumers.filter((consumer) => consumer.billId === bill.id),
         }));
     }
 
