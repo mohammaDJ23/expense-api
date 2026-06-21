@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
 import { OwnerGuard } from '@/core/guards/owner.guard';
@@ -15,7 +15,7 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
 import { UserController } from '@/modules/user/interfaces/controllers/v1.controller';
 
 @Module({
-    imports: [CqrsModule, forwardRef(() => AuthenticationModule)],
+    imports: [CqrsModule, AuthenticationModule],
     controllers: [UserController],
     providers: [
         UserRepository,
