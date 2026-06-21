@@ -29,7 +29,7 @@ export class UserService {
     }
 
     @Cron(CronExpression.EVERY_WEEK)
-    private async deleteManyNotVerifiedUsers(): Promise<void> {
+    protected async deleteManyNotVerifiedUsers(): Promise<void> {
         await this.commandBus.execute<DeleteManyNotVerifiedUsersCommand, ISelectUser[]>(
             new DeleteManyNotVerifiedUsersCommand(),
         );
