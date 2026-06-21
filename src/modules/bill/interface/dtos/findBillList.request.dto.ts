@@ -1,11 +1,12 @@
 import { Type } from 'class-transformer';
-import { IsOptional, IsInt, Min, IsString } from 'class-validator';
+import { IsOptional, IsInt, Min, IsString, Max } from 'class-validator';
 
 export class FindBillListRequestDto {
     @IsOptional()
     @Type(() => Number)
     @IsInt()
     @Min(1)
+    @Max(20)
     limit?: number;
 
     @IsOptional()
