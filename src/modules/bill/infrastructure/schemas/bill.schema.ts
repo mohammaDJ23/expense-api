@@ -44,5 +44,8 @@ export const billsRelations = relations(bills, ({ one, many }) => ({
     billsConsumers: many(billsConsumers),
 }));
 
-export type TSelectBill = typeof bills.$inferSelect;
-export type TInsertBill = typeof bills.$inferInsert;
+type TSelectBill = typeof bills.$inferSelect;
+type TInsertBill = typeof bills.$inferInsert;
+
+export interface ISelectBill extends TSelectBill {}
+export interface IInsertBill extends TInsertBill {}

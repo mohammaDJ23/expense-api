@@ -1,4 +1,4 @@
-export class GetManyBillsQuery {
+export class FindBillListByUserIdQuery {
     constructor(
         public readonly userId: string,
         public readonly offset = 0,

@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsOptional, IsInt, Min, IsString } from 'class-validator';
 
-export class GetManyBillsRequestDto {
+export class FindBillListRequestDto {
     @IsOptional()
     @Type(() => Number)
     @IsInt()
