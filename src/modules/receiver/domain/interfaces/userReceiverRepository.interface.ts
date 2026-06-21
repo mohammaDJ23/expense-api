@@ -1,6 +1,7 @@
 import type { IList } from '@/core/interfaces/list.interface';
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
 import type { IFindByRefIdAndTargetIdOrNullRepository } from '@/core/interfaces/repositories/findByRefIdAndTargetIdOrNullRepository.interface';
+import type { IFindTargetByRefIdAndTargetIdOrThrowRepository } from '@/core/interfaces/repositories/findTargetByRefIdAndTargetIdOrThrowRepository.interface';
 import type { IFindTargetsByRefIdRepository } from '@/core/interfaces/repositories/findTargetsByRefIdRepository.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type {
@@ -12,4 +13,5 @@ export interface IUserReceiverRepository
     extends
         ICreateRepository<IInsertUserReceiver, ISelectUserReceiver>,
         IFindByRefIdAndTargetIdOrNullRepository<ISelectUserReceiver>,
-        IFindTargetsByRefIdRepository<ISelectReceiver, IList> {}
+        IFindTargetsByRefIdRepository<ISelectReceiver, IList>,
+        IFindTargetByRefIdAndTargetIdOrThrowRepository<ISelectReceiver> {}

@@ -46,6 +46,25 @@ export class UserReceiverRepository implements IUserReceiverRepository {
         );
     }
 
+    findTargetByRefIdAndTargetIdOrThrow(refId: string, targetId: string): Promise<ISelectReceiver> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .select({
+                    id: receivers.id,
+                    name: receivers.name,
+                    createdAt: receivers.createdAt,
+                    updatedAt: receivers.updatedAt,
+                })
+                .from(usersReceivers)
+                .innerJoin(receivers, eq(usersReceivers.receiverId, receivers.id))
+                .where(
+                    and(eq(usersReceivers.userId, refId), eq(usersReceivers.receiverId, targetId)),
+                )
+                .execute(),
+            'Unable to find',
+        );
+    }
+
     findTargetsByRefId(refId: string, options: IList): Promise<ISelectReceiver[]> {
         return toEntities(
             this.drizzleRepository.db
