@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
@@ -58,6 +58,7 @@ export class UserLocationRepository implements IUserLocationRepository {
                 .from(usersLocations)
                 .innerJoin(locations, eq(usersLocations.locationId, locations.id))
                 .where(and(eq(usersLocations.userId, refId)))
+                .orderBy(desc(usersLocations.createdAt))
                 .offset(options.offset)
                 .limit(options.limit)
                 .execute(),
