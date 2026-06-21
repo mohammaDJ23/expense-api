@@ -1,3 +1,9 @@
+## [3.3.0](https://github.com/mohammaDJ23/expense-api/compare/v3.2.0...v3.3.0) (2026-06-21)
+
+### ✨ Features
+
+- 428924 add the location api ([e15c514](https://github.com/mohammaDJ23/expense-api/commit/e15c5143c5655731537181bc01134c50b0cfb635))
+
 ## [3.2.0](https://github.com/mohammaDJ23/expense-api/compare/v3.1.0...v3.2.0) (2026-06-21)
 
 ### ✨ Features
