@@ -1,3 +1,13 @@
+## [3.2.0](https://github.com/mohammaDJ23/expense-api/compare/v3.1.0...v3.2.0) (2026-06-21)
+
+### ✨ Features
+
+- 309061 add getting location list api ([5bbcb1b](https://github.com/mohammaDJ23/expense-api/commit/5bbcb1be6d907d346da9e739ec984e6b75c8c0d3))
+
+### 🔧 Chores
+
+- 325796 add orderBy ([bbbd9de](https://github.com/mohammaDJ23/expense-api/commit/bbbd9de6ade664bec8929f311711c00a1786b85a))
+
 ## [3.1.0](https://github.com/mohammaDJ23/expense-api/compare/v3.0.0...v3.1.0) (2026-06-21)
 
 ### ✨ Features
