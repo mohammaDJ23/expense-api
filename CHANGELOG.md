@@ -1,3 +1,14 @@
+## [3.1.0](https://github.com/mohammaDJ23/expense-api/compare/v3.0.0...v3.1.0) (2026-06-21)
+
+### ✨ Features
+
+- 193049 add the getting receiver api ([7177fb3](https://github.com/mohammaDJ23/expense-api/commit/7177fb3d1bc5664f8e18cf7de0887d90ddce8edf))
+- 636067 add the getting receiver list api ([565a1de](https://github.com/mohammaDJ23/expense-api/commit/565a1debd13792776997b99685edae67835eb7d7))
+
+### 🔧 Chores
+
+- 310686 use auto for endOfLine ([52216d5](https://github.com/mohammaDJ23/expense-api/commit/52216d5a50e8ad877a372f2e7151ea99a63c96e0))
+
 ## [3.0.0](https://github.com/mohammaDJ23/expense-api/compare/v2.4.1...v3.0.0) (2026-06-21)
 
 ### ✨ Features
