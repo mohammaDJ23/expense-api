@@ -1,8 +1,9 @@
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { GetUserByEmailOrNullService } from '@/modules/user/applications/services/getUserByEmailOrNull.service';
+import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { VerificationMailerService } from './verificationMailer.service';
@@ -11,14 +12,15 @@ import { VerificationTokenService } from './verificationToken.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class LocalSendVerificationService implements IServiceHandler {
     constructor(
+        private readonly queryBus: QueryBus,
         private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
-        private readonly getUserByEmailOrNullService: GetUserByEmailOrNullService,
     ) {}
 
     async execute(data: LocalSendVerificationRequestDto): Promise<boolean> {
@@ -31,7 +33,9 @@ export class LocalSendVerificationService implements IServiceHandler {
             throw new ProcessFailedInternalServerErrorException();
         }
 
-        const user = await this.getUserByEmailOrNullService.execute(data.email);
+        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+            new FindUserByEmailOrNullQuery(data.email),
+        );
 
         if (!user) {
             return true;

@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
-import { GetUserByEmailOrNullService } from '@/modules/user/applications/services/getUserByEmailOrNull.service';
-import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
+import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
+import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { VerificationStorageService } from './verificationStorage.service';
@@ -12,14 +13,15 @@ import { VerificationTokenService } from './verificationToken.service';
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
 import type { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class LocalVerifyVerificationService implements IServiceHandler {
     constructor(
+        private readonly queryBus: QueryBus,
+        private readonly commandBus: CommandBus,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
-        private readonly updateUserService: UpdateUserService,
-        private readonly getUserByEmailOrNullService: GetUserByEmailOrNullService,
     ) {}
 
     async execute(data: LocalVerifyVerificationRequestDto): Promise<boolean> {
@@ -39,7 +41,9 @@ export class LocalVerifyVerificationService implements IServiceHandler {
             throw new BadRequestException();
         }
 
-        const user = await this.getUserByEmailOrNullService.execute(payload.email);
+        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+            new FindUserByEmailOrNullQuery(payload.email),
+        );
 
         if (!user) {
             return true;
@@ -51,11 +55,13 @@ export class LocalVerifyVerificationService implements IServiceHandler {
 
         if (!user.verifiedAt) {
             try {
-                await this.updateUserService.execute({
-                    id: user.id,
-                    updatedAt: getCurrentUTCTimestamp(),
-                    verifiedAt: getCurrentUTCTimestamp(),
-                });
+                await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
+                    new UpdateUserCommand({
+                        id: user.id,
+                        updatedAt: getCurrentUTCTimestamp(),
+                        verifiedAt: getCurrentUTCTimestamp(),
+                    }),
+                );
             } catch {
                 throw new InternalServerErrorException('Could not verify your email, try again');
             }

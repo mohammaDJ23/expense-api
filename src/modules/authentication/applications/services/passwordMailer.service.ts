@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class PasswordMailerService implements IServiceHandler {
     constructor(private readonly mailerService: MailerService) {}
 
-    async execute(user: TSelectUser, token: string): Promise<void> {
+    async execute(user: ISelectUser, token: string): Promise<void> {
         const link = `${process.env.APP_URL}/authentication/forgot-password/verification?token=${token}`;
         const subject = 'Verify Your forgot password process';
         const html = `

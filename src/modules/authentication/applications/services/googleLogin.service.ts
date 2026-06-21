@@ -6,13 +6,13 @@ import { AccessTokenEntity } from '@/modules/authentication/domain/entities/acce
 import { AccessTokenService } from './accessToken.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { TSelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class GoogleLoginService implements IServiceHandler {
     constructor(private readonly accessTokenService: AccessTokenService) {}
 
-    execute(user: TSelectUser): AccessTokenEntity {
+    execute(user: ISelectUser): AccessTokenEntity {
         try {
             const token = this.accessTokenService.execute(user);
             return AccessTokenEntity.create(token);

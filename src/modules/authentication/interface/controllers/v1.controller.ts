@@ -5,13 +5,7 @@ import { GoogleAuthGuard } from '@/core/authentication/googleAuth.guard';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { CurrentUser } from '@/core/user/currentUser.decorator';
-import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
-import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
-import { LocalLoginService } from '@/modules/authentication/applications/services/localLogin.service';
-import { LocalResetPasswordService } from '@/modules/authentication/applications/services/localResetPassword.service';
-import { LocalSendVerificationService } from '@/modules/authentication/applications/services/localSendVerification.service';
-import { LocalSignupService } from '@/modules/authentication/applications/services/localSignup.service';
-import { LocalVerifyVerificationService } from '@/modules/authentication/applications/services/localVerifyVerification.service';
+import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
@@ -34,22 +28,13 @@ import type { AccessTokenEntity } from '@/modules/authentication/domain/entities
 
 @Controller({ version: '1', path: 'api/authentication' })
 export class AuthenticationController {
-    // eslint-disable-next-line max-params
-    constructor(
-        private readonly localSignupService: LocalSignupService,
-        private readonly localLoginService: LocalLoginService,
-        private readonly localSendVerificationService: LocalSendVerificationService,
-        private readonly localVerifyVerificationService: LocalVerifyVerificationService,
-        private readonly localForgotPasswordService: LocalForgotPasswordService,
-        private readonly localResetPasswordService: LocalResetPasswordService,
-        private readonly googleLoginService: GoogleLoginService,
-    ) {}
+    constructor(private readonly authenticationService: AuthenticationService) {}
 
     @Post('local/signup')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @HttpResponse(SUCCESS_SIGNUP_MESSAGE, HttpStatus.CREATED)
     localSignup(@Body() body: LocalSignupRequestDto): Promise<boolean> {
-        return this.localSignupService.execute(body);
+        return this.authenticationService.localSignup(body);
     }
 
     @Post('local/login')
@@ -57,35 +42,35 @@ export class AuthenticationController {
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializerInterceptor(LoginResponseDto)
     localLogin(@Body() body: LocalLoginRequestDto): Promise<AccessTokenEntity> {
-        return this.localLoginService.execute(body);
+        return this.authenticationService.localLogin(body);
     }
 
     @Post('local/verification/send')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @HttpResponse(SUCCESS_SEND_VERIFICATION_MESSAGE, HttpStatus.OK)
     localSendVerification(@Body() body: LocalSendVerificationRequestDto): Promise<boolean> {
-        return this.localSendVerificationService.execute(body);
+        return this.authenticationService.localSendVerification(body);
     }
 
     @Post('local/verification/verify')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @HttpResponse(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
     localVerifyVerification(@Body() body: LocalVerifyVerificationRequestDto): Promise<boolean> {
-        return this.localVerifyVerificationService.execute(body);
+        return this.authenticationService.localVerifyVerification(body);
     }
 
     @Post('local/forgot-password')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @HttpResponse(SUCCESS_FORGOT_PASSWORD_MESSAGE, HttpStatus.OK)
     localForgotPassword(@Body() body: LocalForgotPasswordRequestDto): Promise<boolean> {
-        return this.localForgotPasswordService.execute(body);
+        return this.authenticationService.localForgotPassword(body);
     }
 
     @Post('local/reset-password')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @HttpResponse(SUCCESS_RESET_PASSWORD_MESSAGE, HttpStatus.OK)
     localResetPassword(@Body() body: LocalResetPasswordRequestDto): Promise<boolean> {
-        return this.localResetPasswordService.execute(body);
+        return this.authenticationService.localResetPassword(body);
     }
 
     @Get('google')
@@ -100,6 +85,6 @@ export class AuthenticationController {
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializerInterceptor(LoginResponseDto)
     googleLogin(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
-        return this.googleLoginService.execute(user);
+        return this.authenticationService.googleLogin(user);
     }
 }
