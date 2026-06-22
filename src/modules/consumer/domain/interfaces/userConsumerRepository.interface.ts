@@ -1,5 +1,8 @@
+import type { IList } from '@/core/interfaces/list.interface';
 import type { ICreateManyRepository } from '@/core/interfaces/repositories/createManyRepository.interface';
 import type { IFindManyByRefIdAndTargetIdsRepository } from '@/core/interfaces/repositories/findManyByRefIdAndTargetIdsRepository.interface';
+import type { IFindTargetsByRefIdRepository } from '@/core/interfaces/repositories/findTargetsByRefIdRepository.interface';
+import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type {
     IInsertUserConsumer,
     ISelectUserConsumer,
@@ -8,4 +11,5 @@ import type {
 export interface IUserConsumerRepository
     extends
         ICreateManyRepository<IInsertUserConsumer, ISelectUserConsumer>,
-        IFindManyByRefIdAndTargetIdsRepository<ISelectUserConsumer> {}
+        IFindManyByRefIdAndTargetIdsRepository<ISelectUserConsumer>,
+        IFindTargetsByRefIdRepository<ISelectConsumer, IList> {}
