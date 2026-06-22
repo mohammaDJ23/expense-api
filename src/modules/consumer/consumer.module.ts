@@ -8,6 +8,7 @@ import { CreateManyUsersConsumersHandler } from '@/modules/consumer/applications
 import { FindBillConsumerTargetsByRefIdsHandler } from '@/modules/consumer/applications/queries/findBillConsumerTargetsByRefIds/findBillConsumerTargetsByRefIds.handler';
 import { FindManyConsumersByNamesHandler } from '@/modules/consumer/applications/queries/findManyConsumersByNames/findManyConsumersByNames.handler';
 import { FindManyUsersConsumersByRefIdAndTargetIdsHandler } from '@/modules/consumer/applications/queries/findManyUsersConsumersByRefIdAndTargetIds/findManyUsersConsumersByRefIdAndTargetIds.handler';
+import { FindUserConsumerTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/consumer/applications/queries/findUserConsumerTargetByRefIdAndTargetIdOrThrow/findUserConsumerTargetByRefIdAndTargetIdOrThrow.handler';
 import { FindUserConsumerTargetsByRefIdHandler } from '@/modules/consumer/applications/queries/findUserConsumerTargetsByRefId/findUserConsumerTargetsByRefId.handler';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
@@ -25,6 +26,7 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         CreateManyBillsConsumersHandler,
         FindBillConsumerTargetsByRefIdsHandler,
         FindManyUsersConsumersByRefIdAndTargetIdsHandler,
+        FindUserConsumerTargetByRefIdAndTargetIdOrThrowHandler,
         FindUserConsumerTargetsByRefIdHandler,
         FindManyConsumersByNamesHandler,
         ConsumerRepository,

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { and, desc, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
-import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
+import { toEntities, toEntityOrThrow } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     consumers,
     type ISelectConsumer,
@@ -41,6 +41,25 @@ export class UserConsumerRepository implements IUserConsumerRepository {
                     ),
                 )
                 .execute(),
+        );
+    }
+
+    findTargetByRefIdAndTargetIdOrThrow(refId: string, targetId: string): Promise<ISelectConsumer> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .select({
+                    id: consumers.id,
+                    name: consumers.name,
+                    createdAt: consumers.createdAt,
+                    updatedAt: consumers.updatedAt,
+                })
+                .from(usersConsumers)
+                .innerJoin(consumers, eq(usersConsumers.consumerId, consumers.id))
+                .where(
+                    and(eq(usersConsumers.userId, refId), eq(usersConsumers.consumerId, targetId)),
+                )
+                .execute(),
+            'Unable to find',
         );
     }
 
