@@ -1,3 +1,9 @@
+## [3.5.0](https://github.com/mohammaDJ23/expense-api/compare/v3.4.0...v3.5.0) (2026-06-22)
+
+### ✨ Features
+
+- 953310 add the consumer api ([d093d9d](https://github.com/mohammaDJ23/expense-api/commit/d093d9d7623ecaf5ec74643f7ec0b07a8638d956))
+
 ## [3.4.0](https://github.com/mohammaDJ23/expense-api/compare/v3.3.0...v3.4.0) (2026-06-22)
 
 ### ✨ Features
