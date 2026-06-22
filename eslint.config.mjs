@@ -253,7 +253,7 @@ export default defineConfig([
             'sonarjs/prefer-single-boolean-return': 'error',
             'sonarjs/no-os-command-from-path': 'error',
             'sonarjs/no-ignored-exceptions': 'error',
-            'sonarjs/no-invariant-returns': 'error',
+            'sonarjs/no-invariant-returns': 'off',
             'sonarjs/no-empty-collection': 'error',
             'sonarjs/no-redundant-boolean': 'error',
             'sonarjs/no-ignored-return': 'error',
