@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { FindUserConsumerTargetByRefIdAndTargetIdOrThrowQuery } from '@/modules/consumer/applications/queries/findUserConsumerTargetByRefIdAndTargetIdOrThrow/findUserConsumerTargetByRefIdAndTargetIdOrThrow.query';
 import { FindUserConsumerTargetsByRefIdQuery } from '@/modules/consumer/applications/queries/findUserConsumerTargetsByRefId/findUserConsumerTargetsByRefId.query';
 
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
@@ -17,5 +18,12 @@ export class UserConsumerService {
         return this.queryBus.execute<FindUserConsumerTargetsByRefIdQuery, ISelectConsumer[]>(
             new FindUserConsumerTargetsByRefIdQuery(userId, query.offset, query.limit),
         );
+    }
+
+    findTargetByRefIdAndTargetId(userId: string, consumerId: string): Promise<ISelectConsumer> {
+        return this.queryBus.execute<
+            FindUserConsumerTargetByRefIdAndTargetIdOrThrowQuery,
+            ISelectConsumer
+        >(new FindUserConsumerTargetByRefIdAndTargetIdOrThrowQuery(userId, consumerId));
     }
 }
