@@ -10,6 +10,8 @@ import { FindReceiverByNameOrNullHandler } from '@/modules/receiver/applications
 import { FindUserReceiverByRefIdAndTargetIdOrNullHandler } from '@/modules/receiver/applications/queries/findUserReceiverByRefIdAndTargetIdOrNull/findUserReceiverByRefIdAndTargetIdOrNull.handler';
 import { FindUserReceiverTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/receiver/applications/queries/findUserReceiverTargetByRefIdAndTargetIdOrThrow/findUserReceiverTargetByRefIdAndTargetIdOrThrow.handler';
 import { FindUserReceiverTargetsByRefIdHandler } from '@/modules/receiver/applications/queries/findUserReceiverTargetsByRefId/findUserReceiverTargetsByRefId.handler';
+import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
+import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
 import { UserReceiverService } from '@/modules/receiver/applications/services/userReceiver.service';
 import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
 import { UserReceiverRepository } from '@/modules/receiver/infrastructure/repositories/userReceiver.repository';
@@ -19,7 +21,9 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
     imports: [CqrsModule, AuthenticationModule],
     controllers: [ReceiverController],
     providers: [
+        ReceiverService,
         UserReceiverService,
+        CreateReceiverService,
         CreateReceiverHandler,
         CreateUserReceiverHandler,
         FindReceiverByNameOrNullHandler,
