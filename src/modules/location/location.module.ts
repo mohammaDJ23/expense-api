@@ -9,6 +9,8 @@ import { FindManyLocationsByIdsHandler } from '@/modules/location/applications/q
 import { FindUserLocationByRefIdAndTargetIdOrNullHandler } from '@/modules/location/applications/queries/findUserLocationByRefIdAndTargetIdOrNull/findUserLocationByRefIdAndTargetIdOrNull.handler';
 import { FindUserLocationTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/location/applications/queries/findUserLocationTargetByRefIdAndTargetIdOrThrow/findUserLocationTargetByRefIdAndTargetIdOrThrow.handler';
 import { FindUserLocationTargetsByRefIdHandler } from '@/modules/location/applications/queries/findUserLocationTargetsByRefId/findUserLocationTargetsByRefId.handler';
+import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
+import { LocationService } from '@/modules/location/applications/services/location.service';
 import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import { UserLocationRepository } from '@/modules/location/infrastructure/repositories/userLocation.repository';
@@ -18,6 +20,8 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
     imports: [CqrsModule],
     controllers: [LocationController],
     providers: [
+        LocationService,
+        CreateLocationService,
         UserLocationService,
         CreateLocationHandler,
         CreateUserLocationHandler,
