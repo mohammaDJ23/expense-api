@@ -1,3 +1,9 @@
+## [3.7.0](https://github.com/mohammaDJ23/expense-api/compare/v3.6.0...v3.7.0) (2026-06-23)
+
+### ✨ Features
+
+- 968638 add the location creation api ([3ff8196](https://github.com/mohammaDJ23/expense-api/commit/3ff819601c7d2ae1fbae4d88dfd02ac195cb646b))
+
 ## [3.6.0](https://github.com/mohammaDJ23/expense-api/compare/v3.5.0...v3.6.0) (2026-06-23)
 
 ### ✨ Features
