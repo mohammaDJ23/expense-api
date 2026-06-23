@@ -1,3 +1,9 @@
+## [3.6.0](https://github.com/mohammaDJ23/expense-api/compare/v3.5.0...v3.6.0) (2026-06-23)
+
+### ✨ Features
+
+- 415500 add the receiver creation api ([b09cf5f](https://github.com/mohammaDJ23/expense-api/commit/b09cf5f3bf5f82e67f66042c5ffc66b99f49721b))
+
 ## [3.5.0](https://github.com/mohammaDJ23/expense-api/compare/v3.4.0...v3.5.0) (2026-06-22)
 
 ### ✨ Features
