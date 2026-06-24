@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { inArray } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
-import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
+import {
+    toEntityOrNull,
+    toEntityOrThrow,
+} from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     consumers,
     type IInsertConsumer,
@@ -15,18 +18,19 @@ import type { IConsumerRepository } from '@/modules/consumer/domain/interfaces/c
 export class ConsumerRepository implements IConsumerRepository {
     constructor(private readonly drizzleRepository: DrizzleRepository) {}
 
-    createMany(data: IInsertConsumer[]): Promise<ISelectConsumer[]> {
-        return toEntities(
+    create(data: IInsertConsumer): Promise<ISelectConsumer> {
+        return toEntityOrThrow(
             this.drizzleRepository.db.insert(consumers).values(data).returning().execute(),
+            'Unable to create',
         );
     }
 
-    findManyByNames(names: string[]): Promise<ISelectConsumer[]> {
-        return toEntities(
+    findByNameOrNull(name: string): Promise<ISelectConsumer | null> {
+        return toEntityOrNull(
             this.drizzleRepository.db
                 .select()
                 .from(consumers)
-                .where(inArray(consumers.name, names))
+                .where(eq(consumers.name, name))
                 .execute(),
         );
     }
