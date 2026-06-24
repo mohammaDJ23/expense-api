@@ -3,21 +3,21 @@ import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UserConsumerRepository } from '@/modules/consumer/infrastructure/repositories/userConsumer.repository';
 
-import { FindManyUsersConsumersByRefIdAndTargetIdsQuery } from './findManyUsersConsumersByRefIdAndTargetIds.query';
+import { FindUserConsumerByRefIdAndTargetIdOrNullQuery } from './findUserConsumerByRefIdAndTargetIdOrNull.query';
 
 import type { ISelectUserConsumer } from '@/modules/consumer/infrastructure/schemas/userConsumer.schema';
 
-@QueryHandler(FindManyUsersConsumersByRefIdAndTargetIdsQuery)
-export class FindManyUsersConsumersByRefIdAndTargetIdsHandler implements IQueryHandler<FindManyUsersConsumersByRefIdAndTargetIdsQuery> {
+@QueryHandler(FindUserConsumerByRefIdAndTargetIdOrNullQuery)
+export class FindUserConsumerByRefIdAndTargetIdOrNullHandler implements IQueryHandler<FindUserConsumerByRefIdAndTargetIdOrNullQuery> {
     constructor(private readonly userConsumerRepository: UserConsumerRepository) {}
 
     async execute(
-        query: FindManyUsersConsumersByRefIdAndTargetIdsQuery,
-    ): Promise<ISelectUserConsumer[]> {
+        query: FindUserConsumerByRefIdAndTargetIdOrNullQuery,
+    ): Promise<ISelectUserConsumer | null> {
         try {
-            return await this.userConsumerRepository.findManyByRefIdAndTargetIds(
+            return await this.userConsumerRepository.findByRefIdAndTargetIdOrNull(
                 query.userId,
-                query.consumerIds,
+                query.consumerId,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();

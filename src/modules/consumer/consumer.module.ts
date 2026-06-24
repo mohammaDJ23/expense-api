@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
+import { CreateConsumerHandler } from '@/modules/consumer/applications/commands/createConsumer/createConsumer.handler';
 import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.handler';
-import { CreateManyConsumersHandler } from '@/modules/consumer/applications/commands/createManyConsumers/createManyConsumers.handler';
-import { CreateManyUsersConsumersHandler } from '@/modules/consumer/applications/commands/createManyUsersConsumers/createManyUsersConsumers.handler';
+import { CreateUserConsumerHandler } from '@/modules/consumer/applications/commands/createUserConsumer/createUserConsumer.handler';
 import { FindBillConsumerTargetsByRefIdsHandler } from '@/modules/consumer/applications/queries/findBillConsumerTargetsByRefIds/findBillConsumerTargetsByRefIds.handler';
-import { FindManyConsumersByNamesHandler } from '@/modules/consumer/applications/queries/findManyConsumersByNames/findManyConsumersByNames.handler';
-import { FindManyUsersConsumersByRefIdAndTargetIdsHandler } from '@/modules/consumer/applications/queries/findManyUsersConsumersByRefIdAndTargetIds/findManyUsersConsumersByRefIdAndTargetIds.handler';
+import { FindConsumerByNameOrNullHandler } from '@/modules/consumer/applications/queries/findConsumerByNameOrNull/findConsumerByNameOrNull.handler';
+import { FindUserConsumerByRefIdAndTargetIdOrNullHandler } from '@/modules/consumer/applications/queries/findUserConsumerByRefIdAndTargetIdOrNull/findUserConsumerByRefIdAndTargetIdOrNull.handler';
 import { FindUserConsumerTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/consumer/applications/queries/findUserConsumerTargetByRefIdAndTargetIdOrThrow/findUserConsumerTargetByRefIdAndTargetIdOrThrow.handler';
 import { FindUserConsumerTargetsByRefIdHandler } from '@/modules/consumer/applications/queries/findUserConsumerTargetsByRefId/findUserConsumerTargetsByRefId.handler';
+import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
+import { CreateConsumerService } from '@/modules/consumer/applications/services/createConsumer.service';
 import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
 import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
@@ -20,15 +22,17 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
     imports: [CqrsModule, AuthenticationModule],
     controllers: [ConsumerController],
     providers: [
+        ConsumerService,
+        CreateConsumerService,
         UserConsumerService,
-        CreateManyUsersConsumersHandler,
-        CreateManyConsumersHandler,
+        CreateUserConsumerHandler,
+        CreateConsumerHandler,
         CreateManyBillsConsumersHandler,
         FindBillConsumerTargetsByRefIdsHandler,
-        FindManyUsersConsumersByRefIdAndTargetIdsHandler,
+        FindUserConsumerByRefIdAndTargetIdOrNullHandler,
         FindUserConsumerTargetByRefIdAndTargetIdOrThrowHandler,
         FindUserConsumerTargetsByRefIdHandler,
-        FindManyConsumersByNamesHandler,
+        FindConsumerByNameOrNullHandler,
         ConsumerRepository,
         UserConsumerRepository,
         BillConsumerRepository,

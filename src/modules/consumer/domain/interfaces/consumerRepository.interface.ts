@@ -1,5 +1,5 @@
-import type { ICreateManyRepository } from '@/core/interfaces/repositories/createManyRepository.interface';
-import type { IFindManyByNamesRepository } from '@/core/interfaces/repositories/findManyByNamesRepository.interface';
+import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
+import type { IFindByNameOrNullRepository } from '@/core/interfaces/repositories/findByNameOrNullRepository.interface';
 import type {
     IInsertConsumer,
     ISelectConsumer,
@@ -7,5 +7,5 @@ import type {
 
 export interface IConsumerRepository
     extends
-        ICreateManyRepository<IInsertConsumer, ISelectConsumer>,
-        IFindManyByNamesRepository<ISelectConsumer> {}
+        ICreateRepository<IInsertConsumer, ISelectConsumer>,
+        IFindByNameOrNullRepository<ISelectConsumer> {}
