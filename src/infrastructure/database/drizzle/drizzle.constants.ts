@@ -1,2 +1,1 @@
 export const DRIZZLE_CLIENT_TOKEN = 'DRIZZLE_CLIENT_TOKEN';
-export const DRIZZLE_DB = 'DRIZZLE_DB';
