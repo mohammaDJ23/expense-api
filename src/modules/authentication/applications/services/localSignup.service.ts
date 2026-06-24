@@ -30,42 +30,46 @@ export class LocalSignupService implements IServiceHandler {
     ) {}
 
     async execute(data: LocalSignupRequestDto): Promise<boolean> {
-        const isExists = await this.queryBus.execute<IsUserExistsByEmailQuery, boolean>(
-            new IsUserExistsByEmailQuery(data.email),
-        );
-
-        if (isExists) {
-            throw new ConflictException('The Email already exists.');
-        }
-
-        let createdUser: ISelectUser;
-        try {
-            const hashedPassword = await this.passwordHasherService.hash(data.password);
-
-            createdUser = await this.commandBus.execute<CreateUserCommand, ISelectUser>(
-                new CreateUserCommand({
-                    email: data.email,
-                    hashedPassword,
-                    role: UserRoles.USER,
-                    authProvider: AuthProvider.LOCAL,
-                    createdAt: getCurrentUTCTimestamp(),
-                    updatedAt: getCurrentUTCTimestamp(),
-                }),
+        {
+            const isExists = await this.queryBus.execute<IsUserExistsByEmailQuery, boolean>(
+                new IsUserExistsByEmailQuery(data.email),
             );
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
+
+            if (isExists) {
+                throw new ConflictException('The Email already exists.');
+            }
         }
 
-        try {
-            const token = this.verificationTokenService.sign(createdUser);
-            await this.verificationStorageService.set(createdUser.email, token);
-            await this.verificationMailerService.execute(createdUser, token);
-        } catch {
-            throw new ServiceUnavailableException(
-                'Your email has been saved but we could not send you the verification link, send the verification link manually',
-            );
-        }
+        {
+            let createdUser: ISelectUser;
+            try {
+                const hashedPassword = await this.passwordHasherService.hash(data.password);
 
-        return true;
+                createdUser = await this.commandBus.execute<CreateUserCommand, ISelectUser>(
+                    new CreateUserCommand({
+                        email: data.email,
+                        hashedPassword,
+                        role: UserRoles.USER,
+                        authProvider: AuthProvider.LOCAL,
+                        createdAt: getCurrentUTCTimestamp(),
+                        updatedAt: getCurrentUTCTimestamp(),
+                    }),
+                );
+            } catch {
+                throw new ProcessFailedInternalServerErrorException();
+            }
+
+            try {
+                const token = this.verificationTokenService.sign(createdUser);
+                await this.verificationStorageService.set(createdUser.email, token);
+                await this.verificationMailerService.execute(createdUser, token);
+            } catch {
+                throw new ServiceUnavailableException(
+                    'Your email has been saved but we could not send you the verification link, send the verification link manually',
+                );
+            }
+
+            return true;
+        }
     }
 }

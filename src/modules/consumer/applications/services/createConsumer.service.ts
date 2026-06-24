@@ -48,22 +48,24 @@ export class CreateConsumerService implements IServiceHandler {
             return IdEntity.create(createdConsumer.id);
         }
 
-        const userConsumer = await this.queryBus.execute<
-            FindUserConsumerByRefIdAndTargetIdOrNullQuery,
-            ISelectUserConsumer | null
-        >(new FindUserConsumerByRefIdAndTargetIdOrNullQuery(userId, consumer.id));
+        {
+            const userConsumer = await this.queryBus.execute<
+                FindUserConsumerByRefIdAndTargetIdOrNullQuery,
+                ISelectUserConsumer | null
+            >(new FindUserConsumerByRefIdAndTargetIdOrNullQuery(userId, consumer.id));
 
-        if (!userConsumer) {
-            await this.commandBus.execute<CreateUserConsumerCommand, ISelectUserConsumer>(
-                new CreateUserConsumerCommand({
-                    userId,
-                    consumerId: consumer.id,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
-            return IdEntity.create(consumer.id);
+            if (!userConsumer) {
+                await this.commandBus.execute<CreateUserConsumerCommand, ISelectUserConsumer>(
+                    new CreateUserConsumerCommand({
+                        userId,
+                        consumerId: consumer.id,
+                        createdAt: getCurrentUTCTimestamp(),
+                    }),
+                );
+                return IdEntity.create(consumer.id);
+            }
+
+            throw new BadRequestException('You already have the consumer');
         }
-
-        throw new BadRequestException('You already have the consumer');
     }
 }

@@ -48,22 +48,24 @@ export class CreateLocationService implements IServiceHandler {
             return IdEntity.create(createdLocation.id);
         }
 
-        const userLocation = await this.queryBus.execute<
-            FindUserLocationByRefIdAndTargetIdOrNullQuery,
-            ISelectUserLocation | null
-        >(new FindUserLocationByRefIdAndTargetIdOrNullQuery(userId, location.id));
+        {
+            const userLocation = await this.queryBus.execute<
+                FindUserLocationByRefIdAndTargetIdOrNullQuery,
+                ISelectUserLocation | null
+            >(new FindUserLocationByRefIdAndTargetIdOrNullQuery(userId, location.id));
 
-        if (!userLocation) {
-            await this.commandBus.execute<CreateUserLocationCommand, ISelectUserLocation>(
-                new CreateUserLocationCommand({
-                    userId,
-                    locationId: location.id,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
-            return IdEntity.create(location.id);
+            if (!userLocation) {
+                await this.commandBus.execute<CreateUserLocationCommand, ISelectUserLocation>(
+                    new CreateUserLocationCommand({
+                        userId,
+                        locationId: location.id,
+                        createdAt: getCurrentUTCTimestamp(),
+                    }),
+                );
+                return IdEntity.create(location.id);
+            }
+
+            throw new BadRequestException('You already have the location');
         }
-
-        throw new BadRequestException('You already have the location');
     }
 }

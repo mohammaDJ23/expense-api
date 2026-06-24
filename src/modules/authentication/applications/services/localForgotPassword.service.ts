@@ -33,33 +33,36 @@ export class LocalForgotPasswordService implements IServiceHandler {
             throw new ProcessFailedInternalServerErrorException();
         }
 
-        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
-            new FindUserByEmailOrNullQuery(data.email),
-        );
+        {
+            const user = await this.queryBus.execute<
+                FindUserByEmailOrNullQuery,
+                ISelectUser | null
+            >(new FindUserByEmailOrNullQuery(data.email));
 
-        if (!user) {
+            if (!user) {
+                return true;
+            }
+
+            if (user.authProvider !== AuthProvider.LOCAL) {
+                throw new LocalAuthProviderForbiddenException();
+            }
+
+            if (user.verifiedAt) {
+                try {
+                    const token = this.passwordTokenService.sign(user);
+                    await this.passwordStorageService.set(user.email, token);
+                    await this.passwordMailerService.execute(user, token);
+                } catch {
+                    try {
+                        await this.passwordStorageService.delete(user.email);
+                        // eslint-disable-next-line no-empty
+                    } catch {}
+
+                    throw new ServiceUnavailableException('Could not send you a verification link');
+                }
+            }
+
             return true;
         }
-
-        if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderForbiddenException();
-        }
-
-        if (user.verifiedAt) {
-            try {
-                const token = this.passwordTokenService.sign(user);
-                await this.passwordStorageService.set(user.email, token);
-                await this.passwordMailerService.execute(user, token);
-            } catch {
-                try {
-                    await this.passwordStorageService.delete(user.email);
-                    // eslint-disable-next-line no-empty
-                } catch {}
-
-                throw new ServiceUnavailableException('Could not send you a verification link');
-            }
-        }
-
-        return true;
     }
 }
