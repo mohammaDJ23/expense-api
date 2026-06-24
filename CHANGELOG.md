@@ -1,3 +1,14 @@
+## [3.9.0](https://github.com/mohammaDJ23/expense-api/compare/v3.8.0...v3.9.0) (2026-06-24)
+
+### ✨ Features
+
+- 542092 add the update bill api ([6f89a54](https://github.com/mohammaDJ23/expense-api/commit/6f89a54cd1553060908daaf6dcd71cc5feba9f94))
+
+### ♻️ Code Refactoring
+
+- 542092 use blocks to organize the code ([de8c85a](https://github.com/mohammaDJ23/expense-api/commit/de8c85a213fb660e4ee2760994c93a4e9cb3c173))
+- 542092 use blocks to organize the code ([192654d](https://github.com/mohammaDJ23/expense-api/commit/192654de66d9c18095876970d5d31cec2590c952))
+
 ## [3.8.0](https://github.com/mohammaDJ23/expense-api/compare/v3.7.0...v3.8.0) (2026-06-24)
 
 ### ✨ Features
