@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
-import { toEntities } from '@/infrastructure/database/drizzle/drizzle.transformer';
+import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import {
     billsConsumers,
     type IInsertBillConsumer,

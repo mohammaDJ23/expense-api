@@ -2,11 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { and, desc, eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
-import {
-    toEntities,
-    toEntityOrNull,
-    toEntityOrThrow,
-} from '@/infrastructure/database/drizzle/drizzle.transformer';
+import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
+import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
+import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
 import {
     receivers,
     type ISelectReceiver,
