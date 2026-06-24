@@ -4,6 +4,7 @@ import { and, desc, eq } from 'drizzle-orm';
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
+import { toIsExistsByCount } from '@/infrastructure/database/drizzle/transformers/toIsExistsByCount.transformer';
 import {
     bills,
     type IInsertBill,
@@ -21,6 +22,29 @@ export class BillRepository implements IBillRepository {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(bills).values(data).returning().execute(),
             'Unable to create',
+        );
+    }
+
+    update(
+        data: Partial<ISelectBill> & Required<Pick<ISelectBill, 'id' | 'userId'>>,
+    ): Promise<ISelectBill> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .update(bills)
+                .set(data)
+                .where(and(eq(bills.userId, data.userId), eq(bills.id, data.id)))
+                .returning()
+                .execute(),
+            'Unable to update',
+        );
+    }
+
+    isExistsByUserIdAndId(userId: string, id: string): Promise<boolean> {
+        return toIsExistsByCount(
+            this.drizzleRepository.db.$count(
+                bills,
+                and(eq(bills.id, id), eq(bills.userId, userId)),
+            ),
         );
     }
 

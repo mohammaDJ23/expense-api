@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
+import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
+
 import { CreateBillService } from './createBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from './findBillListByUserId.service';
@@ -8,17 +10,23 @@ import type { IdEntity } from '@/core/entities/id.entity';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
+import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
 
 @Injectable()
 export class BillService {
     constructor(
         private readonly createBillService: CreateBillService,
+        private readonly updateBillService: UpdateBillService,
         private readonly findBillByUserIdAndIdOrThrowService: FindBillByUserIdAndIdOrThrowService,
         private readonly findBillListByUserIdService: FindBillListByUserIdService,
     ) {}
 
     create(data: CreateBillRequestDto, userId: string): Promise<IdEntity> {
         return this.createBillService.execute(data, userId);
+    }
+
+    update(data: UpdateBillRequestDto, userId: string): Promise<IdEntity> {
+        return this.updateBillService.execute(data, userId);
     }
 
     findManyByUserId(userId: string, query: FindBillListRequestDto): Promise<IBill[]> {

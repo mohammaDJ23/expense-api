@@ -1,4 +1,6 @@
 import type { ICreateManyRepository } from '@/core/interfaces/repositories/createManyRepository.interface';
+import type { IDeleteManyByRefIdAndTargetIdsRepository } from '@/core/interfaces/repositories/deleteManyByRefIdAndTargetIdsRepository.interface';
+import type { IFindManyByRefIdRepository } from '@/core/interfaces/repositories/findManyByRefIdRepository.interface';
 import type { IFindTargetsByRefIdsRepository } from '@/core/interfaces/repositories/findTargetsByRefIdsRepository.interface';
 import type { ITargetBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
 import type {
@@ -9,4 +11,6 @@ import type {
 export interface IBillConsumerRepository
     extends
         ICreateManyRepository<IInsertBillConsumer, ISelectBillConsumer>,
-        IFindTargetsByRefIdsRepository<ITargetBillConsumer> {}
+        IFindTargetsByRefIdsRepository<ITargetBillConsumer>,
+        IFindManyByRefIdRepository<ISelectBillConsumer>,
+        IDeleteManyByRefIdAndTargetIdsRepository<ISelectBillConsumer> {}

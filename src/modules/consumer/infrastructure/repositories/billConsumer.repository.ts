@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
@@ -20,6 +20,34 @@ export class BillConsumerRepository implements IBillConsumerRepository {
     createMany(data: IInsertBillConsumer[]): Promise<ISelectBillConsumer[]> {
         return toEntities(
             this.drizzleRepository.db.insert(billsConsumers).values(data).returning().execute(),
+        );
+    }
+
+    deleteManyByRefIdAndTargetId(
+        refId: string,
+        targetIds: string[],
+    ): Promise<ISelectBillConsumer[]> {
+        return toEntities(
+            this.drizzleRepository.db
+                .delete(billsConsumers)
+                .where(
+                    and(
+                        eq(billsConsumers.billId, refId),
+                        inArray(billsConsumers.consumerId, targetIds),
+                    ),
+                )
+                .returning()
+                .execute(),
+        );
+    }
+
+    findManyByRefId(refId: string): Promise<ISelectBillConsumer[]> {
+        return toEntities(
+            this.drizzleRepository.db
+                .select()
+                .from(billsConsumers)
+                .where(eq(billsConsumers.billId, refId))
+                .execute(),
         );
     }
 

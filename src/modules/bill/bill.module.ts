@@ -3,12 +3,15 @@ import { Module } from '@nestjs/common';
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
+import { UpdateBillHandler } from '@/modules/bill/applications/commands/updateBill/updateBill.handler';
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
 import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.handler';
+import { IsBillExistsByUserIdAndIdHandler } from '@/modules/bill/applications/queries/isBillExistsByUserIdAndId/isBillExistsByUserIdAndId.handler';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
+import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
 import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.repository';
 import { BillController } from '@/modules/bill/interface/controllers/v1.controller';
 
@@ -17,11 +20,14 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
     providers: [
         BillService,
         CreateBillService,
+        UpdateBillService,
         FindBillByUserIdAndIdOrThrowService,
         FindBillListByUserIdService,
         FindBillByUserIdAndIdOrThrowHandler,
         FindBillListByUserIdHandler,
+        IsBillExistsByUserIdAndIdHandler,
         CreateBillHandler,
+        UpdateBillHandler,
         BillRepository,
     ],
     controllers: [BillController],
