@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
 
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
+import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { CurrentUser } from '@/core/user/currentUser.decorator';
@@ -16,6 +17,7 @@ import {
     SUCCESS_GET_MANY_MESSAGE,
 } from './controllers.constants';
 
+import type { IdEntity } from '@/core/entities/id.entity';
 import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 
@@ -25,11 +27,12 @@ export class BillController {
 
     @Post()
     @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_CREATE_BILL_MESSAGE, HttpStatus.CREATED)
     create(
         @Body() body: CreateBillRequestDto,
         @CurrentUser() user: ICurrentUser,
-    ): Promise<boolean> {
+    ): Promise<IdEntity> {
         return this.billService.create(body, user.id);
     }
 

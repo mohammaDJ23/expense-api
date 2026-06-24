@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import {
     toEntityOrNull,
     toEntityOrThrow,
+    toIsExistsByCount,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     consumers,
@@ -32,6 +33,13 @@ export class ConsumerRepository implements IConsumerRepository {
                 .from(consumers)
                 .where(eq(consumers.name, name))
                 .execute(),
+        );
+    }
+
+    isExistsByIds(ids: string[]): Promise<boolean> {
+        return toIsExistsByCount(
+            this.drizzleRepository.db.$count(consumers, inArray(consumers.id, ids)),
+            ids.length,
         );
     }
 }

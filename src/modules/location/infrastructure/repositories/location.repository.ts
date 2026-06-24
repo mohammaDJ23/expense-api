@@ -6,6 +6,7 @@ import {
     toEntities,
     toEntityOrNull,
     toEntityOrThrow,
+    toIsExistsByCount,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     locations,
@@ -45,6 +46,10 @@ export class LocationRepository implements ILocationRepository {
                 .execute(),
             'Unable to find',
         );
+    }
+
+    isExistsById(id: string): Promise<boolean> {
+        return toIsExistsByCount(this.drizzleRepository.db.$count(locations, eq(locations.id, id)));
     }
 
     findManyByIds(ids: string[]): Promise<ISelectLocation[]> {
