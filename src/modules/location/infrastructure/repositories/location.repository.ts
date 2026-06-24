@@ -2,12 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
-import {
-    toEntities,
-    toEntityOrNull,
-    toEntityOrThrow,
-    toIsExistsByCount,
-} from '@/infrastructure/database/drizzle/drizzle.transformer';
+import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
+import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
+import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
+import { toIsExistsByCount } from '@/infrastructure/database/drizzle/transformers/toIsExistsByCount.transformer';
 import {
     locations,
     type IInsertLocation,

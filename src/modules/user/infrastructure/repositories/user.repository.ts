@@ -2,12 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { desc, eq, isNull } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
-import {
-    isExists,
-    toEntities,
-    toEntityOrNull,
-    toEntityOrThrow,
-} from '@/infrastructure/database/drizzle/drizzle.transformer';
+import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
+import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
+import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
+import { toIsExistsByCount } from '@/infrastructure/database/drizzle/transformers/toIsExistsByCount.transformer';
 import {
     users,
     type IInsertUser,
@@ -50,20 +48,14 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    private findByEmail(email: string): Promise<ISelectUser[]> {
-        return this.drizzleRepository.db
-            .select()
-            .from(users)
-            .where(eq(users.email, email))
-            .execute();
-    }
-
     isExistsByEmail(email: string): Promise<boolean> {
-        return isExists(this.findByEmail(email));
+        return toIsExistsByCount(this.drizzleRepository.db.$count(users, eq(users.email, email)));
     }
 
     findByEmailOrNull(email: string): Promise<ISelectUser | null> {
-        return toEntityOrNull(this.findByEmail(email));
+        return toEntityOrNull(
+            this.drizzleRepository.db.select().from(users).where(eq(users.email, email)).execute(),
+        );
     }
 
     private findById(id: string): Promise<ISelectUser[]> {
