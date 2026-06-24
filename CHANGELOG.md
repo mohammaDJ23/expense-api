@@ -1,3 +1,21 @@
+## [3.8.0](https://github.com/mohammaDJ23/expense-api/compare/v3.7.0...v3.8.0) (2026-06-24)
+
+### ✨ Features
+
+- 833826 add the consumer creation api ([3989558](https://github.com/mohammaDJ23/expense-api/commit/39895588b6b12eafe773a67f2b159425d604f013))
+
+### ♻️ Code Refactoring
+
+- 833826 move the drizzle transformer to the related file ([3dc7ca3](https://github.com/mohammaDJ23/expense-api/commit/3dc7ca312415404d4950cc02b80f55da569894a9))
+- 833826 remove dead codes ([dca2c31](https://github.com/mohammaDJ23/expense-api/commit/dca2c31177d1f08580000b50e0423649808f101d))
+- 833826 update the bill creation process ([bde9b49](https://github.com/mohammaDJ23/expense-api/commit/bde9b4943e564358287c3e63dfea9132634b23fa))
+
+### 🔧 Chores
+
+- 833826 add knip ([5a1b3ba](https://github.com/mohammaDJ23/expense-api/commit/5a1b3ba979e1b0c9e49b8c47d3cbc08b0b44e9f7))
+- 833826 add knip ([23deeaf](https://github.com/mohammaDJ23/expense-api/commit/23deeaf8c1a25fd2d4d137b16e1fcf4d86aa9350))
+- 833826 add knip command ([6c9f228](https://github.com/mohammaDJ23/expense-api/commit/6c9f2281031fa4c6c616df6c2c9edb7f4efb29ab))
+
 ## [3.7.0](https://github.com/mohammaDJ23/expense-api/compare/v3.6.0...v3.7.0) (2026-06-23)
 
 ### ✨ Features
