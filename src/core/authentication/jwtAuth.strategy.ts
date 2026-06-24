@@ -27,18 +27,20 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
             throw new UnauthorizedException();
         }
 
-        const user = await this.queryBus.execute<FindUserByIdOrNullQuery, ISelectUser | null>(
-            new FindUserByIdOrNullQuery(payload.id),
-        );
+        {
+            const user = await this.queryBus.execute<FindUserByIdOrNullQuery, ISelectUser | null>(
+                new FindUserByIdOrNullQuery(payload.id),
+            );
 
-        if (!user) {
-            throw new UnauthorizedException();
+            if (!user) {
+                throw new UnauthorizedException();
+            }
+
+            if (!user.verifiedAt) {
+                throw new ForbiddenException();
+            }
+
+            return user;
         }
-
-        if (!user.verifiedAt) {
-            throw new ForbiddenException();
-        }
-
-        return user;
     }
 }

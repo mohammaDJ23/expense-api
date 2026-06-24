@@ -33,13 +33,15 @@ export class GlobalFilter implements ExceptionFilter {
                 throw new InternalServerErrorException('No host handler found.');
             }
 
-            const exceptionData = this.exceptionNormalizerService.normalize(exception);
-            const response = HttpResponseEntity.error({
-                data: exceptionData,
-                statusCode: exceptionData.statusCode,
-            });
+            {
+                const exceptionData = this.exceptionNormalizerService.normalize(exception);
+                const response = HttpResponseEntity.error({
+                    data: exceptionData,
+                    statusCode: exceptionData.statusCode,
+                });
 
-            handler.send(host, response);
+                handler.send(host, response);
+            }
         } catch (error) {
             throw new InternalServerErrorException(error);
         }

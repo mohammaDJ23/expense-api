@@ -36,42 +36,45 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
             throw new UnauthorizedException();
         }
 
-        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
-            new FindUserByEmailOrNullQuery(email.value),
-        );
+        {
+            const user = await this.queryBus.execute<
+                FindUserByEmailOrNullQuery,
+                ISelectUser | null
+            >(new FindUserByEmailOrNullQuery(email.value));
 
-        if (!user) {
-            return this.commandBus.execute<CreateUserCommand, ISelectUser>(
-                new CreateUserCommand({
-                    firstName: profile.name?.givenName,
-                    lastName: profile.name?.familyName,
-                    googleId: profile.id,
-                    email: email.value,
-                    avatar: profile.photos?.[0]?.value,
-                    authProvider: AuthProvider.GOOGLE,
-                    role: UserRoles.USER,
-                    verifiedAt: getCurrentUTCTimestamp(),
-                    createdAt: getCurrentUTCTimestamp(),
+            if (!user) {
+                return this.commandBus.execute<CreateUserCommand, ISelectUser>(
+                    new CreateUserCommand({
+                        firstName: profile.name?.givenName,
+                        lastName: profile.name?.familyName,
+                        googleId: profile.id,
+                        email: email.value,
+                        avatar: profile.photos?.[0]?.value,
+                        authProvider: AuthProvider.GOOGLE,
+                        role: UserRoles.USER,
+                        verifiedAt: getCurrentUTCTimestamp(),
+                        createdAt: getCurrentUTCTimestamp(),
+                        updatedAt: getCurrentUTCTimestamp(),
+                        lastLoginAt: getCurrentUTCTimestamp(),
+                    }),
+                );
+            }
+
+            if (!user.verifiedAt) {
+                throw new ForbiddenException();
+            }
+
+            if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
+                throw new ForbiddenException();
+            }
+
+            return this.commandBus.execute<UpdateUserCommand, ISelectUser>(
+                new UpdateUserCommand({
+                    id: user.id,
                     updatedAt: getCurrentUTCTimestamp(),
                     lastLoginAt: getCurrentUTCTimestamp(),
                 }),
             );
         }
-
-        if (!user.verifiedAt) {
-            throw new ForbiddenException();
-        }
-
-        if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
-            throw new ForbiddenException();
-        }
-
-        return this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-            new UpdateUserCommand({
-                id: user.id,
-                updatedAt: getCurrentUTCTimestamp(),
-                lastLoginAt: getCurrentUTCTimestamp(),
-            }),
-        );
     }
 }

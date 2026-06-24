@@ -42,30 +42,34 @@ export class LocalLoginService implements IServiceHandler {
             throw new ForbiddenException();
         }
 
-        let isPasswordValid = false;
-        try {
-            isPasswordValid = await this.passwordHasherService.verify(
-                user.hashedPassword,
-                data.password,
+        {
+            let isPasswordValid = false;
+            try {
+                isPasswordValid = await this.passwordHasherService.verify(
+                    user.hashedPassword,
+                    data.password,
+                );
+            } catch {
+                throw new ProcessFailedInternalServerErrorException();
+            }
+            if (!isPasswordValid) {
+                throw new ForbiddenException();
+            }
+        }
+
+        {
+            const token = this.accessTokenService.execute(user);
+            const accessToken = AccessTokenEntity.create(token);
+
+            await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
+                new UpdateUserCommand({
+                    id: user.id,
+                    updatedAt: getCurrentUTCTimestamp(),
+                    lastLoginAt: getCurrentUTCTimestamp(),
+                }),
             );
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
+
+            return accessToken;
         }
-        if (!isPasswordValid) {
-            throw new ForbiddenException();
-        }
-
-        const token = this.accessTokenService.execute(user);
-        const accessToken = AccessTokenEntity.create(token);
-
-        await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-            new UpdateUserCommand({
-                id: user.id,
-                updatedAt: getCurrentUTCTimestamp(),
-                lastLoginAt: getCurrentUTCTimestamp(),
-            }),
-        );
-
-        return accessToken;
     }
 }

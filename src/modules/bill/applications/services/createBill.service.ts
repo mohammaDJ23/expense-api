@@ -24,53 +24,49 @@ export class CreateBillService implements IServiceHandler {
 
     @Transactional()
     async execute(data: CreateBillRequestDto, userId: string): Promise<IdEntity> {
-        const [isReceiverExists, isLocationExists, isConsumersExists] = await Promise.all([
-            this.queryBus.execute<IsReceiverExistsByIdQuery, boolean>(
-                new IsReceiverExistsByIdQuery(data.receiverId),
-            ),
-            this.queryBus.execute<IsLocationExistsByIdQuery, boolean>(
-                new IsLocationExistsByIdQuery(data.locationId),
-            ),
-            this.queryBus.execute<IsConsumerExistsByIdsQuery, boolean>(
-                new IsConsumerExistsByIdsQuery(data.consumerIds),
-            ),
-        ]);
+        {
+            const [isReceiverExists, isLocationExists, isConsumersExists] = await Promise.all([
+                this.queryBus.execute<IsReceiverExistsByIdQuery, boolean>(
+                    new IsReceiverExistsByIdQuery(data.receiverId),
+                ),
+                this.queryBus.execute<IsLocationExistsByIdQuery, boolean>(
+                    new IsLocationExistsByIdQuery(data.locationId),
+                ),
+                this.queryBus.execute<IsConsumerExistsByIdsQuery, boolean>(
+                    new IsConsumerExistsByIdsQuery(data.consumerIds),
+                ),
+            ]);
 
-        if (!isReceiverExists) {
-            throw new BadRequestException('Receiver is not exists');
+            if (!isReceiverExists || !isLocationExists || !isConsumersExists) {
+                throw new BadRequestException();
+            }
         }
 
-        if (!isLocationExists) {
-            throw new BadRequestException('Location is not exists');
-        }
-
-        if (!isConsumersExists) {
-            throw new BadRequestException('Consumer is not exists');
-        }
-
-        const createdBill = await this.commandBus.execute<CreateBillCommand, ISelectBill>(
-            new CreateBillCommand({
-                amount: data.amount,
-                description: data.description,
-                purchasedAt: data.purchasedAt ? getCurrentUTCTimestamp(data.purchasedAt) : null,
-                createdAt: getCurrentUTCTimestamp(),
-                updatedAt: getCurrentUTCTimestamp(),
-                userId,
-                locationId: data.locationId,
-                receiverId: data.receiverId,
-            }),
-        );
-
-        await this.commandBus.execute<CreateManyBillsConsumersCommand, ISelectBillConsumer[]>(
-            new CreateManyBillsConsumersCommand(
-                data.consumerIds.map((consumerId) => ({
-                    billId: createdBill.id,
-                    consumerId,
+        {
+            const createdBill = await this.commandBus.execute<CreateBillCommand, ISelectBill>(
+                new CreateBillCommand({
+                    amount: data.amount,
+                    description: data.description,
+                    purchasedAt: data.purchasedAt ? getCurrentUTCTimestamp(data.purchasedAt) : null,
                     createdAt: getCurrentUTCTimestamp(),
-                })),
-            ),
-        );
+                    updatedAt: getCurrentUTCTimestamp(),
+                    userId,
+                    locationId: data.locationId,
+                    receiverId: data.receiverId,
+                }),
+            );
 
-        return IdEntity.create(createdBill.id);
+            await this.commandBus.execute<CreateManyBillsConsumersCommand, ISelectBillConsumer[]>(
+                new CreateManyBillsConsumersCommand(
+                    data.consumerIds.map((consumerId) => ({
+                        billId: createdBill.id,
+                        consumerId,
+                        createdAt: getCurrentUTCTimestamp(),
+                    })),
+                ),
+            );
+
+            return IdEntity.create(createdBill.id);
+        }
     }
 }

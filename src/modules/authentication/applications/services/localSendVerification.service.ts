@@ -33,33 +33,36 @@ export class LocalSendVerificationService implements IServiceHandler {
             throw new ProcessFailedInternalServerErrorException();
         }
 
-        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
-            new FindUserByEmailOrNullQuery(data.email),
-        );
+        {
+            const user = await this.queryBus.execute<
+                FindUserByEmailOrNullQuery,
+                ISelectUser | null
+            >(new FindUserByEmailOrNullQuery(data.email));
 
-        if (!user) {
+            if (!user) {
+                return true;
+            }
+
+            if (user.authProvider !== AuthProvider.LOCAL) {
+                throw new LocalAuthProviderForbiddenException();
+            }
+
+            if (!user.verifiedAt) {
+                try {
+                    const token = this.verificationTokenService.sign(user);
+                    await this.verificationStorageService.set(user.email, token);
+                    await this.verificationMailerService.execute(user, token);
+                } catch {
+                    try {
+                        await this.verificationStorageService.delete(user.email);
+                        // eslint-disable-next-line no-empty
+                    } catch {}
+
+                    throw new ServiceUnavailableException('Could not send you a verification link');
+                }
+            }
+
             return true;
         }
-
-        if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderForbiddenException();
-        }
-
-        if (!user.verifiedAt) {
-            try {
-                const token = this.verificationTokenService.sign(user);
-                await this.verificationStorageService.set(user.email, token);
-                await this.verificationMailerService.execute(user, token);
-            } catch {
-                try {
-                    await this.verificationStorageService.delete(user.email);
-                    // eslint-disable-next-line no-empty
-                } catch {}
-
-                throw new ServiceUnavailableException('Could not send you a verification link');
-            }
-        }
-
-        return true;
     }
 }

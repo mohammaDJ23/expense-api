@@ -25,27 +25,31 @@ export class FindBillListByUserIdService implements IServiceHandler {
             return [];
         }
 
-        const billIds: string[] = [];
-        const locationIds: string[] = [];
-        const receiverIds: string[] = [];
-        bills.forEach((bill) => {
-            billIds.push(bill.id);
-            locationIds.push(bill.locationId);
-            receiverIds.push(bill.receiverId);
-        });
+        {
+            const billIds: string[] = [];
+            const locationIds: string[] = [];
+            const receiverIds: string[] = [];
+            bills.forEach((bill) => {
+                billIds.push(bill.id);
+                locationIds.push(bill.locationId);
+                receiverIds.push(bill.receiverId);
+            });
 
-        const [locations, receivers, consumers] = await Promise.all([
-            this.findManyLocationsByIds(locationIds),
-            this.findManyReceiversByIds(receiverIds),
-            this.findBillConsumerTargetsByRefIds(billIds),
-        ]);
+            {
+                const [locations, receivers, consumers] = await Promise.all([
+                    this.findManyLocationsByIds(locationIds),
+                    this.findManyReceiversByIds(receiverIds),
+                    this.findBillConsumerTargetsByRefIds(billIds),
+                ]);
 
-        return bills.map((bill) => ({
-            ...bill,
-            location: locations.find((location) => location.id === bill.locationId)!,
-            receiver: receivers.find((receiver) => receiver.id === bill.receiverId)!,
-            consumers: consumers.filter((consumer) => consumer.billId === bill.id),
-        }));
+                return bills.map((bill) => ({
+                    ...bill,
+                    location: locations.find((location) => location.id === bill.locationId)!,
+                    receiver: receivers.find((receiver) => receiver.id === bill.receiverId)!,
+                    consumers: consumers.filter((consumer) => consumer.billId === bill.id),
+                }));
+            }
+        }
     }
 
     private findManyLocationsByIds(locationIds: string[]): Promise<ISelectLocation[]> {

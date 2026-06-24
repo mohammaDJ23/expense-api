@@ -48,22 +48,24 @@ export class CreateReceiverService implements IServiceHandler {
             return IdEntity.create(createdReceiver.id);
         }
 
-        const userReceiver = await this.queryBus.execute<
-            FindUserReceiverByRefIdAndTargetIdOrNullQuery,
-            ISelectUserReceiver | null
-        >(new FindUserReceiverByRefIdAndTargetIdOrNullQuery(userId, receiver.id));
+        {
+            const userReceiver = await this.queryBus.execute<
+                FindUserReceiverByRefIdAndTargetIdOrNullQuery,
+                ISelectUserReceiver | null
+            >(new FindUserReceiverByRefIdAndTargetIdOrNullQuery(userId, receiver.id));
 
-        if (!userReceiver) {
-            await this.commandBus.execute<CreateUserReceiverCommand, ISelectUserReceiver>(
-                new CreateUserReceiverCommand({
-                    userId,
-                    receiverId: receiver.id,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
-            return IdEntity.create(receiver.id);
+            if (!userReceiver) {
+                await this.commandBus.execute<CreateUserReceiverCommand, ISelectUserReceiver>(
+                    new CreateUserReceiverCommand({
+                        userId,
+                        receiverId: receiver.id,
+                        createdAt: getCurrentUTCTimestamp(),
+                    }),
+                );
+                return IdEntity.create(receiver.id);
+            }
+
+            throw new BadRequestException('You already have the receiver');
         }
-
-        throw new BadRequestException('You already have the receiver');
     }
 }
