@@ -70,7 +70,8 @@
         "postinstall": "prettier --write pnpm-lock.yaml",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
-        "db:push": "drizzle-kit push --force"
+        "db:push": "drizzle-kit push --force",
+        "knip": "knip"
     },
     "dependencies": {
         "@humanwhocodes/env": "^4.0.1",
