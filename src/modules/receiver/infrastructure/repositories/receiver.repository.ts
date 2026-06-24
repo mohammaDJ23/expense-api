@@ -6,6 +6,7 @@ import {
     toEntities,
     toEntityOrNull,
     toEntityOrThrow,
+    toIsExistsByCount,
 } from '@/infrastructure/database/drizzle/drizzle.transformer';
 import {
     receivers,
@@ -45,6 +46,10 @@ export class ReceiverRepository implements IReceiverRepository {
                 .execute(),
             'Unable to find',
         );
+    }
+
+    isExistsById(id: string): Promise<boolean> {
+        return toIsExistsByCount(this.drizzleRepository.db.$count(receivers, eq(receivers.id, id)));
     }
 
     findManyByIds(ids: string[]): Promise<ISelectReceiver[]> {

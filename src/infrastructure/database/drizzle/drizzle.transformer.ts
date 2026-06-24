@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
 
 export async function toEntityOrNull<T>(query: Promise<T[]>): Promise<T | null> {
     const result = await query;
@@ -33,7 +33,10 @@ export async function isExists<T>(query: Promise<T[]>): Promise<boolean> {
     return result.length > 0;
 }
 
-export async function toCount<T>(query: Promise<T[]>): Promise<number> {
-    const result = await query;
-    return result.length;
+export async function toIsExistsByCount(query: Promise<number>, expectCount = 1): Promise<boolean> {
+    const count = await query;
+    if (typeof count !== 'number') {
+        throw new InternalServerErrorException('Query result is not a number');
+    }
+    return count === expectCount;
 }

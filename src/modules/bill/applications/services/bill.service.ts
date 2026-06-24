@@ -4,6 +4,7 @@ import { CreateBillService } from './createBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from './findBillListByUserId.service';
 
+import type { IdEntity } from '@/core/entities/id.entity';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
@@ -16,7 +17,7 @@ export class BillService {
         private readonly findBillListByUserIdService: FindBillListByUserIdService,
     ) {}
 
-    create(data: CreateBillRequestDto, userId: string): Promise<boolean> {
+    create(data: CreateBillRequestDto, userId: string): Promise<IdEntity> {
         return this.createBillService.execute(data, userId);
     }
 
