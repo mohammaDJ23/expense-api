@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpStatus,
+    Param,
+    Post,
+    Put,
+    Query,
+    UseGuards,
+} from '@nestjs/common';
 
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
@@ -10,11 +20,13 @@ import { BillResponseDto } from '@/modules/bill/interface/dtos/bill.response.dto
 import { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import { FindBillRequestDto } from '@/modules/bill/interface/dtos/findBill.request.dto';
 import { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
+import { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
 
 import {
     SUCCESS_CREATE_BILL_MESSAGE,
     SUCCESS_GET_BILL_MESSAGE,
     SUCCESS_GET_MANY_MESSAGE,
+    SUCCESS_UPDATE_BILL_MESSAGE,
 } from './controllers.constants';
 
 import type { IdEntity } from '@/core/entities/id.entity';
@@ -34,6 +46,17 @@ export class BillController {
         @CurrentUser() user: ICurrentUser,
     ): Promise<IdEntity> {
         return this.billService.create(body, user.id);
+    }
+
+    @Put()
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(IdResponseDto)
+    @HttpResponse(SUCCESS_UPDATE_BILL_MESSAGE, HttpStatus.OK)
+    update(
+        @Body() body: UpdateBillRequestDto,
+        @CurrentUser() user: ICurrentUser,
+    ): Promise<IdEntity> {
+        return this.billService.update(body, user.id);
     }
 
     @Get()
