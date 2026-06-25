@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { isEmpty } from '@/common/utils/isEmpty.util';
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { FindBillListByUserIdQuery } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.query';
 import { FindBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findBillConsumerTargetsByRefIds/findBillConsumerTargetsByRefIds.query';
 import { FindManyLocationsByIdsQuery } from '@/modules/location/applications/queries/findManyLocationsByIds/findManyLocationsByIds.query';
@@ -19,9 +21,11 @@ export class FindBillListByUserIdService implements IServiceHandler {
     constructor(private readonly queryBus: QueryBus) {}
 
     async execute(userId: string, options: FindBillListRequestDto): Promise<IBill[]> {
-        const bills = await this.findBillEntities(userId, options);
+        const bills = await this.queryBus.execute<FindBillListByUserIdQuery, ISelectBill[]>(
+            new FindBillListByUserIdQuery(userId, options.offset, options.limit),
+        );
 
-        if (bills.length <= 0) {
+        if (isEmpty(bills)) {
             return [];
         }
 
@@ -35,12 +39,27 @@ export class FindBillListByUserIdService implements IServiceHandler {
                 receiverIds.push(bill.receiverId);
             });
 
+            if (isEmpty(billIds) || isEmpty(locationIds) || isEmpty(receiverIds)) {
+                throw new ProcessFailedInternalServerErrorException();
+            }
+
             {
                 const [locations, receivers, consumers] = await Promise.all([
-                    this.findManyLocationsByIds(locationIds),
-                    this.findManyReceiversByIds(receiverIds),
-                    this.findBillConsumerTargetsByRefIds(billIds),
+                    this.queryBus.execute<FindManyLocationsByIdsQuery, ISelectLocation[]>(
+                        new FindManyLocationsByIdsQuery(locationIds),
+                    ),
+                    this.queryBus.execute<FindManyReceiversByIdsQuery, ISelectReceiver[]>(
+                        new FindManyReceiversByIdsQuery(receiverIds),
+                    ),
+                    this.queryBus.execute<
+                        FindBillConsumerTargetsByRefIdsQuery,
+                        ITargetBillConsumer[]
+                    >(new FindBillConsumerTargetsByRefIdsQuery(billIds)),
                 ]);
+
+                if (isEmpty(locations) || isEmpty(receivers) || isEmpty(consumers)) {
+                    throw new ProcessFailedInternalServerErrorException();
+                }
 
                 return bills.map((bill) => ({
                     ...bill,
@@ -50,32 +69,5 @@ export class FindBillListByUserIdService implements IServiceHandler {
                 }));
             }
         }
-    }
-
-    private findManyLocationsByIds(locationIds: string[]): Promise<ISelectLocation[]> {
-        return this.queryBus.execute<FindManyLocationsByIdsQuery, ISelectLocation[]>(
-            new FindManyLocationsByIdsQuery(locationIds),
-        );
-    }
-
-    private findManyReceiversByIds(receiverIds: string[]): Promise<ISelectReceiver[]> {
-        return this.queryBus.execute<FindManyReceiversByIdsQuery, ISelectReceiver[]>(
-            new FindManyReceiversByIdsQuery(receiverIds),
-        );
-    }
-
-    private findBillConsumerTargetsByRefIds(billIds: string[]): Promise<ITargetBillConsumer[]> {
-        return this.queryBus.execute<FindBillConsumerTargetsByRefIdsQuery, ITargetBillConsumer[]>(
-            new FindBillConsumerTargetsByRefIdsQuery(billIds),
-        );
-    }
-
-    private findBillEntities(
-        userId: string,
-        options: FindBillListRequestDto,
-    ): Promise<ISelectBill[]> {
-        return this.queryBus.execute<FindBillListByUserIdQuery, ISelectBill[]>(
-            new FindBillListByUserIdQuery(userId, options.offset, options.limit),
-        );
     }
 }
