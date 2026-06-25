@@ -14,8 +14,8 @@ import { LocationResponseDto } from '@/modules/location/interfaces/dtos/location
 
 import {
     SUCCESS_CREATE_LOCATION_MESSAGE,
-    SUCCESS_GET_LOCATIONS_MESSAGE,
-    SUCCESS_GET_LOCATION_MESSAGE,
+    SUCCESS_FIND_LOCATIONS_MESSAGE,
+    SUCCESS_FIND_LOCATION_MESSAGE,
 } from './controllers.constants';
 
 import type { IdEntity } from '@/core/entities/id.entity';
@@ -43,7 +43,7 @@ export class LocationController {
     @Get()
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(LocationResponseDto)
-    @HttpResponse(SUCCESS_GET_LOCATIONS_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_FIND_LOCATIONS_MESSAGE, HttpStatus.OK)
     findList(
         @Query() query: FindUserLocationTargetsRequestDto,
         @CurrentUser() user: ICurrentUser,
@@ -54,7 +54,7 @@ export class LocationController {
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(LocationResponseDto)
-    @HttpResponse(SUCCESS_GET_LOCATION_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_FIND_LOCATION_MESSAGE, HttpStatus.OK)
     findByRefIdAndTargetId(
         @Param() param: FindUserLocationTargetRequestDto,
         @CurrentUser() user: ICurrentUser,

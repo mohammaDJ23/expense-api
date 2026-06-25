@@ -14,8 +14,8 @@ import { ReceiverResponseDto } from '@/modules/receiver/interfaces/dtos/receiver
 
 import {
     SUCCESS_CREATE_RECEIVER_MESSAGE,
-    SUCCESS_GET_RECEIVER_MESSAGE,
-    SUCCESS_GET_RECEIVERS_MESSAGE,
+    SUCCESS_FIND_RECEIVER_MESSAGE,
+    SUCCESS_FIND_RECEIVERS_MESSAGE,
 } from './controllers.constants';
 
 import type { IdEntity } from '@/core/entities/id.entity';
@@ -43,7 +43,7 @@ export class ReceiverController {
     @Get()
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(ReceiverResponseDto)
-    @HttpResponse(SUCCESS_GET_RECEIVERS_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_FIND_RECEIVERS_MESSAGE, HttpStatus.OK)
     findList(
         @Query() query: FindUserReceiverTargetsRequestDto,
         @CurrentUser() user: ICurrentUser,
@@ -54,7 +54,7 @@ export class ReceiverController {
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(ReceiverResponseDto)
-    @HttpResponse(SUCCESS_GET_RECEIVER_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_FIND_RECEIVER_MESSAGE, HttpStatus.OK)
     findByRefIdAndTargetId(
         @Param() param: FindUserReceiverTargetRequestDto,
         @CurrentUser() user: ICurrentUser,
