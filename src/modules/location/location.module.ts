@@ -9,6 +9,7 @@ import { FindManyLocationsByIdsHandler } from '@/modules/location/applications/q
 import { FindUserLocationByRefIdAndTargetIdOrNullHandler } from '@/modules/location/applications/queries/findUserLocationByRefIdAndTargetIdOrNull/findUserLocationByRefIdAndTargetIdOrNull.handler';
 import { FindUserLocationTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/location/applications/queries/findUserLocationTargetByRefIdAndTargetIdOrThrow/findUserLocationTargetByRefIdAndTargetIdOrThrow.handler';
 import { FindUserLocationTargetsByRefIdHandler } from '@/modules/location/applications/queries/findUserLocationTargetsByRefId/findUserLocationTargetsByRefId.handler';
+import { IsUserLocationExistsByRefIdAndTargetIdHandler } from '@/modules/location/applications/queries/isUserLocationExistsByRefIdAndTargetId/isUserLocationExistsByRefIdAndTargetId.handler';
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
 import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
@@ -28,6 +29,7 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
         FindLocationByNameOrNullHandler,
         FindUserLocationByRefIdAndTargetIdOrNullHandler,
         FindUserLocationTargetByRefIdAndTargetIdOrThrowHandler,
+        IsUserLocationExistsByRefIdAndTargetIdHandler,
         FindLocationByIdOrThrowHandler,
         FindManyLocationsByIdsHandler,
         FindUserLocationTargetsByRefIdHandler,
