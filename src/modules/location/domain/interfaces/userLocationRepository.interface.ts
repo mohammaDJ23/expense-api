@@ -3,6 +3,7 @@ import type { ICreateRepository } from '@/core/interfaces/repositories/createRep
 import type { IFindByRefIdAndTargetIdOrNullRepository } from '@/core/interfaces/repositories/findByRefIdAndTargetIdOrNullRepository.interface';
 import type { IFindTargetByRefIdAndTargetIdOrThrowRepository } from '@/core/interfaces/repositories/findTargetByRefIdAndTargetIdOrThrowRepository.interface';
 import type { IFindTargetsByRefIdRepository } from '@/core/interfaces/repositories/findTargetsByRefIdRepository.interface';
+import type { IIsExistsByRefIdAndTargetIdRepository } from '@/core/interfaces/repositories/isExistsByRefIdAndTargetIdRepository.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type {
     IInsertUserLocation,
@@ -14,4 +15,5 @@ export interface IUserLocationRepository
         ICreateRepository<IInsertUserLocation, ISelectUserLocation>,
         IFindByRefIdAndTargetIdOrNullRepository<ISelectUserLocation>,
         IFindTargetsByRefIdRepository<ISelectLocation, IList>,
-        IFindTargetByRefIdAndTargetIdOrThrowRepository<ISelectLocation> {}
+        IFindTargetByRefIdAndTargetIdOrThrowRepository<ISelectLocation>,
+        IIsExistsByRefIdAndTargetIdRepository {}
