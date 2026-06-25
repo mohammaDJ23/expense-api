@@ -3,6 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
+import { isEmpty } from '@/common/utils/isEmpty.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UpdateBillCommand } from '@/modules/bill/applications/commands/updateBill/updateBill.command';
@@ -63,7 +64,7 @@ export class UpdateBillService implements IServiceHandler {
                 ISelectBillConsumer[]
             >(new FindManyBillsConsumersByRefIdQuery(data.id));
 
-            if (billsConsumers.length <= 0) {
+            if (isEmpty(billsConsumers)) {
                 throw new ProcessFailedInternalServerErrorException();
             }
 
