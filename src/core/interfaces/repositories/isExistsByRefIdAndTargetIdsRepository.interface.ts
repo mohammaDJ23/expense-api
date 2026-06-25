@@ -1,3 +1,3 @@
 export interface IIsExistsByRefIdAndTargetIdsRepository {
-    isExistsByRefIdAndTargetId(refId: string, targetIds: string[]): Promise<boolean>;
+    isExistsByRefIdAndTargetIds(refId: string, targetIds: string[]): Promise<boolean>;
 }
