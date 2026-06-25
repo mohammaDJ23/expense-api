@@ -5,7 +5,6 @@ import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.rep
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
-import { toIsExistsByCount } from '@/infrastructure/database/drizzle/transformers/toIsExistsByCount.transformer';
 import {
     receivers,
     type IInsertReceiver,
@@ -44,10 +43,6 @@ export class ReceiverRepository implements IReceiverRepository {
                 .execute(),
             'Unable to find',
         );
-    }
-
-    isExistsById(id: string): Promise<boolean> {
-        return toIsExistsByCount(this.drizzleRepository.db.$count(receivers, eq(receivers.id, id)));
     }
 
     findManyByIds(ids: string[]): Promise<ISelectReceiver[]> {

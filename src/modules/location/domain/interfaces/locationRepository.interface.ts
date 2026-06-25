@@ -2,7 +2,6 @@ import type { ICreateRepository } from '@/core/interfaces/repositories/createRep
 import type { IFindByIdOrThrowRepository } from '@/core/interfaces/repositories/findByIdOrThrowRepository.interface';
 import type { IFindByNameOrNullRepository } from '@/core/interfaces/repositories/findByNameOrNullRepository.interface';
 import type { IFindManyByIdsRepository } from '@/core/interfaces/repositories/findManyByIdsRepository.interface';
-import type { IIsExistsByIdRepository } from '@/core/interfaces/repositories/IsExistsByIdRepository.interface';
 import type {
     IInsertLocation,
     ISelectLocation,
@@ -13,5 +12,4 @@ export interface ILocationRepository
         ICreateRepository<IInsertLocation, ISelectLocation>,
         IFindByNameOrNullRepository<ISelectLocation>,
         IFindByIdOrThrowRepository<ISelectLocation>,
-        IFindManyByIdsRepository<ISelectLocation>,
-        IIsExistsByIdRepository {}
+        IFindManyByIdsRepository<ISelectLocation> {}
