@@ -10,9 +10,9 @@ import { IsBillExistsByUserIdAndIdQuery } from '@/modules/bill/applications/quer
 import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
 import { DeleteManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.command';
 import { FindManyBillsConsumersByRefIdQuery } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.query';
-import { IsConsumerExistsByIdsQuery } from '@/modules/consumer/applications/queries/isConsumerExistsByIds/isConsumerExistsByIds.query';
-import { IsLocationExistsByIdQuery } from '@/modules/location/applications/queries/isLocationExistsById/isLocationExistsById.query';
-import { IsReceiverExistsByIdQuery } from '@/modules/receiver/applications/queries/isReceiverExistsById/isReceiverExistsById.query';
+import { IsUserConsumerExistsByRefIdAndTargetIdsQuery } from '@/modules/consumer/applications/queries/isUserConsumerExistsByRefIdAndTargetIds/isUserConsumerExistsByRefIdAndTargetIds.query';
+import { IsUserLocationExistsByRefIdAndTargetIdQuery } from '@/modules/location/applications/queries/isUserLocationExistsByRefIdAndTargetId/isUserLocationExistsByRefIdAndTargetId.query';
+import { IsUserReceiverExistsByRefIdAndTargetIdQuery } from '@/modules/receiver/applications/queries/isUserReceiverExistsByRefIdAndTargetId/isUserReceiverExistsByRefIdAndTargetId.query';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
@@ -39,19 +39,20 @@ export class UpdateBillService implements IServiceHandler {
         }
 
         {
-            const [isReceiverExists, isLocationExists, isConsumersExists] = await Promise.all([
-                this.queryBus.execute<IsReceiverExistsByIdQuery, boolean>(
-                    new IsReceiverExistsByIdQuery(data.receiverId),
-                ),
-                this.queryBus.execute<IsLocationExistsByIdQuery, boolean>(
-                    new IsLocationExistsByIdQuery(data.locationId),
-                ),
-                this.queryBus.execute<IsConsumerExistsByIdsQuery, boolean>(
-                    new IsConsumerExistsByIdsQuery(data.consumerIds),
-                ),
-            ]);
+            const [isUserReceiverExists, isUserLocationExists, isUserConsumerExists] =
+                await Promise.all([
+                    this.queryBus.execute<IsUserReceiverExistsByRefIdAndTargetIdQuery, boolean>(
+                        new IsUserReceiverExistsByRefIdAndTargetIdQuery(userId, data.receiverId),
+                    ),
+                    this.queryBus.execute<IsUserLocationExistsByRefIdAndTargetIdQuery, boolean>(
+                        new IsUserLocationExistsByRefIdAndTargetIdQuery(userId, data.locationId),
+                    ),
+                    this.queryBus.execute<IsUserConsumerExistsByRefIdAndTargetIdsQuery, boolean>(
+                        new IsUserConsumerExistsByRefIdAndTargetIdsQuery(userId, data.consumerIds),
+                    ),
+                ]);
 
-            if (!isReceiverExists || !isLocationExists || !isConsumersExists) {
+            if (!isUserReceiverExists || !isUserLocationExists || !isUserConsumerExists) {
                 throw new BadRequestException();
             }
         }
