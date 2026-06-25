@@ -6,8 +6,8 @@ import { CreateConsumerHandler } from '@/modules/consumer/applications/commands/
 import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.handler';
 import { CreateUserConsumerHandler } from '@/modules/consumer/applications/commands/createUserConsumer/createUserConsumer.handler';
 import { DeleteManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.handler';
-import { FindBillConsumerTargetsByRefIdsHandler } from '@/modules/consumer/applications/queries/findBillConsumerTargetsByRefIds/findBillConsumerTargetsByRefIds.handler';
 import { FindConsumerByNameOrNullHandler } from '@/modules/consumer/applications/queries/findConsumerByNameOrNull/findConsumerByNameOrNull.handler';
+import { FindManyBillConsumerTargetsByRefIdsHandler } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.handler';
 import { FindManyBillsConsumersByRefIdHandler } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.handler';
 import { FindUserConsumerByRefIdAndTargetIdOrNullHandler } from '@/modules/consumer/applications/queries/findUserConsumerByRefIdAndTargetIdOrNull/findUserConsumerByRefIdAndTargetIdOrNull.handler';
 import { FindUserConsumerTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/consumer/applications/queries/findUserConsumerTargetByRefIdAndTargetIdOrThrow/findUserConsumerTargetByRefIdAndTargetIdOrThrow.handler';
@@ -32,7 +32,7 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         DeleteManyBillsConsumersHandler,
         CreateConsumerHandler,
         CreateManyBillsConsumersHandler,
-        FindBillConsumerTargetsByRefIdsHandler,
+        FindManyBillConsumerTargetsByRefIdsHandler,
         FindUserConsumerByRefIdAndTargetIdOrNullHandler,
         FindUserConsumerTargetByRefIdAndTargetIdOrThrowHandler,
         IsUserConsumerExistsByRefIdAndTargetIdsHandler,

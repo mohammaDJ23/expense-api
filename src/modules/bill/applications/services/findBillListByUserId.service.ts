@@ -4,7 +4,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { isEmpty } from '@/common/utils/isEmpty.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { FindBillListByUserIdQuery } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.query';
-import { FindBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findBillConsumerTargetsByRefIds/findBillConsumerTargetsByRefIds.query';
+import { FindManyBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.query';
 import { FindManyLocationsByIdsQuery } from '@/modules/location/applications/queries/findManyLocationsByIds/findManyLocationsByIds.query';
 import { FindManyReceiversByIdsQuery } from '@/modules/receiver/applications/queries/findManyReceiversByIds/findManyReceiversByIds.query';
 
@@ -52,9 +52,9 @@ export class FindBillListByUserIdService implements IServiceHandler {
                         new FindManyReceiversByIdsQuery(receiverIds),
                     ),
                     this.queryBus.execute<
-                        FindBillConsumerTargetsByRefIdsQuery,
+                        FindManyBillConsumerTargetsByRefIdsQuery,
                         ITargetBillConsumer[]
-                    >(new FindBillConsumerTargetsByRefIdsQuery(billIds)),
+                    >(new FindManyBillConsumerTargetsByRefIdsQuery(billIds)),
                 ]);
 
                 if (isEmpty(locations) || isEmpty(receivers) || isEmpty(consumers)) {

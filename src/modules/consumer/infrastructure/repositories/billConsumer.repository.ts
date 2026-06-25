@@ -51,7 +51,7 @@ export class BillConsumerRepository implements IBillConsumerRepository {
         );
     }
 
-    findTargetsByRefIds(refIds: string[]): Promise<ITargetBillConsumer[]> {
+    findManyTargetsByRefIds(refIds: string[]): Promise<ITargetBillConsumer[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select({

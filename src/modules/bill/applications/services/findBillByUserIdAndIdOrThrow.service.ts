@@ -4,7 +4,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { isEmpty } from '@/common/utils/isEmpty.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { FindBillByUserIdAndIdOrThrowQuery } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.query';
-import { FindBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findBillConsumerTargetsByRefIds/findBillConsumerTargetsByRefIds.query';
+import { FindManyBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.query';
 import { FindLocationByIdOrThrowQuery } from '@/modules/location/applications/queries/findLocationByIdOrThrow/findLocationByIdOrThrow.query';
 import { FindReceiverByIdOrThrowQuery } from '@/modules/receiver/applications/queries/findReceiverByIdOrThrow/findReceiverByIdOrThrow.query';
 
@@ -31,8 +31,8 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
             this.queryBus.execute<FindLocationByIdOrThrowQuery, ISelectLocation>(
                 new FindLocationByIdOrThrowQuery(bill.locationId),
             ),
-            this.queryBus.execute<FindBillConsumerTargetsByRefIdsQuery, ITargetBillConsumer[]>(
-                new FindBillConsumerTargetsByRefIdsQuery([billId]),
+            this.queryBus.execute<FindManyBillConsumerTargetsByRefIdsQuery, ITargetBillConsumer[]>(
+                new FindManyBillConsumerTargetsByRefIdsQuery([billId]),
             ),
         ]);
 
