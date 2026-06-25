@@ -3,17 +3,17 @@ import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UserConsumerRepository } from '@/modules/consumer/infrastructure/repositories/userConsumer.repository';
 
-import { IsUserConsumerExistsByRefIdAndTargetIdQuery } from './isUserConsumerExistsByRefIdAndTargetId.query';
+import { IsUserConsumerExistsByRefIdAndTargetIdsQuery } from './isUserConsumerExistsByRefIdAndTargetIds.query';
 
-@QueryHandler(IsUserConsumerExistsByRefIdAndTargetIdQuery)
-export class IsUserConsumerExistsByRefIdAndTargetIdHandler implements IQueryHandler<IsUserConsumerExistsByRefIdAndTargetIdQuery> {
+@QueryHandler(IsUserConsumerExistsByRefIdAndTargetIdsQuery)
+export class IsUserConsumerExistsByRefIdAndTargetIdsHandler implements IQueryHandler<IsUserConsumerExistsByRefIdAndTargetIdsQuery> {
     constructor(private readonly userConsumerRepository: UserConsumerRepository) {}
 
-    async execute(query: IsUserConsumerExistsByRefIdAndTargetIdQuery): Promise<boolean> {
+    async execute(query: IsUserConsumerExistsByRefIdAndTargetIdsQuery): Promise<boolean> {
         try {
-            return await this.userConsumerRepository.isExistsByRefIdAndTargetId(
+            return await this.userConsumerRepository.isExistsByRefIdAndTargetIds(
                 query.userId,
-                query.consumerId,
+                query.consumerIds,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
