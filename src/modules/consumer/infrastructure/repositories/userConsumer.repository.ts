@@ -5,6 +5,7 @@ import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.rep
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
+import { toIsExistsByCount } from '@/infrastructure/database/drizzle/transformers/toIsExistsByCount.transformer';
 import {
     consumers,
     type ISelectConsumer,
@@ -41,6 +42,15 @@ export class UserConsumerRepository implements IUserConsumerRepository {
                     and(eq(usersConsumers.userId, refId), eq(usersConsumers.consumerId, targetId)),
                 )
                 .execute(),
+        );
+    }
+
+    isExistsByRefIdAndTargetId(refId: string, targetId: string): Promise<boolean> {
+        return toIsExistsByCount(
+            this.drizzleRepository.db.$count(
+                usersConsumers,
+                and(eq(usersConsumers.userId, refId), eq(usersConsumers.consumerId, targetId)),
+            ),
         );
     }
 
