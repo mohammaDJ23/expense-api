@@ -5,6 +5,7 @@ import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.rep
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
+import { toIsExistsByCount } from '@/infrastructure/database/drizzle/transformers/toIsExistsByCount.transformer';
 import {
     receivers,
     type ISelectReceiver,
@@ -41,6 +42,15 @@ export class UserReceiverRepository implements IUserReceiverRepository {
                     and(eq(usersReceivers.userId, refId), eq(usersReceivers.receiverId, targetId)),
                 )
                 .execute(),
+        );
+    }
+
+    isExistsByRefIdAndTargetId(refId: string, targetId: string): Promise<boolean> {
+        return toIsExistsByCount(
+            this.drizzleRepository.db.$count(
+                usersReceivers,
+                and(eq(usersReceivers.userId, refId), eq(usersReceivers.receiverId, targetId)),
+            ),
         );
     }
 

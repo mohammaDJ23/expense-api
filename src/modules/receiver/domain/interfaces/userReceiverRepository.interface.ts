@@ -3,6 +3,7 @@ import type { ICreateRepository } from '@/core/interfaces/repositories/createRep
 import type { IFindByRefIdAndTargetIdOrNullRepository } from '@/core/interfaces/repositories/findByRefIdAndTargetIdOrNullRepository.interface';
 import type { IFindTargetByRefIdAndTargetIdOrThrowRepository } from '@/core/interfaces/repositories/findTargetByRefIdAndTargetIdOrThrowRepository.interface';
 import type { IFindTargetsByRefIdRepository } from '@/core/interfaces/repositories/findTargetsByRefIdRepository.interface';
+import type { IIsExistsByRefIdAndTargetIdRepository } from '@/core/interfaces/repositories/isExistsByRefIdAndTargetIdRepository.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type {
     IInsertUserReceiver,
@@ -14,4 +15,5 @@ export interface IUserReceiverRepository
         ICreateRepository<IInsertUserReceiver, ISelectUserReceiver>,
         IFindByRefIdAndTargetIdOrNullRepository<ISelectUserReceiver>,
         IFindTargetsByRefIdRepository<ISelectReceiver, IList>,
-        IFindTargetByRefIdAndTargetIdOrThrowRepository<ISelectReceiver> {}
+        IFindTargetByRefIdAndTargetIdOrThrowRepository<ISelectReceiver>,
+        IIsExistsByRefIdAndTargetIdRepository {}

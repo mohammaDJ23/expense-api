@@ -10,6 +10,7 @@ import { FindReceiverByNameOrNullHandler } from '@/modules/receiver/applications
 import { FindUserReceiverByRefIdAndTargetIdOrNullHandler } from '@/modules/receiver/applications/queries/findUserReceiverByRefIdAndTargetIdOrNull/findUserReceiverByRefIdAndTargetIdOrNull.handler';
 import { FindUserReceiverTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/receiver/applications/queries/findUserReceiverTargetByRefIdAndTargetIdOrThrow/findUserReceiverTargetByRefIdAndTargetIdOrThrow.handler';
 import { FindUserReceiverTargetsByRefIdHandler } from '@/modules/receiver/applications/queries/findUserReceiverTargetsByRefId/findUserReceiverTargetsByRefId.handler';
+import { IsUserReceiverExistsByRefIdAndTargetIdHandler } from '@/modules/receiver/applications/queries/isUserReceiverExistsByRefIdAndTargetId/isUserReceiverExistsByRefIdAndTargetId.handler';
 import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
 import { UserReceiverService } from '@/modules/receiver/applications/services/userReceiver.service';
@@ -29,6 +30,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         FindReceiverByNameOrNullHandler,
         FindUserReceiverByRefIdAndTargetIdOrNullHandler,
         FindUserReceiverTargetByRefIdAndTargetIdOrThrowHandler,
+        IsUserReceiverExistsByRefIdAndTargetIdHandler,
         FindReceiverByIdOrThrowHandler,
         FindManyReceiversByIdsHandler,
         FindUserReceiverTargetsByRefIdHandler,
