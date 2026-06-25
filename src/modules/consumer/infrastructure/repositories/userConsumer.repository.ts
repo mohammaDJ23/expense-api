@@ -77,7 +77,7 @@ export class UserConsumerRepository implements IUserConsumerRepository {
         );
     }
 
-    findTargetsByRefId(refId: string, options: IList): Promise<ISelectConsumer[]> {
+    findTargetListByRefId(refId: string, options: IList): Promise<ISelectConsumer[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select({

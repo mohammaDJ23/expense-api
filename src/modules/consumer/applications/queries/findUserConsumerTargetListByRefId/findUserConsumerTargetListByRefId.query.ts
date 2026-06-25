@@ -1,4 +1,4 @@
-export class FindUserLocationTargetsByRefIdQuery {
+export class FindUserConsumerTargetListByRefIdQuery {
     constructor(
         public readonly userId: string,
         public readonly offset = 0,

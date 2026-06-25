@@ -73,7 +73,7 @@ export class UserReceiverRepository implements IUserReceiverRepository {
         );
     }
 
-    findTargetsByRefId(refId: string, options: IList): Promise<ISelectReceiver[]> {
+    findTargetListByRefId(refId: string, options: IList): Promise<ISelectReceiver[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select({

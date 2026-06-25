@@ -11,7 +11,7 @@ import { FindConsumerByNameOrNullHandler } from '@/modules/consumer/applications
 import { FindManyBillsConsumersByRefIdHandler } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.handler';
 import { FindUserConsumerByRefIdAndTargetIdOrNullHandler } from '@/modules/consumer/applications/queries/findUserConsumerByRefIdAndTargetIdOrNull/findUserConsumerByRefIdAndTargetIdOrNull.handler';
 import { FindUserConsumerTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/consumer/applications/queries/findUserConsumerTargetByRefIdAndTargetIdOrThrow/findUserConsumerTargetByRefIdAndTargetIdOrThrow.handler';
-import { FindUserConsumerTargetsByRefIdHandler } from '@/modules/consumer/applications/queries/findUserConsumerTargetsByRefId/findUserConsumerTargetsByRefId.handler';
+import { FindUserConsumerTargetListByRefIdHandler } from '@/modules/consumer/applications/queries/findUserConsumerTargetListByRefId/findUserConsumerTargetListByRefId.handler';
 import { IsUserConsumerExistsByRefIdAndTargetIdsHandler } from '@/modules/consumer/applications/queries/isUserConsumerExistsByRefIdAndTargetIds/isUserConsumerExistsByRefIdAndTargetIds.handler';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { CreateConsumerService } from '@/modules/consumer/applications/services/createConsumer.service';
@@ -37,7 +37,7 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         FindUserConsumerTargetByRefIdAndTargetIdOrThrowHandler,
         IsUserConsumerExistsByRefIdAndTargetIdsHandler,
         FindManyBillsConsumersByRefIdHandler,
-        FindUserConsumerTargetsByRefIdHandler,
+        FindUserConsumerTargetListByRefIdHandler,
         FindConsumerByNameOrNullHandler,
         ConsumerRepository,
         UserConsumerRepository,

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { FindUserReceiverTargetByRefIdAndTargetIdOrThrowQuery } from '@/modules/receiver/applications/queries/findUserReceiverTargetByRefIdAndTargetIdOrThrow/findUserReceiverTargetByRefIdAndTargetIdOrThrow.query';
-import { FindUserReceiverTargetsByRefIdQuery } from '@/modules/receiver/applications/queries/findUserReceiverTargetsByRefId/findUserReceiverTargetsByRefId.query';
+import { FindUserReceiverTargetListByRefIdQuery } from '@/modules/receiver/applications/queries/findUserReceiverTargetListByRefId/findUserReceiverTargetListByRefId.query';
 
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { FindUserReceiverTargetsRequestDto } from '@/modules/receiver/interfaces/dtos/findUserReceiverTargets.request.dto';
@@ -11,12 +11,12 @@ import type { FindUserReceiverTargetsRequestDto } from '@/modules/receiver/inter
 export class UserReceiverService {
     constructor(private readonly queryBus: QueryBus) {}
 
-    findTargetsByRefId(
+    findTargetListByRefId(
         userId: string,
         query: FindUserReceiverTargetsRequestDto,
     ): Promise<ISelectReceiver[]> {
-        return this.queryBus.execute<FindUserReceiverTargetsByRefIdQuery, ISelectReceiver[]>(
-            new FindUserReceiverTargetsByRefIdQuery(userId, query.offset, query.limit),
+        return this.queryBus.execute<FindUserReceiverTargetListByRefIdQuery, ISelectReceiver[]>(
+            new FindUserReceiverTargetListByRefIdQuery(userId, query.offset, query.limit),
         );
     }
 
