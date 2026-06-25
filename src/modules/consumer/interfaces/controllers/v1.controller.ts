@@ -14,8 +14,8 @@ import { FindUserConsumerTargetsRequestDto } from '@/modules/consumer/interfaces
 
 import {
     SUCCESS_CREATE_CONSUMER_MESSAGE,
-    SUCCESS_GET_CONSUMER_MESSAGE,
-    SUCCESS_GET_CONSUMERS_MESSAGE,
+    SUCCESS_FIND_CONSUMER_MESSAGE,
+    SUCCESS_FIND_CONSUMERS_MESSAGE,
 } from './controllers.constants';
 
 import type { IdEntity } from '@/core/entities/id.entity';
@@ -43,7 +43,7 @@ export class ConsumerController {
     @Get()
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(ConsumerResponseDto)
-    @HttpResponse(SUCCESS_GET_CONSUMERS_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_FIND_CONSUMERS_MESSAGE, HttpStatus.OK)
     findList(
         @Query() query: FindUserConsumerTargetsRequestDto,
         @CurrentUser() user: ICurrentUser,
@@ -54,7 +54,7 @@ export class ConsumerController {
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(ConsumerResponseDto)
-    @HttpResponse(SUCCESS_GET_CONSUMER_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_FIND_CONSUMER_MESSAGE, HttpStatus.OK)
     findByRefIdAndTargetId(
         @Param() param: FindUserConsumerTargetRequestDto,
         @CurrentUser() user: ICurrentUser,

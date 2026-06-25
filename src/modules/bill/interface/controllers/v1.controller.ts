@@ -24,8 +24,8 @@ import { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.r
 
 import {
     SUCCESS_CREATE_BILL_MESSAGE,
-    SUCCESS_GET_BILL_MESSAGE,
-    SUCCESS_GET_MANY_MESSAGE,
+    SUCCESS_FIND_BILL_MESSAGE,
+    SUCCESS_FIND_MANY_MESSAGE,
     SUCCESS_UPDATE_BILL_MESSAGE,
 } from './controllers.constants';
 
@@ -62,7 +62,7 @@ export class BillController {
     @Get()
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(BillResponseDto)
-    @HttpResponse(SUCCESS_GET_MANY_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_FIND_MANY_MESSAGE, HttpStatus.OK)
     findManyByUserId(
         @Query() query: FindBillListRequestDto,
         @CurrentUser() user: ICurrentUser,
@@ -73,7 +73,7 @@ export class BillController {
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(BillResponseDto)
-    @HttpResponse(SUCCESS_GET_BILL_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_FIND_BILL_MESSAGE, HttpStatus.OK)
     findByUserIdAndId(
         @Param() param: FindBillRequestDto,
         @CurrentUser() user: ICurrentUser,
