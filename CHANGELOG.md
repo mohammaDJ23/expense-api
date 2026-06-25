@@ -1,3 +1,17 @@
+## [3.9.2](https://github.com/mohammaDJ23/expense-api/compare/v3.9.1...v3.9.2) (2026-06-25)
+
+### ♻️ Code Refactoring
+
+- 054250 add output type ([935c6bd](https://github.com/mohammaDJ23/expense-api/commit/935c6bd56f12c511918662edee7e28ca72e72bd2))
+- 054250 add the local password and verified verification mailer ([ec6c148](https://github.com/mohammaDJ23/expense-api/commit/ec6c1485bf57bca9a23bdffd02cb2347fa45e9e3))
+- 054250 remove the methods and use logic direcly ([76e4ccd](https://github.com/mohammaDJ23/expense-api/commit/76e4ccd8f7dda1c1d9bdbd4222943ef2641b5662))
+- 054250 rename IFindManyTargetsByRefIdsRepository ([a2273ca](https://github.com/mohammaDJ23/expense-api/commit/a2273ca0f83cae74f139d4ef73851777363235c9))
+- 054250 rename the repo name ([1b9dbcf](https://github.com/mohammaDJ23/expense-api/commit/1b9dbcfb9dbdb8607f40dbaee687dec44050dc14))
+- 054250 update the respnoses message names ([5724f0c](https://github.com/mohammaDJ23/expense-api/commit/5724f0ce818b03fb26e15de7c999ff0e5c147cb2))
+- 054250 use generic type ([443c409](https://github.com/mohammaDJ23/expense-api/commit/443c409488fc908a2de30ef5c5befb30fcb20d3b))
+- 054250 use isEmpty ([5161982](https://github.com/mohammaDJ23/expense-api/commit/5161982a355674ffc1c45b6f449042542c1ec154))
+- 054250 use isNotEmpty ([5f7d1ec](https://github.com/mohammaDJ23/expense-api/commit/5f7d1ec42a1cf568389cfe551831bf84a42326df))
+
 ## [3.9.1](https://github.com/mohammaDJ23/expense-api/compare/v3.9.0...v3.9.1) (2026-06-25)
 
 ### 🐛 Bug Fixes
