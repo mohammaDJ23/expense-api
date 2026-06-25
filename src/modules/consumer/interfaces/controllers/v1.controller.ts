@@ -44,18 +44,18 @@ export class ConsumerController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(ConsumerResponseDto)
     @HttpResponse(SUCCESS_FIND_CONSUMERS_MESSAGE, HttpStatus.OK)
-    findList(
+    findTargetListByRefId(
         @Query() query: FindUserConsumerTargetsRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<ISelectConsumer[]> {
-        return this.userConsumerService.findTargetsByRefId(user.id, query);
+        return this.userConsumerService.findTargetListByRefId(user.id, query);
     }
 
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(ConsumerResponseDto)
     @HttpResponse(SUCCESS_FIND_CONSUMER_MESSAGE, HttpStatus.OK)
-    findByRefIdAndTargetId(
+    findTargetByRefIdAndTargetId(
         @Param() param: FindUserConsumerTargetRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<ISelectConsumer> {

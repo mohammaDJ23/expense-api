@@ -9,7 +9,7 @@ import { FindReceiverByIdOrThrowHandler } from '@/modules/receiver/applications/
 import { FindReceiverByNameOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByNameOrNull/findReceiverByNameOrNull.handler';
 import { FindUserReceiverByRefIdAndTargetIdOrNullHandler } from '@/modules/receiver/applications/queries/findUserReceiverByRefIdAndTargetIdOrNull/findUserReceiverByRefIdAndTargetIdOrNull.handler';
 import { FindUserReceiverTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/receiver/applications/queries/findUserReceiverTargetByRefIdAndTargetIdOrThrow/findUserReceiverTargetByRefIdAndTargetIdOrThrow.handler';
-import { FindUserReceiverTargetsByRefIdHandler } from '@/modules/receiver/applications/queries/findUserReceiverTargetsByRefId/findUserReceiverTargetsByRefId.handler';
+import { FindUserReceiverTargetListByRefIdHandler } from '@/modules/receiver/applications/queries/findUserReceiverTargetListByRefId/findUserReceiverTargetListByRefId.handler';
 import { IsUserReceiverExistsByRefIdAndTargetIdHandler } from '@/modules/receiver/applications/queries/isUserReceiverExistsByRefIdAndTargetId/isUserReceiverExistsByRefIdAndTargetId.handler';
 import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
@@ -33,7 +33,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         IsUserReceiverExistsByRefIdAndTargetIdHandler,
         FindReceiverByIdOrThrowHandler,
         FindManyReceiversByIdsHandler,
-        FindUserReceiverTargetsByRefIdHandler,
+        FindUserReceiverTargetListByRefIdHandler,
         ReceiverRepository,
         UserReceiverRepository,
     ],

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { FindUserLocationTargetByRefIdAndTargetIdOrThrowQuery } from '@/modules/location/applications/queries/findUserLocationTargetByRefIdAndTargetIdOrThrow/findUserLocationTargetByRefIdAndTargetIdOrThrow.query';
-import { FindUserLocationTargetsByRefIdQuery } from '@/modules/location/applications/queries/findUserLocationTargetsByRefId/findUserLocationTargetsByRefId.query';
+import { FindUserLocationTargetListByRefIdQuery } from '@/modules/location/applications/queries/findUserLocationTargetListByRefId/findUserLocationTargetListByRefId.query';
 
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { FindUserLocationTargetsRequestDto } from '@/modules/location/interfaces/dtos/findUserLocationTargets.request.dto';
@@ -11,12 +11,12 @@ import type { FindUserLocationTargetsRequestDto } from '@/modules/location/inter
 export class UserLocationService {
     constructor(private readonly queryBus: QueryBus) {}
 
-    findTargetsByRefId(
+    findTargetListByRefId(
         userId: string,
         query: FindUserLocationTargetsRequestDto,
     ): Promise<ISelectLocation[]> {
-        return this.queryBus.execute<FindUserLocationTargetsByRefIdQuery, ISelectLocation[]>(
-            new FindUserLocationTargetsByRefIdQuery(userId, query.offset, query.limit),
+        return this.queryBus.execute<FindUserLocationTargetListByRefIdQuery, ISelectLocation[]>(
+            new FindUserLocationTargetListByRefIdQuery(userId, query.offset, query.limit),
         );
     }
 

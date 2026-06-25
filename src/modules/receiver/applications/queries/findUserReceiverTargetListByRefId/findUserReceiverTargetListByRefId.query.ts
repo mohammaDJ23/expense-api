@@ -1,4 +1,4 @@
-export class FindUserConsumerTargetsByRefIdQuery {
+export class FindUserReceiverTargetListByRefIdQuery {
     constructor(
         public readonly userId: string,
         public readonly offset = 0,

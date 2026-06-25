@@ -44,18 +44,18 @@ export class LocationController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(LocationResponseDto)
     @HttpResponse(SUCCESS_FIND_LOCATIONS_MESSAGE, HttpStatus.OK)
-    findList(
+    findTargetListByRefId(
         @Query() query: FindUserLocationTargetsRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<ISelectLocation[]> {
-        return this.userLocationService.findTargetsByRefId(user.id, query);
+        return this.userLocationService.findTargetListByRefId(user.id, query);
     }
 
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(LocationResponseDto)
     @HttpResponse(SUCCESS_FIND_LOCATION_MESSAGE, HttpStatus.OK)
-    findByRefIdAndTargetId(
+    findTargetByRefIdAndTargetId(
         @Param() param: FindUserLocationTargetRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<ISelectLocation> {

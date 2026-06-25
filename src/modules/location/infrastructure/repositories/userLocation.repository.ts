@@ -73,7 +73,7 @@ export class UserLocationRepository implements IUserLocationRepository {
         );
     }
 
-    findTargetsByRefId(refId: string, options: IList): Promise<ISelectLocation[]> {
+    findTargetListByRefId(refId: string, options: IList): Promise<ISelectLocation[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select({

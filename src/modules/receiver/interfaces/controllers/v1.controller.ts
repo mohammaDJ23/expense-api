@@ -44,18 +44,18 @@ export class ReceiverController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(ReceiverResponseDto)
     @HttpResponse(SUCCESS_FIND_RECEIVERS_MESSAGE, HttpStatus.OK)
-    findList(
+    findTargetListByRefId(
         @Query() query: FindUserReceiverTargetsRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<ISelectReceiver[]> {
-        return this.userReceiverService.findTargetsByRefId(user.id, query);
+        return this.userReceiverService.findTargetListByRefId(user.id, query);
     }
 
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(ReceiverResponseDto)
     @HttpResponse(SUCCESS_FIND_RECEIVER_MESSAGE, HttpStatus.OK)
-    findByRefIdAndTargetId(
+    findTargetByRefIdAndTargetId(
         @Param() param: FindUserReceiverTargetRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<ISelectReceiver> {

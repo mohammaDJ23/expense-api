@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { FindUserConsumerTargetByRefIdAndTargetIdOrThrowQuery } from '@/modules/consumer/applications/queries/findUserConsumerTargetByRefIdAndTargetIdOrThrow/findUserConsumerTargetByRefIdAndTargetIdOrThrow.query';
-import { FindUserConsumerTargetsByRefIdQuery } from '@/modules/consumer/applications/queries/findUserConsumerTargetsByRefId/findUserConsumerTargetsByRefId.query';
+import { FindUserConsumerTargetListByRefIdQuery } from '@/modules/consumer/applications/queries/findUserConsumerTargetListByRefId/findUserConsumerTargetListByRefId.query';
 
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { FindUserConsumerTargetsRequestDto } from '@/modules/consumer/interfaces/dtos/findUserConsumerTargets.request.dto';
@@ -11,12 +11,12 @@ import type { FindUserConsumerTargetsRequestDto } from '@/modules/consumer/inter
 export class UserConsumerService {
     constructor(private readonly queryBus: QueryBus) {}
 
-    findTargetsByRefId(
+    findTargetListByRefId(
         userId: string,
         query: FindUserConsumerTargetsRequestDto,
     ): Promise<ISelectConsumer[]> {
-        return this.queryBus.execute<FindUserConsumerTargetsByRefIdQuery, ISelectConsumer[]>(
-            new FindUserConsumerTargetsByRefIdQuery(userId, query.offset, query.limit),
+        return this.queryBus.execute<FindUserConsumerTargetListByRefIdQuery, ISelectConsumer[]>(
+            new FindUserConsumerTargetListByRefIdQuery(userId, query.offset, query.limit),
         );
     }
 
