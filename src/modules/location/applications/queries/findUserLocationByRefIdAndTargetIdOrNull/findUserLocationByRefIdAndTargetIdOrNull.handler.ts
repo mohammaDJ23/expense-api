@@ -8,7 +8,10 @@ import { FindUserLocationByRefIdAndTargetIdOrNullQuery } from './findUserLocatio
 import type { ISelectUserLocation } from '@/modules/location/infrastructure/schemas/userLocation.schema';
 
 @QueryHandler(FindUserLocationByRefIdAndTargetIdOrNullQuery)
-export class FindUserLocationByRefIdAndTargetIdOrNullHandler implements IQueryHandler<FindUserLocationByRefIdAndTargetIdOrNullQuery> {
+export class FindUserLocationByRefIdAndTargetIdOrNullHandler implements IQueryHandler<
+    FindUserLocationByRefIdAndTargetIdOrNullQuery,
+    ISelectUserLocation | null
+> {
     constructor(private readonly userLocationRepository: UserLocationRepository) {}
 
     async execute(

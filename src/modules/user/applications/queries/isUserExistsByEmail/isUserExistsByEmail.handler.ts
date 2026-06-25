@@ -6,7 +6,10 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
 import { IsUserExistsByEmailQuery } from './isUserExistsByEmail.query';
 
 @QueryHandler(IsUserExistsByEmailQuery)
-export class IsUserExistsByEmailHandler implements IQueryHandler<IsUserExistsByEmailQuery> {
+export class IsUserExistsByEmailHandler implements IQueryHandler<
+    IsUserExistsByEmailQuery,
+    boolean
+> {
     constructor(private readonly userRepository: UserRepository) {}
 
     async execute(query: IsUserExistsByEmailQuery): Promise<boolean> {

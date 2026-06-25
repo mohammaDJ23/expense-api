@@ -9,7 +9,10 @@ import { CreateReceiverCommand } from './createReceiver.command';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @CommandHandler(CreateReceiverCommand)
-export class CreateReceiverHandler implements ICommandHandler<CreateReceiverCommand> {
+export class CreateReceiverHandler implements ICommandHandler<
+    CreateReceiverCommand,
+    ISelectReceiver
+> {
     constructor(private readonly receiverRepository: ReceiverRepository) {}
 
     async execute(command: CreateReceiverCommand): Promise<ISelectReceiver> {

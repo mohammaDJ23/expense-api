@@ -8,7 +8,10 @@ import { FindUserReceiverByRefIdAndTargetIdOrNullQuery } from './findUserReceive
 import type { ISelectUserReceiver } from '@/modules/receiver/infrastructure/schemas/userReceiver.schema';
 
 @QueryHandler(FindUserReceiverByRefIdAndTargetIdOrNullQuery)
-export class FindUserReceiverByRefIdAndTargetIdOrNullHandler implements IQueryHandler<FindUserReceiverByRefIdAndTargetIdOrNullQuery> {
+export class FindUserReceiverByRefIdAndTargetIdOrNullHandler implements IQueryHandler<
+    FindUserReceiverByRefIdAndTargetIdOrNullQuery,
+    ISelectUserReceiver | null
+> {
     constructor(private readonly userReceiverRepository: UserReceiverRepository) {}
 
     async execute(

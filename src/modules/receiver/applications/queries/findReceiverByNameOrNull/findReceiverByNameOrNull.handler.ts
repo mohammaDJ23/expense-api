@@ -8,7 +8,10 @@ import { FindReceiverByNameOrNullQuery } from './findReceiverByNameOrNull.query'
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @QueryHandler(FindReceiverByNameOrNullQuery)
-export class FindReceiverByNameOrNullHandler implements IQueryHandler<FindReceiverByNameOrNullQuery> {
+export class FindReceiverByNameOrNullHandler implements IQueryHandler<
+    FindReceiverByNameOrNullQuery,
+    ISelectReceiver | null
+> {
     constructor(private readonly receiverRepository: ReceiverRepository) {}
 
     async execute(query: FindReceiverByNameOrNullQuery): Promise<ISelectReceiver | null> {

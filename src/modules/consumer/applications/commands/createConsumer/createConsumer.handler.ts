@@ -9,7 +9,10 @@ import { CreateConsumerCommand } from './createConsumer.command';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 @CommandHandler(CreateConsumerCommand)
-export class CreateConsumerHandler implements ICommandHandler<CreateConsumerCommand> {
+export class CreateConsumerHandler implements ICommandHandler<
+    CreateConsumerCommand,
+    ISelectConsumer
+> {
     constructor(private readonly consumerRepository: ConsumerRepository) {}
 
     async execute(command: CreateConsumerCommand): Promise<ISelectConsumer> {

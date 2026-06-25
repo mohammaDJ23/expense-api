@@ -8,7 +8,7 @@ import { RedisIndicator } from '@/modules/health/infrastructure/indicators/redis
 import { GetHealthQuery } from './getHealth.query';
 
 @QueryHandler(GetHealthQuery)
-export class GetHealthHandler implements IQueryHandler<GetHealthQuery> {
+export class GetHealthHandler implements IQueryHandler<GetHealthQuery, HealthCheckResult> {
     constructor(
         private readonly databaseIndicator: DatabaseIndicator,
         private readonly redisIndicator: RedisIndicator,

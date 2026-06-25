@@ -8,7 +8,10 @@ import { FindBillListByUserIdQuery } from './findBillListByUserId.query';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
 @QueryHandler(FindBillListByUserIdQuery)
-export class FindBillListByUserIdHandler implements IQueryHandler<FindBillListByUserIdQuery> {
+export class FindBillListByUserIdHandler implements IQueryHandler<
+    FindBillListByUserIdQuery,
+    ISelectBill[]
+> {
     constructor(private readonly billRepository: BillRepository) {}
 
     async execute(query: FindBillListByUserIdQuery): Promise<ISelectBill[]> {

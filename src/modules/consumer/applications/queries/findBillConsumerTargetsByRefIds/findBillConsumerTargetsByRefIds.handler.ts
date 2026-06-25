@@ -8,7 +8,10 @@ import { FindBillConsumerTargetsByRefIdsQuery } from './findBillConsumerTargetsB
 import type { ITargetBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
 
 @QueryHandler(FindBillConsumerTargetsByRefIdsQuery)
-export class FindBillConsumerTargetsByRefIdsHandler implements IQueryHandler<FindBillConsumerTargetsByRefIdsQuery> {
+export class FindBillConsumerTargetsByRefIdsHandler implements IQueryHandler<
+    FindBillConsumerTargetsByRefIdsQuery,
+    ITargetBillConsumer[]
+> {
     constructor(private readonly billConsumerRepository: BillConsumerRepository) {}
 
     async execute(query: FindBillConsumerTargetsByRefIdsQuery): Promise<ITargetBillConsumer[]> {

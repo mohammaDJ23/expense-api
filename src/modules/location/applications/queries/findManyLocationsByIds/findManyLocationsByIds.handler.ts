@@ -8,7 +8,10 @@ import { FindManyLocationsByIdsQuery } from './findManyLocationsByIds.query';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 @QueryHandler(FindManyLocationsByIdsQuery)
-export class FindManyLocationsByIdsHandler implements IQueryHandler<FindManyLocationsByIdsQuery> {
+export class FindManyLocationsByIdsHandler implements IQueryHandler<
+    FindManyLocationsByIdsQuery,
+    ISelectLocation[]
+> {
     constructor(private readonly locationRepository: LocationRepository) {}
 
     async execute(query: FindManyLocationsByIdsQuery): Promise<ISelectLocation[]> {

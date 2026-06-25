@@ -8,7 +8,10 @@ import { FindUserConsumerByRefIdAndTargetIdOrNullQuery } from './findUserConsume
 import type { ISelectUserConsumer } from '@/modules/consumer/infrastructure/schemas/userConsumer.schema';
 
 @QueryHandler(FindUserConsumerByRefIdAndTargetIdOrNullQuery)
-export class FindUserConsumerByRefIdAndTargetIdOrNullHandler implements IQueryHandler<FindUserConsumerByRefIdAndTargetIdOrNullQuery> {
+export class FindUserConsumerByRefIdAndTargetIdOrNullHandler implements IQueryHandler<
+    FindUserConsumerByRefIdAndTargetIdOrNullQuery,
+    ISelectUserConsumer | null
+> {
     constructor(private readonly userConsumerRepository: UserConsumerRepository) {}
 
     async execute(

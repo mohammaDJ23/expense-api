@@ -9,7 +9,10 @@ import { FindReceiverByIdOrThrowQuery } from './findReceiverByIdOrThrow.query';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @QueryHandler(FindReceiverByIdOrThrowQuery)
-export class FindReceiverByIdOrThrowHandler implements IQueryHandler<FindReceiverByIdOrThrowQuery> {
+export class FindReceiverByIdOrThrowHandler implements IQueryHandler<
+    FindReceiverByIdOrThrowQuery,
+    ISelectReceiver
+> {
     constructor(private readonly receiverRepository: ReceiverRepository) {}
 
     async execute(query: FindReceiverByIdOrThrowQuery): Promise<ISelectReceiver> {

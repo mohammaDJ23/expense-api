@@ -8,7 +8,10 @@ import { FindUserConsumerTargetsByRefIdQuery } from './findUserConsumerTargetsBy
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 @QueryHandler(FindUserConsumerTargetsByRefIdQuery)
-export class FindUserConsumerTargetsByRefIdHandler implements IQueryHandler<FindUserConsumerTargetsByRefIdQuery> {
+export class FindUserConsumerTargetsByRefIdHandler implements IQueryHandler<
+    FindUserConsumerTargetsByRefIdQuery,
+    ISelectConsumer[]
+> {
     constructor(private readonly userConsumerRepository: UserConsumerRepository) {}
 
     async execute(query: FindUserConsumerTargetsByRefIdQuery): Promise<ISelectConsumer[]> {

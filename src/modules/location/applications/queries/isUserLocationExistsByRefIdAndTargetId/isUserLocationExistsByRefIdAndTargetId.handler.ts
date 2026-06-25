@@ -6,7 +6,10 @@ import { UserLocationRepository } from '@/modules/location/infrastructure/reposi
 import { IsUserLocationExistsByRefIdAndTargetIdQuery } from './isUserLocationExistsByRefIdAndTargetId.query';
 
 @QueryHandler(IsUserLocationExistsByRefIdAndTargetIdQuery)
-export class IsUserLocationExistsByRefIdAndTargetIdHandler implements IQueryHandler<IsUserLocationExistsByRefIdAndTargetIdQuery> {
+export class IsUserLocationExistsByRefIdAndTargetIdHandler implements IQueryHandler<
+    IsUserLocationExistsByRefIdAndTargetIdQuery,
+    boolean
+> {
     constructor(private readonly userLocationRepository: UserLocationRepository) {}
 
     async execute(query: IsUserLocationExistsByRefIdAndTargetIdQuery): Promise<boolean> {

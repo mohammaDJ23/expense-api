@@ -10,7 +10,7 @@ import { UpdateUserCommand } from './updateUser.command';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @CommandHandler(UpdateUserCommand)
-export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
+export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand, ISelectUser> {
     constructor(private readonly userRepository: UserRepository) {}
 
     async execute(command: UpdateUserCommand): Promise<ISelectUser> {

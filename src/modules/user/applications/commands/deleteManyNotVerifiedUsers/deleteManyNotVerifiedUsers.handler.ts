@@ -8,7 +8,10 @@ import { DeleteManyNotVerifiedUsersCommand } from './deleteManyNotVerifiedUsers.
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @CommandHandler(DeleteManyNotVerifiedUsersCommand)
-export class DeleteManyNotVerifiedUsersHandler implements ICommandHandler<DeleteManyNotVerifiedUsersCommand> {
+export class DeleteManyNotVerifiedUsersHandler implements ICommandHandler<
+    DeleteManyNotVerifiedUsersCommand,
+    ISelectUser[]
+> {
     constructor(private readonly userRepository: UserRepository) {}
 
     async execute(): Promise<ISelectUser[]> {

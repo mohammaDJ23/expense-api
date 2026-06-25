@@ -9,7 +9,10 @@ import { CreateUserLocationCommand } from './createUserLocation.command';
 import type { ISelectUserLocation } from '@/modules/location/infrastructure/schemas/userLocation.schema';
 
 @CommandHandler(CreateUserLocationCommand)
-export class CreateUserLocationHandler implements ICommandHandler<CreateUserLocationCommand> {
+export class CreateUserLocationHandler implements ICommandHandler<
+    CreateUserLocationCommand,
+    ISelectUserLocation
+> {
     constructor(private readonly userLocationRepository: UserLocationRepository) {}
 
     async execute(command: CreateUserLocationCommand): Promise<ISelectUserLocation> {
