@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
@@ -45,12 +45,16 @@ export class UserConsumerRepository implements IUserConsumerRepository {
         );
     }
 
-    isExistsByRefIdAndTargetId(refId: string, targetId: string): Promise<boolean> {
+    isExistsByRefIdAndTargetIds(refId: string, targetIds: string[]): Promise<boolean> {
         return toIsExistsByCount(
             this.drizzleRepository.db.$count(
                 usersConsumers,
-                and(eq(usersConsumers.userId, refId), eq(usersConsumers.consumerId, targetId)),
+                and(
+                    eq(usersConsumers.userId, refId),
+                    inArray(usersConsumers.consumerId, targetIds),
+                ),
             ),
+            targetIds.length,
         );
     }
 
