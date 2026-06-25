@@ -1,3 +1,18 @@
+## [3.9.1](https://github.com/mohammaDJ23/expense-api/compare/v3.9.0...v3.9.1) (2026-06-25)
+
+### 🐛 Bug Fixes
+
+- 466239 rename the method name ([e8cd802](https://github.com/mohammaDJ23/expense-api/commit/e8cd80289cee90e4ebec0af18053313add16016d))
+
+### 🔧 Chores
+
+- 466239 add isUserConsumerExistsByRefIdAndTargetId repo ([be7fd82](https://github.com/mohammaDJ23/expense-api/commit/be7fd82efac20dcf227a704c11e4bc67a1d67f41))
+- 466239 add isUserConsumerExistsByRefIdAndTargetIds repo ([f0cf64c](https://github.com/mohammaDJ23/expense-api/commit/f0cf64c2c1cf132c507bcfbefa628e7662095b26))
+- 466239 add isUserLocationExistsByRefIdAndTargetId repo ([fd0bb1a](https://github.com/mohammaDJ23/expense-api/commit/fd0bb1a9a92517201111fd2e363ee0828113c056))
+- 466239 add isUserReceiverExistsByRefIdAndTargetId repo ([a8d3ae3](https://github.com/mohammaDJ23/expense-api/commit/a8d3ae3f0d55c9d92261bf7496219ae984319b5b))
+- 466239 remove the isExistsById repository ([cbcb44c](https://github.com/mohammaDJ23/expense-api/commit/cbcb44cecf6d99ad7e0e7520c267b8a87d0b9d8f))
+- 466239 use the userLocation, userReceiver and userConsumer queries ([ec5d96e](https://github.com/mohammaDJ23/expense-api/commit/ec5d96edab905ec50c1adcd9a6961df506af21b1))
+
 ## [3.9.0](https://github.com/mohammaDJ23/expense-api/compare/v3.8.0...v3.9.0) (2026-06-24)
 
 ### ✨ Features
