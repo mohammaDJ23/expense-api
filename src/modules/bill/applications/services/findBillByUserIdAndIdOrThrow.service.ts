@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { isEmpty } from '@/common/utils/isEmpty.util';
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { FindBillByUserIdAndIdOrThrowQuery } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.query';
 import { FindBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findBillConsumerTargetsByRefIds/findBillConsumerTargetsByRefIds.query';
 import { FindLocationByIdOrThrowQuery } from '@/modules/location/applications/queries/findLocationByIdOrThrow/findLocationByIdOrThrow.query';
@@ -18,43 +20,26 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
     constructor(private readonly queryBus: QueryBus) {}
 
     async execute(userId: string, billId: string): Promise<IBill> {
-        const bill = await this.findBillEntity(userId, billId);
-
-        const [receiver, location, consumers] = await Promise.all([
-            this.findReceiverByIdOrThrow(bill.receiverId),
-            this.findLocationByIdOrThrow(bill.locationId),
-            this.findBillConsumerTargetsByRefId(billId),
-        ]);
-
-        return {
-            ...bill,
-            receiver,
-            location,
-            consumers,
-        };
-    }
-
-    private findReceiverByIdOrThrow(id: string): Promise<ISelectReceiver> {
-        return this.queryBus.execute<FindReceiverByIdOrThrowQuery, ISelectReceiver>(
-            new FindReceiverByIdOrThrowQuery(id),
-        );
-    }
-
-    private findLocationByIdOrThrow(id: string): Promise<ISelectLocation> {
-        return this.queryBus.execute<FindLocationByIdOrThrowQuery, ISelectLocation>(
-            new FindLocationByIdOrThrowQuery(id),
-        );
-    }
-
-    private findBillConsumerTargetsByRefId(billId: string): Promise<ITargetBillConsumer[]> {
-        return this.queryBus.execute<FindBillConsumerTargetsByRefIdsQuery, ITargetBillConsumer[]>(
-            new FindBillConsumerTargetsByRefIdsQuery([billId]),
-        );
-    }
-
-    private findBillEntity(userId: string, billId: string): Promise<ISelectBill> {
-        return this.queryBus.execute<FindBillByUserIdAndIdOrThrowQuery, ISelectBill>(
+        const bill = await this.queryBus.execute<FindBillByUserIdAndIdOrThrowQuery, ISelectBill>(
             new FindBillByUserIdAndIdOrThrowQuery(userId, billId),
         );
+
+        const [receiver, location, consumers] = await Promise.all([
+            this.queryBus.execute<FindReceiverByIdOrThrowQuery, ISelectReceiver>(
+                new FindReceiverByIdOrThrowQuery(bill.receiverId),
+            ),
+            this.queryBus.execute<FindLocationByIdOrThrowQuery, ISelectLocation>(
+                new FindLocationByIdOrThrowQuery(bill.locationId),
+            ),
+            this.queryBus.execute<FindBillConsumerTargetsByRefIdsQuery, ITargetBillConsumer[]>(
+                new FindBillConsumerTargetsByRefIdsQuery([billId]),
+            ),
+        ]);
+
+        if (isEmpty(consumers)) {
+            throw new ProcessFailedInternalServerErrorException();
+        }
+
+        return { ...bill, receiver, location, consumers };
     }
 }
