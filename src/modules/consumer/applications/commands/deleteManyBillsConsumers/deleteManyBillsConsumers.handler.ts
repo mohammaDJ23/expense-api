@@ -8,7 +8,10 @@ import { DeleteManyBillsConsumersCommand } from './deleteManyBillsConsumers.comm
 import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
 @CommandHandler(DeleteManyBillsConsumersCommand)
-export class DeleteManyBillsConsumersHandler implements IQueryHandler<DeleteManyBillsConsumersCommand> {
+export class DeleteManyBillsConsumersHandler implements IQueryHandler<
+    DeleteManyBillsConsumersCommand,
+    ISelectBillConsumer[]
+> {
     constructor(private readonly billConsumerRepository: BillConsumerRepository) {}
 
     async execute(query: DeleteManyBillsConsumersCommand): Promise<ISelectBillConsumer[]> {

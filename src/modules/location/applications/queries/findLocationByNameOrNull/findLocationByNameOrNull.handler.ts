@@ -8,7 +8,10 @@ import { FindLocationByNameOrNullQuery } from './findLocationByNameOrNull.query'
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 @QueryHandler(FindLocationByNameOrNullQuery)
-export class FindLocationByNameOrNullHandler implements IQueryHandler<FindLocationByNameOrNullQuery> {
+export class FindLocationByNameOrNullHandler implements IQueryHandler<
+    FindLocationByNameOrNullQuery,
+    ISelectLocation | null
+> {
     constructor(private readonly locationRepository: LocationRepository) {}
 
     async execute(query: FindLocationByNameOrNullQuery): Promise<ISelectLocation | null> {

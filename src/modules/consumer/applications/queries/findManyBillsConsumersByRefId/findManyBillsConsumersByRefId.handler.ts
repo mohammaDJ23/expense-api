@@ -8,7 +8,10 @@ import { FindManyBillsConsumersByRefIdQuery } from './findManyBillsConsumersByRe
 import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
 @QueryHandler(FindManyBillsConsumersByRefIdQuery)
-export class FindManyBillsConsumersByRefIdHandler implements IQueryHandler<FindManyBillsConsumersByRefIdQuery> {
+export class FindManyBillsConsumersByRefIdHandler implements IQueryHandler<
+    FindManyBillsConsumersByRefIdQuery,
+    ISelectBillConsumer[]
+> {
     constructor(private readonly billConsumerRepository: BillConsumerRepository) {}
 
     async execute(query: FindManyBillsConsumersByRefIdQuery): Promise<ISelectBillConsumer[]> {

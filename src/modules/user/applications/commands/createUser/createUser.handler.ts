@@ -9,7 +9,7 @@ import { CreateUserCommand } from './createUser.command';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @CommandHandler(CreateUserCommand)
-export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
+export class CreateUserHandler implements ICommandHandler<CreateUserCommand, ISelectUser> {
     constructor(private readonly userRepository: UserRepository) {}
 
     async execute(command: CreateUserCommand): Promise<ISelectUser> {

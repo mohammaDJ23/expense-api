@@ -9,7 +9,10 @@ import { FindUserByIdOrThrowQuery } from './findUserByIdOrThrow.query';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @QueryHandler(FindUserByIdOrThrowQuery)
-export class FindUserByIdOrThrowHandler implements IQueryHandler<FindUserByIdOrThrowQuery> {
+export class FindUserByIdOrThrowHandler implements IQueryHandler<
+    FindUserByIdOrThrowQuery,
+    ISelectUser
+> {
     constructor(private readonly userRepository: UserRepository) {}
 
     async execute(query: FindUserByIdOrThrowQuery): Promise<ISelectUser> {

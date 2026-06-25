@@ -8,7 +8,10 @@ import { CreateManyBillsConsumersCommand } from './createManyBillsConsumers.comm
 import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
 @CommandHandler(CreateManyBillsConsumersCommand)
-export class CreateManyBillsConsumersHandler implements ICommandHandler<CreateManyBillsConsumersCommand> {
+export class CreateManyBillsConsumersHandler implements ICommandHandler<
+    CreateManyBillsConsumersCommand,
+    ISelectBillConsumer[]
+> {
     constructor(private readonly billConsumerRepository: BillConsumerRepository) {}
 
     async execute(command: CreateManyBillsConsumersCommand): Promise<ISelectBillConsumer[]> {

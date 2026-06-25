@@ -9,7 +9,10 @@ import { FindUserLocationTargetByRefIdAndTargetIdOrThrowQuery } from './findUser
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 @QueryHandler(FindUserLocationTargetByRefIdAndTargetIdOrThrowQuery)
-export class FindUserLocationTargetByRefIdAndTargetIdOrThrowHandler implements IQueryHandler<FindUserLocationTargetByRefIdAndTargetIdOrThrowQuery> {
+export class FindUserLocationTargetByRefIdAndTargetIdOrThrowHandler implements IQueryHandler<
+    FindUserLocationTargetByRefIdAndTargetIdOrThrowQuery,
+    ISelectLocation
+> {
     constructor(private readonly userLocationRepository: UserLocationRepository) {}
 
     async execute(

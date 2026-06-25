@@ -9,7 +9,10 @@ import { FindLocationByIdOrThrowQuery } from './findLocationByIdOrThrow.query';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 @QueryHandler(FindLocationByIdOrThrowQuery)
-export class FindLocationByIdOrThrowHandler implements IQueryHandler<FindLocationByIdOrThrowQuery> {
+export class FindLocationByIdOrThrowHandler implements IQueryHandler<
+    FindLocationByIdOrThrowQuery,
+    ISelectLocation
+> {
     constructor(private readonly locationRepository: LocationRepository) {}
 
     async execute(query: FindLocationByIdOrThrowQuery): Promise<ISelectLocation> {

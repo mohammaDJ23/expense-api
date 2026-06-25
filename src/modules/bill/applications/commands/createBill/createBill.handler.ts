@@ -9,7 +9,7 @@ import { CreateBillCommand } from './createBill.command';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
 @CommandHandler(CreateBillCommand)
-export class CreateBillHandler implements ICommandHandler<CreateBillCommand> {
+export class CreateBillHandler implements ICommandHandler<CreateBillCommand, ISelectBill> {
     constructor(private readonly billRepository: BillRepository) {}
 
     async execute(command: CreateBillCommand): Promise<ISelectBill> {

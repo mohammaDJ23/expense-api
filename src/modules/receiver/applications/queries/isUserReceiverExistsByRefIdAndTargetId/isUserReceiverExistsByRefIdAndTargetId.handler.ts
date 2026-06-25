@@ -6,7 +6,10 @@ import { UserReceiverRepository } from '@/modules/receiver/infrastructure/reposi
 import { IsUserReceiverExistsByRefIdAndTargetIdQuery } from './isUserReceiverExistsByRefIdAndTargetId.query';
 
 @QueryHandler(IsUserReceiverExistsByRefIdAndTargetIdQuery)
-export class IsUserReceiverExistsByRefIdAndTargetIdHandler implements IQueryHandler<IsUserReceiverExistsByRefIdAndTargetIdQuery> {
+export class IsUserReceiverExistsByRefIdAndTargetIdHandler implements IQueryHandler<
+    IsUserReceiverExistsByRefIdAndTargetIdQuery,
+    boolean
+> {
     constructor(private readonly userReceiverRepository: UserReceiverRepository) {}
 
     async execute(query: IsUserReceiverExistsByRefIdAndTargetIdQuery): Promise<boolean> {

@@ -8,7 +8,7 @@ import { FindUserListQuery } from './findUserList.query';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @QueryHandler(FindUserListQuery)
-export class FindUserListHandler implements IQueryHandler<FindUserListQuery> {
+export class FindUserListHandler implements IQueryHandler<FindUserListQuery, ISelectUser[]> {
     constructor(private readonly userRepository: UserRepository) {}
 
     async execute(query: FindUserListQuery): Promise<ISelectUser[]> {

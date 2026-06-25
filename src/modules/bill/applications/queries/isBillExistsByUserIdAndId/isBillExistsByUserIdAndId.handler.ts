@@ -1,11 +1,15 @@
 import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { IsBillExistsByUserIdAndIdQuery } from '@/modules/bill/applications/queries/isBillExistsByUserIdAndId/isBillExistsByUserIdAndId.query';
 import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.repository';
 
+import { IsBillExistsByUserIdAndIdQuery } from './isBillExistsByUserIdAndId.query';
+
 @QueryHandler(IsBillExistsByUserIdAndIdQuery)
-export class IsBillExistsByUserIdAndIdHandler implements IQueryHandler<IsBillExistsByUserIdAndIdQuery> {
+export class IsBillExistsByUserIdAndIdHandler implements IQueryHandler<
+    IsBillExistsByUserIdAndIdQuery,
+    boolean
+> {
     constructor(private readonly billRepository: BillRepository) {}
 
     async execute(query: IsBillExistsByUserIdAndIdQuery): Promise<boolean> {

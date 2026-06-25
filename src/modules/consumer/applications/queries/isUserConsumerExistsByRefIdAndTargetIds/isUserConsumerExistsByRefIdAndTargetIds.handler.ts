@@ -6,7 +6,10 @@ import { UserConsumerRepository } from '@/modules/consumer/infrastructure/reposi
 import { IsUserConsumerExistsByRefIdAndTargetIdsQuery } from './isUserConsumerExistsByRefIdAndTargetIds.query';
 
 @QueryHandler(IsUserConsumerExistsByRefIdAndTargetIdsQuery)
-export class IsUserConsumerExistsByRefIdAndTargetIdsHandler implements IQueryHandler<IsUserConsumerExistsByRefIdAndTargetIdsQuery> {
+export class IsUserConsumerExistsByRefIdAndTargetIdsHandler implements IQueryHandler<
+    IsUserConsumerExistsByRefIdAndTargetIdsQuery,
+    boolean
+> {
     constructor(private readonly userConsumerRepository: UserConsumerRepository) {}
 
     async execute(query: IsUserConsumerExistsByRefIdAndTargetIdsQuery): Promise<boolean> {

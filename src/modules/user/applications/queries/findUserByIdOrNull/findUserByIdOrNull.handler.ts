@@ -8,7 +8,10 @@ import { FindUserByIdOrNullQuery } from './findUserByIdOrNull.query';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @QueryHandler(FindUserByIdOrNullQuery)
-export class FindUserByIdOrNullHandler implements IQueryHandler<FindUserByIdOrNullQuery> {
+export class FindUserByIdOrNullHandler implements IQueryHandler<
+    FindUserByIdOrNullQuery,
+    ISelectUser | null
+> {
     constructor(private readonly userRepository: UserRepository) {}
 
     async execute(query: FindUserByIdOrNullQuery): Promise<ISelectUser | null> {
