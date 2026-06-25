@@ -3,6 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
+import { ResetPasswordMailerService } from '@/modules/authentication/applications/services/resetPasswordMailer.service';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
@@ -25,6 +26,7 @@ export class LocalResetPasswordService implements IServiceHandler {
         private readonly passwordHasherService: PasswordHasherService,
         private readonly passwordTokenService: PasswordTokenService,
         private readonly passwordStorageService: PasswordStorageService,
+        private readonly resetPasswordMailerService: ResetPasswordMailerService,
     ) {}
 
     async execute(data: LocalResetPasswordRequestDto): Promise<boolean> {
@@ -78,6 +80,8 @@ export class LocalResetPasswordService implements IServiceHandler {
                 }
 
                 try {
+                    this.resetPasswordMailerService.execute(user);
+
                     await this.passwordStorageService.delete(user.email);
                     // eslint-disable-next-line no-empty
                 } catch {}

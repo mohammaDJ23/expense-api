@@ -16,9 +16,11 @@ import { PasswordHasherService } from '@/modules/authentication/applications/ser
 import { PasswordMailerService } from '@/modules/authentication/applications/services/passwordMailer.service';
 import { PasswordStorageService } from '@/modules/authentication/applications/services/passwordStorage.service';
 import { PasswordTokenService } from '@/modules/authentication/applications/services/passwordToken.service';
+import { ResetPasswordMailerService } from '@/modules/authentication/applications/services/resetPasswordMailer.service';
 import { VerificationMailerService } from '@/modules/authentication/applications/services/verificationMailer.service';
 import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { VerificationTokenService } from '@/modules/authentication/applications/services/verificationToken.service';
+import { VerifiedVerificationMailerService } from '@/modules/authentication/applications/services/verifiedVerificationoMailer.service';
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
 import { UserModule } from '@/modules/user/user.module';
 
@@ -37,7 +39,9 @@ import { UserModule } from '@/modules/user/user.module';
         VerificationMailerService,
         VerificationTokenService,
         VerificationStorageService,
+        VerifiedVerificationMailerService,
         PasswordMailerService,
+        ResetPasswordMailerService,
         PasswordTokenService,
         PasswordStorageService,
         PasswordHasherService,

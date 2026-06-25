@@ -3,6 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
+import { VerifiedVerificationMailerService } from '@/modules/authentication/applications/services/verifiedVerificationoMailer.service';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
@@ -17,11 +18,13 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 
 @Injectable()
 export class LocalVerifyVerificationService implements IServiceHandler {
+    // eslint-disable-next-line max-params
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
+        private readonly verifiedVerificationMailerService: VerifiedVerificationMailerService,
     ) {}
 
     async execute(data: LocalVerifyVerificationRequestDto): Promise<boolean> {
@@ -73,6 +76,8 @@ export class LocalVerifyVerificationService implements IServiceHandler {
                 }
 
                 try {
+                    this.verifiedVerificationMailerService.execute(user);
+
                     await this.verificationStorageService.delete(user.email);
                     // eslint-disable-next-line no-empty
                 } catch {}
