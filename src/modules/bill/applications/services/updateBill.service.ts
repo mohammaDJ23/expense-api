@@ -4,6 +4,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { isEmpty } from '@/common/utils/isEmpty.util';
+import { isNotEmpty } from '@/common/utils/isNotEmpty.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UpdateBillCommand } from '@/modules/bill/applications/commands/updateBill/updateBill.command';
@@ -85,7 +86,7 @@ export class UpdateBillService implements IServiceHandler {
 
                 const billConsumerCommands: Promise<ISelectBillConsumer[]>[] = [];
 
-                if (idsToCreate.length > 0) {
+                if (isNotEmpty(idsToCreate)) {
                     billConsumerCommands.push(
                         this.commandBus.execute<
                             CreateManyBillsConsumersCommand,
@@ -102,7 +103,7 @@ export class UpdateBillService implements IServiceHandler {
                     );
                 }
 
-                if (idsToDelete.length > 0) {
+                if (isNotEmpty(idsToDelete)) {
                     billConsumerCommands.push(
                         this.commandBus.execute<
                             DeleteManyBillsConsumersCommand,
