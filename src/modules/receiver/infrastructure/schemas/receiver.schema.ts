@@ -1,24 +1,36 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { index, pgTable, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
 
 import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
-import { usersReceivers } from './userReceiver.schema';
+export const receivers = pgTable(
+    'receivers',
+    {
+        id: uuid('id').primaryKey().defaultRandom().notNull(),
+        name: varchar('name', { length: 50 }).notNull(),
+        createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
+            .notNull()
+            .defaultNow(),
+        updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' })
+            .notNull()
+            .defaultNow(),
+        userId: uuid('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+    },
+    (table) => [
+        uniqueIndex('uq_receivers_user_id_name').on(table.userId, table.name),
+        index('idx_receivers_user_id_created_at').on(table.userId, table.createdAt),
+    ],
+);
 
-export const receivers = pgTable('receivers', {
-    id: uuid('id').primaryKey().defaultRandom().notNull(),
-    name: varchar('name', { length: 50 }).notNull().unique(),
-    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
-        .notNull()
-        .defaultNow(),
-    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' })
-        .notNull()
-        .defaultNow(),
-});
-
-export const receiversRelations = relations(receivers, ({ many }) => ({
+export const receiversRelations = relations(receivers, ({ many, one }) => ({
+    user: one(users, {
+        fields: [receivers.userId],
+        references: [users.id],
+    }),
     bills: many(bills),
-    usersReceivers: many(usersReceivers),
 }));
 
 type TSelectReceiver = typeof receivers.$inferSelect;

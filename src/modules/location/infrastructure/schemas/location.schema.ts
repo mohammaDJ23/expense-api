@@ -1,24 +1,36 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { index, pgTable, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
 
 import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
-import { usersLocations } from './userLocation.schema';
+export const locations = pgTable(
+    'locations',
+    {
+        id: uuid('id').primaryKey().defaultRandom().notNull(),
+        name: varchar('name', { length: 50 }).notNull(),
+        createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
+            .notNull()
+            .defaultNow(),
+        updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' })
+            .notNull()
+            .defaultNow(),
+        userId: uuid('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+    },
+    (table) => [
+        uniqueIndex('uq_locations_user_id_name').on(table.userId, table.name),
+        index('idx_locations_user_id_created_at').on(table.userId, table.createdAt),
+    ],
+);
 
-export const locations = pgTable('locations', {
-    id: uuid('id').primaryKey().defaultRandom().notNull(),
-    name: varchar('name', { length: 50 }).notNull().unique(),
-    createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
-        .notNull()
-        .defaultNow(),
-    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'string' })
-        .notNull()
-        .defaultNow(),
-});
-
-export const locationsRelations = relations(locations, ({ many }) => ({
+export const locationsRelations = relations(locations, ({ many, one }) => ({
+    user: one(users, {
+        fields: [locations.userId],
+        references: [users.id],
+    }),
     bills: many(bills),
-    usersLocations: many(usersLocations),
 }));
 
 type TSelectLocation = typeof locations.$inferSelect;
