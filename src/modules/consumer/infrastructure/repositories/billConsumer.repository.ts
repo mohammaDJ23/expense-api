@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, desc, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
@@ -47,6 +47,7 @@ export class BillConsumerRepository implements IBillConsumerRepository {
                 .select()
                 .from(billsConsumers)
                 .where(eq(billsConsumers.billId, refId))
+                .orderBy(desc(billsConsumers.createdAt))
                 .execute(),
         );
     }
@@ -64,6 +65,7 @@ export class BillConsumerRepository implements IBillConsumerRepository {
                 .from(billsConsumers)
                 .innerJoin(consumers, eq(billsConsumers.consumerId, consumers.id))
                 .where(inArray(billsConsumers.billId, refIds))
+                .orderBy(desc(billsConsumers.createdAt))
                 .execute(),
         );
     }
