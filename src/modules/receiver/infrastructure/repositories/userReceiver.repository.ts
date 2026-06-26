@@ -84,7 +84,7 @@ export class UserReceiverRepository implements IUserReceiverRepository {
                 })
                 .from(usersReceivers)
                 .innerJoin(receivers, eq(usersReceivers.receiverId, receivers.id))
-                .where(and(eq(usersReceivers.userId, refId)))
+                .where(eq(usersReceivers.userId, refId))
                 .orderBy(desc(usersReceivers.createdAt))
                 .offset(options.offset)
                 .limit(options.limit)
