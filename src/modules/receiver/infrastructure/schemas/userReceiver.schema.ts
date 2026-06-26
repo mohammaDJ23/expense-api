@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
+import { index, pgTable, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
@@ -19,7 +19,10 @@ export const usersReceivers = pgTable(
             .notNull()
             .references(() => receivers.id, { onDelete: 'restrict' }),
     },
-    (table) => [uniqueIndex('unique_users_receivers').on(table.userId, table.receiverId)],
+    (table) => [
+        uniqueIndex('uq_users_receivers_user_id_receiver_id').on(table.userId, table.receiverId),
+        index('idx_users_receivers_user_id_created_at').on(table.userId, table.createdAt),
+    ],
 );
 
 export const usersReceiversRelations = relations(usersReceivers, ({ one }) => ({
