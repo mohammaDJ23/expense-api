@@ -1,3 +1,19 @@
+## [3.9.3](https://github.com/mohammaDJ23/expense-api/compare/v3.9.2...v3.9.3) (2026-06-26)
+
+### 🔧 Chores
+
+- 724123 add orderby ([e36ba52](https://github.com/mohammaDJ23/expense-api/commit/e36ba52c2f67efa22953cb42a94853ee7317fe93))
+- 724123 add orderby ([a681564](https://github.com/mohammaDJ23/expense-api/commit/a681564667454c4b89c710115ba7c39b86bbe20a))
+- 724123 add some options to pool ([fe7229c](https://github.com/mohammaDJ23/expense-api/commit/fe7229cc3dc74e30584c5ec53b2156495ddc1165))
+- 724123 add the code block ([6069c09](https://github.com/mohammaDJ23/expense-api/commit/6069c09489185a7bc01e13a3b663b7ea3c784a85))
+- 724123 add the proper index for bills ([bbe49a9](https://github.com/mohammaDJ23/expense-api/commit/bbe49a9f7009e4a98fb3718c2e303251cf0f452f))
+- 724123 add the proper index for bills_consumers ([3197a23](https://github.com/mohammaDJ23/expense-api/commit/3197a23a6930781183664759ce69786e5c3dd4f0))
+- 724123 add the proper index for users_consumers ([58a766d](https://github.com/mohammaDJ23/expense-api/commit/58a766dad73cee5beb9788b250b7a0b1f330e858))
+- 724123 add the proper index for users_locations ([d721eec](https://github.com/mohammaDJ23/expense-api/commit/d721eec74fccf441e5c7e015dd7a44bf6200cfd6))
+- 724123 add the proper index for users_receivers ([0a29836](https://github.com/mohammaDJ23/expense-api/commit/0a29836c5ee16c0c9f5cef29507792ac72970eaa))
+- 724123 check the connection ([6381b2b](https://github.com/mohammaDJ23/expense-api/commit/6381b2b9350179586f94a382123f7928d9666e80))
+- 724123 use false for SSL right now ([0d5b993](https://github.com/mohammaDJ23/expense-api/commit/0d5b993eee1f39ec21389a0bbe0853de3ececfae))
+
 ## [3.9.2](https://github.com/mohammaDJ23/expense-api/compare/v3.9.1...v3.9.2) (2026-06-25)
 
 ### ♻️ Code Refactoring
