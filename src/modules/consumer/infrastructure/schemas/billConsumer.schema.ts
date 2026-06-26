@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { index, pgTable, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
+import { index, pgTable, primaryKey, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
@@ -8,7 +8,6 @@ import { consumers } from './consumer.schema';
 export const billsConsumers = pgTable(
     'bills_consumers',
     {
-        id: uuid('id').primaryKey().defaultRandom().notNull(),
         createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
             .notNull()
             .defaultNow(),
@@ -20,8 +19,9 @@ export const billsConsumers = pgTable(
             .references(() => consumers.id, { onDelete: 'restrict' }),
     },
     (table) => [
-        uniqueIndex('uq_bills_consumers_bill_id_consumer_id').on(table.billId, table.consumerId),
-        index('idx_bills_consumers_bill_id_created_at').on(table.billId, table.createdAt),
+        primaryKey({ columns: [table.billId, table.consumerId] }),
+        index('idx_bills_consumers_bill_id').on(table.billId),
+        index('idx_bills_consumers_consumer_id').on(table.consumerId),
     ],
 );
 
