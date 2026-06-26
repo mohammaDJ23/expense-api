@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { eq, inArray } from 'drizzle-orm';
+import { desc, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
@@ -51,6 +51,7 @@ export class ReceiverRepository implements IReceiverRepository {
                 .select()
                 .from(receivers)
                 .where(inArray(receivers.id, ids))
+                .orderBy(desc(receivers.createdAt))
                 .execute(),
         );
     }
