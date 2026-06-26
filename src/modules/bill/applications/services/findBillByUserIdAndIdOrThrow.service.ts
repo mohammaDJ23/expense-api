@@ -24,22 +24,25 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
             new FindBillByUserIdAndIdOrThrowQuery(userId, billId),
         );
 
-        const [receiver, location, consumers] = await Promise.all([
-            this.queryBus.execute<FindReceiverByIdOrThrowQuery, ISelectReceiver>(
-                new FindReceiverByIdOrThrowQuery(bill.receiverId),
-            ),
-            this.queryBus.execute<FindLocationByIdOrThrowQuery, ISelectLocation>(
-                new FindLocationByIdOrThrowQuery(bill.locationId),
-            ),
-            this.queryBus.execute<FindManyBillConsumerTargetsByRefIdsQuery, ITargetBillConsumer[]>(
-                new FindManyBillConsumerTargetsByRefIdsQuery([billId]),
-            ),
-        ]);
+        {
+            const [receiver, location, consumers] = await Promise.all([
+                this.queryBus.execute<FindReceiverByIdOrThrowQuery, ISelectReceiver>(
+                    new FindReceiverByIdOrThrowQuery(bill.receiverId),
+                ),
+                this.queryBus.execute<FindLocationByIdOrThrowQuery, ISelectLocation>(
+                    new FindLocationByIdOrThrowQuery(bill.locationId),
+                ),
+                this.queryBus.execute<
+                    FindManyBillConsumerTargetsByRefIdsQuery,
+                    ITargetBillConsumer[]
+                >(new FindManyBillConsumerTargetsByRefIdsQuery([billId])),
+            ]);
 
-        if (isEmpty(consumers)) {
-            throw new ProcessFailedInternalServerErrorException();
+            if (isEmpty(consumers)) {
+                throw new ProcessFailedInternalServerErrorException();
+            }
+
+            return { ...bill, receiver, location, consumers };
         }
-
-        return { ...bill, receiver, location, consumers };
     }
 }
