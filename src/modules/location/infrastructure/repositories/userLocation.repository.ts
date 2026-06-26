@@ -84,7 +84,7 @@ export class UserLocationRepository implements IUserLocationRepository {
                 })
                 .from(usersLocations)
                 .innerJoin(locations, eq(usersLocations.locationId, locations.id))
-                .where(and(eq(usersLocations.userId, refId)))
+                .where(eq(usersLocations.userId, refId))
                 .orderBy(desc(usersLocations.createdAt))
                 .offset(options.offset)
                 .limit(options.limit)
