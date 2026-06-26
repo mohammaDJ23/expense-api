@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
+import { index, pgTable, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
@@ -19,7 +19,10 @@ export const usersLocations = pgTable(
             .notNull()
             .references(() => locations.id, { onDelete: 'restrict' }),
     },
-    (table) => [uniqueIndex('unique_users_locations').on(table.userId, table.locationId)],
+    (table) => [
+        uniqueIndex('uq_users_locations_user_id_location_id').on(table.userId, table.locationId),
+        index('idx_users_locations_user_id_created_at').on(table.userId, table.createdAt),
+    ],
 );
 
 export const usersLocationsRelations = relations(usersLocations, ({ one }) => ({
