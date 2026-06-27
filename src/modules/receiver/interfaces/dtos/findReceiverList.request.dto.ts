@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsOptional, IsInt, Min, IsString, Max } from 'class-validator';
 
-export class FindUserReceiverTargetsRequestDto {
+export class FindReceiverListRequestDto {
     @IsOptional()
     @Type(() => Number)
     @IsInt()
