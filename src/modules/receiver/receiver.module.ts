@@ -3,39 +3,39 @@ import { Module } from '@nestjs/common';
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateReceiverHandler } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.handler';
-import { CreateUserReceiverHandler } from '@/modules/receiver/applications/commands/createUserReceiver/createUserReceiver.handler';
-import { FindManyReceiversByIdsHandler } from '@/modules/receiver/applications/queries/findManyReceiversByIds/findManyReceiversByIds.handler';
-import { FindReceiverByIdOrThrowHandler } from '@/modules/receiver/applications/queries/findReceiverByIdOrThrow/findReceiverByIdOrThrow.handler';
-import { FindReceiverByNameOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByNameOrNull/findReceiverByNameOrNull.handler';
-import { FindUserReceiverByRefIdAndTargetIdOrNullHandler } from '@/modules/receiver/applications/queries/findUserReceiverByRefIdAndTargetIdOrNull/findUserReceiverByRefIdAndTargetIdOrNull.handler';
-import { FindUserReceiverTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/receiver/applications/queries/findUserReceiverTargetByRefIdAndTargetIdOrThrow/findUserReceiverTargetByRefIdAndTargetIdOrThrow.handler';
-import { FindUserReceiverTargetListByRefIdHandler } from '@/modules/receiver/applications/queries/findUserReceiverTargetListByRefId/findUserReceiverTargetListByRefId.handler';
-import { IsUserReceiverExistsByRefIdAndTargetIdHandler } from '@/modules/receiver/applications/queries/isUserReceiverExistsByRefIdAndTargetId/isUserReceiverExistsByRefIdAndTargetId.handler';
+import { DeleteReceiverHandler } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.handler';
+import { UpdateReceiverHandler } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.handler';
+import { FindManyReceiversByUserIdAndIdsHandler } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.handler';
+import { FindReceiverByUserIdAndIdOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrNull/findReceiverByUserIdAndIdOrNull.handler';
+import { FindReceiverByUserIdAndIdOrThrowHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.handler';
+import { FindReceiverByUserIdAndNameOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndNameOrNull/findReceiverByUserIdAndNameOrNull.handler';
+import { FindReceiverListByUserIdHandler } from '@/modules/receiver/applications/queries/findReceiverListByUserId/findReceiverListByUserId.handler';
+import { IsReceiverExistsByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/isReceiverExistsByUserIdAndId/isReceiverExistsByUserIdAndId.handler';
 import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
+import { DeleteReceiverService } from '@/modules/receiver/applications/services/deleteReceiver.service';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
-import { UserReceiverService } from '@/modules/receiver/applications/services/userReceiver.service';
+import { UpdateReceiverService } from '@/modules/receiver/applications/services/updateReceiver.service';
 import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
-import { UserReceiverRepository } from '@/modules/receiver/infrastructure/repositories/userReceiver.repository';
 import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1.controller';
 
 @Module({
     imports: [CqrsModule, AuthenticationModule],
     controllers: [ReceiverController],
     providers: [
-        ReceiverService,
-        UserReceiverService,
-        CreateReceiverService,
         CreateReceiverHandler,
-        CreateUserReceiverHandler,
-        FindReceiverByNameOrNullHandler,
-        FindUserReceiverByRefIdAndTargetIdOrNullHandler,
-        FindUserReceiverTargetByRefIdAndTargetIdOrThrowHandler,
-        IsUserReceiverExistsByRefIdAndTargetIdHandler,
-        FindReceiverByIdOrThrowHandler,
-        FindManyReceiversByIdsHandler,
-        FindUserReceiverTargetListByRefIdHandler,
+        DeleteReceiverHandler,
+        UpdateReceiverHandler,
+        FindManyReceiversByUserIdAndIdsHandler,
+        FindReceiverByUserIdAndIdOrNullHandler,
+        FindReceiverByUserIdAndIdOrThrowHandler,
+        FindReceiverByUserIdAndNameOrNullHandler,
+        FindReceiverListByUserIdHandler,
+        IsReceiverExistsByUserIdAndIdHandler,
+        ReceiverService,
+        CreateReceiverService,
+        UpdateReceiverService,
+        DeleteReceiverService,
         ReceiverRepository,
-        UserReceiverRepository,
     ],
 })
 export class ReceiverModule {}

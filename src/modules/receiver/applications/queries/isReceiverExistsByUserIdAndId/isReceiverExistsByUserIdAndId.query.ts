@@ -1,4 +1,4 @@
-export class IsUserReceiverExistsByRefIdAndTargetIdQuery {
+export class IsReceiverExistsByUserIdAndIdQuery {
     constructor(
         public readonly userId: string,
         public readonly receiverId: string,

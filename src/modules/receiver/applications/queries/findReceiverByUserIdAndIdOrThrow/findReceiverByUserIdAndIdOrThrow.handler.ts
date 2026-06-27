@@ -4,20 +4,23 @@ import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
 
-import { FindReceiverByIdOrThrowQuery } from './findReceiverByIdOrThrow.query';
+import { FindReceiverByUserIdAndIdOrThrowQuery } from './findReceiverByUserIdAndIdOrThrow.query';
 
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
-@QueryHandler(FindReceiverByIdOrThrowQuery)
-export class FindReceiverByIdOrThrowHandler implements IQueryHandler<
-    FindReceiverByIdOrThrowQuery,
+@QueryHandler(FindReceiverByUserIdAndIdOrThrowQuery)
+export class FindReceiverByUserIdAndIdOrThrowHandler implements IQueryHandler<
+    FindReceiverByUserIdAndIdOrThrowQuery,
     ISelectReceiver
 > {
     constructor(private readonly receiverRepository: ReceiverRepository) {}
 
-    async execute(query: FindReceiverByIdOrThrowQuery): Promise<ISelectReceiver> {
+    async execute(query: FindReceiverByUserIdAndIdOrThrowQuery): Promise<ISelectReceiver> {
         try {
-            return await this.receiverRepository.findByIdOrThrow(query.id);
+            return await this.receiverRepository.findByUserIdAndIdOrThrow(
+                query.userId,
+                query.receiverId,
+            );
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
