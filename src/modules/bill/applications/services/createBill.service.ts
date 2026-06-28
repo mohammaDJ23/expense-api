@@ -3,7 +3,9 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
+import { isEmpty } from '@/common/utils/isEmpty.util';
 import { IdEntity } from '@/core/entities/id.entity';
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
 import { IsConsumerExistsByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndIds/isConsumerExistsByUserIdAndIds.query';
@@ -25,20 +27,19 @@ export class CreateBillService implements IServiceHandler {
     @Transactional()
     async execute(data: CreateBillRequestDto, userId: string): Promise<IdEntity> {
         {
-            const [isUserReceiverExists, isUserLocationExists, isUsersConsumersExists] =
-                await Promise.all([
-                    this.queryBus.execute<IsReceiverExistsByUserIdAndIdQuery, boolean>(
-                        new IsReceiverExistsByUserIdAndIdQuery(userId, data.receiverId),
-                    ),
-                    this.queryBus.execute<IsLocationExistsByUserIdAndIdQuery, boolean>(
-                        new IsLocationExistsByUserIdAndIdQuery(userId, data.locationId),
-                    ),
-                    this.queryBus.execute<IsConsumerExistsByUserIdAndIdsQuery, boolean>(
-                        new IsConsumerExistsByUserIdAndIdsQuery(userId, data.consumerIds),
-                    ),
-                ]);
+            const [isReceiverExists, isLocationExists, isConsumersExists] = await Promise.all([
+                this.queryBus.execute<IsReceiverExistsByUserIdAndIdQuery, boolean>(
+                    new IsReceiverExistsByUserIdAndIdQuery(userId, data.receiverId),
+                ),
+                this.queryBus.execute<IsLocationExistsByUserIdAndIdQuery, boolean>(
+                    new IsLocationExistsByUserIdAndIdQuery(userId, data.locationId),
+                ),
+                this.queryBus.execute<IsConsumerExistsByUserIdAndIdsQuery, boolean>(
+                    new IsConsumerExistsByUserIdAndIdsQuery(userId, data.consumerIds),
+                ),
+            ]);
 
-            if (!isUserReceiverExists || !isUserLocationExists || !isUsersConsumersExists) {
+            if (!isReceiverExists || !isLocationExists || !isConsumersExists) {
                 throw new BadRequestException();
             }
         }
@@ -57,17 +58,26 @@ export class CreateBillService implements IServiceHandler {
                 }),
             );
 
-            await this.commandBus.execute<CreateManyBillsConsumersCommand, ISelectBillConsumer[]>(
-                new CreateManyBillsConsumersCommand(
-                    data.consumerIds.map((consumerId) => ({
-                        billId: createdBill.id,
-                        consumerId,
-                        createdAt: getCurrentUTCTimestamp(),
-                    })),
-                ),
-            );
+            {
+                const createdBillsConsumers = await this.commandBus.execute<
+                    CreateManyBillsConsumersCommand,
+                    ISelectBillConsumer[]
+                >(
+                    new CreateManyBillsConsumersCommand(
+                        data.consumerIds.map((consumerId) => ({
+                            billId: createdBill.id,
+                            consumerId,
+                            createdAt: getCurrentUTCTimestamp(),
+                        })),
+                    ),
+                );
 
-            return IdEntity.create(createdBill.id);
+                if (isEmpty(createdBillsConsumers)) {
+                    throw new ProcessFailedInternalServerErrorException();
+                }
+
+                return IdEntity.create(createdBill.id);
+            }
         }
     }
 }
