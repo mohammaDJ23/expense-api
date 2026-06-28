@@ -39,8 +39,16 @@ export class CreateBillService implements IServiceHandler {
                 ),
             ]);
 
-            if (!isReceiverExists || !isLocationExists || !isConsumersExists) {
-                throw new BadRequestException();
+            if (!isReceiverExists) {
+                throw new BadRequestException('Could not found the receiver');
+            }
+
+            if (!isLocationExists) {
+                throw new BadRequestException('Could not found the location');
+            }
+
+            if (!isConsumersExists) {
+                throw new BadRequestException('Could not found the consumer');
             }
         }
 
