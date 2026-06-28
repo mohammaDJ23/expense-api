@@ -39,6 +39,17 @@ export class BillRepository implements IBillRepository {
         );
     }
 
+    deleteByUserIdAndId(userId: string, id: string): Promise<ISelectBill> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .delete(bills)
+                .where(and(eq(bills.userId, userId), eq(bills.id, id)))
+                .returning()
+                .execute(),
+            'Unable to delete',
+        );
+    }
+
     isExistsByUserIdAndId(userId: string, id: string): Promise<boolean> {
         return toIsExistsByCount(
             this.drizzleRepository.db.$count(

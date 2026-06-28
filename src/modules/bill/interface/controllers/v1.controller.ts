@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     HttpStatus,
     Param,
@@ -18,12 +19,14 @@ import { CurrentUser } from '@/core/user/currentUser.decorator';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
 import { BillResponseDto } from '@/modules/bill/interface/dtos/bill.response.dto';
 import { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
+import { DeleteBillRequestDto } from '@/modules/bill/interface/dtos/deleteBill.request.dto';
 import { FindBillRequestDto } from '@/modules/bill/interface/dtos/findBill.request.dto';
 import { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 import { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
 
 import {
     SUCCESS_CREATE_BILL_MESSAGE,
+    SUCCESS_DELETE_BILL_MESSAGE,
     SUCCESS_FIND_BILL_MESSAGE,
     SUCCESS_FIND_BILLS_MESSAGE,
     SUCCESS_UPDATE_BILL_MESSAGE,
@@ -57,6 +60,17 @@ export class BillController {
         @CurrentUser() user: ICurrentUser,
     ): Promise<IdEntity> {
         return this.billService.update(body, user.id);
+    }
+
+    @Delete(':id')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(IdResponseDto)
+    @HttpResponse(SUCCESS_DELETE_BILL_MESSAGE, HttpStatus.OK)
+    delete(
+        @Param() param: DeleteBillRequestDto,
+        @CurrentUser() user: ICurrentUser,
+    ): Promise<IdEntity> {
+        return this.billService.delete(user.id, param.id);
     }
 
     @Get()
