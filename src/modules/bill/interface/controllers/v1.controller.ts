@@ -25,7 +25,7 @@ import { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.r
 import {
     SUCCESS_CREATE_BILL_MESSAGE,
     SUCCESS_FIND_BILL_MESSAGE,
-    SUCCESS_FIND_MANY_MESSAGE,
+    SUCCESS_FIND_BILLS_MESSAGE,
     SUCCESS_UPDATE_BILL_MESSAGE,
 } from './controllers.constants';
 
@@ -62,12 +62,12 @@ export class BillController {
     @Get()
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(BillResponseDto)
-    @HttpResponse(SUCCESS_FIND_MANY_MESSAGE, HttpStatus.OK)
-    findManyByUserId(
+    @HttpResponse(SUCCESS_FIND_BILLS_MESSAGE, HttpStatus.OK)
+    findListByUserId(
         @Query() query: FindBillListRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<IBill[]> {
-        return this.billService.findManyByUserId(user.id, query);
+        return this.billService.findListByUserId(user.id, query);
     }
 
     @Get(':id')

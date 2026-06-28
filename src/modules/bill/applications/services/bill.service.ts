@@ -29,7 +29,7 @@ export class BillService {
         return this.updateBillService.execute(data, userId);
     }
 
-    findManyByUserId(userId: string, query: FindBillListRequestDto): Promise<IBill[]> {
+    findListByUserId(userId: string, query: FindBillListRequestDto): Promise<IBill[]> {
         return this.findBillListByUserIdService.execute(userId, query);
     }
 
