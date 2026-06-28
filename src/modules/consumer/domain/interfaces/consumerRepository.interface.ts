@@ -6,6 +6,7 @@ import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repo
 import type { IFindByUserIdAndNameOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndNameOrNullRepository.interface';
 import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories/findListByUserIdRepository.interface';
 import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
+import type { IIsExistsByUserIdAndIdRepository } from '@/core/interfaces/repositories/IsExistsByUserIdAndIdRepository.interface';
 import type { IIsExistsByUserIdAndIdsRepository } from '@/core/interfaces/repositories/IsExistsByUserIdAndIdsRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type {
@@ -23,4 +24,5 @@ export interface IConsumerRepository
         IFindManyByUserIdAndIdsRepository<ISelectConsumer>,
         IFindListByUserIdRepository<IList, ISelectConsumer>,
         IFindByUserIdAndNameOrNullRepository<ISelectConsumer>,
-        IIsExistsByUserIdAndIdsRepository {}
+        IIsExistsByUserIdAndIdsRepository,
+        IIsExistsByUserIdAndIdRepository {}

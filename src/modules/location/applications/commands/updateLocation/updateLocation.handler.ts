@@ -3,10 +3,10 @@ import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import { omitUndefined } from '@/common/utils/omitUndefined.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 
 import { UpdateLocationCommand } from './updateLocation.command';
 
-import type { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 @CommandHandler(UpdateLocationCommand)
