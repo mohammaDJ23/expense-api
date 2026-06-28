@@ -88,6 +88,7 @@ export class ReceiverRepository implements IReceiverRepository {
                 .select()
                 .from(receivers)
                 .where(and(eq(receivers.userId, userId), inArray(receivers.id, ids)))
+                .orderBy(desc(receivers.createdAt))
                 .execute(),
         );
     }
