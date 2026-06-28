@@ -5,7 +5,9 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { DeleteManyNotVerifiedUsersCommand } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.command';
 import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 import { FindUserListQuery } from '@/modules/user/applications/queries/findUserList/findUserList.query';
+import { DeleteUserService } from '@/modules/user/applications/services/deleteUser.service';
 
+import type { IdEntity } from '@/core/entities/id.entity';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
 
@@ -14,7 +16,12 @@ export class UserService {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
+        private readonly deleteUserService: DeleteUserService,
     ) {}
+
+    delete(userId: string): Promise<IdEntity> {
+        return this.deleteUserService.execute(userId);
+    }
 
     findList(query: FindUserListRequestDto): Promise<ISelectUser[]> {
         return this.queryBus.execute<FindUserListQuery, ISelectUser[]>(

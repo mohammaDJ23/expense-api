@@ -38,6 +38,13 @@ export class UserRepository implements IUserRepository {
         );
     }
 
+    deleteById(id: string): Promise<ISelectUser> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db.delete(users).where(eq(users.id, id)).returning().execute(),
+            'Unable to delete',
+        );
+    }
+
     deleteManyNotVerified(): Promise<ISelectUser[]> {
         return toEntities(
             this.drizzleRepository.db
@@ -58,16 +65,17 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    private findById(id: string): Promise<ISelectUser[]> {
-        return this.drizzleRepository.db.select().from(users).where(eq(users.id, id)).execute();
-    }
-
     findByIdOrNull(id: string): Promise<ISelectUser | null> {
-        return toEntityOrNull(this.findById(id));
+        return toEntityOrNull(
+            this.drizzleRepository.db.select().from(users).where(eq(users.id, id)).execute(),
+        );
     }
 
     findByIdOrThrow(id: string): Promise<ISelectUser> {
-        return toEntityOrThrow(this.findById(id), 'Unable to find');
+        return toEntityOrThrow(
+            this.drizzleRepository.db.select().from(users).where(eq(users.id, id)).execute(),
+            'Unable to find',
+        );
     }
 
     findList(options: IList): Promise<ISelectUser[]> {
@@ -80,5 +88,9 @@ export class UserRepository implements IUserRepository {
                 .offset(options.offset)
                 .execute(),
         );
+    }
+
+    isExistsById(id: string): Promise<boolean> {
+        return toIsExistsByCount(this.drizzleRepository.db.$count(users, eq(users.id, id)));
     }
 }

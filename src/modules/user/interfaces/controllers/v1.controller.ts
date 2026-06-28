@@ -1,6 +1,7 @@
-import { Controller, Get, HttpStatus, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, HttpStatus, Param, Query, UseGuards } from '@nestjs/common';
 
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
+import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { OwnerGuard } from '@/core/guards/owner.guard';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
@@ -10,14 +11,27 @@ import { FindUserByIdRequestDto } from '@/modules/user/interfaces/dtos/findUserB
 import { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
 import { UserResponseDto } from '@/modules/user/interfaces/dtos/user.response.dto';
 
-import { SUCCESS_FIND_USER_MESSAGE, SUCCESS_FIND_USERS_MESSAGE } from './controllers.constants';
+import {
+    SUCCESS_DELETE_USER_MESSAGE,
+    SUCCESS_FIND_USER_MESSAGE,
+    SUCCESS_FIND_USERS_MESSAGE,
+} from './controllers.constants';
 
+import type { IdEntity } from '@/core/entities/id.entity';
 import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/users' })
 export class UserController {
     constructor(private readonly userService: UserService) {}
+
+    @Delete('me')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(IdResponseDto)
+    @HttpResponse(SUCCESS_DELETE_USER_MESSAGE, HttpStatus.OK)
+    deleteMe(@CurrentUser() user: ICurrentUser): Promise<IdEntity> {
+        return this.userService.delete(user.id);
+    }
 
     @Get()
     @UseGuards(JwtAuthGuard, OwnerGuard)
