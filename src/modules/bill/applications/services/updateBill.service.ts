@@ -41,20 +41,19 @@ export class UpdateBillService implements IServiceHandler {
         }
 
         {
-            const [isUserReceiverExists, isUserLocationExists, isUsersConsumersExists] =
-                await Promise.all([
-                    this.queryBus.execute<IsReceiverExistsByUserIdAndIdQuery, boolean>(
-                        new IsReceiverExistsByUserIdAndIdQuery(userId, data.receiverId),
-                    ),
-                    this.queryBus.execute<IsLocationExistsByUserIdAndIdQuery, boolean>(
-                        new IsLocationExistsByUserIdAndIdQuery(userId, data.locationId),
-                    ),
-                    this.queryBus.execute<IsConsumerExistsByUserIdAndIdsQuery, boolean>(
-                        new IsConsumerExistsByUserIdAndIdsQuery(userId, data.consumerIds),
-                    ),
-                ]);
+            const [isReceiverExists, isLocationExists, isConsumersExists] = await Promise.all([
+                this.queryBus.execute<IsReceiverExistsByUserIdAndIdQuery, boolean>(
+                    new IsReceiverExistsByUserIdAndIdQuery(userId, data.receiverId),
+                ),
+                this.queryBus.execute<IsLocationExistsByUserIdAndIdQuery, boolean>(
+                    new IsLocationExistsByUserIdAndIdQuery(userId, data.locationId),
+                ),
+                this.queryBus.execute<IsConsumerExistsByUserIdAndIdsQuery, boolean>(
+                    new IsConsumerExistsByUserIdAndIdsQuery(userId, data.consumerIds),
+                ),
+            ]);
 
-            if (!isUserReceiverExists || !isUserLocationExists || !isUsersConsumersExists) {
+            if (!isReceiverExists || !isLocationExists || !isConsumersExists) {
                 throw new BadRequestException();
             }
         }
