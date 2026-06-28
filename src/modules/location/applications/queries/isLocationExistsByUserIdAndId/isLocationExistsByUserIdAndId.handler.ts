@@ -1,10 +1,9 @@
 import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 
 import { IsLocationExistsByUserIdAndIdQuery } from './isLocationExistsByUserIdAndId.query';
-
-import type { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 
 @QueryHandler(IsLocationExistsByUserIdAndIdQuery)
 export class IsLocationExistsByUserIdAndIdHandler implements IQueryHandler<
