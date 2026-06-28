@@ -2,19 +2,19 @@ import { Module } from '@nestjs/common';
 
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
-import { CreateUserLocationHandler } from '@/modules/location/applications/commands/createUserLocation/createUserLocation.handler';
-import { FindLocationByIdOrThrowHandler } from '@/modules/location/applications/queries/findLocationByIdOrThrow/findLocationByIdOrThrow.handler';
-import { FindLocationByNameOrNullHandler } from '@/modules/location/applications/queries/findLocationByNameOrNull/findLocationByNameOrNull.handler';
-import { FindManyLocationsByIdsHandler } from '@/modules/location/applications/queries/findManyLocationsByIds/findManyLocationsByIds.handler';
-import { FindUserLocationByRefIdAndTargetIdOrNullHandler } from '@/modules/location/applications/queries/findUserLocationByRefIdAndTargetIdOrNull/findUserLocationByRefIdAndTargetIdOrNull.handler';
-import { FindUserLocationTargetByRefIdAndTargetIdOrThrowHandler } from '@/modules/location/applications/queries/findUserLocationTargetByRefIdAndTargetIdOrThrow/findUserLocationTargetByRefIdAndTargetIdOrThrow.handler';
-import { FindUserLocationTargetListByRefIdHandler } from '@/modules/location/applications/queries/findUserLocationTargetListByRefId/findUserLocationTargetListByRefId.handler';
-import { IsUserLocationExistsByRefIdAndTargetIdHandler } from '@/modules/location/applications/queries/isUserLocationExistsByRefIdAndTargetId/isUserLocationExistsByRefIdAndTargetId.handler';
+import { DeleteLocationHandler } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.handler';
+import { UpdateLocationHandler } from '@/modules/location/applications/commands/updateLocation/updateLocation.handler';
+import { FindLocationByUserIdAndIdOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrNull/findLocationByUserIdAndIdOrNull.handler';
+import { FindLocationByUserIdAndIdOrThrowHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.handler';
+import { FindLocationByUserIdAndNameOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.handler';
+import { FindLocationListByUserIdHandler } from '@/modules/location/applications/queries/findLocationListByUserId/findLocationListByUserId.handler';
+import { FindManyLocationsByUserIdAndIdsHandler } from '@/modules/location/applications/queries/findManyLocationsByUserIdAndIds/findManyLocationsByUserIdAndIds.handler';
+import { IsLocationExistsByUserIdAndIdHandler } from '@/modules/location/applications/queries/isLocationExistsByUserIdAndId/isLocationExistsByUserIdAndId.handler';
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
+import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
-import { UserLocationService } from '@/modules/location/applications/services/userLocation.service';
+import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
-import { UserLocationRepository } from '@/modules/location/infrastructure/repositories/userLocation.repository';
 import { LocationController } from '@/modules/location/interfaces/controllers/v1.controller';
 
 @Module({
@@ -23,18 +23,19 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
     providers: [
         LocationService,
         CreateLocationService,
-        UserLocationService,
+        DeleteLocationService,
+        UpdateLocationService,
         CreateLocationHandler,
-        CreateUserLocationHandler,
-        FindLocationByNameOrNullHandler,
-        FindUserLocationByRefIdAndTargetIdOrNullHandler,
-        FindUserLocationTargetByRefIdAndTargetIdOrThrowHandler,
-        IsUserLocationExistsByRefIdAndTargetIdHandler,
-        FindLocationByIdOrThrowHandler,
-        FindManyLocationsByIdsHandler,
-        FindUserLocationTargetListByRefIdHandler,
+        UpdateLocationHandler,
+        DeleteLocationHandler,
+        FindLocationByUserIdAndIdOrNullHandler,
+        FindLocationByUserIdAndIdOrThrowHandler,
+        FindLocationByUserIdAndNameOrNullHandler,
+        FindLocationListByUserIdHandler,
+        FindManyLocationsByUserIdAndIdsHandler,
+        IsLocationExistsByUserIdAndIdHandler,
+        CreateLocationHandler,
         LocationRepository,
-        UserLocationRepository,
     ],
 })
 export class LocationModule {}

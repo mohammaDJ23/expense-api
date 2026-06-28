@@ -1,7 +1,13 @@
+import type { IList } from '@/core/interfaces/list.interface';
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
-import type { IFindByIdOrThrowRepository } from '@/core/interfaces/repositories/findByIdOrThrowRepository.interface';
-import type { IFindByNameOrNullRepository } from '@/core/interfaces/repositories/findByNameOrNullRepository.interface';
-import type { IFindManyByIdsRepository } from '@/core/interfaces/repositories/findManyByIdsRepository.interface';
+import type { IDeleteByUserIdAndIdRepository } from '@/core/interfaces/repositories/deleteByUserIdAndIdRepository.interface';
+import type { IFindByUserIdAndIdOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrNullRepository.interface';
+import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrThrowRepository.interface';
+import type { IFindByUserIdAndNameOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndNameOrNullRepository.interface';
+import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories/findListByUserIdRepository.interface';
+import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
+import type { IIsExistsByUserIdAndIdRepository } from '@/core/interfaces/repositories/IsExistsByUserIdAndIdRepository.interface';
+import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type {
     IInsertLocation,
     ISelectLocation,
@@ -10,6 +16,11 @@ import type {
 export interface ILocationRepository
     extends
         ICreateRepository<IInsertLocation, ISelectLocation>,
-        IFindByNameOrNullRepository<ISelectLocation>,
-        IFindByIdOrThrowRepository<ISelectLocation>,
-        IFindManyByIdsRepository<ISelectLocation> {}
+        IUpdateRepository<IInsertLocation & Required<Pick<IInsertLocation, 'id'>>, ISelectLocation>,
+        IDeleteByUserIdAndIdRepository<ISelectLocation>,
+        IFindByUserIdAndIdOrNullRepository<ISelectLocation>,
+        IFindByUserIdAndIdOrThrowRepository<ISelectLocation>,
+        IFindManyByUserIdAndIdsRepository<ISelectLocation>,
+        IFindListByUserIdRepository<IList, ISelectLocation>,
+        IFindByUserIdAndNameOrNullRepository<ISelectLocation>,
+        IIsExistsByUserIdAndIdRepository {}
