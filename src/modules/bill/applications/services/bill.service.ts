@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
+import { DeleteBillService } from '@/modules/bill/applications/services/deleteBill.service';
 import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
 
 import { CreateBillService } from './createBill.service';
@@ -14,9 +15,11 @@ import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateB
 
 @Injectable()
 export class BillService {
+    // eslint-disable-next-line max-params
     constructor(
         private readonly createBillService: CreateBillService,
         private readonly updateBillService: UpdateBillService,
+        private readonly deleteBillService: DeleteBillService,
         private readonly findBillByUserIdAndIdOrThrowService: FindBillByUserIdAndIdOrThrowService,
         private readonly findBillListByUserIdService: FindBillListByUserIdService,
     ) {}
@@ -27,6 +30,10 @@ export class BillService {
 
     update(data: UpdateBillRequestDto, userId: string): Promise<IdEntity> {
         return this.updateBillService.execute(data, userId);
+    }
+
+    delete(userId: string, billId: string): Promise<IdEntity> {
+        return this.deleteBillService.execute(userId, billId);
     }
 
     findListByUserId(userId: string, query: FindBillListRequestDto): Promise<IBill[]> {
