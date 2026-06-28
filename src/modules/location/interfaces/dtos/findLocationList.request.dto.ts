@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsOptional, IsInt, Min, IsString, Max } from 'class-validator';
 
-export class FindUserLocationTargetsRequestDto {
+export class FindLocationListRequestDto {
     @IsOptional()
     @Type(() => Number)
     @IsInt()

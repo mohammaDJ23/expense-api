@@ -3,21 +3,24 @@ import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 
-import { CreateLocationCommand } from './createLocation.command';
+import { DeleteLocationCommand } from './deleteLocation.command';
 
 import type { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
-@CommandHandler(CreateLocationCommand)
-export class CreateLocationHandler implements ICommandHandler<
-    CreateLocationCommand,
+@CommandHandler(DeleteLocationCommand)
+export class DeleteLocationHandler implements ICommandHandler<
+    DeleteLocationCommand,
     ISelectLocation
 > {
     constructor(private readonly locationRepository: LocationRepository) {}
 
-    async execute(command: CreateLocationCommand): Promise<ISelectLocation> {
+    async execute(command: DeleteLocationCommand): Promise<ISelectLocation> {
         try {
-            return await this.locationRepository.create(command);
+            return await this.locationRepository.deleteByUserIdAndId(
+                command.userId,
+                command.locationId,
+            );
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;

@@ -2,22 +2,25 @@ import { NotFoundException } from '@nestjs/common';
 import { QueryHandler, type IQueryHandler } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 
-import { FindLocationByIdOrThrowQuery } from './findLocationByIdOrThrow.query';
+import { FindLocationByUserIdAndIdOrThrowQuery } from './findLocationByUserIdAndIdOrThrow.query';
 
+import type { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
-@QueryHandler(FindLocationByIdOrThrowQuery)
-export class FindLocationByIdOrThrowHandler implements IQueryHandler<
-    FindLocationByIdOrThrowQuery,
+@QueryHandler(FindLocationByUserIdAndIdOrThrowQuery)
+export class FindLocationByUserIdAndIdOrThrowHandler implements IQueryHandler<
+    FindLocationByUserIdAndIdOrThrowQuery,
     ISelectLocation
 > {
     constructor(private readonly locationRepository: LocationRepository) {}
 
-    async execute(query: FindLocationByIdOrThrowQuery): Promise<ISelectLocation> {
+    async execute(query: FindLocationByUserIdAndIdOrThrowQuery): Promise<ISelectLocation> {
         try {
-            return await this.locationRepository.findByIdOrThrow(query.id);
+            return await this.locationRepository.findByUserIdAndIdOrThrow(
+                query.userId,
+                query.locationId,
+            );
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;

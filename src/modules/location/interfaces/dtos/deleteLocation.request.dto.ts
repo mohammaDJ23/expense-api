@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator';
 
-export class FindUserLocationTargetRequestDto {
+export class DeleteLocationRequestDto {
     @IsUUID()
     id: string;
 }
