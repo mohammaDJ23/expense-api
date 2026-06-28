@@ -16,7 +16,7 @@ export class DeleteManyBillsConsumersHandler implements IQueryHandler<
 
     async execute(query: DeleteManyBillsConsumersCommand): Promise<ISelectBillConsumer[]> {
         try {
-            return await this.billConsumerRepository.deleteManyByRefIdAndTargetId(
+            return await this.billConsumerRepository.deleteManyByRefIdAndTargetIds(
                 query.billId,
                 query.consumerIds,
             );

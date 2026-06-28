@@ -1,3 +1,3 @@
 export interface IFindManyByRefIdRepository<TOutput> {
-    findManyByRefId(ids: string): Promise<TOutput[]>;
+    findManyByRefId(refId: string): Promise<TOutput[]>;
 }

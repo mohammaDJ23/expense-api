@@ -1,3 +1,3 @@
 export interface IDeleteManyByRefIdAndTargetIdsRepository<TOutput> {
-    deleteManyByRefIdAndTargetId(refId: string, targetIds: string[]): Promise<TOutput[]>;
+    deleteManyByRefIdAndTargetIds(refId: string, targetIds: string[]): Promise<TOutput[]>;
 }

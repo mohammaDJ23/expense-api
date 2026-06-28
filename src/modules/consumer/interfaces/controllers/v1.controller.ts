@@ -1,4 +1,15 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpStatus,
+    Param,
+    Post,
+    Put,
+    Query,
+    UseGuards,
+} from '@nestjs/common';
 
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
@@ -6,16 +17,19 @@ import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { CurrentUser } from '@/core/user/currentUser.decorator';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
-import { UserConsumerService } from '@/modules/consumer/applications/services/userConsumer.service';
 import { ConsumerResponseDto } from '@/modules/consumer/interfaces/dtos/consumer.response.dto';
 import { CreateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/createConsumer.request.dto';
-import { FindUserConsumerTargetRequestDto } from '@/modules/consumer/interfaces/dtos/findUserConsumerTarget.request.dto';
-import { FindUserConsumerTargetsRequestDto } from '@/modules/consumer/interfaces/dtos/findUserConsumerTargets.request.dto';
+import { DeleteConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/deleteConsumer.request.dto';
+import { FindConsumerByIdRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerById.request.dto';
+import { FindConsumerListRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerList.request.dto';
+import { UpdateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/updateConsumer.request.dto';
 
 import {
     SUCCESS_CREATE_CONSUMER_MESSAGE,
+    SUCCESS_DELETE_CONSUMER_MESSAGE,
     SUCCESS_FIND_CONSUMER_MESSAGE,
     SUCCESS_FIND_CONSUMERS_MESSAGE,
+    SUCCESS_UPDATE_CONSUMER_MESSAGE,
 } from './controllers.constants';
 
 import type { IdEntity } from '@/core/entities/id.entity';
@@ -24,10 +38,7 @@ import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/
 
 @Controller({ version: '1', path: 'api/consumers' })
 export class ConsumerController {
-    constructor(
-        private readonly consumerService: ConsumerService,
-        private readonly userConsumerService: UserConsumerService,
-    ) {}
+    constructor(private readonly consumerService: ConsumerService) {}
 
     @Post()
     @UseGuards(JwtAuthGuard)
@@ -40,25 +51,47 @@ export class ConsumerController {
         return this.consumerService.create(user.id, body.name);
     }
 
+    @Put()
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(IdResponseDto)
+    @HttpResponse(SUCCESS_UPDATE_CONSUMER_MESSAGE, HttpStatus.OK)
+    update(
+        @Body() body: UpdateConsumerRequestDto,
+        @CurrentUser() user: ICurrentUser,
+    ): Promise<IdEntity> {
+        return this.consumerService.update(user.id, body);
+    }
+
+    @Delete(':id')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(IdResponseDto)
+    @HttpResponse(SUCCESS_DELETE_CONSUMER_MESSAGE, HttpStatus.OK)
+    delete(
+        @Param() param: DeleteConsumerRequestDto,
+        @CurrentUser() user: ICurrentUser,
+    ): Promise<IdEntity> {
+        return this.consumerService.delete(user.id, param.id);
+    }
+
     @Get()
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(ConsumerResponseDto)
     @HttpResponse(SUCCESS_FIND_CONSUMERS_MESSAGE, HttpStatus.OK)
-    findTargetListByRefId(
-        @Query() query: FindUserConsumerTargetsRequestDto,
+    findListByUserId(
+        @Query() query: FindConsumerListRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<ISelectConsumer[]> {
-        return this.userConsumerService.findTargetListByRefId(user.id, query);
+        return this.consumerService.findListByUserId(user.id, query);
     }
 
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(ConsumerResponseDto)
     @HttpResponse(SUCCESS_FIND_CONSUMER_MESSAGE, HttpStatus.OK)
-    findTargetByRefIdAndTargetId(
-        @Param() param: FindUserConsumerTargetRequestDto,
+    findByUserIdAndId(
+        @Param() param: FindConsumerByIdRequestDto,
         @CurrentUser() user: ICurrentUser,
     ): Promise<ISelectConsumer> {
-        return this.userConsumerService.findTargetByRefIdAndTargetId(user.id, param.id);
+        return this.consumerService.findByUserIdAndId(user.id, param.id);
     }
 }

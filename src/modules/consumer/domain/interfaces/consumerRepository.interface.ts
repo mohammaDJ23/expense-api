@@ -1,5 +1,13 @@
+import type { IList } from '@/core/interfaces/list.interface';
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
-import type { IFindByNameOrNullRepository } from '@/core/interfaces/repositories/findByNameOrNullRepository.interface';
+import type { IDeleteByUserIdAndIdRepository } from '@/core/interfaces/repositories/deleteByUserIdAndIdRepository.interface';
+import type { IFindByUserIdAndIdOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrNullRepository.interface';
+import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrThrowRepository.interface';
+import type { IFindByUserIdAndNameOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndNameOrNullRepository.interface';
+import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories/findListByUserIdRepository.interface';
+import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
+import type { IIsExistsByUserIdAndIdRepository } from '@/core/interfaces/repositories/IsExistsByUserIdAndIdRepository.interface';
+import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type {
     IInsertConsumer,
     ISelectConsumer,
@@ -8,4 +16,11 @@ import type {
 export interface IConsumerRepository
     extends
         ICreateRepository<IInsertConsumer, ISelectConsumer>,
-        IFindByNameOrNullRepository<ISelectConsumer> {}
+        IUpdateRepository<IInsertConsumer & Required<Pick<IInsertConsumer, 'id'>>, ISelectConsumer>,
+        IDeleteByUserIdAndIdRepository<ISelectConsumer>,
+        IFindByUserIdAndIdOrNullRepository<ISelectConsumer>,
+        IFindByUserIdAndIdOrThrowRepository<ISelectConsumer>,
+        IFindManyByUserIdAndIdsRepository<ISelectConsumer>,
+        IFindListByUserIdRepository<IList, ISelectConsumer>,
+        IFindByUserIdAndNameOrNullRepository<ISelectConsumer>,
+        IIsExistsByUserIdAndIdRepository {}

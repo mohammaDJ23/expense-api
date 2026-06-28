@@ -18,6 +18,7 @@ import type { ILocationRepository } from '@/modules/location/domain/interfaces/l
 @Injectable()
 export class LocationRepository implements ILocationRepository {
     constructor(private readonly drizzleRepository: DrizzleRepository) {}
+
     create(data: IInsertLocation): Promise<ISelectLocation> {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(locations).values(data).returning().execute(),

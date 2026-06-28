@@ -23,7 +23,7 @@ export class BillConsumerRepository implements IBillConsumerRepository {
         );
     }
 
-    deleteManyByRefIdAndTargetId(
+    deleteManyByRefIdAndTargetIds(
         refId: string,
         targetIds: string[],
     ): Promise<ISelectBillConsumer[]> {
@@ -59,6 +59,7 @@ export class BillConsumerRepository implements IBillConsumerRepository {
                     billId: billsConsumers.billId,
                     id: consumers.id,
                     name: consumers.name,
+                    userId: consumers.userId,
                     createdAt: consumers.createdAt,
                     updatedAt: consumers.updatedAt,
                 })
