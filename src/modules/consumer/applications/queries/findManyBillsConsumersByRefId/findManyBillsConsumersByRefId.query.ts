@@ -1,3 +1,3 @@
 export class FindManyBillsConsumersByRefIdQuery {
-    constructor(public readonly id: string) {}
+    constructor(public readonly billId: string) {}
 }

@@ -1,19 +1,17 @@
 import { ConsumerAbstract } from '@/modules/consumer/domain/abstracts/consumer.abstract';
 
-import type { IConsumerAbstract } from '@/modules/consumer/domain/interfaces/consumerAbstract.interface';
-
-export class CreateConsumerCommand extends ConsumerAbstract {
+export class UpdateConsumerCommand extends ConsumerAbstract {
+    public override readonly id: string;
     public override readonly name: string;
     public override readonly userId: string;
-    public override readonly createdAt: string;
     public override readonly updatedAt: string;
 
-    constructor(data: Required<Omit<IConsumerAbstract, 'id'>>) {
+    constructor(data: Required<Omit<ConsumerAbstract, 'createdAt'>>) {
         super(data);
 
+        this.id = data.id;
         this.name = data.name;
         this.userId = data.userId;
-        this.createdAt = data.createdAt;
         this.updatedAt = data.updatedAt;
     }
 }
