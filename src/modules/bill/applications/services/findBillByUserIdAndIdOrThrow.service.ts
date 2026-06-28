@@ -5,8 +5,8 @@ import { isEmpty } from '@/common/utils/isEmpty.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { FindBillByUserIdAndIdOrThrowQuery } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.query';
 import { FindManyBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.query';
-import { FindLocationByIdOrThrowQuery } from '@/modules/location/applications/queries/findLocationByIdOrThrow/findLocationByIdOrThrow.query';
-import { FindReceiverByIdOrThrowQuery } from '@/modules/receiver/applications/queries/findReceiverByIdOrThrow/findReceiverByIdOrThrow.query';
+import { FindLocationByUserIdAndIdOrThrowQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.query';
+import { FindReceiverByUserIdAndIdOrThrowQuery } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.query';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
@@ -26,16 +26,16 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
 
         {
             const [receiver, location, consumers] = await Promise.all([
-                this.queryBus.execute<FindReceiverByIdOrThrowQuery, ISelectReceiver>(
-                    new FindReceiverByIdOrThrowQuery(bill.receiverId),
+                this.queryBus.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
+                    new FindReceiverByUserIdAndIdOrThrowQuery(userId, bill.receiverId),
                 ),
-                this.queryBus.execute<FindLocationByIdOrThrowQuery, ISelectLocation>(
-                    new FindLocationByIdOrThrowQuery(bill.locationId),
+                this.queryBus.execute<FindLocationByUserIdAndIdOrThrowQuery, ISelectLocation>(
+                    new FindLocationByUserIdAndIdOrThrowQuery(userId, bill.locationId),
                 ),
                 this.queryBus.execute<
                     FindManyBillConsumerTargetsByRefIdsQuery,
                     ITargetBillConsumer[]
-                >(new FindManyBillConsumerTargetsByRefIdsQuery([billId])),
+                >(new FindManyBillConsumerTargetsByRefIdsQuery([bill.id])),
             ]);
 
             if (isEmpty(consumers)) {

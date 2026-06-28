@@ -5,8 +5,8 @@ import { isEmpty } from '@/common/utils/isEmpty.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { FindBillListByUserIdQuery } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.query';
 import { FindManyBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.query';
-import { FindManyLocationsByIdsQuery } from '@/modules/location/applications/queries/findManyLocationsByIds/findManyLocationsByIds.query';
-import { FindManyReceiversByIdsQuery } from '@/modules/receiver/applications/queries/findManyReceiversByIds/findManyReceiversByIds.query';
+import { FindManyLocationsByUserIdAndIdsQuery } from '@/modules/location/applications/queries/findManyLocationsByUserIdAndIds/findManyLocationsByUserIdAndIds.query';
+import { FindManyReceiversByUserIdAndIdsQuery } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.query';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
@@ -45,11 +45,11 @@ export class FindBillListByUserIdService implements IServiceHandler {
 
             {
                 const [locations, receivers, consumers] = await Promise.all([
-                    this.queryBus.execute<FindManyLocationsByIdsQuery, ISelectLocation[]>(
-                        new FindManyLocationsByIdsQuery(locationIds),
+                    this.queryBus.execute<FindManyLocationsByUserIdAndIdsQuery, ISelectLocation[]>(
+                        new FindManyLocationsByUserIdAndIdsQuery(userId, locationIds),
                     ),
-                    this.queryBus.execute<FindManyReceiversByIdsQuery, ISelectReceiver[]>(
-                        new FindManyReceiversByIdsQuery(receiverIds),
+                    this.queryBus.execute<FindManyReceiversByUserIdAndIdsQuery, ISelectReceiver[]>(
+                        new FindManyReceiversByUserIdAndIdsQuery(userId, receiverIds),
                     ),
                     this.queryBus.execute<
                         FindManyBillConsumerTargetsByRefIdsQuery,

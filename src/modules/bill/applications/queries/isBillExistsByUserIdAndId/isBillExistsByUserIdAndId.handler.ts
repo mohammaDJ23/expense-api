@@ -14,7 +14,7 @@ export class IsBillExistsByUserIdAndIdHandler implements IQueryHandler<
 
     async execute(query: IsBillExistsByUserIdAndIdQuery): Promise<boolean> {
         try {
-            return await this.billRepository.isExistsByUserIdAndId(query.userId, query.id);
+            return await this.billRepository.isExistsByUserIdAndId(query.userId, query.billId);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
