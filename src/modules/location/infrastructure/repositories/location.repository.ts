@@ -88,6 +88,7 @@ export class LocationRepository implements ILocationRepository {
                 .select()
                 .from(locations)
                 .where(and(eq(locations.userId, userId), inArray(locations.id, ids)))
+                .orderBy(desc(locations.createdAt))
                 .execute(),
         );
     }
