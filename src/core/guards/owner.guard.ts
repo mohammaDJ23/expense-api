@@ -21,7 +21,7 @@ export class OwnerGuard implements CanActivate {
         }
 
         if (user.role !== UserRoles.OWNER) {
-            throw new ForbiddenException('You have no sufficient role');
+            throw new ForbiddenException();
         }
 
         return true;
