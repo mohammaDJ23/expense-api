@@ -1,4 +1,14 @@
-import { Controller, Delete, Get, HttpStatus, Param, Query, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpStatus,
+    Param,
+    Put,
+    Query,
+    UseGuards,
+} from '@nestjs/common';
 
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
@@ -9,12 +19,14 @@ import { CurrentUser } from '@/core/user/currentUser.decorator';
 import { UserService } from '@/modules/user/applications/services/user.service';
 import { FindUserByIdRequestDto } from '@/modules/user/interfaces/dtos/findUserById.request.dto';
 import { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
+import { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
 import { UserResponseDto } from '@/modules/user/interfaces/dtos/user.response.dto';
 
 import {
     SUCCESS_DELETE_USER_MESSAGE,
     SUCCESS_FIND_USER_MESSAGE,
     SUCCESS_FIND_USERS_MESSAGE,
+    SUCCESS_UPDATE_USER_MESSAGE,
 } from './controllers.constants';
 
 import type { IdEntity } from '@/core/entities/id.entity';
@@ -25,11 +37,22 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Delete('me')
+    @Put()
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(IdResponseDto)
+    @HttpResponse(SUCCESS_UPDATE_USER_MESSAGE, HttpStatus.OK)
+    update(
+        @Body() body: UpdateUserRequestDto,
+        @CurrentUser() user: ICurrentUser,
+    ): Promise<IdEntity> {
+        return this.userService.update(user.id, body);
+    }
+
+    @Delete()
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_DELETE_USER_MESSAGE, HttpStatus.OK)
-    deleteMe(@CurrentUser() user: ICurrentUser): Promise<IdEntity> {
+    delete(@CurrentUser() user: ICurrentUser): Promise<IdEntity> {
         return this.userService.delete(user.id);
     }
 

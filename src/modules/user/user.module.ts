@@ -14,6 +14,7 @@ import { FindUserListHandler } from '@/modules/user/applications/queries/findUse
 import { IsUserExistsByEmailHandler } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.handler';
 import { IsUserExistsByIdHandler } from '@/modules/user/applications/queries/isUserExistsById/isUserExistsById.handler';
 import { DeleteUserService } from '@/modules/user/applications/services/deleteUser.service';
+import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { UserService } from '@/modules/user/applications/services/user.service';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 import { UserController } from '@/modules/user/interfaces/controllers/v1.controller';
@@ -24,6 +25,7 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
     providers: [
         UserService,
         DeleteUserService,
+        UpdateUserService,
         UserRepository,
         CreateUserHandler,
         UpdateUserHandler,
