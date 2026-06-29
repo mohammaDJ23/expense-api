@@ -1,3 +1,31 @@
+## [4.0.0](https://github.com/mohammaDJ23/expense-api/compare/v3.9.3...v4.0.0) (2026-06-29)
+
+### ✨ Features
+
+- 700990 add the bill deletion ([accdbf9](https://github.com/mohammaDJ23/expense-api/commit/accdbf9a24230f21a8f12571e30fc779353c9228))
+- 700990 add the delete user api ([e20d15c](https://github.com/mohammaDJ23/expense-api/commit/e20d15c2215913b4967373ecca99a2f58b3554fa))
+- 700990 add update user api ([5200c5d](https://github.com/mohammaDJ23/expense-api/commit/5200c5d60dbf371f26003281751a33264c9f54a7))
+
+### 💄 Breaking changes
+
+- 700990 add the related cqrs, service and apis of bill ([188b843](https://github.com/mohammaDJ23/expense-api/commit/188b84371d5a668e3ff032269979401ad4f3b23e))
+- 700990 add the related cqrs, service and apis of consumer ([5f5f377](https://github.com/mohammaDJ23/expense-api/commit/5f5f377cf6e85ae0fa67f001f16dad5ddbc80575))
+- 700990 add the related cqrs, service and apis of consumer ([7cb4e46](https://github.com/mohammaDJ23/expense-api/commit/7cb4e46dfdfdb0f701d4cadbf5d288a223264404))
+- 700990 add the related cqrs, service and apis of location ([37b15e5](https://github.com/mohammaDJ23/expense-api/commit/37b15e592b7f486ed16dd023187ebe8282ee1d6f))
+- 700990 add the related cqrs, service and apis of receiver ([ce48fef](https://github.com/mohammaDJ23/expense-api/commit/ce48fef8f724f7576b7c932ba9193912a4bc76b8))
+- 700990 add the related cqrs, service and apis of receiver ([79997b1](https://github.com/mohammaDJ23/expense-api/commit/79997b11adcc9b1eebd32595779e198e221e172b))
+- 700990 add the related query and fix the type of repo ([d1fcec1](https://github.com/mohammaDJ23/expense-api/commit/d1fcec1d7c29c8e0fd6fd34511f9e475fcc4c61c))
+- 700990 change the data relationships ([b8acaf6](https://github.com/mohammaDJ23/expense-api/commit/b8acaf68a979c871e81607a8c1eb0dcfcd24d1f8))
+
+### 🔧 Chores
+
+- 700990 add orderby ([dd372d2](https://github.com/mohammaDJ23/expense-api/commit/dd372d2b01097295dfba53ef583ba7433ab6a591))
+- 700990 check if bills consumers created successfully ([480f893](https://github.com/mohammaDJ23/expense-api/commit/480f893111183c896f73a4e1fc90b74e05b8bd0b))
+- 700990 remove the text ([837f467](https://github.com/mohammaDJ23/expense-api/commit/837f467f18dc655ede776f224ffdd73627016fd5))
+- 700990 update some names ([aa86854](https://github.com/mohammaDJ23/expense-api/commit/aa86854021e17b91e9b915b410a85fada84256d7))
+- 700990 update the error messages ([aa74059](https://github.com/mohammaDJ23/expense-api/commit/aa7405934d2cd39a5a00564234f4b7d6420689a1))
+- 700990 update the names ([e9ad121](https://github.com/mohammaDJ23/expense-api/commit/e9ad1213a3f7cacb85ffe5373e911b3626fd9e70))
+
 ## [3.9.3](https://github.com/mohammaDJ23/expense-api/compare/v3.9.2...v3.9.3) (2026-06-26)
 
 ### 🔧 Chores
