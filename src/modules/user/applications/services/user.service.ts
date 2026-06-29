@@ -6,18 +6,25 @@ import { DeleteManyNotVerifiedUsersCommand } from '@/modules/user/applications/c
 import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 import { FindUserListQuery } from '@/modules/user/applications/queries/findUserList/findUserList.query';
 import { DeleteUserService } from '@/modules/user/applications/services/deleteUser.service';
+import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 
 import type { IdEntity } from '@/core/entities/id.entity';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
+import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
 
 @Injectable()
 export class UserService {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
+        private readonly updateUserService: UpdateUserService,
         private readonly deleteUserService: DeleteUserService,
     ) {}
+
+    update(userId: string, data: UpdateUserRequestDto): Promise<IdEntity> {
+        return this.updateUserService.execute(userId, data);
+    }
 
     delete(userId: string): Promise<IdEntity> {
         return this.deleteUserService.execute(userId);
