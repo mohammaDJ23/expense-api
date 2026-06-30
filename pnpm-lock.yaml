@@ -6,7 +6,7 @@ settings:
 
 overrides:
     '@isaacs/brace-expansion': '>=5.0.1'
-    brace-expansion: '>=5.0.5'
+    brace-expansion: '>=5.0.7'
     minimatch: '>=10.2.3'
     qs: '>=6.14.2'
     handlebars: '>=4.7.9'
@@ -4666,17 +4666,10 @@ packages:
             }
         engines: { node: '>=10' }
 
-    brace-expansion@5.0.5:
+    brace-expansion@5.0.7:
         resolution:
             {
-                integrity: sha512-VZznLgtwhn+Mact9tfiwx64fA9erHH/MCXEUfB/0bX/6Fz6ny5EGTXYltMocqg4xFAQZtnO3DHWWXi8RiuN7cQ==,
-            }
-        engines: { node: 18 || 20 || >=22 }
-
-    brace-expansion@5.0.6:
-        resolution:
-            {
-                integrity: sha512-kLpxurY4Z4r9sgMsyG0Z9uzsBlgiU/EFKhj/h91/8yHu0edo7XuixOIH3VcJ8kkxs6/jPzoI6U9Vj3WqbMQ94g==,
+                integrity: sha512-7oFy703dxfY3/NLxC1fh2SUCQ0H9rmAY+5EpDVfXjUTTs+HEwR2nYaqLv+GWcTsumwxPfiz6CzCNkwXwBUwqCA==,
             }
         engines: { node: 18 || 20 || >=22 }
 
@@ -12154,13 +12147,6 @@ packages:
             }
         engines: { node: '>=12.0.0' }
 
-    tinyglobby@0.2.16:
-        resolution:
-            {
-                integrity: sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==,
-            }
-        engines: { node: '>=12.0.0' }
-
     tinyglobby@0.2.17:
         resolution:
             {
@@ -16013,11 +15999,7 @@ snapshots:
             widest-line: 3.1.0
             wrap-ansi: 7.0.0
 
-    brace-expansion@5.0.5:
-        dependencies:
-            balanced-match: 4.0.4
-
-    brace-expansion@5.0.6:
+    brace-expansion@5.0.7:
         dependencies:
             balanced-match: 4.0.4
 
@@ -19114,11 +19096,11 @@ snapshots:
 
     minimatch@10.2.4:
         dependencies:
-            brace-expansion: 5.0.5
+            brace-expansion: 5.0.7
 
     minimatch@10.2.5:
         dependencies:
-            brace-expansion: 5.0.6
+            brace-expansion: 5.0.7
 
     minimist-options@4.1.0:
         dependencies:
@@ -21420,12 +21402,6 @@ snapshots:
             fdir: 6.5.0(picomatch@4.0.4)
             picomatch: 4.0.4
 
-    tinyglobby@0.2.16:
-        dependencies:
-            fdir: 6.5.0(picomatch@4.0.4)
-            picomatch: 4.0.4
-        optional: true
-
     tinyglobby@0.2.17:
         dependencies:
             fdir: 6.5.0(picomatch@4.0.4)
@@ -21644,7 +21620,7 @@ snapshots:
             dedent: 1.7.2
             reflect-metadata: 0.2.2
             sql-highlight: 6.1.0
-            tinyglobby: 0.2.16
+            tinyglobby: 0.2.17
             tslib: 2.8.1
             yargs: 18.0.0
         optionalDependencies:
