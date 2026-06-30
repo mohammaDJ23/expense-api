@@ -99,66 +99,6 @@ services:
                 max-size: '10m'
                 max-file: '3'
 
-    postgres-backup:
-        image: tiredofit/db-backup:4.1.21
-        environment:
-            - DB_TYPE=postgres
-            - DB_HOST=postgres
-            - DB_NAME=expense_api_prod
-            - DB_USER=expense_api
-            - DB_PASS_FILE=/run/secrets/database_password
-            - ENABLE_MAIL=true
-            - MAIL_TO=/run/secrets/mail_to
-            - MAIL_FROM=expense-api-database-backup@noreply.com
-            - SMTP_HOST=smtp.gmail.com
-            - SMTP_PORT=587
-            - SMTP_USER=/run/secrets/mail_username
-            - SMTP_PASS_FILE=/run/secrets/mail_password
-            - BACKUP_INTERVAL=360
-            - BACKUP_FORMAT=sql
-            - BACKUP_COMPRESS=gzip
-            - BACKUP_RETAIN_DAYS=0
-            - CONTAINER_ENABLE_MONITORING=0
-        secrets:
-            - database_password
-            - mail_username
-            - mail_password
-            - mail_to
-        networks:
-            - expense-api-network
-            - expense-api-network-internal
-        healthcheck:
-            test:
-                - 'CMD-SHELL'
-                - 'pg_isready -h postgres -U expense_api'
-            interval: 15s
-            timeout: 5s
-            start_period: 30s
-            retries: 3
-        restart: unless-stopped
-        depends_on:
-            postgres:
-                condition: service_healthy
-        mem_limit: 256M
-        mem_reservation: 128M
-        cpus: '0.25'
-        security_opt:
-            - no-new-privileges:true
-        cap_drop:
-            - ALL
-        cap_add:
-            - CHOWN
-            - DAC_OVERRIDE
-            - FOWNER
-            - SETGID
-            - SETUID
-            - SYS_CHROOT
-        logging:
-            driver: 'json-file'
-            options:
-                max-size: '10m'
-                max-file: '3'
-
     redis:
         image: redis:7-alpine
         command: >
@@ -218,8 +158,6 @@ secrets:
         file: ./secrets/mail_username.txt
     mail_password:
         file: ./secrets/mail_password.txt
-    mail_to:
-        file: ./secrets/mail_to.txt
     google_oauth_client_id:
         file: ./secrets/google_oauth_client_id.txt
     google_oauth_client_secret:
