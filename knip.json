@@ -1,0 +1,6 @@
+{
+    "$schema": "https://unpkg.com/knip@6/schema.json",
+    "entry": ["src/main.ts"],
+    "project": ["src/**/*.ts"],
+    "ignore": ["eslint.config.mjs", "drizzle.config.ts", "commitlint.config.js"]
+}
