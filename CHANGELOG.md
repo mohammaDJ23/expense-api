@@ -1,3 +1,18 @@
+## [4.0.1](https://github.com/mohammaDJ23/expense-api/compare/v4.0.0...v4.0.1) (2026-07-01)
+
+### 🐛 Bug Fixes
+
+- 951809 update the version of brace-expansion ([e5e33f9](https://github.com/mohammaDJ23/expense-api/commit/e5e33f92388d6c978ee9ef789f55944dca6e046c))
+- 951809 update the version of brace-expansion ([66d9e10](https://github.com/mohammaDJ23/expense-api/commit/66d9e1050ac66c1f83048a5c36b900cc3a45137b))
+
+### 🔧 Chores
+
+- 951809 add the backup configuration ([24598d3](https://github.com/mohammaDJ23/expense-api/commit/24598d3e062d3d459d115813321a816a991eb7d3))
+- 951809 add the knip config file ([514bdb0](https://github.com/mohammaDJ23/expense-api/commit/514bdb099ee3e9baaa4a4355b868da5b2686fa13))
+- 951809 remove the backup config from docker development ([8218ce6](https://github.com/mohammaDJ23/expense-api/commit/8218ce6d1fafd30512f5f752ea0b640bd4ae02ea))
+- 951809 remove the backup service ([3e17489](https://github.com/mohammaDJ23/expense-api/commit/3e17489ad702c3f45daf13eca64fe6c0da108f18))
+- 951809 remove tne ignore property ([3b939cb](https://github.com/mohammaDJ23/expense-api/commit/3b939cbe8d29a7ce1af4aba68a51867a9c7de028))
+
 ## [4.0.0](https://github.com/mohammaDJ23/expense-api/compare/v3.9.3...v4.0.0) (2026-06-29)
 
 ### ✨ Features
