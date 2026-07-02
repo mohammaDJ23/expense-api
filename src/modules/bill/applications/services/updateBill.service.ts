@@ -38,7 +38,7 @@ export class UpdateBillService implements IServiceHandler {
     async execute(data: UpdateBillRequestDto, userId: string): Promise<IdEntity> {
         {
             const isExists = await this.queryBus.execute<IsBillExistsByUserIdAndIdQuery, boolean>(
-                new IsBillExistsByUserIdAndIdQuery(userId, data.id),
+                new IsBillExistsByUserIdAndIdQuery({ userId, id: data.id }),
             );
 
             if (!isExists) {
