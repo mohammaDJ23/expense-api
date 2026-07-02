@@ -42,7 +42,7 @@ export class ConsumerService {
 
     findByUserIdAndId(userId: string, consumerId: string): Promise<ISelectConsumer> {
         return this.queryBus.execute<FindConsumerByUserIdAndIdOrThrowQuery, ISelectConsumer>(
-            new FindConsumerByUserIdAndIdOrThrowQuery(userId, consumerId),
+            new FindConsumerByUserIdAndIdOrThrowQuery({ userId, id: consumerId }),
         );
     }
 }
