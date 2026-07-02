@@ -26,7 +26,7 @@ export class DeleteReceiverService implements IServiceHandler {
             const isExists = await this.queryBus.execute<
                 IsReceiverExistsByUserIdAndIdQuery,
                 boolean
-            >(new IsReceiverExistsByUserIdAndIdQuery(userId, receiverId));
+            >(new IsReceiverExistsByUserIdAndIdQuery({ userId, id: receiverId }));
 
             if (!isExists) {
                 throw new BadRequestException('Could not found the receiver');
