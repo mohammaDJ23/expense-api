@@ -1,0 +1,24 @@
+import { CommandBus } from '@nestjs/cqrs';
+import { Cron, CronExpression } from '@nestjs/schedule';
+
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
+import { DeleteManyOutboxEventsByDateCommand } from '@/modules/outbox/applications/commands/deleteManyOutboxEventsByDate/deleteManyOutboxEventsByDate.command';
+
+import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
+
+export class DeleteManyOutboxEventsService implements IServiceHandler {
+    constructor(private readonly commandBus: CommandBus) {}
+
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+    async execute(): Promise<void> {
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - 7);
+
+        await this.commandBus.execute<DeleteManyOutboxEventsByDateCommand, ISelectOutboxEvent[]>(
+            new DeleteManyOutboxEventsByDateCommand({
+                date: getCurrentUTCTimestamp(cutoff),
+            }),
+        );
+    }
+}

@@ -339,6 +339,8 @@ export default defineConfig([
             '@typescript-eslint/no-meaningless-void-operator': 'error',
             '@typescript-eslint/no-extraneous-class': 'off',
             '@typescript-eslint/no-unsafe-function-type': 'off',
+            '@typescript-eslint/no-unnecessary-type-parameters': 'off',
+            '@typescript-eslint/no-useless-constructor': 'off',
 
             // Naming conventions
             '@typescript-eslint/naming-convention': [
