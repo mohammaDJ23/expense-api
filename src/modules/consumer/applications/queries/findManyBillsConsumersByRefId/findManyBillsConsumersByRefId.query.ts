@@ -1,3 +1,7 @@
+interface IProps {
+    billId: string;
+}
+
 export class FindManyBillsConsumersByRefIdQuery {
-    constructor(public readonly billId: string) {}
+    constructor(public readonly props: IProps) {}
 }

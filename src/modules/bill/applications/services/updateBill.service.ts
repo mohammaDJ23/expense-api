@@ -76,7 +76,7 @@ export class UpdateBillService implements IServiceHandler {
             const billsConsumers = await this.queryBus.execute<
                 FindManyBillsConsumersByRefIdQuery,
                 ISelectBillConsumer[]
-            >(new FindManyBillsConsumersByRefIdQuery(data.id));
+            >(new FindManyBillsConsumersByRefIdQuery({ billId: data.id }));
 
             if (isEmpty(billsConsumers)) {
                 throw new ProcessFailedInternalServerErrorException();
