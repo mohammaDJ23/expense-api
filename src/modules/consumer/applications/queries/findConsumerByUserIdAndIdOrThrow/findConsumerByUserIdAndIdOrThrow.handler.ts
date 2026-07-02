@@ -18,8 +18,8 @@ export class FindConsumerByUserIdAndIdOrThrowHandler implements IQueryHandler<
     async execute(query: FindConsumerByUserIdAndIdOrThrowQuery): Promise<ISelectConsumer> {
         try {
             return await this.consumerRepository.findByUserIdAndIdOrThrow(
-                query.userId,
-                query.consumerId,
+                query.props.userId,
+                query.props.id,
             );
         } catch (error) {
             if (error instanceof NotFoundException) {
