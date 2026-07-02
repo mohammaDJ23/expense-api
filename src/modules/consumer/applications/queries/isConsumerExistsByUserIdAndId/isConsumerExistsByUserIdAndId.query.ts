@@ -1,6 +1,8 @@
+interface IProps {
+    userId: string;
+    id: string;
+}
+
 export class IsConsumerExistsByUserIdAndIdQuery {
-    constructor(
-        public readonly userId: string,
-        public readonly consumerId: string,
-    ) {}
+    constructor(public readonly props: IProps) {}
 }

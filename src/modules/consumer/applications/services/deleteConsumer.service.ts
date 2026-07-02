@@ -26,7 +26,7 @@ export class DeleteConsumerService implements IServiceHandler {
             const isExists = await this.queryBus.execute<
                 IsConsumerExistsByUserIdAndIdQuery,
                 boolean
-            >(new IsConsumerExistsByUserIdAndIdQuery(userId, consumerId));
+            >(new IsConsumerExistsByUserIdAndIdQuery({ userId, id: consumerId }));
 
             if (!isExists) {
                 throw new BadRequestException('Could not found the consumer');
