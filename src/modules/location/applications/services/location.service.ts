@@ -41,7 +41,7 @@ export class LocationService {
 
     findByUserIdAndId(userId: string, locationId: string): Promise<ISelectLocation> {
         return this.queryBus.execute<FindLocationByUserIdAndIdOrThrowQuery, ISelectLocation>(
-            new FindLocationByUserIdAndIdOrThrowQuery(userId, locationId),
+            new FindLocationByUserIdAndIdOrThrowQuery({ userId, id: locationId }),
         );
     }
 }

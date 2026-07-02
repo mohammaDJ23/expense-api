@@ -18,8 +18,8 @@ export class FindLocationByUserIdAndIdOrThrowHandler implements IQueryHandler<
     async execute(query: FindLocationByUserIdAndIdOrThrowQuery): Promise<ISelectLocation> {
         try {
             return await this.locationRepository.findByUserIdAndIdOrThrow(
-                query.userId,
-                query.locationId,
+                query.props.userId,
+                query.props.id,
             );
         } catch (error) {
             if (error instanceof NotFoundException) {

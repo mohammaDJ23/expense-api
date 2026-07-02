@@ -1,6 +1,8 @@
+interface IProps {
+    userId: string;
+    id: string;
+}
+
 export class FindLocationByUserIdAndIdOrThrowQuery {
-    constructor(
-        public readonly userId: string,
-        public readonly locationId: string,
-    ) {}
+    constructor(public readonly props: IProps) {}
 }
