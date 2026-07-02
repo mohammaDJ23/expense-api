@@ -340,7 +340,10 @@ export default defineConfig([
             '@typescript-eslint/no-extraneous-class': 'off',
             '@typescript-eslint/no-unsafe-function-type': 'off',
             '@typescript-eslint/no-unnecessary-type-parameters': 'off',
+<<<<<<< Updated upstream
             '@typescript-eslint/no-useless-constructor': 'off',
+=======
+>>>>>>> Stashed changes
 
             // Naming conventions
             '@typescript-eslint/naming-convention': [
