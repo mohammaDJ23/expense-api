@@ -32,7 +32,7 @@ export class UpdateLocationService implements IServiceHandler {
                 this.queryBus.execute<
                     FindLocationByUserIdAndNameOrNullQuery,
                     ISelectLocation | null
-                >(new FindLocationByUserIdAndNameOrNullQuery(userId, data.name)),
+                >(new FindLocationByUserIdAndNameOrNullQuery({ userId, name: data.name })),
             ]);
 
             if (!isExists) {
