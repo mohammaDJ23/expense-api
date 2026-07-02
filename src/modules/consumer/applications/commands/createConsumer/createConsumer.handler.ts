@@ -17,7 +17,7 @@ export class CreateConsumerHandler implements ICommandHandler<
 
     async execute(command: CreateConsumerCommand): Promise<ISelectConsumer> {
         try {
-            return await this.consumerRepository.create(command);
+            return await this.consumerRepository.create(command.props);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
