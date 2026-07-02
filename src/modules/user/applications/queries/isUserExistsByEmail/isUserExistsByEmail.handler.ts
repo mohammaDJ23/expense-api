@@ -14,7 +14,7 @@ export class IsUserExistsByEmailHandler implements IQueryHandler<
 
     async execute(query: IsUserExistsByEmailQuery): Promise<boolean> {
         try {
-            return await this.userRepository.isExistsByEmail(query.email);
+            return await this.userRepository.isExistsByEmail(query.props.email);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
