@@ -25,7 +25,7 @@ export class CreateLocationService implements IServiceHandler {
         const location = await this.queryBus.execute<
             FindLocationByUserIdAndNameOrNullQuery,
             ISelectLocation | null
-        >(new FindLocationByUserIdAndNameOrNullQuery(userId, name));
+        >(new FindLocationByUserIdAndNameOrNullQuery({ userId, name }));
 
         if (!location) {
             const createdLocation = await this.commandBus.execute<

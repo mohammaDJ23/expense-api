@@ -17,8 +17,8 @@ export class FindLocationByUserIdAndNameOrNullHandler implements IQueryHandler<
     async execute(query: FindLocationByUserIdAndNameOrNullQuery): Promise<ISelectLocation | null> {
         try {
             return await this.locationRepository.findByUserIdAndNameOrNull(
-                query.userId,
-                query.name,
+                query.props.userId,
+                query.props.name,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();

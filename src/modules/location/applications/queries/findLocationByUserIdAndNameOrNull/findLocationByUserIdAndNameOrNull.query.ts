@@ -1,6 +1,8 @@
+interface IProps {
+    userId: string;
+    name: string;
+}
+
 export class FindLocationByUserIdAndNameOrNullQuery {
-    constructor(
-        public readonly userId: string,
-        public readonly name: string,
-    ) {}
+    constructor(public readonly props: IProps) {}
 }
