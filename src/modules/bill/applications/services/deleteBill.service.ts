@@ -33,7 +33,7 @@ export class DeleteBillService implements IServiceHandler {
 
         {
             const deletedBill = await this.commandBus.execute<DeleteBillCommand, ISelectBill>(
-                new DeleteBillCommand(userId, billId),
+                new DeleteBillCommand({ userId, id: billId }),
             );
 
             await this.commandBus.execute<
