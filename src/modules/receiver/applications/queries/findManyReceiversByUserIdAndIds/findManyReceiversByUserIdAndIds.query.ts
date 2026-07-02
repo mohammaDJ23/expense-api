@@ -1,6 +1,8 @@
+interface IProps {
+    userId: string;
+    ids: string[];
+}
+
 export class FindManyReceiversByUserIdAndIdsQuery {
-    constructor(
-        public readonly userId: string,
-        public readonly receiverIds: string[],
-    ) {}
+    constructor(public readonly props: IProps) {}
 }

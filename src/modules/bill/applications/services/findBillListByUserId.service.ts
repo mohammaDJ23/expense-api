@@ -49,7 +49,7 @@ export class FindBillListByUserIdService implements IServiceHandler {
                         new FindManyLocationsByUserIdAndIdsQuery(userId, locationIds),
                     ),
                     this.queryBus.execute<FindManyReceiversByUserIdAndIdsQuery, ISelectReceiver[]>(
-                        new FindManyReceiversByUserIdAndIdsQuery(userId, receiverIds),
+                        new FindManyReceiversByUserIdAndIdsQuery({ userId, ids: receiverIds }),
                     ),
                     this.queryBus.execute<
                         FindManyBillConsumerTargetsByRefIdsQuery,
