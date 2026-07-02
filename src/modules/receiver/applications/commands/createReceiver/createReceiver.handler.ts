@@ -17,7 +17,7 @@ export class CreateReceiverHandler implements ICommandHandler<
 
     async execute(command: CreateReceiverCommand): Promise<ISelectReceiver> {
         try {
-            return await this.receiverRepository.create(command);
+            return await this.receiverRepository.create(command.props);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
