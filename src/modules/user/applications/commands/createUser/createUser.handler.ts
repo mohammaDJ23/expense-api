@@ -14,7 +14,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand, ISe
 
     async execute(command: CreateUserCommand): Promise<ISelectUser> {
         try {
-            return await this.userRepository.create(command);
+            return await this.userRepository.create(command.props);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
