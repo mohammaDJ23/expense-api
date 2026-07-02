@@ -32,7 +32,7 @@ export class UpdateReceiverService implements IServiceHandler {
                 this.queryBus.execute<
                     FindReceiverByUserIdAndNameOrNullQuery,
                     ISelectReceiver | null
-                >(new FindReceiverByUserIdAndNameOrNullQuery(userId, data.name)),
+                >(new FindReceiverByUserIdAndNameOrNullQuery({ userId, name: data.name })),
             ]);
 
             if (!isExists) {

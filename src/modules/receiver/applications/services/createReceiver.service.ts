@@ -25,7 +25,7 @@ export class CreateReceiverService implements IServiceHandler {
         const receiver = await this.queryBus.execute<
             FindReceiverByUserIdAndNameOrNullQuery,
             ISelectReceiver | null
-        >(new FindReceiverByUserIdAndNameOrNullQuery(userId, name));
+        >(new FindReceiverByUserIdAndNameOrNullQuery({ userId, name }));
 
         if (!receiver) {
             const createdReceiver = await this.commandBus.execute<
