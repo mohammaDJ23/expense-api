@@ -1,17 +1,7 @@
-import { LocationAbstract } from '@/modules/location/domain/abstracts/location.abstract';
+import type { IInsertLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
-export class CreateLocationCommand extends LocationAbstract {
-    public override readonly name: string;
-    public override readonly userId: string;
-    public override readonly createdAt: string;
-    public override readonly updatedAt: string;
+interface IProps extends Required<Omit<IInsertLocation, 'id'>> {}
 
-    constructor(data: Required<Omit<LocationAbstract, 'id'>>) {
-        super(data);
-
-        this.name = data.name;
-        this.userId = data.userId;
-        this.createdAt = data.createdAt;
-        this.updatedAt = data.updatedAt;
-    }
+export class CreateLocationCommand {
+    constructor(public readonly props: IProps) {}
 }
