@@ -14,18 +14,24 @@ import { DeleteManyBillsConsumersCommand } from '@/modules/consumer/applications
 import { FindManyBillsConsumersByRefIdQuery } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.query';
 import { IsConsumerExistsByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndIds/isConsumerExistsByUserIdAndIds.query';
 import { IsLocationExistsByUserIdAndIdQuery } from '@/modules/location/applications/queries/isLocationExistsByUserIdAndId/isLocationExistsByUserIdAndId.query';
+import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 import { IsReceiverExistsByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/isReceiverExistsByUserIdAndId/isReceiverExistsByUserIdAndId.query';
 
+import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
+
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IBillOutboxEvent } from '@/modules/bill/domain/interfaces/billOutboxEvent.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
 import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
+import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
 export class UpdateBillService implements IServiceHandler {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
+        private readonly findBillByUserIdAndIdOrThrowService: FindBillByUserIdAndIdOrThrowService,
     ) {}
 
     @Transactional()
@@ -134,9 +140,26 @@ export class UpdateBillService implements IServiceHandler {
                         }),
                     ),
                 ]);
-
-                return IdEntity.create(data.id);
             }
         }
+
+        {
+            const bill = await this.findBillByUserIdAndIdOrThrowService.execute(userId, data.id);
+
+            await this.commandBus.execute<
+                CreateOutboxEventCommand<IBillOutboxEvent>,
+                ISelectOutboxEvent
+            >(
+                new CreateOutboxEventCommand<IBillOutboxEvent>({
+                    aggregateId: bill.id,
+                    aggregateType: 'bills',
+                    eventType: 'updated',
+                    payload: bill,
+                    createdAt: getCurrentUTCTimestamp(),
+                }),
+            );
+        }
+
+        return IdEntity.create(data.id);
     }
 }
