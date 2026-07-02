@@ -16,7 +16,7 @@ export class CreateManyBillsConsumersHandler implements ICommandHandler<
 
     async execute(command: CreateManyBillsConsumersCommand): Promise<ISelectBillConsumer[]> {
         try {
-            return await this.billConsumerRepository.createMany(command.billsConsumers);
+            return await this.billConsumerRepository.createMany(command.props.billsConsumers);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

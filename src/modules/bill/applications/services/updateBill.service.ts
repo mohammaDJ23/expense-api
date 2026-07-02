@@ -105,13 +105,13 @@ export class UpdateBillService implements IServiceHandler {
                             CreateManyBillsConsumersCommand,
                             ISelectBillConsumer[]
                         >(
-                            new CreateManyBillsConsumersCommand(
-                                idsToCreate.map((id) => ({
+                            new CreateManyBillsConsumersCommand({
+                                billsConsumers: idsToCreate.map((id) => ({
                                     billId: data.id,
                                     consumerId: id,
                                     createdAt: getCurrentUTCTimestamp(),
                                 })),
-                            ),
+                            }),
                         ),
                     );
                 }

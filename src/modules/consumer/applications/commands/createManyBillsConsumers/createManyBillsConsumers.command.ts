@@ -1,5 +1,9 @@
-import type { IBillConsumerAbstract } from '@/modules/consumer/domain/interfaces/billConsumerAbstract.interface';
+import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
+
+interface IProps {
+    billsConsumers: Required<Omit<ISelectBillConsumer, 'id'>>[];
+}
 
 export class CreateManyBillsConsumersCommand {
-    constructor(public readonly billsConsumers: Required<Omit<IBillConsumerAbstract, 'id'>>[]) {}
+    constructor(public readonly props: IProps) {}
 }

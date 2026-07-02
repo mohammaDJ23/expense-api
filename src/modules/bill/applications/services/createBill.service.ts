@@ -77,13 +77,13 @@ export class CreateBillService implements IServiceHandler {
                     CreateManyBillsConsumersCommand,
                     ISelectBillConsumer[]
                 >(
-                    new CreateManyBillsConsumersCommand(
-                        data.consumerIds.map((consumerId) => ({
+                    new CreateManyBillsConsumersCommand({
+                        billsConsumers: data.consumerIds.map((consumerId) => ({
                             billId: createdBill.id,
                             consumerId,
                             createdAt: getCurrentUTCTimestamp(),
                         })),
-                    ),
+                    }),
                 );
 
                 if (isEmpty(createdBillsConsumers)) {
