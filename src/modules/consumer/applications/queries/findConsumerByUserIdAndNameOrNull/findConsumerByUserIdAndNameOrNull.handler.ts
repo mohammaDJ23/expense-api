@@ -17,8 +17,8 @@ export class FindConsumerByUserIdAndNameOrNullHandler implements IQueryHandler<
     async execute(query: FindConsumerByUserIdAndNameOrNullQuery): Promise<ISelectConsumer | null> {
         try {
             return await this.consumerRepository.findByUserIdAndNameOrNull(
-                query.userId,
-                query.name,
+                query.props.userId,
+                query.props.name,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();

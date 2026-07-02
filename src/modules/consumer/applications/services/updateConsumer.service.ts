@@ -32,7 +32,7 @@ export class UpdateConsumerService implements IServiceHandler {
                 this.queryBus.execute<
                     FindConsumerByUserIdAndNameOrNullQuery,
                     ISelectConsumer | null
-                >(new FindConsumerByUserIdAndNameOrNullQuery(userId, data.name)),
+                >(new FindConsumerByUserIdAndNameOrNullQuery({ userId, name: data.name })),
             ]);
 
             if (!isExists) {

@@ -25,7 +25,7 @@ export class CreateConsumerService implements IServiceHandler {
         const consumer = await this.queryBus.execute<
             FindConsumerByUserIdAndNameOrNullQuery,
             ISelectConsumer | null
-        >(new FindConsumerByUserIdAndNameOrNullQuery(userId, name));
+        >(new FindConsumerByUserIdAndNameOrNullQuery({ userId, name }));
 
         if (!consumer) {
             const createdConsumer = await this.commandBus.execute<
