@@ -16,9 +16,9 @@ export class FindBillListByUserIdHandler implements IQueryHandler<
 
     async execute(query: FindBillListByUserIdQuery): Promise<ISelectBill[]> {
         try {
-            return await this.billRepository.findListByUserId(query.userId, {
-                offset: query.offset,
-                limit: query.limit,
+            return await this.billRepository.findListByUserId(query.props.userId, {
+                offset: query.props.offset,
+                limit: query.props.limit,
             });
         } catch {
             throw new ProcessFailedInternalServerErrorException();
