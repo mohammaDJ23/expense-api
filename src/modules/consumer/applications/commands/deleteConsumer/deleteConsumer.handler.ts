@@ -18,8 +18,8 @@ export class DeleteConsumerHandler implements ICommandHandler<
     async execute(command: DeleteConsumerCommand): Promise<ISelectConsumer> {
         try {
             return await this.consumerRepository.deleteByUserIdAndId(
-                command.userId,
-                command.consumerId,
+                command.props.userId,
+                command.props.id,
             );
         } catch (error) {
             if (error instanceof NotFoundException) {

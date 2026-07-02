@@ -37,7 +37,7 @@ export class DeleteConsumerService implements IServiceHandler {
             const deletedConsumer = await this.commandBus.execute<
                 DeleteConsumerCommand,
                 ISelectConsumer
-            >(new DeleteConsumerCommand(userId, consumerId));
+            >(new DeleteConsumerCommand({ userId, id: consumerId }));
 
             await this.commandBus.execute<
                 CreateOutboxEventCommand<IConsumerOutboxEvent>,
