@@ -17,7 +17,7 @@ export class CreateLocationHandler implements ICommandHandler<
 
     async execute(command: CreateLocationCommand): Promise<ISelectLocation> {
         try {
-            return await this.locationRepository.create(command);
+            return await this.locationRepository.create(command.props);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
