@@ -26,7 +26,7 @@ export class DeleteLocationService implements IServiceHandler {
             const isExists = await this.queryBus.execute<
                 IsLocationExistsByUserIdAndIdQuery,
                 boolean
-            >(new IsLocationExistsByUserIdAndIdQuery(userId, locationId));
+            >(new IsLocationExistsByUserIdAndIdQuery({ userId, id: locationId }));
 
             if (!isExists) {
                 throw new BadRequestException('Could not found the location');

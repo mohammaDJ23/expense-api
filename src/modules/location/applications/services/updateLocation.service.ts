@@ -27,7 +27,7 @@ export class UpdateLocationService implements IServiceHandler {
         {
             const [isExists, foundedByName] = await Promise.all([
                 this.queryBus.execute<IsLocationExistsByUserIdAndIdQuery, boolean>(
-                    new IsLocationExistsByUserIdAndIdQuery(userId, data.id),
+                    new IsLocationExistsByUserIdAndIdQuery({ userId, id: data.id }),
                 ),
                 this.queryBus.execute<
                     FindLocationByUserIdAndNameOrNullQuery,

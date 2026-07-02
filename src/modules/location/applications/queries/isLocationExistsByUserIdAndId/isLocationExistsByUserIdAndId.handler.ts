@@ -15,8 +15,8 @@ export class IsLocationExistsByUserIdAndIdHandler implements IQueryHandler<
     async execute(query: IsLocationExistsByUserIdAndIdQuery): Promise<boolean> {
         try {
             return await this.locationRepository.isExistsByUserIdAndId(
-                query.userId,
-                query.locationId,
+                query.props.userId,
+                query.props.id,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
