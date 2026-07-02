@@ -16,7 +16,7 @@ export class FindManyBillConsumerTargetsByRefIdsHandler implements IQueryHandler
 
     async execute(query: FindManyBillConsumerTargetsByRefIdsQuery): Promise<ITargetBillConsumer[]> {
         try {
-            return await this.billConsumerRepository.findManyTargetsByRefIds(query.billIds);
+            return await this.billConsumerRepository.findManyTargetsByRefIds(query.props.billIds);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
