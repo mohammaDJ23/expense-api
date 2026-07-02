@@ -1,6 +1,8 @@
+interface IProps {
+    billId: string;
+    ids: string[];
+}
+
 export class DeleteManyBillsConsumersCommand {
-    constructor(
-        public readonly billId: string,
-        public readonly consumerIds: string[],
-    ) {}
+    constructor(public readonly props: IProps) {}
 }
