@@ -166,10 +166,135 @@ services:
                 max-size: '10m'
                 max-file: '3'
 
+    kafka:
+        image: apache/kafka:4.0.0
+        restart: unless-stopped
+        ports:
+            - '9092:9092'
+        environment:
+            - KAFKA_NODE_ID=1
+            - KAFKA_PROCESS_ROLES=broker,controller
+            - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+            - KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+            - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+            - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+            - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+            - CLUSTER_ID=MkU3OEVBNTcwNTJENDM2Qk
+            - KAFKA_LOG_DIRS=/var/lib/kafka/data
+            - KAFKA_AUTO_CREATE_TOPICS_ENABLE='true'
+            - KAFKA_DELETE_TOPIC_ENABLE='true'
+            - KAFKA_LOG_RETENTION_HOURS=720
+        volumes:
+            - kafka_data:/var/lib/kafka/data
+        healthcheck:
+            test:
+                - 'CMD-SHELL'
+                - '/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1'
+            interval: 15s
+            timeout: 5s
+            retries: 5
+            start_period: 60s
+        networks:
+            - expense-api-network-internal
+        mem_limit: 1G
+        mem_reservation: 512M
+        cpus: '1.0'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        logging:
+            driver: json-file
+            options:
+                max-size: '10m'
+                max-file: '3'
+
+    debezium-connect:
+        image: quay.io/debezium/connect:3.0.8.Final
+        restart: unless-stopped
+        depends_on:
+            postgres:
+                condition: service_healthy
+            kafka:
+                condition: service_healthy
+        ports:
+            - '8083:8083'
+        environment:
+            - BOOTSTRAP_SERVERS=kafka:9092
+            - GROUP_ID='1'
+            - CONFIG_STORAGE_TOPIC=connect_configs
+            - OFFSET_STORAGE_TOPIC=connect_offsets
+            - STATUS_STORAGE_TOPIC=connect_statuses
+            - KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+            - VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+            - KEY_CONVERTER_SCHEMAS_ENABLE='false'
+            - VALUE_CONVERTER_SCHEMAS_ENABLE='false'
+            - CONNECT_REST_ADVERTISED_HOST_NAME=debezium-connect
+            - CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR=1
+            - CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR=1
+            - CONNECT_STATUS_STORAGE_REPLICATION_FACTOR=1
+            - CONNECT_REST_PORT=8083
+            - CONNECT_LOG4J_ROOT_LOGLEVEL=DEBUG
+        healthcheck:
+            test:
+                - 'CMD-SHELL'
+                - 'curl -fs http://localhost:8083/ | grep version >/dev/null'
+            interval: 15s
+            timeout: 5s
+            retries: 5
+            start_period: 45s
+        networks:
+            - expense-api-network-internal
+        mem_limit: 768M
+        mem_reservation: 384M
+        cpus: '0.75'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        logging:
+        driver: json-file
+        options:
+            max-size: '10m'
+            max-file: '3'
+
+    debezium-init:
+        build:
+            context: .
+            dockerfile: Dockerfile.debeziumInit
+        restart: no
+        depends_on:
+            debezium-connect:
+                condition: service_healthy
+        environment:
+            - DATABASE_HOST=postgres
+            - DATABASE_PORT=5432
+            - DATABASE_NAME=expense_api_prod
+            - DATABASE_USER=expense_api
+            - DATABASE_PASSWORD_FILE=/run/secrets/database_password
+        secrets:
+            - database_password
+        networks:
+            - expense-api-network-internal
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        logging:
+            driver: json-file
+            options:
+                max-size: '1m'
+                max-file: '1'
+
 volumes:
     postgres-data:
         driver: local
     redis-data:
+        driver: local
+    kafka_data:
         driver: local
 
 secrets:
