@@ -17,8 +17,8 @@ export class FindManyReceiversByUserIdAndIdsHandler implements IQueryHandler<
     async execute(query: FindManyReceiversByUserIdAndIdsQuery): Promise<ISelectReceiver[]> {
         try {
             return await this.receiverRepository.findManyByUserIdAndIds(
-                query.userId,
-                query.receiverIds,
+                query.props.userId,
+                query.props.ids,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
