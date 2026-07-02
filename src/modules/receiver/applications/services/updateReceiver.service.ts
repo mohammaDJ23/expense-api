@@ -27,7 +27,7 @@ export class UpdateReceiverService implements IServiceHandler {
         {
             const [isExists, foundedByName] = await Promise.all([
                 this.queryBus.execute<IsReceiverExistsByUserIdAndIdQuery, boolean>(
-                    new IsReceiverExistsByUserIdAndIdQuery(userId, data.id),
+                    new IsReceiverExistsByUserIdAndIdQuery({ userId, id: data.id }),
                 ),
                 this.queryBus.execute<
                     FindReceiverByUserIdAndNameOrNullQuery,

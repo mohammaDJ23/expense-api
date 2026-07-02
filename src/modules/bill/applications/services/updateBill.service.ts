@@ -49,7 +49,7 @@ export class UpdateBillService implements IServiceHandler {
         {
             const [isReceiverExists, isLocationExists, isConsumersExists] = await Promise.all([
                 this.queryBus.execute<IsReceiverExistsByUserIdAndIdQuery, boolean>(
-                    new IsReceiverExistsByUserIdAndIdQuery(userId, data.receiverId),
+                    new IsReceiverExistsByUserIdAndIdQuery({ userId, id: data.receiverId }),
                 ),
                 this.queryBus.execute<IsLocationExistsByUserIdAndIdQuery, boolean>(
                     new IsLocationExistsByUserIdAndIdQuery(userId, data.locationId),

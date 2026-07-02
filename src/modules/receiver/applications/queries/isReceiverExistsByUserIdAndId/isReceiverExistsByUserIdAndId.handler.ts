@@ -15,8 +15,8 @@ export class IsReceiverExistsByUserIdAndIdHandler implements IQueryHandler<
     async execute(query: IsReceiverExistsByUserIdAndIdQuery): Promise<boolean> {
         try {
             return await this.receiverRepository.isExistsByUserIdAndId(
-                query.userId,
-                query.receiverId,
+                query.props.userId,
+                query.props.id,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
