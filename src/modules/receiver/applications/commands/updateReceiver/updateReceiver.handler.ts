@@ -18,7 +18,7 @@ export class UpdateReceiverHandler implements ICommandHandler<
 
     async execute(command: UpdateReceiverCommand): Promise<ISelectReceiver> {
         try {
-            return await this.receiverRepository.update(omitUndefined(command));
+            return await this.receiverRepository.update(omitUndefined(command.props));
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;

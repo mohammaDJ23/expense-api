@@ -1,17 +1,7 @@
-import { ReceiverAbstract } from '@/modules/receiver/domain/abstracts/receiver.abstract';
+import type { IInsertReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
-export class UpdateReceiverCommand extends ReceiverAbstract {
-    public override readonly id: string;
-    public override readonly name: string;
-    public override readonly userId: string;
-    public override readonly updatedAt: string;
+type TProps = Required<Omit<IInsertReceiver, 'createdAt'>>;
 
-    constructor(data: Required<Omit<ReceiverAbstract, 'createdAt'>>) {
-        super(data);
-
-        this.id = data.id;
-        this.name = data.name;
-        this.userId = data.userId;
-        this.updatedAt = data.updatedAt;
-    }
+export class UpdateReceiverCommand {
+    constructor(public readonly props: TProps) {}
 }
