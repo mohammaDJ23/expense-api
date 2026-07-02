@@ -7,6 +7,7 @@ import { BillModule } from '@/modules/bill/bill.module';
 import { ConsumerModule } from '@/modules/consumer/consumer.module';
 import { HealthModule } from '@/modules/health/health.module';
 import { LocationModule } from '@/modules/location/location.module';
+import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { ReceiverModule } from '@/modules/receiver/receiver.module';
 import { UserModule } from '@/modules/user/user.module';
 
@@ -21,6 +22,7 @@ import { UserModule } from '@/modules/user/user.module';
         ConsumerModule,
         LocationModule,
         ReceiverModule,
+        OutboxModule,
     ],
 })
 export class AppModule {}
