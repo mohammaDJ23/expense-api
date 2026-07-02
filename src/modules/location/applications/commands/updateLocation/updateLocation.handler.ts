@@ -18,7 +18,7 @@ export class UpdateLocationHandler implements ICommandHandler<
 
     async execute(command: UpdateLocationCommand): Promise<ISelectLocation> {
         try {
-            return await this.locationRepository.update(omitUndefined(command));
+            return await this.locationRepository.update(omitUndefined(command.props));
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
