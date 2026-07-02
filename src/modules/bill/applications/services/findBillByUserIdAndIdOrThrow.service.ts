@@ -35,7 +35,7 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
                 this.queryBus.execute<
                     FindManyBillConsumerTargetsByRefIdsQuery,
                     ITargetBillConsumer[]
-                >(new FindManyBillConsumerTargetsByRefIdsQuery([bill.id])),
+                >(new FindManyBillConsumerTargetsByRefIdsQuery({ billIds: [bill.id] })),
             ]);
 
             if (isEmpty(consumers)) {

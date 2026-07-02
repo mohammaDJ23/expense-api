@@ -54,7 +54,7 @@ export class FindBillListByUserIdService implements IServiceHandler {
                     this.queryBus.execute<
                         FindManyBillConsumerTargetsByRefIdsQuery,
                         ITargetBillConsumer[]
-                    >(new FindManyBillConsumerTargetsByRefIdsQuery(billIds)),
+                    >(new FindManyBillConsumerTargetsByRefIdsQuery({ billIds })),
                 ]);
 
                 if (isEmpty(locations) || isEmpty(receivers) || isEmpty(consumers)) {
