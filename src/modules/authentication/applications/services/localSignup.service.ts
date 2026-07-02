@@ -32,7 +32,7 @@ export class LocalSignupService implements IServiceHandler {
     async execute(data: LocalSignupRequestDto): Promise<boolean> {
         {
             const isExists = await this.queryBus.execute<IsUserExistsByEmailQuery, boolean>(
-                new IsUserExistsByEmailQuery(data.email),
+                new IsUserExistsByEmailQuery({ email: data.email }),
             );
 
             if (isExists) {
