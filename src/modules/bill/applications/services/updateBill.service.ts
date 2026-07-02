@@ -121,7 +121,12 @@ export class UpdateBillService implements IServiceHandler {
                         this.commandBus.execute<
                             DeleteManyBillsConsumersCommand,
                             ISelectBillConsumer[]
-                        >(new DeleteManyBillsConsumersCommand(data.id, idsToDelete)),
+                        >(
+                            new DeleteManyBillsConsumersCommand({
+                                billId: data.id,
+                                ids: idsToDelete,
+                            }),
+                        ),
                     );
                 }
 
