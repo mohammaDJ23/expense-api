@@ -32,7 +32,10 @@ export class UserService {
 
     findList(query: FindUserListRequestDto): Promise<ISelectUser[]> {
         return this.queryBus.execute<FindUserListQuery, ISelectUser[]>(
-            new FindUserListQuery(query.offset, query.limit),
+            new FindUserListQuery({
+                offset: query.offset,
+                limit: query.limit,
+            }),
         );
     }
 

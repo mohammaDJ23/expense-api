@@ -1,6 +1,15 @@
+interface IProps {
+    offset: number;
+    limit: number;
+}
+
 export class FindUserListQuery {
-    constructor(
-        public readonly offset = 0,
-        public readonly limit = 10,
-    ) {}
+    public readonly props: IProps;
+
+    constructor(props: Partial<IProps> = {}) {
+        this.props = {
+            offset: props.offset || 0,
+            limit: props.limit || 10,
+        };
+    }
 }
