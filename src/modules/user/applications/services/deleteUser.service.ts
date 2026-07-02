@@ -27,7 +27,7 @@ export class DeleteUserService implements IServiceHandler {
 
         {
             const deletedUser = await this.commandBus.execute<DeleteUserCommand, ISelectUser>(
-                new DeleteUserCommand(userId),
+                new DeleteUserCommand({ userId }),
             );
             return IdEntity.create(deletedUser.id);
         }
