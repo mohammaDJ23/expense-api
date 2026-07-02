@@ -1,3 +1,7 @@
+interface IProps {
+    userId: string;
+}
+
 export class DeleteUserCommand {
-    constructor(public readonly userId: string) {}
+    constructor(public readonly props: IProps) {}
 }

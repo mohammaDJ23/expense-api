@@ -14,7 +14,7 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand, ISe
 
     async execute(command: DeleteUserCommand): Promise<ISelectUser> {
         try {
-            return await this.userRepository.deleteById(command.userId);
+            return await this.userRepository.deleteById(command.props.userId);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
