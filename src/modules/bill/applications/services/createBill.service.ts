@@ -41,7 +41,7 @@ export class CreateBillService implements IServiceHandler {
                     new IsLocationExistsByUserIdAndIdQuery({ userId, id: data.locationId }),
                 ),
                 this.queryBus.execute<IsConsumerExistsByUserIdAndIdsQuery, boolean>(
-                    new IsConsumerExistsByUserIdAndIdsQuery(userId, data.consumerIds),
+                    new IsConsumerExistsByUserIdAndIdsQuery({ userId, ids: data.consumerIds }),
                 ),
             ]);
 
