@@ -17,7 +17,7 @@ export class FindUserByIdOrThrowHandler implements IQueryHandler<
 
     async execute(query: FindUserByIdOrThrowQuery): Promise<ISelectUser> {
         try {
-            return await this.userRepository.findByIdOrThrow(query.id);
+            return await this.userRepository.findByIdOrThrow(query.props.id);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;

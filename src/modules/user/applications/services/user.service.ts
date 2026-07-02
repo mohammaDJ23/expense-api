@@ -38,7 +38,7 @@ export class UserService {
 
     findById(id: string): Promise<ISelectUser> {
         return this.queryBus.execute<FindUserByIdOrThrowQuery, ISelectUser>(
-            new FindUserByIdOrThrowQuery(id),
+            new FindUserByIdOrThrowQuery({ id }),
         );
     }
 

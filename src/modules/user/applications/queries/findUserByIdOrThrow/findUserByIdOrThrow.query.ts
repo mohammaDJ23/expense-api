@@ -1,3 +1,6 @@
+interface IProps {
+    id: string;
+}
 export class FindUserByIdOrThrowQuery {
-    constructor(public readonly id: string) {}
+    constructor(public readonly props: IProps) {}
 }
