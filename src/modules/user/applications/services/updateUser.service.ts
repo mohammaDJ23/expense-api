@@ -20,7 +20,7 @@ export class UpdateUserService implements IServiceHandler {
     async execute(userId: string, data: UpdateUserRequestDto): Promise<IdEntity> {
         {
             const isExists = await this.queryBus.execute<IsUserExistsByIdQuery, boolean>(
-                new IsUserExistsByIdQuery(userId),
+                new IsUserExistsByIdQuery({ id: userId }),
             );
             if (!isExists) {
                 throw new BadRequestException('Could not found the user');
