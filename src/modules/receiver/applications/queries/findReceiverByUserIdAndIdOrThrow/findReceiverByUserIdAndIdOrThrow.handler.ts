@@ -18,8 +18,8 @@ export class FindReceiverByUserIdAndIdOrThrowHandler implements IQueryHandler<
     async execute(query: FindReceiverByUserIdAndIdOrThrowQuery): Promise<ISelectReceiver> {
         try {
             return await this.receiverRepository.findByUserIdAndIdOrThrow(
-                query.userId,
-                query.receiverId,
+                query.props.userId,
+                query.props.id,
             );
         } catch (error) {
             if (error instanceof NotFoundException) {

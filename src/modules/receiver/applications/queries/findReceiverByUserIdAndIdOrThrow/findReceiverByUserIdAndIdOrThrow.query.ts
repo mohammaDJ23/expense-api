@@ -1,6 +1,8 @@
+interface IProps {
+    userId: string;
+    id: string;
+}
+
 export class FindReceiverByUserIdAndIdOrThrowQuery {
-    constructor(
-        public readonly userId: string,
-        public readonly receiverId: string,
-    ) {}
+    constructor(public readonly props: IProps) {}
 }

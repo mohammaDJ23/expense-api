@@ -42,7 +42,7 @@ export class ReceiverService {
 
     findByUserIdAndId(userId: string, receiverId: string): Promise<ISelectReceiver> {
         return this.queryBus.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
-            new FindReceiverByUserIdAndIdOrThrowQuery(userId, receiverId),
+            new FindReceiverByUserIdAndIdOrThrowQuery({ userId, id: receiverId }),
         );
     }
 }
