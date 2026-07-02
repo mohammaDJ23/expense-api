@@ -15,7 +15,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand, ISe
 
     async execute(command: UpdateUserCommand): Promise<ISelectUser> {
         try {
-            return await this.userRepository.update(omitUndefined(command));
+            return await this.userRepository.update(omitUndefined(command.props));
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
