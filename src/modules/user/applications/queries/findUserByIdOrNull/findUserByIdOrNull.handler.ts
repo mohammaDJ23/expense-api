@@ -16,7 +16,7 @@ export class FindUserByIdOrNullHandler implements IQueryHandler<
 
     async execute(query: FindUserByIdOrNullQuery): Promise<ISelectUser | null> {
         try {
-            return await this.userRepository.findByIdOrNull(query.id);
+            return await this.userRepository.findByIdOrNull(query.props.id);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
