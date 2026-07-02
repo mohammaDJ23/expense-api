@@ -17,8 +17,8 @@ export class FindReceiverByUserIdAndIdOrNullHandler implements IQueryHandler<
     async execute(query: FindReceiverByUserIdAndIdOrNullQuery): Promise<ISelectReceiver | null> {
         try {
             return await this.receiverRepository.findByUserIdAndIdOrNull(
-                query.userId,
-                query.receiverId,
+                query.props.userId,
+                query.props.id,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
