@@ -16,9 +16,9 @@ export class FindReceiverListByUserIdHandler implements IQueryHandler<
 
     async execute(query: FindReceiverListByUserIdQuery): Promise<ISelectReceiver[]> {
         try {
-            return await this.receiverRepository.findListByUserId(query.userId, {
-                offset: query.offset,
-                limit: query.limit,
+            return await this.receiverRepository.findListByUserId(query.props.userId, {
+                offset: query.props.offset,
+                limit: query.props.limit,
             });
         } catch {
             throw new ProcessFailedInternalServerErrorException();

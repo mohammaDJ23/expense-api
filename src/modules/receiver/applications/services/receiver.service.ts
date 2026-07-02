@@ -36,7 +36,11 @@ export class ReceiverService {
 
     findListByUserId(userId: string, data: FindReceiverListRequestDto): Promise<ISelectReceiver[]> {
         return this.queryBus.execute<FindReceiverListByUserIdQuery, ISelectReceiver[]>(
-            new FindReceiverListByUserIdQuery(userId, data.offset, data.limit),
+            new FindReceiverListByUserIdQuery({
+                userId,
+                offset: data.offset,
+                limit: data.limit,
+            }),
         );
     }
 
