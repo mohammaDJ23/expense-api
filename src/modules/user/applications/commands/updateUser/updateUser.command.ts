@@ -1,13 +1,7 @@
-import { UserAbstract } from '@/modules/user/domain/abstracts/user.abstract';
+import type { IInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
-export class UpdateUserCommand extends UserAbstract {
-    public override readonly id: string;
-    public override readonly updatedAt: string;
+type TProps = Partial<IInsertUser> & Required<Pick<IInsertUser, 'updatedAt' | 'id'>>;
 
-    constructor(data: UserAbstract & Required<Pick<UserAbstract, 'updatedAt' | 'id'>>) {
-        super(data);
-
-        this.id = data.id;
-        this.updatedAt = data.updatedAt;
-    }
+export class UpdateUserCommand {
+    constructor(public readonly props: TProps) {}
 }
