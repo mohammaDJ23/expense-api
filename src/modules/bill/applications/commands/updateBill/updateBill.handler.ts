@@ -14,7 +14,7 @@ export class UpdateBillHandler implements ICommandHandler<UpdateBillCommand, ISe
 
     async execute(command: UpdateBillCommand): Promise<ISelectBill> {
         try {
-            return await this.billRepository.update(command);
+            return await this.billRepository.update(command.props);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;

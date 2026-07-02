@@ -1,18 +1,8 @@
-import { BillAbstract } from '@/modules/bill/domain/abstracts/bill.abstract';
+import type { IInsertBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
-export class UpdateBillCommand extends BillAbstract {
-    public override readonly id: string;
-    public override readonly userId: string;
-    public override readonly updatedAt: string;
+type TProps = Partial<Omit<IInsertBill, 'createdAt'>> &
+    Required<Pick<IInsertBill, 'id' | 'userId' | 'updatedAt'>>;
 
-    constructor(
-        data: Partial<Omit<BillAbstract, 'createdAt'>> &
-            Required<Pick<BillAbstract, 'id' | 'userId' | 'updatedAt'>>,
-    ) {
-        super(data);
-
-        this.id = data.id;
-        this.userId = data.userId;
-        this.updatedAt = data.updatedAt;
-    }
+export class UpdateBillCommand {
+    constructor(public readonly props: TProps) {}
 }
