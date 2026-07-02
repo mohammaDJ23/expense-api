@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
@@ -7,6 +8,7 @@ import { DeleteManyOutboxEventsByDateCommand } from '@/modules/outbox/applicatio
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
+@Injectable()
 export class DeleteManyOutboxEventsService implements IServiceHandler {
     constructor(private readonly commandBus: CommandBus) {}
 
