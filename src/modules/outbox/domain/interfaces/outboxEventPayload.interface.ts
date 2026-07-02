@@ -1,1 +1,1 @@
-export type TOutboxEventPayload<T extends Record<string, unknown> = Record<string, unknown>> = T;
+export type TOutboxEventPayload<T extends object = object> = T;
