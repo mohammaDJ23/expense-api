@@ -27,7 +27,7 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
         {
             const [receiver, location, consumers] = await Promise.all([
                 this.queryBus.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
-                    new FindReceiverByUserIdAndIdOrThrowQuery(userId, bill.receiverId),
+                    new FindReceiverByUserIdAndIdOrThrowQuery({ userId, id: bill.receiverId }),
                 ),
                 this.queryBus.execute<FindLocationByUserIdAndIdOrThrowQuery, ISelectLocation>(
                     new FindLocationByUserIdAndIdOrThrowQuery(userId, bill.locationId),
