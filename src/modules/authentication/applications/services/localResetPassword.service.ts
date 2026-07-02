@@ -52,7 +52,7 @@ export class LocalResetPasswordService implements IServiceHandler {
             const user = await this.queryBus.execute<
                 FindUserByEmailOrNullQuery,
                 ISelectUser | null
-            >(new FindUserByEmailOrNullQuery(payload.email));
+            >(new FindUserByEmailOrNullQuery({ email: payload.email }));
 
             if (!user) {
                 return true;

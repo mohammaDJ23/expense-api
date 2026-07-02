@@ -1,3 +1,7 @@
+interface IProps {
+    email: string;
+}
+
 export class FindUserByEmailOrNullQuery {
-    constructor(public readonly email: string) {}
+    constructor(public readonly props: IProps) {}
 }

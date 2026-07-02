@@ -16,7 +16,7 @@ export class FindUserByEmailOrNullHandler implements IQueryHandler<
 
     async execute(query: FindUserByEmailOrNullQuery): Promise<ISelectUser | null> {
         try {
-            return await this.userRepository.findByEmailOrNull(query.email);
+            return await this.userRepository.findByEmailOrNull(query.props.email);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
