@@ -15,8 +15,8 @@ export class IsConsumerExistsByUserIdAndIdsHandler implements IQueryHandler<
     async execute(query: IsConsumerExistsByUserIdAndIdsQuery): Promise<boolean> {
         try {
             return await this.consumerRepository.isExistsByUserIdAndIds(
-                query.userId,
-                query.consumerIds,
+                query.props.userId,
+                query.props.ids,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
