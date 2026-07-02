@@ -17,8 +17,8 @@ export class FindManyConsumersByUserIdAndIdsHandler implements IQueryHandler<
     async execute(query: FindManyConsumersByUserIdAndIdsQuery): Promise<ISelectConsumer[]> {
         try {
             return await this.consumerRepository.findManyByUserIdAndIds(
-                query.userId,
-                query.consumerIds,
+                query.props.userId,
+                query.props.ids,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();

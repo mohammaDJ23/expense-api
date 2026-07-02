@@ -1,6 +1,8 @@
+interface IProps {
+    userId: string;
+    ids: string[];
+}
+
 export class FindManyConsumersByUserIdAndIdsQuery {
-    constructor(
-        public readonly userId: string,
-        public readonly consumerIds: string[],
-    ) {}
+    constructor(public readonly props: IProps) {}
 }
