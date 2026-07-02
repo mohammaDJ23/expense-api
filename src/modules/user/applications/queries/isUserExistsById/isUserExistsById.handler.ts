@@ -11,7 +11,7 @@ export class IsUserExistsByIdHandler implements IQueryHandler<IsUserExistsByIdQu
 
     async execute(query: IsUserExistsByIdQuery): Promise<boolean> {
         try {
-            return await this.userRepository.isExistsById(query.userId);
+            return await this.userRepository.isExistsById(query.props.id);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

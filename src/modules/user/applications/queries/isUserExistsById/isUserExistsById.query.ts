@@ -1,3 +1,6 @@
+interface IProps {
+    id: string;
+}
 export class IsUserExistsByIdQuery {
-    constructor(public readonly userId: string) {}
+    constructor(public readonly props: IProps) {}
 }
