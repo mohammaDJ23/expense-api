@@ -18,8 +18,8 @@ export class DeleteReceiverHandler implements ICommandHandler<
     async execute(command: DeleteReceiverCommand): Promise<ISelectReceiver> {
         try {
             return await this.receiverRepository.deleteByUserIdAndId(
-                command.userId,
-                command.receiverId,
+                command.props.userId,
+                command.props.id,
             );
         } catch (error) {
             if (error instanceof NotFoundException) {

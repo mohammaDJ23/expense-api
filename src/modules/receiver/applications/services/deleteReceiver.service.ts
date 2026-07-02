@@ -37,7 +37,7 @@ export class DeleteReceiverService implements IServiceHandler {
             const deletedReceiver = await this.commandBus.execute<
                 DeleteReceiverCommand,
                 ISelectReceiver
-            >(new DeleteReceiverCommand(userId, receiverId));
+            >(new DeleteReceiverCommand({ userId, id: receiverId }));
 
             await this.commandBus.execute<
                 CreateOutboxEventCommand<IReceiverOutboxEvent>,
