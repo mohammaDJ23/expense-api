@@ -14,7 +14,7 @@ export class CreateBillHandler implements ICommandHandler<CreateBillCommand, ISe
 
     async execute(command: CreateBillCommand): Promise<ISelectBill> {
         try {
-            return await this.billRepository.create(command);
+            return await this.billRepository.create(command.props);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;

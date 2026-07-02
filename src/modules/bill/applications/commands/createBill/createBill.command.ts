@@ -1,25 +1,7 @@
-import { BillAbstract } from '@/modules/bill/domain/abstracts/bill.abstract';
+import type { IInsertBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
-export class CreateBillCommand extends BillAbstract {
-    public override readonly amount: string;
-    public override readonly description: string;
-    public override readonly purchasedAt: string | null;
-    public override readonly createdAt: string;
-    public override readonly updatedAt: string;
-    public override readonly userId: string;
-    public override readonly receiverId: string;
-    public override readonly locationId: string;
+interface IProps extends Required<Omit<IInsertBill, 'id'>> {}
 
-    constructor(data: Required<Omit<BillAbstract, 'id'>>) {
-        super(data);
-
-        this.amount = data.amount;
-        this.description = data.description;
-        this.purchasedAt = data.purchasedAt;
-        this.createdAt = data.createdAt;
-        this.updatedAt = data.updatedAt;
-        this.userId = data.userId;
-        this.receiverId = data.receiverId;
-        this.locationId = data.locationId;
-    }
+export class CreateBillCommand {
+    constructor(public readonly props: IProps) {}
 }
