@@ -18,8 +18,8 @@ export class DeleteLocationHandler implements ICommandHandler<
     async execute(command: DeleteLocationCommand): Promise<ISelectLocation> {
         try {
             return await this.locationRepository.deleteByUserIdAndId(
-                command.userId,
-                command.locationId,
+                command.props.userId,
+                command.props.id,
             );
         } catch (error) {
             if (error instanceof NotFoundException) {

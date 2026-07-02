@@ -37,7 +37,7 @@ export class DeleteLocationService implements IServiceHandler {
             const deletedLocation = await this.commandBus.execute<
                 DeleteLocationCommand,
                 ISelectLocation
-            >(new DeleteLocationCommand(userId, locationId));
+            >(new DeleteLocationCommand({ userId, id: locationId }));
 
             await this.commandBus.execute<
                 CreateOutboxEventCommand<ILocationOutboxEvent>,
