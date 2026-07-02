@@ -30,7 +30,7 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
                     new FindReceiverByUserIdAndIdOrThrowQuery({ userId, id: bill.receiverId }),
                 ),
                 this.queryBus.execute<FindLocationByUserIdAndIdOrThrowQuery, ISelectLocation>(
-                    new FindLocationByUserIdAndIdOrThrowQuery(userId, bill.locationId),
+                    new FindLocationByUserIdAndIdOrThrowQuery({ userId, id: bill.locationId }),
                 ),
                 this.queryBus.execute<
                     FindManyBillConsumerTargetsByRefIdsQuery,
