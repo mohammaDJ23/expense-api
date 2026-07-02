@@ -35,7 +35,11 @@ export class LocationService {
 
     findListByUserId(userId: string, data: FindLocationListRequestDto): Promise<ISelectLocation[]> {
         return this.queryBus.execute<FindLocationListByUserIdQuery, ISelectLocation[]>(
-            new FindLocationListByUserIdQuery(userId, data.offset, data.limit),
+            new FindLocationListByUserIdQuery({
+                userId,
+                offset: data.offset,
+                limit: data.limit,
+            }),
         );
     }
 
