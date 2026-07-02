@@ -29,7 +29,7 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
 
         {
             const user = await this.queryBus.execute<FindUserByIdOrNullQuery, ISelectUser | null>(
-                new FindUserByIdOrNullQuery(payload.id),
+                new FindUserByIdOrNullQuery({ id: payload.id }),
             );
 
             if (!user) {
