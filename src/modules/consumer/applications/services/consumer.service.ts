@@ -36,7 +36,11 @@ export class ConsumerService {
 
     findListByUserId(userId: string, data: FindConsumerListRequestDto): Promise<ISelectConsumer[]> {
         return this.queryBus.execute<FindConsumerListByUserIdQuery, ISelectConsumer[]>(
-            new FindConsumerListByUserIdQuery(userId, data.offset, data.limit),
+            new FindConsumerListByUserIdQuery({
+                userId,
+                offset: data.offset,
+                limit: data.limit,
+            }),
         );
     }
 
