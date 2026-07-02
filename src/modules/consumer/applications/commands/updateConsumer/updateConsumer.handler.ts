@@ -18,7 +18,7 @@ export class UpdateConsumerHandler implements ICommandHandler<
 
     async execute(command: UpdateConsumerCommand): Promise<ISelectConsumer> {
         try {
-            return await this.consumerRepository.update(omitUndefined(command));
+            return await this.consumerRepository.update(omitUndefined(command.props));
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
