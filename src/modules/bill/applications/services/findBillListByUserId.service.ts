@@ -22,7 +22,11 @@ export class FindBillListByUserIdService implements IServiceHandler {
 
     async execute(userId: string, options: FindBillListRequestDto): Promise<IBill[]> {
         const bills = await this.queryBus.execute<FindBillListByUserIdQuery, ISelectBill[]>(
-            new FindBillListByUserIdQuery(userId, options.offset, options.limit),
+            new FindBillListByUserIdQuery({
+                userId,
+                offset: options.offset,
+                limit: options.limit,
+            }),
         );
 
         if (isEmpty(bills)) {
