@@ -27,7 +27,7 @@ export class UpdateConsumerService implements IServiceHandler {
         {
             const [isExists, foundedByName] = await Promise.all([
                 this.queryBus.execute<IsConsumerExistsByUserIdAndIdQuery, boolean>(
-                    new IsConsumerExistsByUserIdAndIdQuery(userId, data.id),
+                    new IsConsumerExistsByUserIdAndIdQuery({ userId, id: data.id }),
                 ),
                 this.queryBus.execute<
                     FindConsumerByUserIdAndNameOrNullQuery,
