@@ -24,7 +24,7 @@ export class DeleteBillService implements IServiceHandler {
     async execute(userId: string, billId: string): Promise<IdEntity> {
         {
             const isExists = await this.queryBus.execute<IsBillExistsByUserIdAndIdQuery, boolean>(
-                new IsBillExistsByUserIdAndIdQuery(userId, billId),
+                new IsBillExistsByUserIdAndIdQuery({ userId, id: billId }),
             );
             if (!isExists) {
                 throw new BadRequestException('Could not found the bill');
