@@ -17,7 +17,10 @@ export class FindBillByUserIdAndIdOrThrowHandler implements IQueryHandler<
 
     async execute(query: FindBillByUserIdAndIdOrThrowQuery): Promise<ISelectBill> {
         try {
-            return await this.billRepository.findByUserIdAndIdOrThrow(query.userId, query.billId);
+            return await this.billRepository.findByUserIdAndIdOrThrow(
+                query.props.userId,
+                query.props.id,
+            );
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;

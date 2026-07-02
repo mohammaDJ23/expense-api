@@ -21,7 +21,7 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
 
     async execute(userId: string, billId: string): Promise<IBill> {
         const bill = await this.queryBus.execute<FindBillByUserIdAndIdOrThrowQuery, ISelectBill>(
-            new FindBillByUserIdAndIdOrThrowQuery(userId, billId),
+            new FindBillByUserIdAndIdOrThrowQuery({ userId, id: billId }),
         );
 
         {
