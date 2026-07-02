@@ -37,7 +37,7 @@ export class LocalForgotPasswordService implements IServiceHandler {
             const user = await this.queryBus.execute<
                 FindUserByEmailOrNullQuery,
                 ISelectUser | null
-            >(new FindUserByEmailOrNullQuery(data.email));
+            >(new FindUserByEmailOrNullQuery({ email: data.email }));
 
             if (!user) {
                 return true;

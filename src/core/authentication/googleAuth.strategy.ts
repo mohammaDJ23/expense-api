@@ -40,7 +40,7 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
             const user = await this.queryBus.execute<
                 FindUserByEmailOrNullQuery,
                 ISelectUser | null
-            >(new FindUserByEmailOrNullQuery(email.value));
+            >(new FindUserByEmailOrNullQuery({ email: email.value }));
 
             if (!user) {
                 return this.commandBus.execute<CreateUserCommand, ISelectUser>(
