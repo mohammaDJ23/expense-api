@@ -1,6 +1,8 @@
+interface IProps {
+    userId: string;
+    ids: string[];
+}
+
 export class FindManyLocationsByUserIdAndIdsQuery {
-    constructor(
-        public readonly userId: string,
-        public readonly locationIds: string[],
-    ) {}
+    constructor(public readonly props: IProps) {}
 }
