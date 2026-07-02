@@ -14,7 +14,10 @@ export class DeleteBillHandler implements ICommandHandler<DeleteBillCommand, ISe
 
     async execute(command: DeleteBillCommand): Promise<ISelectBill> {
         try {
-            return await this.billRepository.deleteByUserIdAndId(command.userId, command.billId);
+            return await this.billRepository.deleteByUserIdAndId(
+                command.props.userId,
+                command.props.id,
+            );
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
