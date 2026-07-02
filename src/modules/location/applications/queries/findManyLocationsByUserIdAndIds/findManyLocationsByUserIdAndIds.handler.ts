@@ -17,8 +17,8 @@ export class FindManyLocationsByUserIdAndIdsHandler implements IQueryHandler<
     async execute(query: FindManyLocationsByUserIdAndIdsQuery): Promise<ISelectLocation[]> {
         try {
             return await this.locationRepository.findManyByUserIdAndIds(
-                query.userId,
-                query.locationIds,
+                query.props.userId,
+                query.props.ids,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
