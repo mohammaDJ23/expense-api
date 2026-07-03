@@ -4,6 +4,7 @@ import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
 import { DeleteLocationHandler } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.handler';
 import { UpdateLocationHandler } from '@/modules/location/applications/commands/updateLocation/updateLocation.handler';
+import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
 import { FindLocationByUserIdAndIdOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrNull/findLocationByUserIdAndIdOrNull.handler';
 import { FindLocationByUserIdAndIdOrThrowHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.handler';
 import { FindLocationByUserIdAndNameOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.handler';
@@ -34,6 +35,7 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
         FindLocationListByUserIdHandler,
         FindManyLocationsByUserIdAndIdsHandler,
         IsLocationExistsByUserIdAndIdHandler,
+        ExistsLocationByUserIdAndExcludingIdAndNameHandler,
         CreateLocationHandler,
         LocationRepository,
     ],
