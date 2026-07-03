@@ -255,10 +255,10 @@ services:
         cap_drop:
             - ALL
         logging:
-        driver: json-file
-        options:
-            max-size: '10m'
-            max-file: '3'
+            driver: json-file
+            options:
+                max-size: '10m'
+                max-file: '3'
 
     debezium-init:
         build:
