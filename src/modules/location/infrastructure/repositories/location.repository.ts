@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, desc, eq, inArray } from 'drizzle-orm';
+import { and, desc, eq, inArray, ne } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
@@ -111,6 +111,23 @@ export class LocationRepository implements ILocationRepository {
             this.drizzleRepository.db.$count(
                 locations,
                 and(eq(locations.userId, userId), eq(locations.id, id)),
+            ),
+        );
+    }
+
+    existsByUserIdAndExcludingIdAndName(
+        userId: string,
+        excludingId: string,
+        name: string,
+    ): Promise<boolean> {
+        return toIsExistsByCount(
+            this.drizzleRepository.db.$count(
+                locations,
+                and(
+                    eq(locations.userId, userId),
+                    ne(locations.id, excludingId),
+                    eq(locations.name, name),
+                ),
             ),
         );
     }

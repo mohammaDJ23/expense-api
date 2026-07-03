@@ -5,7 +5,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateLocationCommand } from '@/modules/location/applications/commands/updateLocation/updateLocation.command';
-import { FindLocationByUserIdAndNameOrNullQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.query';
+import { ExistsLocationByUserIdAndExcludingIdAndNameQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.query';
 import { IsLocationExistsByUserIdAndIdQuery } from '@/modules/location/applications/queries/isLocationExistsByUserIdAndId/isLocationExistsByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 
@@ -25,21 +25,24 @@ export class UpdateLocationService implements IServiceHandler {
     @Transactional()
     async execute(userId: string, data: UpdateLocationRequestDto): Promise<IdEntity> {
         {
-            const [isExists, foundedByName] = await Promise.all([
+            const [isExists, existsByName] = await Promise.all([
                 this.queryBus.execute<IsLocationExistsByUserIdAndIdQuery, boolean>(
                     new IsLocationExistsByUserIdAndIdQuery({ userId, id: data.id }),
                 ),
-                this.queryBus.execute<
-                    FindLocationByUserIdAndNameOrNullQuery,
-                    ISelectLocation | null
-                >(new FindLocationByUserIdAndNameOrNullQuery({ userId, name: data.name })),
+                this.queryBus.execute<ExistsLocationByUserIdAndExcludingIdAndNameQuery, boolean>(
+                    new ExistsLocationByUserIdAndExcludingIdAndNameQuery({
+                        userId,
+                        excludingId: data.id,
+                        name: data.name,
+                    }),
+                ),
             ]);
 
             if (!isExists) {
                 throw new BadRequestException('Could not found the location');
             }
 
-            if (foundedByName) {
+            if (existsByName) {
                 throw new BadRequestException('The location already exists');
             }
         }
