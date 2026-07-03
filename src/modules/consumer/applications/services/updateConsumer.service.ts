@@ -6,7 +6,7 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateConsumerCommand } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.command';
 import { ExistsConsumerByUserIdAndExcludingIdAndNameQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.query';
-import { IsConsumerExistsByUserIdAndIdQuery } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndId/isConsumerExistsByUserIdAndId.query';
+import { ExistsConsumerByUserIdAndIdQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
@@ -25,9 +25,12 @@ export class UpdateConsumerService implements IServiceHandler {
     @Transactional()
     async execute(userId: string, data: UpdateConsumerRequestDto): Promise<IdEntity> {
         {
-            const [isExists, existsByName] = await Promise.all([
-                this.queryBus.execute<IsConsumerExistsByUserIdAndIdQuery, boolean>(
-                    new IsConsumerExistsByUserIdAndIdQuery({ userId, id: data.id }),
+            const [exists, existsByName] = await Promise.all([
+                this.queryBus.execute<ExistsConsumerByUserIdAndIdQuery, boolean>(
+                    new ExistsConsumerByUserIdAndIdQuery({
+                        userId,
+                        id: data.id,
+                    }),
                 ),
                 this.queryBus.execute<ExistsConsumerByUserIdAndExcludingIdAndNameQuery, boolean>(
                     new ExistsConsumerByUserIdAndExcludingIdAndNameQuery({
@@ -38,7 +41,7 @@ export class UpdateConsumerService implements IServiceHandler {
                 ),
             ]);
 
-            if (!isExists) {
+            if (!exists) {
                 throw new BadRequestException('Could not found the consumer');
             }
 

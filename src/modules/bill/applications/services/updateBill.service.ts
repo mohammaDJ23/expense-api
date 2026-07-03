@@ -8,14 +8,14 @@ import { isNotEmpty } from '@/common/utils/isNotEmpty.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UpdateBillCommand } from '@/modules/bill/applications/commands/updateBill/updateBill.command';
-import { IsBillExistsByUserIdAndIdQuery } from '@/modules/bill/applications/queries/isBillExistsByUserIdAndId/isBillExistsByUserIdAndId.query';
+import { ExistsBillByUserIdAndIdQuery } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.query';
 import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
 import { DeleteManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.command';
 import { FindManyBillsConsumersByRefIdQuery } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.query';
 import { IsConsumerExistsByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndIds/isConsumerExistsByUserIdAndIds.query';
-import { IsLocationExistsByUserIdAndIdQuery } from '@/modules/location/applications/queries/isLocationExistsByUserIdAndId/isLocationExistsByUserIdAndId.query';
+import { ExistsLocationByUserIdAndIdQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
-import { IsReceiverExistsByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/isReceiverExistsByUserIdAndId/isReceiverExistsByUserIdAndId.query';
+import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
 
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
@@ -37,37 +37,48 @@ export class UpdateBillService implements IServiceHandler {
     @Transactional()
     async execute(data: UpdateBillRequestDto, userId: string): Promise<IdEntity> {
         {
-            const isExists = await this.queryBus.execute<IsBillExistsByUserIdAndIdQuery, boolean>(
-                new IsBillExistsByUserIdAndIdQuery({ userId, id: data.id }),
+            const exists = await this.queryBus.execute<ExistsBillByUserIdAndIdQuery, boolean>(
+                new ExistsBillByUserIdAndIdQuery({
+                    userId,
+                    id: data.id,
+                }),
             );
-
-            if (!isExists) {
+            if (!exists) {
                 throw new BadRequestException('Could not found the bill');
             }
         }
 
         {
-            const [isReceiverExists, isLocationExists, isConsumersExists] = await Promise.all([
-                this.queryBus.execute<IsReceiverExistsByUserIdAndIdQuery, boolean>(
-                    new IsReceiverExistsByUserIdAndIdQuery({ userId, id: data.receiverId }),
+            const [existsReceiver, existsLocation, existsConsumer] = await Promise.all([
+                this.queryBus.execute<ExistsReceiverByUserIdAndIdQuery, boolean>(
+                    new ExistsReceiverByUserIdAndIdQuery({
+                        userId,
+                        id: data.receiverId,
+                    }),
                 ),
-                this.queryBus.execute<IsLocationExistsByUserIdAndIdQuery, boolean>(
-                    new IsLocationExistsByUserIdAndIdQuery({ userId, id: data.locationId }),
+                this.queryBus.execute<ExistsLocationByUserIdAndIdQuery, boolean>(
+                    new ExistsLocationByUserIdAndIdQuery({
+                        userId,
+                        id: data.locationId,
+                    }),
                 ),
                 this.queryBus.execute<IsConsumerExistsByUserIdAndIdsQuery, boolean>(
-                    new IsConsumerExistsByUserIdAndIdsQuery({ userId, ids: data.consumerIds }),
+                    new IsConsumerExistsByUserIdAndIdsQuery({
+                        userId,
+                        ids: data.consumerIds,
+                    }),
                 ),
             ]);
 
-            if (!isReceiverExists) {
+            if (!existsReceiver) {
                 throw new BadRequestException('Could not found the receiver');
             }
 
-            if (!isLocationExists) {
+            if (!existsLocation) {
                 throw new BadRequestException('Could not found the location');
             }
 
-            if (!isConsumersExists) {
+            if (!existsConsumer) {
                 throw new BadRequestException('Could not found the consumer');
             }
         }
@@ -76,7 +87,11 @@ export class UpdateBillService implements IServiceHandler {
             const billsConsumers = await this.queryBus.execute<
                 FindManyBillsConsumersByRefIdQuery,
                 ISelectBillConsumer[]
-            >(new FindManyBillsConsumersByRefIdQuery({ billId: data.id }));
+            >(
+                new FindManyBillsConsumersByRefIdQuery({
+                    billId: data.id,
+                }),
+            );
 
             if (isEmpty(billsConsumers)) {
                 throw new ProcessFailedInternalServerErrorException();

@@ -6,7 +6,7 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { IdEntity } from '@/core/entities/id.entity';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 import { DeleteReceiverCommand } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.command';
-import { IsReceiverExistsByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/isReceiverExistsByUserIdAndId/isReceiverExistsByUserIdAndId.query';
+import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
@@ -23,12 +23,13 @@ export class DeleteReceiverService implements IServiceHandler {
     @Transactional()
     async execute(userId: string, receiverId: string): Promise<IdEntity> {
         {
-            const isExists = await this.queryBus.execute<
-                IsReceiverExistsByUserIdAndIdQuery,
-                boolean
-            >(new IsReceiverExistsByUserIdAndIdQuery({ userId, id: receiverId }));
-
-            if (!isExists) {
+            const exists = await this.queryBus.execute<ExistsReceiverByUserIdAndIdQuery, boolean>(
+                new ExistsReceiverByUserIdAndIdQuery({
+                    userId,
+                    id: receiverId,
+                }),
+            );
+            if (!exists) {
                 throw new BadRequestException('Could not found the receiver');
             }
         }
@@ -37,7 +38,12 @@ export class DeleteReceiverService implements IServiceHandler {
             const deletedReceiver = await this.commandBus.execute<
                 DeleteReceiverCommand,
                 ISelectReceiver
-            >(new DeleteReceiverCommand({ userId, id: receiverId }));
+            >(
+                new DeleteReceiverCommand({
+                    userId,
+                    id: receiverId,
+                }),
+            );
 
             await this.commandBus.execute<
                 CreateOutboxEventCommand<IReceiverOutboxEvent>,

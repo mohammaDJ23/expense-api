@@ -5,7 +5,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { DeleteBillCommand } from '@/modules/bill/applications/commands/deleteBill/deleteBill.command';
-import { IsBillExistsByUserIdAndIdQuery } from '@/modules/bill/applications/queries/isBillExistsByUserIdAndId/isBillExistsByUserIdAndId.query';
+import { ExistsBillByUserIdAndIdQuery } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
@@ -23,17 +23,23 @@ export class DeleteBillService implements IServiceHandler {
     @Transactional()
     async execute(userId: string, billId: string): Promise<IdEntity> {
         {
-            const isExists = await this.queryBus.execute<IsBillExistsByUserIdAndIdQuery, boolean>(
-                new IsBillExistsByUserIdAndIdQuery({ userId, id: billId }),
+            const exists = await this.queryBus.execute<ExistsBillByUserIdAndIdQuery, boolean>(
+                new ExistsBillByUserIdAndIdQuery({
+                    userId,
+                    id: billId,
+                }),
             );
-            if (!isExists) {
+            if (!exists) {
                 throw new BadRequestException('Could not found the bill');
             }
         }
 
         {
             const deletedBill = await this.commandBus.execute<DeleteBillCommand, ISelectBill>(
-                new DeleteBillCommand({ userId, id: billId }),
+                new DeleteBillCommand({
+                    userId,
+                    id: billId,
+                }),
             );
 
             await this.commandBus.execute<

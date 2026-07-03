@@ -6,7 +6,7 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateLocationCommand } from '@/modules/location/applications/commands/updateLocation/updateLocation.command';
 import { ExistsLocationByUserIdAndExcludingIdAndNameQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.query';
-import { IsLocationExistsByUserIdAndIdQuery } from '@/modules/location/applications/queries/isLocationExistsByUserIdAndId/isLocationExistsByUserIdAndId.query';
+import { ExistsLocationByUserIdAndIdQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
@@ -25,9 +25,12 @@ export class UpdateLocationService implements IServiceHandler {
     @Transactional()
     async execute(userId: string, data: UpdateLocationRequestDto): Promise<IdEntity> {
         {
-            const [isExists, existsByName] = await Promise.all([
-                this.queryBus.execute<IsLocationExistsByUserIdAndIdQuery, boolean>(
-                    new IsLocationExistsByUserIdAndIdQuery({ userId, id: data.id }),
+            const [exists, existsByName] = await Promise.all([
+                this.queryBus.execute<ExistsLocationByUserIdAndIdQuery, boolean>(
+                    new ExistsLocationByUserIdAndIdQuery({
+                        userId,
+                        id: data.id,
+                    }),
                 ),
                 this.queryBus.execute<ExistsLocationByUserIdAndExcludingIdAndNameQuery, boolean>(
                     new ExistsLocationByUserIdAndExcludingIdAndNameQuery({
@@ -38,7 +41,7 @@ export class UpdateLocationService implements IServiceHandler {
                 ),
             ]);
 
-            if (!isExists) {
+            if (!exists) {
                 throw new BadRequestException('Could not found the location');
             }
 

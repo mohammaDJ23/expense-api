@@ -7,7 +7,7 @@ import { IdEntity } from '@/core/entities/id.entity';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 import { UpdateReceiverCommand } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.command';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.query';
-import { IsReceiverExistsByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/isReceiverExistsByUserIdAndId/isReceiverExistsByUserIdAndId.query';
+import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
@@ -25,9 +25,12 @@ export class UpdateReceiverService implements IServiceHandler {
     @Transactional()
     async execute(userId: string, data: UpdateReceiverRequestDto): Promise<IdEntity> {
         {
-            const [isExists, existsByName] = await Promise.all([
-                this.queryBus.execute<IsReceiverExistsByUserIdAndIdQuery, boolean>(
-                    new IsReceiverExistsByUserIdAndIdQuery({ userId, id: data.id }),
+            const [exists, existsByName] = await Promise.all([
+                this.queryBus.execute<ExistsReceiverByUserIdAndIdQuery, boolean>(
+                    new ExistsReceiverByUserIdAndIdQuery({
+                        userId,
+                        id: data.id,
+                    }),
                 ),
                 this.queryBus.execute<ExistsReceiverByUserIdAndExcludingIdAndNameQuery, boolean>(
                     new ExistsReceiverByUserIdAndExcludingIdAndNameQuery({
@@ -38,7 +41,7 @@ export class UpdateReceiverService implements IServiceHandler {
                 ),
             ]);
 
-            if (!isExists) {
+            if (!exists) {
                 throw new BadRequestException('Could not found the receiver');
             }
 

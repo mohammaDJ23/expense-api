@@ -6,12 +6,12 @@ import { CreateReceiverHandler } from '@/modules/receiver/applications/commands/
 import { DeleteReceiverHandler } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.handler';
 import { UpdateReceiverHandler } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.handler';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
+import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.handler';
 import { FindManyReceiversByUserIdAndIdsHandler } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.handler';
 import { FindReceiverByUserIdAndIdOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrNull/findReceiverByUserIdAndIdOrNull.handler';
 import { FindReceiverByUserIdAndIdOrThrowHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.handler';
 import { FindReceiverByUserIdAndNameOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndNameOrNull/findReceiverByUserIdAndNameOrNull.handler';
 import { FindReceiverListByUserIdHandler } from '@/modules/receiver/applications/queries/findReceiverListByUserId/findReceiverListByUserId.handler';
-import { IsReceiverExistsByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/isReceiverExistsByUserIdAndId/isReceiverExistsByUserIdAndId.handler';
 import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
 import { DeleteReceiverService } from '@/modules/receiver/applications/services/deleteReceiver.service';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
@@ -31,7 +31,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         FindReceiverByUserIdAndIdOrThrowHandler,
         FindReceiverByUserIdAndNameOrNullHandler,
         FindReceiverListByUserIdHandler,
-        IsReceiverExistsByUserIdAndIdHandler,
+        ExistsReceiverByUserIdAndIdHandler,
         ExistsReceiverByUserIdAndExcludingIdAndNameHandler,
         ReceiverService,
         CreateReceiverService,

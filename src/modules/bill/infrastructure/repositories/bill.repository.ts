@@ -50,7 +50,7 @@ export class BillRepository implements IBillRepository {
         );
     }
 
-    isExistsByUserIdAndId(userId: string, id: string): Promise<boolean> {
+    existsByUserIdAndId(userId: string, id: string): Promise<boolean> {
         return toIsExistsByCount(
             this.drizzleRepository.db.$count(
                 bills,

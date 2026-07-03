@@ -5,7 +5,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { DeleteLocationCommand } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.command';
-import { IsLocationExistsByUserIdAndIdQuery } from '@/modules/location/applications/queries/isLocationExistsByUserIdAndId/isLocationExistsByUserIdAndId.query';
+import { ExistsLocationByUserIdAndIdQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
@@ -23,12 +23,13 @@ export class DeleteLocationService implements IServiceHandler {
     @Transactional()
     async execute(userId: string, locationId: string): Promise<IdEntity> {
         {
-            const isExists = await this.queryBus.execute<
-                IsLocationExistsByUserIdAndIdQuery,
-                boolean
-            >(new IsLocationExistsByUserIdAndIdQuery({ userId, id: locationId }));
-
-            if (!isExists) {
+            const exists = await this.queryBus.execute<ExistsLocationByUserIdAndIdQuery, boolean>(
+                new ExistsLocationByUserIdAndIdQuery({
+                    userId,
+                    id: locationId,
+                }),
+            );
+            if (!exists) {
                 throw new BadRequestException('Could not found the location');
             }
         }
@@ -37,7 +38,12 @@ export class DeleteLocationService implements IServiceHandler {
             const deletedLocation = await this.commandBus.execute<
                 DeleteLocationCommand,
                 ISelectLocation
-            >(new DeleteLocationCommand({ userId, id: locationId }));
+            >(
+                new DeleteLocationCommand({
+                    userId,
+                    id: locationId,
+                }),
+            );
 
             await this.commandBus.execute<
                 CreateOutboxEventCommand<ILocationOutboxEvent>,

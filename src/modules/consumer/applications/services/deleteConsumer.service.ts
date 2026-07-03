@@ -5,7 +5,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { DeleteConsumerCommand } from '@/modules/consumer/applications/commands/deleteConsumer/deleteConsumer.command';
-import { IsConsumerExistsByUserIdAndIdQuery } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndId/isConsumerExistsByUserIdAndId.query';
+import { ExistsConsumerByUserIdAndIdQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
@@ -23,12 +23,13 @@ export class DeleteConsumerService implements IServiceHandler {
     @Transactional()
     async execute(userId: string, consumerId: string): Promise<IdEntity> {
         {
-            const isExists = await this.queryBus.execute<
-                IsConsumerExistsByUserIdAndIdQuery,
-                boolean
-            >(new IsConsumerExistsByUserIdAndIdQuery({ userId, id: consumerId }));
-
-            if (!isExists) {
+            const exists = await this.queryBus.execute<ExistsConsumerByUserIdAndIdQuery, boolean>(
+                new ExistsConsumerByUserIdAndIdQuery({
+                    userId,
+                    id: consumerId,
+                }),
+            );
+            if (!exists) {
                 throw new BadRequestException('Could not found the consumer');
             }
         }
@@ -37,7 +38,12 @@ export class DeleteConsumerService implements IServiceHandler {
             const deletedConsumer = await this.commandBus.execute<
                 DeleteConsumerCommand,
                 ISelectConsumer
-            >(new DeleteConsumerCommand({ userId, id: consumerId }));
+            >(
+                new DeleteConsumerCommand({
+                    userId,
+                    id: consumerId,
+                }),
+            );
 
             await this.commandBus.execute<
                 CreateOutboxEventCommand<IConsumerOutboxEvent>,

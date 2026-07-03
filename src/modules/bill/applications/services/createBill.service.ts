@@ -9,9 +9,9 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
 import { IsConsumerExistsByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndIds/isConsumerExistsByUserIdAndIds.query';
-import { IsLocationExistsByUserIdAndIdQuery } from '@/modules/location/applications/queries/isLocationExistsByUserIdAndId/isLocationExistsByUserIdAndId.query';
+import { ExistsLocationByUserIdAndIdQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
-import { IsReceiverExistsByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/isReceiverExistsByUserIdAndId/isReceiverExistsByUserIdAndId.query';
+import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
 
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
@@ -33,27 +33,36 @@ export class CreateBillService implements IServiceHandler {
     @Transactional()
     async execute(data: CreateBillRequestDto, userId: string): Promise<IdEntity> {
         {
-            const [isReceiverExists, isLocationExists, isConsumersExists] = await Promise.all([
-                this.queryBus.execute<IsReceiverExistsByUserIdAndIdQuery, boolean>(
-                    new IsReceiverExistsByUserIdAndIdQuery({ userId, id: data.receiverId }),
+            const [existsReceiver, existsLocation, existsConsumer] = await Promise.all([
+                this.queryBus.execute<ExistsReceiverByUserIdAndIdQuery, boolean>(
+                    new ExistsReceiverByUserIdAndIdQuery({
+                        userId,
+                        id: data.receiverId,
+                    }),
                 ),
-                this.queryBus.execute<IsLocationExistsByUserIdAndIdQuery, boolean>(
-                    new IsLocationExistsByUserIdAndIdQuery({ userId, id: data.locationId }),
+                this.queryBus.execute<ExistsLocationByUserIdAndIdQuery, boolean>(
+                    new ExistsLocationByUserIdAndIdQuery({
+                        userId,
+                        id: data.locationId,
+                    }),
                 ),
                 this.queryBus.execute<IsConsumerExistsByUserIdAndIdsQuery, boolean>(
-                    new IsConsumerExistsByUserIdAndIdsQuery({ userId, ids: data.consumerIds }),
+                    new IsConsumerExistsByUserIdAndIdsQuery({
+                        userId,
+                        ids: data.consumerIds,
+                    }),
                 ),
             ]);
 
-            if (!isReceiverExists) {
+            if (!existsReceiver) {
                 throw new BadRequestException('Could not found the receiver');
             }
 
-            if (!isLocationExists) {
+            if (!existsLocation) {
                 throw new BadRequestException('Could not found the location');
             }
 
-            if (!isConsumersExists) {
+            if (!existsConsumer) {
                 throw new BadRequestException('Could not found the consumer');
             }
         }
