@@ -7,12 +7,12 @@ import { CreateUserHandler } from '@/modules/user/applications/commands/createUs
 import { DeleteManyNotVerifiedUsersHandler } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.handler';
 import { DeleteUserHandler } from '@/modules/user/applications/commands/deleteUser/deleteUser.handler';
 import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUser/updateUser.handler';
+import { ExistsUserByIdHandler } from '@/modules/user/applications/queries/existsUserById/existsUserById.handler';
 import { FindUserByEmailOrNullHandler } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.handler';
 import { FindUserByIdOrNullHandler } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.handler';
 import { FindUserByIdOrThrowHandler } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.handler';
 import { FindUserListHandler } from '@/modules/user/applications/queries/findUserList/findUserList.handler';
 import { IsUserExistsByEmailHandler } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.handler';
-import { IsUserExistsByIdHandler } from '@/modules/user/applications/queries/isUserExistsById/isUserExistsById.handler';
 import { DeleteUserService } from '@/modules/user/applications/services/deleteUser.service';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { UserService } from '@/modules/user/applications/services/user.service';
@@ -31,7 +31,7 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         UpdateUserHandler,
         IsUserExistsByEmailHandler,
         DeleteManyNotVerifiedUsersHandler,
-        IsUserExistsByIdHandler,
+        ExistsUserByIdHandler,
         DeleteUserHandler,
         FindUserByEmailOrNullHandler,
         FindUserByIdOrNullHandler,
