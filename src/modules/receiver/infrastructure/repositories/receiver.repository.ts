@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, desc, eq, inArray } from 'drizzle-orm';
+import { and, desc, eq, inArray, ne } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
@@ -111,6 +111,23 @@ export class ReceiverRepository implements IReceiverRepository {
             this.drizzleRepository.db.$count(
                 receivers,
                 and(eq(receivers.userId, userId), eq(receivers.id, id)),
+            ),
+        );
+    }
+
+    existsByUserIdAndExcludingIdAndName(
+        userId: string,
+        excludingId: string,
+        name: string,
+    ): Promise<boolean> {
+        return toIsExistsByCount(
+            this.drizzleRepository.db.$count(
+                receivers,
+                and(
+                    eq(receivers.userId, userId),
+                    ne(receivers.id, excludingId),
+                    eq(receivers.name, name),
+                ),
             ),
         );
     }

@@ -5,6 +5,7 @@ import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateReceiverHandler } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.handler';
 import { DeleteReceiverHandler } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.handler';
 import { UpdateReceiverHandler } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.handler';
+import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
 import { FindManyReceiversByUserIdAndIdsHandler } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.handler';
 import { FindReceiverByUserIdAndIdOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrNull/findReceiverByUserIdAndIdOrNull.handler';
 import { FindReceiverByUserIdAndIdOrThrowHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.handler';
@@ -31,6 +32,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         FindReceiverByUserIdAndNameOrNullHandler,
         FindReceiverListByUserIdHandler,
         IsReceiverExistsByUserIdAndIdHandler,
+        ExistsReceiverByUserIdAndExcludingIdAndNameHandler,
         ReceiverService,
         CreateReceiverService,
         UpdateReceiverService,

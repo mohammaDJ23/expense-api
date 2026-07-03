@@ -1,6 +1,7 @@
 import type { IList } from '@/core/interfaces/list.interface';
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
 import type { IDeleteByUserIdAndIdRepository } from '@/core/interfaces/repositories/deleteByUserIdAndIdRepository.interface';
+import type { IExistsByUserIdAndExcludingIdAndNameRepository } from '@/core/interfaces/repositories/existsByUserIdAndExcludingIdAndNameRepository.interface';
 import type { IFindByUserIdAndIdOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrNullRepository.interface';
 import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrThrowRepository.interface';
 import type { IFindByUserIdAndNameOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndNameOrNullRepository.interface';
@@ -23,4 +24,5 @@ export interface IReceiverRepository
         IFindManyByUserIdAndIdsRepository<ISelectReceiver>,
         IFindListByUserIdRepository<IList, ISelectReceiver>,
         IFindByUserIdAndNameOrNullRepository<ISelectReceiver>,
-        IIsExistsByUserIdAndIdRepository {}
+        IIsExistsByUserIdAndIdRepository,
+        IExistsByUserIdAndExcludingIdAndNameRepository {}
