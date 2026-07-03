@@ -6,7 +6,7 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { IdEntity } from '@/core/entities/id.entity';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 import { UpdateReceiverCommand } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.command';
-import { FindReceiverByUserIdAndNameOrNullQuery } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndNameOrNull/findReceiverByUserIdAndNameOrNull.query';
+import { ExistsReceiverByUserIdAndExcludingIdAndNameQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.query';
 import { IsReceiverExistsByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/isReceiverExistsByUserIdAndId/isReceiverExistsByUserIdAndId.query';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
@@ -25,21 +25,24 @@ export class UpdateReceiverService implements IServiceHandler {
     @Transactional()
     async execute(userId: string, data: UpdateReceiverRequestDto): Promise<IdEntity> {
         {
-            const [isExists, foundedByName] = await Promise.all([
+            const [isExists, existsByName] = await Promise.all([
                 this.queryBus.execute<IsReceiverExistsByUserIdAndIdQuery, boolean>(
                     new IsReceiverExistsByUserIdAndIdQuery({ userId, id: data.id }),
                 ),
-                this.queryBus.execute<
-                    FindReceiverByUserIdAndNameOrNullQuery,
-                    ISelectReceiver | null
-                >(new FindReceiverByUserIdAndNameOrNullQuery({ userId, name: data.name })),
+                this.queryBus.execute<ExistsReceiverByUserIdAndExcludingIdAndNameQuery, boolean>(
+                    new ExistsReceiverByUserIdAndExcludingIdAndNameQuery({
+                        userId,
+                        excludingId: data.id,
+                        name: data.name,
+                    }),
+                ),
             ]);
 
             if (!isExists) {
                 throw new BadRequestException('Could not found the receiver');
             }
 
-            if (foundedByName) {
+            if (existsByName) {
                 throw new BadRequestException('The receiver already exists');
             }
         }
