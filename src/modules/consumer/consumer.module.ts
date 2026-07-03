@@ -7,6 +7,7 @@ import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications
 import { DeleteConsumerHandler } from '@/modules/consumer/applications/commands/deleteConsumer/deleteConsumer.handler';
 import { DeleteManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.handler';
 import { UpdateConsumerHandler } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.handler';
+import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
 import { FindConsumerByUserIdAndIdOrNullHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndIdOrNull/findConsumerByUserIdAndIdOrNull.handler';
 import { FindConsumerByUserIdAndIdOrThrowHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndIdOrThrow/findConsumerByUserIdAndIdOrThrow.handler';
 import { FindConsumerByUserIdAndNameOrNullHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndNameOrNull/findConsumerByUserIdAndNameOrNull.handler';
@@ -45,6 +46,7 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         CreateConsumerHandler,
         CreateManyBillsConsumersHandler,
         FindManyBillConsumerTargetsByRefIdsHandler,
+        ExistsConsumerByUserIdAndExcludingIdAndNameHandler,
         FindManyBillsConsumersByRefIdHandler,
         ConsumerRepository,
         BillConsumerRepository,

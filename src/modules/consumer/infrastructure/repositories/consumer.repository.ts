@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, inArray, desc } from 'drizzle-orm';
+import { and, eq, inArray, desc, ne } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
@@ -120,6 +120,23 @@ export class ConsumerRepository implements IConsumerRepository {
             this.drizzleRepository.db.$count(
                 consumers,
                 and(eq(consumers.userId, userId), eq(consumers.id, id)),
+            ),
+        );
+    }
+
+    existsByUserIdAndExcludingIdAndName(
+        userId: string,
+        excludingId: string,
+        name: string,
+    ): Promise<boolean> {
+        return toIsExistsByCount(
+            this.drizzleRepository.db.$count(
+                consumers,
+                and(
+                    eq(consumers.userId, userId),
+                    ne(consumers.id, excludingId),
+                    eq(consumers.name, name),
+                ),
             ),
         );
     }

@@ -5,7 +5,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateConsumerCommand } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.command';
-import { FindConsumerByUserIdAndNameOrNullQuery } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndNameOrNull/findConsumerByUserIdAndNameOrNull.query';
+import { ExistsConsumerByUserIdAndExcludingIdAndNameQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.query';
 import { IsConsumerExistsByUserIdAndIdQuery } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndId/isConsumerExistsByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 
@@ -25,21 +25,24 @@ export class UpdateConsumerService implements IServiceHandler {
     @Transactional()
     async execute(userId: string, data: UpdateConsumerRequestDto): Promise<IdEntity> {
         {
-            const [isExists, foundedByName] = await Promise.all([
+            const [isExists, existsByName] = await Promise.all([
                 this.queryBus.execute<IsConsumerExistsByUserIdAndIdQuery, boolean>(
                     new IsConsumerExistsByUserIdAndIdQuery({ userId, id: data.id }),
                 ),
-                this.queryBus.execute<
-                    FindConsumerByUserIdAndNameOrNullQuery,
-                    ISelectConsumer | null
-                >(new FindConsumerByUserIdAndNameOrNullQuery({ userId, name: data.name })),
+                this.queryBus.execute<ExistsConsumerByUserIdAndExcludingIdAndNameQuery, boolean>(
+                    new ExistsConsumerByUserIdAndExcludingIdAndNameQuery({
+                        userId,
+                        excludingId: data.id,
+                        name: data.name,
+                    }),
+                ),
             ]);
 
             if (!isExists) {
                 throw new BadRequestException('Could not found the consumer');
             }
 
-            if (foundedByName) {
+            if (existsByName) {
                 throw new BadRequestException('The consumer already exists');
             }
         }
