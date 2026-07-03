@@ -5,9 +5,9 @@ import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
 import { DeleteBillHandler } from '@/modules/bill/applications/commands/deleteBill/deleteBill.handler';
 import { UpdateBillHandler } from '@/modules/bill/applications/commands/updateBill/updateBill.handler';
+import { ExistsBillByUserIdAndIdHandler } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.handler';
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
 import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.handler';
-import { IsBillExistsByUserIdAndIdHandler } from '@/modules/bill/applications/queries/isBillExistsByUserIdAndId/isBillExistsByUserIdAndId.handler';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
 import { DeleteBillService } from '@/modules/bill/applications/services/deleteBill.service';
@@ -28,7 +28,7 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         FindBillListByUserIdService,
         FindBillByUserIdAndIdOrThrowHandler,
         FindBillListByUserIdHandler,
-        IsBillExistsByUserIdAndIdHandler,
+        ExistsBillByUserIdAndIdHandler,
         CreateBillHandler,
         UpdateBillHandler,
         DeleteBillHandler,

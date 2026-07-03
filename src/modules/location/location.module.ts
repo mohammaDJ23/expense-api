@@ -5,12 +5,12 @@ import { CreateLocationHandler } from '@/modules/location/applications/commands/
 import { DeleteLocationHandler } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.handler';
 import { UpdateLocationHandler } from '@/modules/location/applications/commands/updateLocation/updateLocation.handler';
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
+import { ExistsLocationByUserIdAndIdHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.handler';
 import { FindLocationByUserIdAndIdOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrNull/findLocationByUserIdAndIdOrNull.handler';
 import { FindLocationByUserIdAndIdOrThrowHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.handler';
 import { FindLocationByUserIdAndNameOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.handler';
 import { FindLocationListByUserIdHandler } from '@/modules/location/applications/queries/findLocationListByUserId/findLocationListByUserId.handler';
 import { FindManyLocationsByUserIdAndIdsHandler } from '@/modules/location/applications/queries/findManyLocationsByUserIdAndIds/findManyLocationsByUserIdAndIds.handler';
-import { IsLocationExistsByUserIdAndIdHandler } from '@/modules/location/applications/queries/isLocationExistsByUserIdAndId/isLocationExistsByUserIdAndId.handler';
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
@@ -34,7 +34,7 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
         FindLocationByUserIdAndNameOrNullHandler,
         FindLocationListByUserIdHandler,
         FindManyLocationsByUserIdAndIdsHandler,
-        IsLocationExistsByUserIdAndIdHandler,
+        ExistsLocationByUserIdAndIdHandler,
         ExistsLocationByUserIdAndExcludingIdAndNameHandler,
         CreateLocationHandler,
         LocationRepository,

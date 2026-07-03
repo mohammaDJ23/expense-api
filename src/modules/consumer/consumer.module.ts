@@ -8,6 +8,7 @@ import { DeleteConsumerHandler } from '@/modules/consumer/applications/commands/
 import { DeleteManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.handler';
 import { UpdateConsumerHandler } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.handler';
 import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
+import { ExistsConsumerByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.handler';
 import { FindConsumerByUserIdAndIdOrNullHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndIdOrNull/findConsumerByUserIdAndIdOrNull.handler';
 import { FindConsumerByUserIdAndIdOrThrowHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndIdOrThrow/findConsumerByUserIdAndIdOrThrow.handler';
 import { FindConsumerByUserIdAndNameOrNullHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndNameOrNull/findConsumerByUserIdAndNameOrNull.handler';
@@ -15,7 +16,6 @@ import { FindConsumerListByUserIdHandler } from '@/modules/consumer/applications
 import { FindManyBillConsumerTargetsByRefIdsHandler } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.handler';
 import { FindManyBillsConsumersByRefIdHandler } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.handler';
 import { FindManyConsumersByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/findManyConsumersByUserIdAndIds/findManyConsumersByUserIdAndIds.handler';
-import { IsConsumerExistsByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndId/isConsumerExistsByUserIdAndId.handler';
 import { IsConsumerExistsByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndIds/isConsumerExistsByUserIdAndIds.handler';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { CreateConsumerService } from '@/modules/consumer/applications/services/createConsumer.service';
@@ -37,7 +37,7 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         FindConsumerListByUserIdHandler,
         FindManyConsumersByUserIdAndIdsHandler,
         IsConsumerExistsByUserIdAndIdsHandler,
-        IsConsumerExistsByUserIdAndIdHandler,
+        ExistsConsumerByUserIdAndIdHandler,
         DeleteConsumerHandler,
         UpdateConsumerHandler,
         FindConsumerByUserIdAndNameOrNullHandler,

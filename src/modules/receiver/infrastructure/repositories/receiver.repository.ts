@@ -106,7 +106,7 @@ export class ReceiverRepository implements IReceiverRepository {
         );
     }
 
-    isExistsByUserIdAndId(userId: string, id: string): Promise<boolean> {
+    existsByUserIdAndId(userId: string, id: string): Promise<boolean> {
         return toIsExistsByCount(
             this.drizzleRepository.db.$count(
                 receivers,
