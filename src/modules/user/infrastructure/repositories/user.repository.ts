@@ -90,7 +90,7 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    isExistsById(id: string): Promise<boolean> {
+    existsById(id: string): Promise<boolean> {
         return toIsExistsByCount(this.drizzleRepository.db.$count(users, eq(users.id, id)));
     }
 }

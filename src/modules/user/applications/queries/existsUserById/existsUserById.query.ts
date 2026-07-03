@@ -1,6 +1,7 @@
 interface IProps {
     id: string;
 }
-export class IsUserExistsByIdQuery {
+
+export class ExistsUserByIdQuery {
     constructor(public readonly props: IProps) {}
 }
