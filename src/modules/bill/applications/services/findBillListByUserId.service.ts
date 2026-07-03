@@ -50,15 +50,25 @@ export class FindBillListByUserIdService implements IServiceHandler {
             {
                 const [locations, receivers, consumers] = await Promise.all([
                     this.queryBus.execute<FindManyLocationsByUserIdAndIdsQuery, ISelectLocation[]>(
-                        new FindManyLocationsByUserIdAndIdsQuery({ userId, ids: locationIds }),
+                        new FindManyLocationsByUserIdAndIdsQuery({
+                            userId,
+                            ids: locationIds,
+                        }),
                     ),
                     this.queryBus.execute<FindManyReceiversByUserIdAndIdsQuery, ISelectReceiver[]>(
-                        new FindManyReceiversByUserIdAndIdsQuery({ userId, ids: receiverIds }),
+                        new FindManyReceiversByUserIdAndIdsQuery({
+                            userId,
+                            ids: receiverIds,
+                        }),
                     ),
                     this.queryBus.execute<
                         FindManyBillConsumerTargetsByRefIdsQuery,
                         ITargetBillConsumer[]
-                    >(new FindManyBillConsumerTargetsByRefIdsQuery({ billIds })),
+                    >(
+                        new FindManyBillConsumerTargetsByRefIdsQuery({
+                            billIds,
+                        }),
+                    ),
                 ]);
 
                 if (isEmpty(locations) || isEmpty(receivers) || isEmpty(consumers)) {

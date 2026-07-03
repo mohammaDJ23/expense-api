@@ -8,7 +8,7 @@ import { IdEntity } from '@/core/entities/id.entity';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
-import { IsConsumerExistsByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndIds/isConsumerExistsByUserIdAndIds.query';
+import { ExistsConsumerByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndIds/existsConsumerByUserIdAndIds.query';
 import { ExistsLocationByUserIdAndIdQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
@@ -46,8 +46,8 @@ export class CreateBillService implements IServiceHandler {
                         id: data.locationId,
                     }),
                 ),
-                this.queryBus.execute<IsConsumerExistsByUserIdAndIdsQuery, boolean>(
-                    new IsConsumerExistsByUserIdAndIdsQuery({
+                this.queryBus.execute<ExistsConsumerByUserIdAndIdsQuery, boolean>(
+                    new ExistsConsumerByUserIdAndIdsQuery({
                         userId,
                         ids: data.consumerIds,
                     }),

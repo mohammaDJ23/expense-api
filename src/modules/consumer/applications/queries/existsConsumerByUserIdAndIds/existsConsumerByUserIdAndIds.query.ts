@@ -3,6 +3,6 @@ interface IProps {
     ids: string[];
 }
 
-export class IsConsumerExistsByUserIdAndIdsQuery {
+export class ExistsConsumerByUserIdAndIdsQuery {
     constructor(public readonly props: IProps) {}
 }
