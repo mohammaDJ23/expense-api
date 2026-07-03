@@ -21,21 +21,34 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
 
     async execute(userId: string, billId: string): Promise<IBill> {
         const bill = await this.queryBus.execute<FindBillByUserIdAndIdOrThrowQuery, ISelectBill>(
-            new FindBillByUserIdAndIdOrThrowQuery({ userId, id: billId }),
+            new FindBillByUserIdAndIdOrThrowQuery({
+                userId,
+                id: billId,
+            }),
         );
 
         {
             const [receiver, location, consumers] = await Promise.all([
                 this.queryBus.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
-                    new FindReceiverByUserIdAndIdOrThrowQuery({ userId, id: bill.receiverId }),
+                    new FindReceiverByUserIdAndIdOrThrowQuery({
+                        userId,
+                        id: bill.receiverId,
+                    }),
                 ),
                 this.queryBus.execute<FindLocationByUserIdAndIdOrThrowQuery, ISelectLocation>(
-                    new FindLocationByUserIdAndIdOrThrowQuery({ userId, id: bill.locationId }),
+                    new FindLocationByUserIdAndIdOrThrowQuery({
+                        userId,
+                        id: bill.locationId,
+                    }),
                 ),
                 this.queryBus.execute<
                     FindManyBillConsumerTargetsByRefIdsQuery,
                     ITargetBillConsumer[]
-                >(new FindManyBillConsumerTargetsByRefIdsQuery({ billIds: [bill.id] })),
+                >(
+                    new FindManyBillConsumerTargetsByRefIdsQuery({
+                        billIds: [bill.id],
+                    }),
+                ),
             ]);
 
             if (isEmpty(consumers)) {

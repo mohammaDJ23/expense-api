@@ -11,8 +11,8 @@ import { UpdateBillCommand } from '@/modules/bill/applications/commands/updateBi
 import { ExistsBillByUserIdAndIdQuery } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.query';
 import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
 import { DeleteManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.command';
+import { ExistsConsumerByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndIds/existsConsumerByUserIdAndIds.query';
 import { FindManyBillsConsumersByRefIdQuery } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.query';
-import { IsConsumerExistsByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/isConsumerExistsByUserIdAndIds/isConsumerExistsByUserIdAndIds.query';
 import { ExistsLocationByUserIdAndIdQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.query';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
@@ -62,8 +62,8 @@ export class UpdateBillService implements IServiceHandler {
                         id: data.locationId,
                     }),
                 ),
-                this.queryBus.execute<IsConsumerExistsByUserIdAndIdsQuery, boolean>(
-                    new IsConsumerExistsByUserIdAndIdsQuery({
+                this.queryBus.execute<ExistsConsumerByUserIdAndIdsQuery, boolean>(
+                    new ExistsConsumerByUserIdAndIdsQuery({
                         userId,
                         ids: data.consumerIds,
                     }),

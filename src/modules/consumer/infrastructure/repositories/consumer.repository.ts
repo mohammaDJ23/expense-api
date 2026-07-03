@@ -105,7 +105,7 @@ export class ConsumerRepository implements IConsumerRepository {
         );
     }
 
-    isExistsByUserIdAndIds(userId: string, ids: string[]): Promise<boolean> {
+    existsByUserIdAndIds(userId: string, ids: string[]): Promise<boolean> {
         return toIsExistsByCount(
             this.drizzleRepository.db.$count(
                 consumers,
