@@ -13,7 +13,6 @@ import { PasswordStorageService } from './passwordStorage.service';
 import { PasswordTokenService } from './passwordToken.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { INewPasswordPayload } from '@/modules/authentication/domain/interfaces/newPasswordPayload.interface';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
@@ -30,12 +29,7 @@ export class LocalResetPasswordService implements IServiceHandler {
     ) {}
 
     async execute(data: LocalResetPasswordRequestDto): Promise<boolean> {
-        let payload: INewPasswordPayload;
-        try {
-            payload = this.passwordTokenService.verify(data.token);
-        } catch {
-            throw new BadRequestException();
-        }
+        const payload = this.passwordTokenService.verify(data.token);
 
         {
             let storedToken: string | null = null;

@@ -12,7 +12,6 @@ import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
 import type { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
@@ -28,12 +27,7 @@ export class LocalVerifyVerificationService implements IServiceHandler {
     ) {}
 
     async execute(data: LocalVerifyVerificationRequestDto): Promise<boolean> {
-        let payload: IVerificationPayload;
-        try {
-            payload = this.verificationTokenService.verify(data.token);
-        } catch {
-            throw new BadRequestException();
-        }
+        const payload = this.verificationTokenService.verify(data.token);
 
         {
             let storedToken: string | null = null;

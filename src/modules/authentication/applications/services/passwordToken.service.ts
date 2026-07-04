@@ -29,6 +29,6 @@ export class PasswordTokenService {
         if (payload.type === 'NEW_PASSWORD') {
             return payload;
         }
-        throw new BadRequestException('The new password token is not valid');
+        throw new BadRequestException();
     }
 }

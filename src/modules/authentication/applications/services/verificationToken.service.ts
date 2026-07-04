@@ -29,6 +29,6 @@ export class VerificationTokenService {
         if (payload.type === 'VERIFICATION') {
             return payload;
         }
-        throw new BadRequestException('The verification token is not valid');
+        throw new BadRequestException();
     }
 }
