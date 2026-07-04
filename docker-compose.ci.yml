@@ -39,6 +39,10 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
+            kafka:
+                condition: service_healthy
+            debezium-connect:
+                condition: service_healthy
         restart: unless-stopped
         pull_policy: build
         mem_limit: 512M
