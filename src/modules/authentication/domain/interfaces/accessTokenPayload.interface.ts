@@ -1,6 +1,6 @@
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
-
-export interface IAccessTokenPayload extends Omit<ISelectUser, 'hashedPassword'> {
+export interface IAccessTokenPayload {
+    id: string;
+    role: string;
     type: 'ACCESS_TOKEN';
     issuedAt: string;
 }

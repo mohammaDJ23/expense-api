@@ -12,6 +12,7 @@ import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
+import type { ICurrentUser } from './currentUser.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
@@ -30,7 +31,7 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    async validate(_: string, __: string, profile: Profile): Promise<ISelectUser> {
+    async validate(_: string, __: string, profile: Profile): Promise<ICurrentUser> {
         const email = profile.emails?.[0];
         if (!email) {
             throw new UnauthorizedException();
@@ -40,10 +41,14 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
             const user = await this.queryBus.execute<
                 FindUserByEmailOrNullQuery,
                 ISelectUser | null
-            >(new FindUserByEmailOrNullQuery({ email: email.value }));
+            >(
+                new FindUserByEmailOrNullQuery({
+                    email: email.value,
+                }),
+            );
 
             if (!user) {
-                return this.commandBus.execute<CreateUserCommand, ISelectUser>(
+                const createdUser = await this.commandBus.execute<CreateUserCommand, ISelectUser>(
                     new CreateUserCommand({
                         firstName: profile.name?.givenName,
                         lastName: profile.name?.familyName,
@@ -58,6 +63,11 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
                         lastLoginAt: getCurrentUTCTimestamp(),
                     }),
                 );
+
+                return {
+                    id: createdUser.id,
+                    role: createdUser.role,
+                };
             }
 
             if (!user.verifiedAt) {
@@ -68,13 +78,20 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
                 throw new ForbiddenException();
             }
 
-            return this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-                new UpdateUserCommand({
-                    id: user.id,
-                    updatedAt: getCurrentUTCTimestamp(),
-                    lastLoginAt: getCurrentUTCTimestamp(),
-                }),
-            );
+            {
+                const updatedUser = await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
+                    new UpdateUserCommand({
+                        id: user.id,
+                        updatedAt: getCurrentUTCTimestamp(),
+                        lastLoginAt: getCurrentUTCTimestamp(),
+                    }),
+                );
+
+                return {
+                    id: updatedUser.id,
+                    role: updatedUser.role,
+                };
+            }
         }
     }
 }

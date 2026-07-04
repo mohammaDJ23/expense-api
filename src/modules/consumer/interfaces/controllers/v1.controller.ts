@@ -11,11 +11,11 @@ import {
     UseGuards,
 } from '@nestjs/common';
 
+import { CurrentUser } from '@/core/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
-import { CurrentUser } from '@/core/user/currentUser.decorator';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { ConsumerResponseDto } from '@/modules/consumer/interfaces/dtos/consumer.response.dto';
 import { CreateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/createConsumer.request.dto';
@@ -32,8 +32,8 @@ import {
     SUCCESS_UPDATE_CONSUMER_MESSAGE,
 } from './controllers.constants';
 
+import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IdEntity } from '@/core/entities/id.entity';
-import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 @Controller({ version: '1', path: 'api/consumers' })

@@ -4,7 +4,6 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
@@ -15,6 +14,7 @@ import { PasswordHasherService } from './passwordHasher.service';
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { Response } from 'express';
 
 @Injectable()
 export class LocalLoginService implements IServiceHandler {
@@ -25,9 +25,11 @@ export class LocalLoginService implements IServiceHandler {
         private readonly accessTokenService: AccessTokenService,
     ) {}
 
-    async execute(data: LocalLoginRequestDto): Promise<AccessTokenEntity> {
+    async execute(response: Response, data: LocalLoginRequestDto): Promise<ISelectUser> {
         const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
-            new FindUserByEmailOrNullQuery({ email: data.email }),
+            new FindUserByEmailOrNullQuery({
+                email: data.email,
+            }),
         );
 
         if (!user) {
@@ -58,18 +60,16 @@ export class LocalLoginService implements IServiceHandler {
         }
 
         {
-            const token = this.accessTokenService.execute(user);
-            const accessToken = AccessTokenEntity.create(token);
-
-            await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-                new UpdateUserCommand({
-                    id: user.id,
-                    updatedAt: getCurrentUTCTimestamp(),
-                    lastLoginAt: getCurrentUTCTimestamp(),
-                }),
-            );
-
-            return accessToken;
+            const token = this.accessTokenService.issue(user);
+            this.accessTokenService.setCookie(response, token);
         }
+
+        return this.commandBus.execute<UpdateUserCommand, ISelectUser>(
+            new UpdateUserCommand({
+                id: user.id,
+                updatedAt: getCurrentUTCTimestamp(),
+                lastLoginAt: getCurrentUTCTimestamp(),
+            }),
+        );
     }
 }

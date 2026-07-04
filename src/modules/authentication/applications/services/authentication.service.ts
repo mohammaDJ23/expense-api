@@ -8,14 +8,15 @@ import { LocalSendVerificationService } from './localSendVerification.service';
 import { LocalSignupService } from './localSignup.service';
 import { LocalVerifyVerificationService } from './localVerifyVerification.service';
 
-import type { ICurrentUser } from '@/core/user/currentUser.interface';
-import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
+import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import type { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
 import type { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
 import type { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 import type { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { Response } from 'express';
 
 @Injectable()
 export class AuthenticationService {
@@ -34,8 +35,8 @@ export class AuthenticationService {
         return this.localSignupService.execute(data);
     }
 
-    localLogin(data: LocalLoginRequestDto): Promise<AccessTokenEntity> {
-        return this.localLoginService.execute(data);
+    localLogin(response: Response, data: LocalLoginRequestDto): Promise<ISelectUser> {
+        return this.localLoginService.execute(response, data);
     }
 
     localSendVerification(data: LocalSendVerificationRequestDto): Promise<boolean> {
@@ -54,7 +55,7 @@ export class AuthenticationService {
         return this.localResetPasswordService.execute(data);
     }
 
-    googleLogin(user: ICurrentUser): AccessTokenEntity {
-        return this.googleLoginService.execute(user);
+    googleLogin(response: Response, user: ICurrentUser): Promise<ISelectUser> {
+        return this.googleLoginService.execute(response, user);
     }
 }

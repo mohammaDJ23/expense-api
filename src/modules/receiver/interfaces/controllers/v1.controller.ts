@@ -11,11 +11,11 @@ import {
     UseGuards,
 } from '@nestjs/common';
 
+import { CurrentUser } from '@/core/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
-import { CurrentUser } from '@/core/user/currentUser.decorator';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
 import { CreateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/createReceiver.request.dto';
 import { DeleteReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/deleteReceiver.request.dto';
@@ -32,8 +32,8 @@ import {
     SUCCESS_UPDATE_RECEIVER_MESSAGE,
 } from './controllers.constants';
 
+import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IdEntity } from '@/core/entities/id.entity';
-import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @Controller({ version: '1', path: 'api/receivers' })
