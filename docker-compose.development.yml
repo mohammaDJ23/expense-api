@@ -134,7 +134,7 @@ services:
             - expense-api-network
 
     debezium-connect:
-        image: quay.io/debezium/connect:3.0.8.Final
+        image: mohammadnowresideh1997/debezium-connect:3.0.8.Final
         restart: unless-stopped
         depends_on:
             postgres:
