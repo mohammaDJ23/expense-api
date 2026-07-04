@@ -6,13 +6,11 @@ import { FiltersModule } from '@/core/filters/filters.module';
 import { TransformResponseInterceptor } from '@/core/interceptors/transformResponse.interceptor';
 import { ApiVersioningService } from '@/core/services/apiVersioning.service';
 import { AppInstanceService } from '@/core/services/appInstance.service';
-import { CookieParserService } from '@/core/services/cookieParser.service';
 import { VersionService } from '@/core/services/version.service';
 
 @Module({
     imports: [ConfigModule.forRoot({ isGlobal: true, ignoreEnvFile: true }), FiltersModule],
     providers: [
-        CookieParserService,
         ApiVersioningService,
         AppInstanceService,
         VersionService,
