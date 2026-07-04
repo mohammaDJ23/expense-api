@@ -76,7 +76,7 @@ CONFIG="$(
             "transforms": "outbox",
             "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
             "transforms.outbox.route.by.field": "aggregate_type",
-            "transforms.outbox.route.topic.replacement": "search.${routedByValue}",
+            "transforms.outbox.route.topic.replacement": "${routedByValue}",
             "transforms.outbox.table.field.event.key": "aggregate_id",
             "transforms.outbox.table.field.event.payload": "payload",
             "transforms.outbox.table.field.event.type": "event_type",
