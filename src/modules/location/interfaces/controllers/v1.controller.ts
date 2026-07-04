@@ -11,11 +11,11 @@ import {
     UseGuards,
 } from '@nestjs/common';
 
+import { CurrentUser } from '@/core/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
-import { CurrentUser } from '@/core/user/currentUser.decorator';
 import { LocationService } from '@/modules/location/applications/services/location.service';
 import { CreateLocationRequestDto } from '@/modules/location/interfaces/dtos/createLocation.request.dto';
 import { DeleteLocationRequestDto } from '@/modules/location/interfaces/dtos/deleteLocation.request.dto';
@@ -32,8 +32,8 @@ import {
     SUCCESS_UPDATE_LOCATION_MESSAGE,
 } from './controllers.constants';
 
+import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IdEntity } from '@/core/entities/id.entity';
-import type { ICurrentUser } from '@/core/user/currentUser.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 @Controller({ version: '1', path: 'api/locations' })

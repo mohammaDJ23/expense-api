@@ -1,23 +1,32 @@
 import { Injectable } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 
-import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
+import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 
 import { AccessTokenService } from './accessToken.service';
 
+import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { Response } from 'express';
 
 @Injectable()
 export class GoogleLoginService implements IServiceHandler {
-    constructor(private readonly accessTokenService: AccessTokenService) {}
+    constructor(
+        private readonly queryBus: QueryBus,
+        private readonly accessTokenService: AccessTokenService,
+    ) {}
 
-    execute(user: ISelectUser): AccessTokenEntity {
-        try {
-            const token = this.accessTokenService.execute(user);
-            return AccessTokenEntity.create(token);
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
+    execute(response: Response, user: ICurrentUser): Promise<ISelectUser> {
+        {
+            const token = this.accessTokenService.issue(user);
+            this.accessTokenService.setCookie(response, token);
         }
+
+        return this.queryBus.execute<FindUserByIdOrThrowQuery, ISelectUser>(
+            new FindUserByIdOrThrowQuery({
+                id: user.id,
+            }),
+        );
     }
 }

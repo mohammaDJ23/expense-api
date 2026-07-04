@@ -1,10 +1,10 @@
-import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 
+import { CurrentUser } from '@/core/authentication/currentUser.decorator';
 import { GoogleAuthGuard } from '@/core/authentication/googleAuth.guard';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
-import { CurrentUser } from '@/core/user/currentUser.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
@@ -12,7 +12,7 @@ import { LocalResetPasswordRequestDto } from '@/modules/authentication/interface
 import { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
 import { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 import { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
-import { LoginResponseDto } from '@/modules/authentication/interface/dtos/login.response.dto';
+import { UserResponseDto } from '@/modules/user/interfaces/dtos/user.response.dto';
 
 import {
     SUCCESS_SIGNUP_MESSAGE,
@@ -23,8 +23,9 @@ import {
     SUCCESS_RESET_PASSWORD_MESSAGE,
 } from './controllers.constants';
 
-import type { ICurrentUser } from '@/core/user/currentUser.interface';
-import type { AccessTokenEntity } from '@/modules/authentication/domain/entities/accessToken.entity';
+import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { Response } from 'express';
 
 @Controller({ version: '1', path: 'api/authentication' })
 export class AuthenticationController {
@@ -40,9 +41,12 @@ export class AuthenticationController {
     @Post('local/login')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
-    @SerializerInterceptor(LoginResponseDto)
-    localLogin(@Body() body: LocalLoginRequestDto): Promise<AccessTokenEntity> {
-        return this.authenticationService.localLogin(body);
+    @SerializerInterceptor(UserResponseDto)
+    localLogin(
+        @Res() response: Response,
+        @Body() body: LocalLoginRequestDto,
+    ): Promise<ISelectUser> {
+        return this.authenticationService.localLogin(response, body);
     }
 
     @Post('local/verification/send')
@@ -83,8 +87,11 @@ export class AuthenticationController {
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
-    @SerializerInterceptor(LoginResponseDto)
-    googleLogin(@CurrentUser() user: ICurrentUser): AccessTokenEntity {
-        return this.authenticationService.googleLogin(user);
+    @SerializerInterceptor(UserResponseDto)
+    googleLogin(
+        @Res() response: Response,
+        @CurrentUser() user: ICurrentUser,
+    ): Promise<ISelectUser> {
+        return this.authenticationService.googleLogin(response, user);
     }
 }

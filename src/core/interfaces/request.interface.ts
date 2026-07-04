@@ -1,5 +1,5 @@
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 
 export interface IRequest extends Request {
-    user?: ISelectUser;
+    user?: ICurrentUser;
 }
