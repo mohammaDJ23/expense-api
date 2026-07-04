@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { AccessTokenService } from '@/core/authentication/accessToken.service';
 import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
-
-import { AccessTokenService } from './accessToken.service';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
@@ -19,7 +18,7 @@ export class GoogleLoginService implements IServiceHandler {
 
     execute(response: Response, user: ICurrentUser): Promise<ISelectUser> {
         {
-            const token = this.accessTokenService.issue(user);
+            const token = this.accessTokenService.sign(user);
             this.accessTokenService.setCookie(response, token);
         }
 

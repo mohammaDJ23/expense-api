@@ -8,6 +8,7 @@ import { readSecret } from '@/common/utils/readSecret.util';
 import { FindUserByIdOrNullQuery } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.query';
 
 import { accessTokenExtractor } from './accessToken.extractor';
+import { AccessTokenService } from './accessToken.service';
 
 import type { ICurrentUser } from './currentUser.interface';
 import type { IAccessTokenPayload } from '@/modules/authentication/domain/interfaces/accessTokenPayload.interface';
@@ -15,7 +16,10 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 
 @Injectable()
 export class JwtAuthStrategy extends PassportStrategy(Strategy) {
-    constructor(private readonly queryBus: QueryBus) {
+    constructor(
+        private readonly queryBus: QueryBus,
+        private readonly accessTokenService: AccessTokenService,
+    ) {
         const env = new Env();
         super({
             jwtFromRequest: ExtractJwt.fromExtractors([accessTokenExtractor]),
@@ -25,15 +29,12 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: IAccessTokenPayload): Promise<ICurrentUser> {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (payload.type !== 'ACCESS_TOKEN') {
-            throw new UnauthorizedException();
-        }
+        const verifiedPayload = this.accessTokenService.verify(payload);
 
         {
             const user = await this.queryBus.execute<FindUserByIdOrNullQuery, ISelectUser | null>(
                 new FindUserByIdOrNullQuery({
-                    id: payload.id,
+                    id: verifiedPayload.id,
                 }),
             );
 

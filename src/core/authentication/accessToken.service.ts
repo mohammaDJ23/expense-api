@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
@@ -11,7 +11,7 @@ import type { Response } from 'express';
 export class AccessTokenService {
     constructor(private readonly jwtService: JwtService) {}
 
-    issue(user: ICurrentUser): string {
+    sign(user: ICurrentUser): string {
         return this.jwtService.sign<IAccessTokenPayload>(
             {
                 id: user.id,
@@ -21,6 +21,14 @@ export class AccessTokenService {
             },
             { expiresIn: '1d' },
         );
+    }
+
+    verify(payload: IAccessTokenPayload): IAccessTokenPayload {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (payload.type === 'ACCESS_TOKEN') {
+            return payload;
+        }
+        throw new UnauthorizedException();
     }
 
     setCookie(response: Response, accessToken: string): void {
