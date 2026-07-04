@@ -43,7 +43,7 @@ export class AuthenticationController {
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializerInterceptor(UserResponseDto)
     localLogin(
-        @Res() response: Response,
+        @Res({ passthrough: true }) response: Response,
         @Body() body: LocalLoginRequestDto,
     ): Promise<ISelectUser> {
         return this.authenticationService.localLogin(response, body);
@@ -89,7 +89,7 @@ export class AuthenticationController {
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
     @SerializerInterceptor(UserResponseDto)
     googleLogin(
-        @Res() response: Response,
+        @Res({ passthrough: true }) response: Response,
         @CurrentUser() user: ICurrentUser,
     ): Promise<ISelectUser> {
         return this.authenticationService.googleLogin(response, user);
