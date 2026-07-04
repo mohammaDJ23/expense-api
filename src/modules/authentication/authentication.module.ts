@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { AuthenticationModule as CoreAuthenticationModule } from '@/core/authentication/authentication.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
-import { AccessTokenService } from '@/modules/authentication/applications/services/accessToken.service';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
 import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
@@ -20,7 +19,7 @@ import { ResetPasswordMailerService } from '@/modules/authentication/application
 import { VerificationMailerService } from '@/modules/authentication/applications/services/verificationMailer.service';
 import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { VerificationTokenService } from '@/modules/authentication/applications/services/verificationToken.service';
-import { VerifiedVerificationMailerService } from '@/modules/authentication/applications/services/verifiedVerificationoMailer.service';
+import { VerifiedVerificationMailerService } from '@/modules/authentication/applications/services/verifiedVerificationMailer.service';
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
 import { UserModule } from '@/modules/user/user.module';
 
@@ -45,7 +44,6 @@ import { UserModule } from '@/modules/user/user.module';
         PasswordTokenService,
         PasswordStorageService,
         PasswordHasherService,
-        AccessTokenService,
     ],
 })
 export class AuthenticationModule {}

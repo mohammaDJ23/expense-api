@@ -2,13 +2,13 @@ import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/c
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
+import { AccessTokenService } from '@/core/authentication/accessToken.service';
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
-import { AccessTokenService } from './accessToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
@@ -60,7 +60,7 @@ export class LocalLoginService implements IServiceHandler {
         }
 
         {
-            const token = this.accessTokenService.issue(user);
+            const token = this.accessTokenService.sign(user);
             this.accessTokenService.setCookie(response, token);
         }
 
