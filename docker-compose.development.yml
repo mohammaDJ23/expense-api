@@ -61,6 +61,20 @@ services:
             - POSTGRES_PASSWORD_FILE=/run/secrets/database_password
             - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 --auth-local=scram-sha-256
             - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
+        command:
+            - postgres
+            - -c
+            - wal_level=logical
+            - -c
+            - max_replication_slots=10
+            - -c
+            - max_wal_senders=10
+            - -c
+            - archive_mode=on
+            - -c
+            - archive_timeout=60s
+            - -c
+            - archive_command=wal-g wal-push %p
         secrets:
             - database_password
         volumes:
