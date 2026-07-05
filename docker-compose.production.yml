@@ -63,7 +63,7 @@ services:
     postgres:
         build:
             context: .
-            dockerfile: Dockerfile.postgresql
+            dockerfile: Dockerfile.postgresql.production
         environment:
             - POSTGRES_DB=expense_api_prod
             - POSTGRES_USER=expense_api

@@ -54,7 +54,9 @@ services:
         pull_policy: never
 
     postgres:
-        image: postgres:16-alpine
+        build:
+            context: .
+            dockerfile: Dockerfile.postgresql.development
         environment:
             - POSTGRES_DB=expense_api_dev
             - POSTGRES_USER=expense_api
