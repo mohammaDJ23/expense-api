@@ -1,8 +1,8 @@
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
 import type { EachBatchPayload } from 'kafkajs';
 
-export interface IKafkaHandler {
+export interface IMessageHandler {
     readonly aggregateType: TOutboxEventAggregateType;
 
-    handle(batch: EachBatchPayload): Promise<void>;
+    execute(batch: EachBatchPayload): Promise<void>;
 }

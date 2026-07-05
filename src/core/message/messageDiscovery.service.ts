@@ -1,17 +1,17 @@
 import { Injectable, type OnModuleInit } from '@nestjs/common';
 import { DiscoveryService, Reflector } from '@nestjs/core';
 
-import { KAFKA_HANDLER_METADATA } from './kafka.constants';
-import { KafkaRegistryService } from './kafkaRegistry.service';
+import { MESSAGE_HANDLER_METADATA } from './message.constants';
+import { MessageRegistryService } from './messageRegistry.service';
 
-import type { IKafkaHandler } from './kafkaHandler.interface';
+import type { IMessageHandler } from './messageHandler.interface';
 
 @Injectable()
-export class KafkaDiscoveryService implements OnModuleInit {
+export class MessageDiscoveryService implements OnModuleInit {
     constructor(
         private readonly reflector: Reflector,
         private readonly discoveryService: DiscoveryService,
-        private readonly kafkaRegistryService: KafkaRegistryService,
+        private readonly messageRegistryService: MessageRegistryService,
     ) {}
 
     onModuleInit(): void {
@@ -24,16 +24,16 @@ export class KafkaDiscoveryService implements OnModuleInit {
                 continue;
             }
 
-            const isKafkaHandler = this.reflector.get<boolean>(
-                KAFKA_HANDLER_METADATA,
+            const isMessageHandler = this.reflector.get<boolean>(
+                MESSAGE_HANDLER_METADATA,
                 instance.constructor,
             );
 
-            if (!isKafkaHandler) {
+            if (!isMessageHandler) {
                 continue;
             }
 
-            this.kafkaRegistryService.register(instance as IKafkaHandler);
+            this.messageRegistryService.register(instance as IMessageHandler);
         }
     }
 }

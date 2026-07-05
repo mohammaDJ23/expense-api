@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { DiscoveryService } from '@nestjs/core';
 import { Kafka } from 'kafkajs';
 
+import { MessageModule } from '@/core/message/message.module';
+
 import { KAFKA_PROVIDER } from './kafka.constants';
 import { KafkaConsumerService } from './kafkaConsumer.service';
-import { KafkaDiscoveryService } from './kafkaDiscovery.servicce';
-import { KafkaRegistryService } from './kafkaRegistry.service';
 
 @Module({
-    imports: [ConfigModule],
+    imports: [MessageModule],
     providers: [
         {
             provide: KAFKA_PROVIDER,
@@ -27,8 +27,6 @@ import { KafkaRegistryService } from './kafkaRegistry.service';
                 });
             },
         },
-        KafkaRegistryService,
-        KafkaDiscoveryService,
         KafkaConsumerService,
         DiscoveryService,
     ],
