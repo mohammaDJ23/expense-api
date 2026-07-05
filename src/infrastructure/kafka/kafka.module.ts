@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DiscoveryService } from '@nestjs/core';
 import { Kafka } from 'kafkajs';
 
 import { MessageModule } from '@/core/message/message.module';
@@ -28,7 +27,6 @@ import { KafkaConsumerService } from './kafkaConsumer.service';
             },
         },
         KafkaConsumerService,
-        DiscoveryService,
     ],
     exports: [KAFKA_PROVIDER],
 })
