@@ -1,0 +1,11 @@
+FROM postgres:16
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl ca-certificates && \
+    rm -rf /var/lib/apt/lists/* && \
+    curl -L https://github.com/wal-g/wal-g/releases/download/v3.0.5/wal-g-pg-ubuntu-22.04-amd64.tar.gz | tar -xz && \
+    mv wal-g-pg-ubuntu-22.04-amd64 /usr/local/bin/wal-g
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
+CMD ["postgres"]
