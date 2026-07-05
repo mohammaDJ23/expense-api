@@ -29,7 +29,6 @@ export class KafkaConsumerService implements OnModuleInit {
                 OUTBOX_EVENT_AGGREGATE_TYPES.map((topic) => consumer.subscribe({ topic })),
             );
             await consumer.run({
-                eachBatchAutoResolve: false,
                 eachBatch: async (eachBatch) => {
                     const handlers = this.messageRegistryService.get(
                         eachBatch.batch.topic as TOutboxEventAggregateType,
