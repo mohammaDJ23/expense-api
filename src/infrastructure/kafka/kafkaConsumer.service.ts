@@ -26,7 +26,12 @@ export class KafkaConsumerService implements OnModuleInit {
 
             await consumer.connect();
             await Promise.all(
-                OUTBOX_EVENT_AGGREGATE_TYPES.map((topic) => consumer.subscribe({ topic })),
+                OUTBOX_EVENT_AGGREGATE_TYPES.map((topic) =>
+                    consumer.subscribe({
+                        topic,
+                        fromBeginning: true,
+                    }),
+                ),
             );
             await consumer.run({
                 eachBatch: async (eachBatch) => {
