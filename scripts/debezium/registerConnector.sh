@@ -109,6 +109,7 @@ if [ "${HTTP_STATUS}" = "404" ]; then
         --data @-
 
     echo "Connector created."
+    exit 0
 
 elif [ "${HTTP_STATUS}" = "200" ]; then
     echo "Updating connector..."
@@ -124,6 +125,7 @@ elif [ "${HTTP_STATUS}" = "200" ]; then
         --data @-
 
     echo "Connector updated."
+    exit 0
 
 else
     echo "Unexpected HTTP status: ${HTTP_STATUS}"
