@@ -43,6 +43,8 @@ services:
                 condition: service_healthy
             debezium-connect:
                 condition: service_healthy
+            debezium-init:
+                condition: service_completed_successfully
         restart: unless-stopped
         pull_policy: build
         mem_limit: 512M
