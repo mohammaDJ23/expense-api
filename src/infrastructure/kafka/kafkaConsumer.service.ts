@@ -20,6 +20,21 @@ export class KafkaConsumerService implements OnModuleInit {
 
     async onModuleInit(): Promise<void> {
         try {
+            const admin = this.kafka.admin();
+
+            await admin.connect();
+
+            await admin.createTopics({
+                waitForLeaders: true,
+                topics: OUTBOX_EVENT_AGGREGATE_TYPES.map((topic) => ({
+                    topic,
+                    numPartitions: 1,
+                    replicationFactor: 1,
+                })),
+            });
+
+            await admin.disconnect();
+
             const consumer = this.kafka.consumer({
                 groupId: this.configService.getOrThrow<string>('KAFKA_GROUP_ID'),
             });
