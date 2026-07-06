@@ -154,8 +154,8 @@ services:
                 - '/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1'
             interval: 15s
             timeout: 5s
-            retries: 5
-            start_period: 60s
+            start_period: 30s
+            retries: 3
         networks:
             - expense-api-network
 
@@ -191,8 +191,8 @@ services:
                 - 'curl -fs http://localhost:8083/connectors >/dev/null'
             interval: 15s
             timeout: 5s
-            retries: 5
-            start_period: 45s
+            start_period: 30s
+            retries: 3
         networks:
             - expense-api-network
 
@@ -215,12 +215,50 @@ services:
         networks:
             - expense-api-network
 
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.17.6
+        restart: unless-stopped
+        environment:
+            - discovery.type=single-node
+            - cluster.name=expense-api
+            - xpack.security.enabled=true
+            - xpack.security.http.ssl.enabled=false
+            - ELASTIC_PASSWORD_FILE=/run/secrets/elasticsearch_password
+            - xpack.security.enrollment.enabled=false
+            - ES_JAVA_OPTS=-Xms1g -Xmx1g
+            - bootstrap.memory_lock=true
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        secrets:
+            - elasticsearch_password
+        volumes:
+            - elasticsearch-data:/usr/share/elasticsearch/data
+        ports:
+            - '9200:9200'
+        networks:
+            - expense-api-network
+        healthcheck:
+            test:
+                - 'CMD-SHELL'
+                - >
+                    curl -fs -u elastic:$(cat /run/secrets/elasticsearch_password)
+                    "http://localhost:9200/_cluster/health?wait_for_status=green&timeout=5s"
+                    >/dev/null
+            interval: 15s
+            timeout: 5s
+            start_period: 30s
+            retries: 3
+
 volumes:
     postgres-data:
         driver: local
     redis-data:
         driver: local
     kafka_data:
+        driver: local
+    elasticsearch-data:
         driver: local
 
 secrets:
@@ -238,6 +276,8 @@ secrets:
         file: ./secrets/google_oauth_client_id.txt
     google_oauth_client_secret:
         file: ./secrets/google_oauth_client_secret.txt
+    elasticsearch_password:
+        file: ./secrets/elasticsearch_password.txt
 
 networks:
     expense-api-network:
