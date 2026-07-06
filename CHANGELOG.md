@@ -1,3 +1,51 @@
+## [4.1.0](https://github.com/mohammaDJ23/expense-api/compare/v4.0.2...v4.1.0) (2026-07-06)
+
+### ✨ Features
+
+- 243601 add the existsByUserIdAndExcludingIdAndName for consumer ([3e5682c](https://github.com/mohammaDJ23/expense-api/commit/3e5682c18ed34fdfe4a7169f715709b1e5e17dff))
+- 243601 add the existsByUserIdAndExcludingIdAndName for location ([02b0f4b](https://github.com/mohammaDJ23/expense-api/commit/02b0f4b4155989979cc6b5b688c6844de001afeb))
+- 243601 add the existsByUserIdAndExcludingIdAndName for receiver ([3b4d22d](https://github.com/mohammaDJ23/expense-api/commit/3b4d22d21ad2737913f92975b824e638dea30f8c))
+
+### 🐛 Bug Fixes
+
+- 287588 fix the indentation ([c7643ee](https://github.com/mohammaDJ23/expense-api/commit/c7643eeaed0a3eeac6fbb16a946318c93ab753ce))
+
+### 🔧 Chores
+
+- 243601 rename ExistsUserByIdQuery and repo ([a44db66](https://github.com/mohammaDJ23/expense-api/commit/a44db6642c366478343234721b86143c72a1a024))
+- 243601 rename IExistsByUserIdAndIdRepository ([bc6bd7e](https://github.com/mohammaDJ23/expense-api/commit/bc6bd7e797c0b90cd139c22675abc66157fa5df3))
+- 243601 rename IExistsByUserIdAndIdsRepository ([004c0a6](https://github.com/mohammaDJ23/expense-api/commit/004c0a68f8d08910c12a0115d30542e07ba19ab3))
+- 287588 add an action to mirror the debezium image to my github repo ([2f4e466](https://github.com/mohammaDJ23/expense-api/commit/2f4e46631b200418f384bbb55e6ccabcc2496a99))
+- 287588 add an action to mirror the debezium image to my github repo ([d0256a3](https://github.com/mohammaDJ23/expense-api/commit/d0256a3722a0258e14e4f8907a5cfc17a4aecd57))
+- 287588 add discovery service into message and remove from kafka ([79b8f3b](https://github.com/mohammaDJ23/expense-api/commit/79b8f3b380499657639107ac68b9d14d6d9d0751))
+- 287588 add exit code ([b48c4aa](https://github.com/mohammaDJ23/expense-api/commit/b48c4aaa200ff06ab92fd358020181ada4a28786))
+- 287588 add fromBeginning ([922d1ab](https://github.com/mohammaDJ23/expense-api/commit/922d1ab1f2cba751d2e7b8eea5ba6ee756571517))
+- 287588 add kafka and debezium-connect depends_on ([aa4a4ff](https://github.com/mohammaDJ23/expense-api/commit/aa4a4ff9eaeaad43b66011853713f50fea8c5a75))
+- 287588 add some envs related to kafka ([138fba7](https://github.com/mohammaDJ23/expense-api/commit/138fba752689c7bc3047c2aa2f151452a3c4a008))
+- 287588 add some evns to kafka service ([ba434b3](https://github.com/mohammaDJ23/expense-api/commit/ba434b35b9f817e415e635e32ebdba56df8689ff))
+- 287588 add the configuration of the debezium and kafka services ([c8ff5ff](https://github.com/mohammaDJ23/expense-api/commit/c8ff5ffa4ad01f51361ec387b31adec867fee3e8))
+- 287588 add the kafka configuration ([4e44716](https://github.com/mohammaDJ23/expense-api/commit/4e44716f7254f0a2ecad59bcdc0a3a9679081cd5))
+- 287588 convert some services of kafka to message ([f895e90](https://github.com/mohammaDJ23/expense-api/commit/f895e905ef09410cd14a1c0f5b009fcf65cba25f))
+- 287588 disable auto creation topics ([31988b7](https://github.com/mohammaDJ23/expense-api/commit/31988b7d7135eec2ac890da40cdba40bd1703476))
+- 287588 do not expose the porst ([47b88e8](https://github.com/mohammaDJ23/expense-api/commit/47b88e80e65ebb028f67724e6ad807aeb244563f))
+- 287588 override the postgres command ([876805c](https://github.com/mohammaDJ23/expense-api/commit/876805c0edcf362f14525c38ff66de2d3fb33d8e))
+- 287588 remove search prefix ([6d4be47](https://github.com/mohammaDJ23/expense-api/commit/6d4be47d47f9dccb3708c7077f652d7d8951cb97))
+- 287588 remove the debezium job ([fb0008d](https://github.com/mohammaDJ23/expense-api/commit/fb0008d3b4da103362f2ca37759e4ff6500cad65))
+- 287588 remove the option of conusmer run ([876248c](https://github.com/mohammaDJ23/expense-api/commit/876248ca7f95853d3b5ae1cadfe751fa09f61ae4))
+- 287588 remove the quotes ([d9e93f6](https://github.com/mohammaDJ23/expense-api/commit/d9e93f67598c6f761fbd1b2f1275037d9b42c0bd))
+- 287588 spliting docker file of postgres for dev and prod ([e5455b5](https://github.com/mohammaDJ23/expense-api/commit/e5455b5cb38be6f514e9a6db5cf2e3772453a8ba))
+- 287588 update debezuim healthcheck ([948ee6b](https://github.com/mohammaDJ23/expense-api/commit/948ee6b37afc20ba13470e5b9f9d982c4edfa25f))
+- 287588 use bash ([13bd67a](https://github.com/mohammaDJ23/expense-api/commit/13bd67a9ef0032b6365b3a58cfecb3e40b8f932b))
+- 287588 use image: mohammadnowresideh1997/debezium-connect:3.0.8.Final ([72f5bae](https://github.com/mohammaDJ23/expense-api/commit/72f5baeb7328e8ba72d2ef30552615c1c3c25071))
+- 287588 wait for debezium service to be completed ([8b741ab](https://github.com/mohammaDJ23/expense-api/commit/8b741ab5d104b67f1a58f10bf4b0a384cfb16f95))
+- 799869 add passthrough option ([7ca13c1](https://github.com/mohammaDJ23/expense-api/commit/7ca13c17a138334b9ba741c332aa56e3425e8ab2))
+- 799869 change the verification and password token error ([bb1a85d](https://github.com/mohammaDJ23/expense-api/commit/bb1a85dc8d3caaaca65587de508db3e3a2204fe4))
+- 799869 rename dbBackup.cron ([bda453d](https://github.com/mohammaDJ23/expense-api/commit/bda453d27876d817117488a63937ff56c76e9fd3))
+- 799869 reuse the access token service ([7b1b9e5](https://github.com/mohammaDJ23/expense-api/commit/7b1b9e5a38043d96841634d1c3789c261b574aee))
+- 799869 update the authentication flow with cookie ([5dab9c9](https://github.com/mohammaDJ23/expense-api/commit/5dab9c94882d0a3e53edf992e1470b62c24fe112))
+- 799869 use cookie parser at the middle ware ([6138b3b](https://github.com/mohammaDJ23/expense-api/commit/6138b3bd5819829e9a4a6f092d42f00f601779ba))
+- 799869 use cookieParser diractly inside main ([ade34fa](https://github.com/mohammaDJ23/expense-api/commit/ade34fafc3f02058f24f41574185ffd8869d2efc))
+
 ## [4.0.2](https://github.com/mohammaDJ23/expense-api/compare/v4.0.1...v4.0.2) (2026-07-02)
 
 ### 🐛 Bug Fixes
