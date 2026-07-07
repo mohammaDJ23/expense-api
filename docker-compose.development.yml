@@ -216,7 +216,7 @@ services:
             - expense-api-network
 
     elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:8.17.6
+        image: mohammadnowresideh1997/elasticsearch:8.17.6
         restart: unless-stopped
         environment:
             - discovery.type=single-node
