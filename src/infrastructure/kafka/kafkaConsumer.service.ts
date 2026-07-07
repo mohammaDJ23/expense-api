@@ -53,7 +53,8 @@ export class KafkaConsumerService implements OnModuleInit {
                     const handlers = this.messageRegistryService.get(
                         eachBatch.batch.topic as TOutboxEventAggregateType,
                     );
-                    await Promise.all(handlers.map((handler) => handler.execute(eachBatch)));
+                    // eslint-disable-next-line @typescript-eslint/await-thenable
+                    await Promise.all(handlers.map((handler) => handler.execute(eachBatch.batch)));
                 },
             });
         } catch {
