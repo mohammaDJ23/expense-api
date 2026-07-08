@@ -1,0 +1,5 @@
+FROM mohammadnowresideh1997/elasticsearch:8.17.6
+
+COPY --chmod=755 ./scripts/elasticsearch/entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

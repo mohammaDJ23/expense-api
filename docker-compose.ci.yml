@@ -300,7 +300,9 @@ services:
                 max-file: '1'
 
     elasticsearch:
-        image: mohammadnowresideh1997/elasticsearch:8.17.6
+        build:
+            context: .
+            dockerfile: Dockerfile.elasticsearch
         restart: unless-stopped
         environment:
             - node.name=es01
