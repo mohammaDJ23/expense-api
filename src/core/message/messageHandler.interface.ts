@@ -4,5 +4,5 @@ import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfac
 export interface IMessageHandler<T> {
     readonly aggregateType: TOutboxEventAggregateType;
 
-    execute(batch: IMessageBatch<T>[]): Promise<void> | void;
+    execute(batch: IMessageBatch<T>[]): Promise<void>;
 }
