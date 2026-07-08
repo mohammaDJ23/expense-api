@@ -33,7 +33,7 @@ export class MessageDiscoveryService implements OnModuleInit {
                 continue;
             }
 
-            this.messageRegistryService.register(instance as IMessageHandler);
+            this.messageRegistryService.register(instance as IMessageHandler<object>);
         }
     }
 }
