@@ -43,10 +43,14 @@ export class KafkaBatchParserService implements IServiceHandler {
             throw new InternalServerErrorException('No value found from kafka');
         }
 
-        const value = JSON.parse(message.value.toString()) as IMessagePayload<string> | undefined;
-        if (!value || !('payload' in value)) {
-            throw new InternalServerErrorException('No payload found from kafka');
+        try {
+            const value = JSON.parse(message.value.toString()) as IMessagePayload<string>;
+            if (!('payload' in value)) {
+                throw new Error('No payload found from kafka');
+            }
+            return JSON.parse(value.payload) as T;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
         }
-        return JSON.parse(value.payload) as T;
     }
 }
