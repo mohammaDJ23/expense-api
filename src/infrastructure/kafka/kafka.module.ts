@@ -5,6 +5,7 @@ import { Kafka } from 'kafkajs';
 import { MessageModule } from '@/core/message/message.module';
 
 import { KAFKA_PROVIDER } from './kafka.constants';
+import { KafkaBatchParserService } from './kafkaBatchPerser.service';
 import { KafkaConsumerService } from './kafkaConsumer.service';
 
 @Module({
@@ -27,6 +28,7 @@ import { KafkaConsumerService } from './kafkaConsumer.service';
             },
         },
         KafkaConsumerService,
+        KafkaBatchParserService,
     ],
     exports: [KAFKA_PROVIDER],
 })
