@@ -56,7 +56,6 @@ export class KafkaConsumerService implements OnModuleInit {
                         eachBatch.batch.topic as TOutboxEventAggregateType,
                     );
                     const parsedBatch = this.kafkaBatchParserService.execute(eachBatch.batch);
-                    // eslint-disable-next-line @typescript-eslint/await-thenable
                     await Promise.all(handlers.map((handler) => handler.execute(parsedBatch)));
                 },
             });
