@@ -6,6 +6,7 @@ import { MessageRegistryService } from '@/core/message/messageRegistry.service';
 import { OUTBOX_EVENT_AGGREGATE_TYPES } from '@/modules/outbox/domain/domain.constants';
 
 import { KAFKA_PROVIDER } from './kafka.constants';
+import { KafkaBatchParserService } from './kafkaBatchPerser.service';
 
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
 
@@ -16,6 +17,7 @@ export class KafkaConsumerService implements OnModuleInit {
         private readonly kafka: Kafka,
         private readonly configService: ConfigService,
         private readonly messageRegistryService: MessageRegistryService,
+        private readonly kafkaBatchParserService: KafkaBatchParserService,
     ) {}
 
     async onModuleInit(): Promise<void> {
@@ -53,8 +55,9 @@ export class KafkaConsumerService implements OnModuleInit {
                     const handlers = this.messageRegistryService.get(
                         eachBatch.batch.topic as TOutboxEventAggregateType,
                     );
+                    const parsedBatch = this.kafkaBatchParserService.execute(eachBatch.batch);
                     // eslint-disable-next-line @typescript-eslint/await-thenable
-                    await Promise.all(handlers.map((handler) => handler.execute(eachBatch.batch)));
+                    await Promise.all(handlers.map((handler) => handler.execute(parsedBatch)));
                 },
             });
         } catch {
