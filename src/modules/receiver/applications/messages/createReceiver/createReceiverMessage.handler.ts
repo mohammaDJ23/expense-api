@@ -5,12 +5,12 @@ import { CreateReceiverMessageElasticsearchProcessor } from './createReceiverMes
 import type { IMessageBatch } from '@/core/message/messageBatch.interface';
 import type { IMessageHandler } from '@/core/message/messageHandler.interface';
 import type { IMessageProcessor } from '@/core/message/messageProcessor.interface';
-import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
+import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @MessageHandler()
 export class CreateReceiverMessageHandler implements IMessageHandler<ISelectReceiver> {
-    aggregateType: TOutboxEventAggregateType = 'receivers';
+    route: TOutboxEventRoute = 'receivers.created';
 
     constructor(
         private readonly createReceiverMessageElasticsearch: CreateReceiverMessageElasticsearchProcessor,
