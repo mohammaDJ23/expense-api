@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Kafka } from 'kafkajs';
 
 import { MessageRegistryService } from '@/core/message/messageRegistry.service';
-import { OUTBOX_EVENT_AGGREGATE_TYPES } from '@/modules/outbox/domain/domain.constants';
+import { OUTBOX_EVENT_ROUTES } from '@/modules/outbox/domain/domain.constants';
 
 import { KAFKA_PROVIDER } from './kafka.constants';
 import { KafkaBatchParserService } from './kafkaBatchPerser.service';
@@ -28,7 +28,7 @@ export class KafkaConsumerService implements OnModuleInit {
 
             await admin.createTopics({
                 waitForLeaders: true,
-                topics: OUTBOX_EVENT_AGGREGATE_TYPES.map((topic) => ({
+                topics: OUTBOX_EVENT_ROUTES.map((topic) => ({
                     topic,
                     numPartitions: 1,
                     replicationFactor: 1,
@@ -43,7 +43,7 @@ export class KafkaConsumerService implements OnModuleInit {
 
             await consumer.connect();
             await Promise.all(
-                OUTBOX_EVENT_AGGREGATE_TYPES.map((topic) =>
+                OUTBOX_EVENT_ROUTES.map((topic) =>
                     consumer.subscribe({
                         topic,
                         fromBeginning: true,

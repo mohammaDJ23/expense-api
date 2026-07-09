@@ -1,8 +1,16 @@
-import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
+import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
 
-export const OUTBOX_EVENT_AGGREGATE_TYPES: TOutboxEventAggregateType[] = [
-    'bills',
-    'consumers',
-    'locations',
-    'receivers',
+export const OUTBOX_EVENT_ROUTES: TOutboxEventRoute[] = [
+    'bills.created',
+    'bills.deleted',
+    'bills.updated',
+    'consumers.created',
+    'consumers.deleted',
+    'consumers.updated',
+    'locations.created',
+    'locations.deleted',
+    'locations.updated',
+    'receivers.created',
+    'receivers.deleted',
+    'receivers.updated',
 ];
