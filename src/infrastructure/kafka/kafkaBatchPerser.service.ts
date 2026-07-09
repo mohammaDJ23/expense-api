@@ -3,6 +3,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IMessageBatch } from '@/core/message/messageBatch.interface';
 import type { IMessagePayload } from '@/core/message/messagePayload.interface';
+import type { TOutboxEventType } from '@/modules/outbox/domain/interfaces/outboxEventType.interface';
 import type { Batch, IHeaders, KafkaMessage } from 'kafkajs';
 
 @Injectable()
@@ -23,7 +24,10 @@ export class KafkaBatchParserService implements IServiceHandler {
         return messages;
     }
 
-    private getRequiredHeader(headers: IHeaders | undefined, key: keyof IHeaders): string {
+    private getRequiredHeader(
+        headers: IHeaders | undefined,
+        key: keyof IHeaders,
+    ): TOutboxEventType {
         if (!headers) {
             throw new InternalServerErrorException(`Missing kafka headers`);
         }
@@ -35,7 +39,7 @@ export class KafkaBatchParserService implements IServiceHandler {
             throw new InternalServerErrorException(`Missing ${String(key)} header`);
         }
 
-        return value.toString();
+        return value.toString() as TOutboxEventType;
     }
 
     private getPayload<T>(message: KafkaMessage): T {
