@@ -70,7 +70,6 @@ CONFIG="$(
             "plugin.name": "pgoutput",
             "slot.name": "expense_outbox",
             "publication.autocreate.mode": "all_tables",
-            "snapshot.mode": "no_data",
             "topic.prefix": "expense-api",
             "table.include.list": "public.outbox_events",
             "transforms": "outbox",
