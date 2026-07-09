@@ -18,7 +18,6 @@ export class OutboxEventRepository implements IOutboxEventRepository {
 
     create(data: IInsertOutboxEvent): Promise<ISelectOutboxEvent> {
         return toEntityOrThrow(
-            // @ts-expect-error: since drizzle has a bug around generatedAlwaysAs function for now i will ignore the type checking here
             this.drizzleRepository.db.insert(outboxEvents).values(data).returning().execute(),
             'Unable to create an event',
         );
@@ -26,7 +25,6 @@ export class OutboxEventRepository implements IOutboxEventRepository {
 
     deleteManyByDate(date: string): Promise<ISelectOutboxEvent[]> {
         return toEntities(
-            // @ts-expect-error: since drizzle has a bug around generatedAlwaysAs function for now i will ignore the type checking here
             this.drizzleRepository.db
                 .delete(outboxEvents)
                 .where(lt(outboxEvents.createdAt, date))
