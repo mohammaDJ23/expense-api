@@ -3,6 +3,8 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IMessageBatch } from '@/core/message/messageBatch.interface';
 import type { IMessagePayload } from '@/core/message/messagePayload.interface';
+import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
+import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
 import type { TOutboxEventType } from '@/modules/outbox/domain/interfaces/outboxEventType.interface';
 import type { Batch, IHeaders, KafkaMessage } from 'kafkajs';
 
@@ -13,10 +15,14 @@ export class KafkaBatchParserService implements IServiceHandler {
 
         for (const message of batch.messages) {
             messages.push({
-                aggregateType: this.getRequiredHeader(message.headers, 'aggregateType'),
-                aggregateId: this.getRequiredHeader(message.headers, 'aggregateId'),
-                eventType: this.getRequiredHeader(message.headers, 'eventType'),
-                createdAt: this.getRequiredHeader(message.headers, 'createdAt'),
+                aggregateType: this.getRequiredHeader<TOutboxEventAggregateType>(
+                    message.headers,
+                    'aggregateType',
+                ),
+                aggregateId: this.getRequiredHeader<string>(message.headers, 'aggregateId'),
+                eventType: this.getRequiredHeader<TOutboxEventType>(message.headers, 'eventType'),
+                route: this.getRequiredHeader<TOutboxEventRoute>(message.headers, 'route'),
+                createdAt: this.getRequiredHeader<string>(message.headers, 'createdAt'),
                 payload: this.getPayload<T>(message),
             });
         }
@@ -24,10 +30,7 @@ export class KafkaBatchParserService implements IServiceHandler {
         return messages;
     }
 
-    private getRequiredHeader(
-        headers: IHeaders | undefined,
-        key: keyof IHeaders,
-    ): TOutboxEventType {
+    private getRequiredHeader<T>(headers: IHeaders | undefined, key: keyof IHeaders): T {
         if (!headers) {
             throw new InternalServerErrorException(`Missing kafka headers`);
         }
@@ -39,7 +42,7 @@ export class KafkaBatchParserService implements IServiceHandler {
             throw new InternalServerErrorException(`Missing ${String(key)} header`);
         }
 
-        return value.toString() as TOutboxEventType;
+        return value.toString() as T;
     }
 
     private getPayload<T>(message: KafkaMessage): T {

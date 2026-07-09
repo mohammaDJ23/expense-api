@@ -8,7 +8,7 @@ import { OUTBOX_EVENT_AGGREGATE_TYPES } from '@/modules/outbox/domain/domain.con
 import { KAFKA_PROVIDER } from './kafka.constants';
 import { KafkaBatchParserService } from './kafkaBatchPerser.service';
 
-import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
+import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
 
 @Injectable()
 export class KafkaConsumerService implements OnModuleInit {
@@ -53,7 +53,7 @@ export class KafkaConsumerService implements OnModuleInit {
             await consumer.run({
                 eachBatch: async (eachBatch) => {
                     const handlers = this.messageRegistryService.get(
-                        eachBatch.batch.topic as TOutboxEventAggregateType,
+                        eachBatch.batch.topic as TOutboxEventRoute,
                     );
                     const parsedBatch = this.kafkaBatchParserService.execute(eachBatch.batch);
                     await Promise.all(handlers.map((handler) => handler.execute(parsedBatch)));
