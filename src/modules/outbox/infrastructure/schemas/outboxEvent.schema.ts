@@ -1,4 +1,3 @@
-import { sql } from 'drizzle-orm';
 import { jsonb, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
@@ -13,12 +12,7 @@ export const outboxEvents = pgTable('outbox_events', {
         .$type<TOutboxEventAggregateType>(),
     aggregateId: uuid('aggregate_id').notNull(),
     eventType: varchar('event_type', { length: 150 }).notNull().$type<TOutboxEventType>(),
-    route: varchar('route', { length: 255 })
-        .notNull()
-        .generatedAlwaysAs(
-            () => sql`${outboxEvents.aggregateType} || '.' || ${outboxEvents.eventType}`,
-        )
-        .$type<TOutboxEventRoute>(),
+    route: varchar('route', { length: 255 }).notNull().$type<TOutboxEventRoute>(),
     payload: jsonb('payload').notNull().$type<TOutboxEventPayload>(),
     createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull(),
 });
