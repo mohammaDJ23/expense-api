@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
+import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
 import { DeleteLocationHandler } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.handler';
 import { UpdateLocationHandler } from '@/modules/location/applications/commands/updateLocation/updateLocation.handler';
+import { CreateLocationMessageHandler } from '@/modules/location/applications/messages/createLocation/createLocationMessage.handler';
+import { CreateLocationMessageElasticsearchProcessor } from '@/modules/location/applications/messages/createLocation/createLocationMessageElasticsearch.processor';
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
 import { ExistsLocationByUserIdAndIdHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.handler';
 import { FindLocationByUserIdAndIdOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrNull/findLocationByUserIdAndIdOrNull.handler';
@@ -19,7 +22,7 @@ import { LocationRepository } from '@/modules/location/infrastructure/repositori
 import { LocationController } from '@/modules/location/interfaces/controllers/v1.controller';
 
 @Module({
-    imports: [CqrsModule],
+    imports: [CqrsModule, ElasticsearchModule],
     controllers: [LocationController],
     providers: [
         LocationService,
@@ -36,6 +39,8 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
         FindManyLocationsByUserIdAndIdsHandler,
         ExistsLocationByUserIdAndIdHandler,
         ExistsLocationByUserIdAndExcludingIdAndNameHandler,
+        CreateLocationMessageHandler,
+        CreateLocationMessageElasticsearchProcessor,
         CreateLocationHandler,
         LocationRepository,
     ],
