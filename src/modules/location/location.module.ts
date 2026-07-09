@@ -7,6 +7,8 @@ import { DeleteLocationHandler } from '@/modules/location/applications/commands/
 import { UpdateLocationHandler } from '@/modules/location/applications/commands/updateLocation/updateLocation.handler';
 import { CreateLocationMessageHandler } from '@/modules/location/applications/messages/createLocation/createLocationMessage.handler';
 import { CreateLocationMessageElasticsearchProcessor } from '@/modules/location/applications/messages/createLocation/createLocationMessageElasticsearch.processor';
+import { UpdateLocationMessageHandler } from '@/modules/location/applications/messages/updateLocation/updateLocationMessage.handler';
+import { UpdateLocationMessageElasticsearchProcessor } from '@/modules/location/applications/messages/updateLocation/updateLocationMessageElasticsearch.processor';
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
 import { ExistsLocationByUserIdAndIdHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.handler';
 import { FindLocationByUserIdAndIdOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrNull/findLocationByUserIdAndIdOrNull.handler';
@@ -41,6 +43,8 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
         ExistsLocationByUserIdAndExcludingIdAndNameHandler,
         CreateLocationMessageHandler,
         CreateLocationMessageElasticsearchProcessor,
+        UpdateLocationMessageHandler,
+        UpdateLocationMessageElasticsearchProcessor,
         CreateLocationHandler,
         LocationRepository,
     ],
