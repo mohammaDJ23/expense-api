@@ -81,7 +81,7 @@ CONFIG="$(
             "transforms.outbox.table.field.event.payload": "payload",
             "transforms.outbox.table.field.event.type": "event_type",
             "transforms.outbox.table.fields.additional.placement":
-                "aggregate_type:header:aggregateType,aggregate_id:header:aggregateId,event_type:header:eventType,created_at:header:createdAt",
+                "aggregate_type:header:aggregateType,aggregate_id:header:aggregateId,event_type:header:eventType,route:header:route,created_at:header:createdAt",
             "tombstones.on.delete": "false"
         }'
 )"
