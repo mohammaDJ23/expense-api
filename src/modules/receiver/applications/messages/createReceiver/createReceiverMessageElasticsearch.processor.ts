@@ -14,7 +14,7 @@ export class CreateReceiverMessageElasticsearchProcessor implements IMessageProc
 
     async process(batch: IMessageBatch<ISelectReceiver>[]): Promise<void> {
         try {
-            const operations = batch.flatMap<estypes.BulkOperationContainer | ISelectReceiver>(
+            const operations = batch.flatMap<[estypes.BulkOperationContainer, ISelectReceiver]>(
                 (item) => [
                     {
                         index: {
