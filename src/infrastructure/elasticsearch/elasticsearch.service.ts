@@ -1,6 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Client, estypes } from '@elastic/elasticsearch';
-import { isNotEmpty } from 'class-validator';
+
+import { isNotEmpty } from '@/common/utils/isNotEmpty.util';
 
 import { ELASTICSEARCH_PROVIDER } from './elasticsearch.constants';
 
@@ -15,11 +16,13 @@ export class ElasticSearchService {
         return this.elasticsearch;
     }
 
-    async bulk(operations: estypes.BulkOperationContainer[]): Promise<void> {
+    async bulk(data: estypes.BulkRequest): Promise<void> {
         try {
-            if (isNotEmpty(operations)) {
+            data.operations = data.operations || [];
+
+            if (isNotEmpty(data.operations)) {
                 const response = await this.client.bulk({
-                    operations,
+                    operations: data.operations,
                 });
 
                 if (response.errors) {
@@ -28,7 +31,9 @@ export class ElasticSearchService {
                         .map((item) => item.error)
                         .filter(Boolean);
 
-                    throw new Error(`Bulk request failed (${errors.length}/${operations.length})`);
+                    throw new Error(
+                        `Bulk request failed (${errors.length}/${data.operations.length})`,
+                    );
                 }
             }
         } catch (error) {
