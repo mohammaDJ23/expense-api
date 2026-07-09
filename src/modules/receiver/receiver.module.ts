@@ -8,6 +8,8 @@ import { DeleteReceiverHandler } from '@/modules/receiver/applications/commands/
 import { UpdateReceiverHandler } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.handler';
 import { CreateReceiverMessageHandler } from '@/modules/receiver/applications/messages/createReceiver/createReceiverMessage.handler';
 import { CreateReceiverMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/createReceiver/createReceiverMessageElasticsearch.processor';
+import { UpdateReceiverMessageHandler } from '@/modules/receiver/applications/messages/updateReceiver/updateReceiverMessage.handler';
+import { UpdateReceiverMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/updateReceiver/updateReceiverMessageElasticsearch.processor';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
 import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.handler';
 import { FindManyReceiversByUserIdAndIdsHandler } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.handler';
@@ -38,6 +40,8 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ExistsReceiverByUserIdAndExcludingIdAndNameHandler,
         CreateReceiverMessageElasticsearchProcessor,
         CreateReceiverMessageHandler,
+        UpdateReceiverMessageHandler,
+        UpdateReceiverMessageElasticsearchProcessor,
         ReceiverService,
         CreateReceiverService,
         UpdateReceiverService,
