@@ -19,6 +19,6 @@ export class DeleteReceiverMessageElasticsearchProcessor implements IMessageProc
             },
         }));
 
-        await this.elasticsearchService.bulk(operations);
+        await this.elasticsearchService.bulk({ operations });
     }
 }

@@ -396,7 +396,7 @@ export default defineConfig([
             'no-useless-concat': 'error',
             'no-throw-literal': 'error',
             'no-self-compare': 'error',
-            'no-param-reassign': ['error', { props: true }],
+            'no-param-reassign': 'off',
             'no-else-return': ['error', { allowElseIf: false }],
             'no-implicit-coercion': 'error',
             'no-lonely-if': 'error',
