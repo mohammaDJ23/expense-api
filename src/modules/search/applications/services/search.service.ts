@@ -57,19 +57,24 @@ export class SearchService implements IServiceHandler, OnModuleInit {
             const query = data.q ?? '';
             const size = data.limit ?? MAX_LIST_LIMIT;
 
-            const searchResponse = await this.elasticsearchService.client.search({
-                size,
-                index: this.definitions.map((definition) => definition.index),
-                query: {
-                    bool: {
-                        should: this.definitions.map((definition) =>
-                            definition.createSearchQuery(query),
-                        ),
-                    },
-                },
-            });
-
-            console.log(searchResponse.hits.hits);
+            const [
+                billsSearchResponse,
+                consumersSearchResponse,
+                receiversSearchResponse,
+                locationsSearchResponse,
+            ] = await Promise.all(
+                this.definitions.map((definition) =>
+                    this.elasticsearchService.client.search({
+                        size,
+                        index: definition.index,
+                        query: {
+                            bool: {
+                                should: definition.createSearchQuery(query),
+                            },
+                        },
+                    }),
+                ),
+            );
 
             return {};
         } catch {
