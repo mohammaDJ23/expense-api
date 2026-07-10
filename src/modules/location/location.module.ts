@@ -22,6 +22,7 @@ import { CreateLocationService } from '@/modules/location/applications/services/
 import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
 import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
+import { LocationElasticsearchDefinition } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.definition';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import { LocationController } from '@/modules/location/interfaces/controllers/v1.controller';
 
@@ -51,6 +52,8 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
         DeleteLocationMessageElasticsearchProcessor,
         CreateLocationHandler,
         LocationRepository,
+        LocationElasticsearchDefinition,
     ],
+    exports: [LocationElasticsearchDefinition],
 })
 export class LocationModule {}

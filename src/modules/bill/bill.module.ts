@@ -21,6 +21,7 @@ import { DeleteBillService } from '@/modules/bill/applications/services/deleteBi
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
 import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
+import { BillElasticsearchDefinition } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.definition';
 import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.repository';
 import { BillController } from '@/modules/bill/interface/controllers/v1.controller';
 
@@ -42,11 +43,13 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         UpdateBillMessageElasticsearchProcessor,
         DeleteBillMessageHandler,
         DeleteBillMessageElasticsearchProcessor,
+        BillElasticsearchDefinition,
         CreateBillHandler,
         UpdateBillHandler,
         DeleteBillHandler,
         BillRepository,
     ],
     controllers: [BillController],
+    exports: [BillElasticsearchDefinition],
 })
 export class BillModule {}

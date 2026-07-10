@@ -28,6 +28,7 @@ import { ConsumerService } from '@/modules/consumer/applications/services/consum
 import { CreateConsumerService } from '@/modules/consumer/applications/services/createConsumer.service';
 import { DeleteConsumerService } from '@/modules/consumer/applications/services/deleteConsumer.service';
 import { UpdateConsumerService } from '@/modules/consumer/applications/services/updateConsumer.service';
+import { ConsumerElasticsearchDefinition } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearch.definition';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
 import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
 import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1.controller';
@@ -63,6 +64,8 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         DeleteConsumerMessageElasticsearchProcessor,
         ConsumerRepository,
         BillConsumerRepository,
+        ConsumerElasticsearchDefinition,
     ],
+    exports: [ConsumerElasticsearchDefinition],
 })
 export class ConsumerModule {}
