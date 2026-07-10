@@ -14,13 +14,66 @@ export class BillElasticsearchDefinition implements IElasticsearchDefinition {
 
     mappings: estypes.MappingTypeMapping = {
         properties: {
-            name: {
+            amount: {
                 type: 'text',
                 fields: {
                     partial: {
                         type: 'text',
                         analyzer: 'partial_index',
                         search_analyzer: 'partial_search',
+                    },
+                },
+            },
+            description: {
+                type: 'text',
+                fields: {
+                    partial: {
+                        type: 'text',
+                        analyzer: 'partial_index',
+                        search_analyzer: 'partial_search',
+                    },
+                },
+            },
+            receiver: {
+                properties: {
+                    name: {
+                        type: 'text',
+                        fields: {
+                            partial: {
+                                type: 'text',
+                                analyzer: 'partial_index',
+                                search_analyzer: 'partial_search',
+                            },
+                        },
+                    },
+                },
+            },
+            location: {
+                properties: {
+                    name: {
+                        type: 'text',
+                        fields: {
+                            partial: {
+                                type: 'text',
+                                analyzer: 'partial_index',
+                                search_analyzer: 'partial_search',
+                            },
+                        },
+                    },
+                },
+            },
+            consumers: {
+                type: 'nested',
+                properties: {
+                    name: {
+                        type: 'text',
+                        fields: {
+                            partial: {
+                                type: 'text',
+                                analyzer: 'partial_index',
+                                search_analyzer: 'partial_search',
+                            },
+                        },
                     },
                 },
             },
@@ -33,7 +86,7 @@ export class BillElasticsearchDefinition implements IElasticsearchDefinition {
                 should: [
                     {
                         match: {
-                            name: {
+                            amount: {
                                 query,
                                 fuzziness: 'AUTO',
                                 boost: 5,
@@ -42,9 +95,88 @@ export class BillElasticsearchDefinition implements IElasticsearchDefinition {
                     },
                     {
                         match: {
-                            'name.partial': {
+                            description: {
+                                query,
+                                fuzziness: 'AUTO',
+                                boost: 5,
+                            },
+                        },
+                    },
+                    {
+                        match: {
+                            'amount.partial': {
                                 query,
                                 boost: 3,
+                            },
+                        },
+                    },
+                    {
+                        match: {
+                            'description.partial': {
+                                query,
+                                boost: 3,
+                            },
+                        },
+                    },
+                    {
+                        match: {
+                            'receiver.name': {
+                                query,
+                                fuzziness: 'AUTO',
+                                boost: 4,
+                            },
+                        },
+                    },
+                    {
+                        match: {
+                            'receiver.name.partial': {
+                                query,
+                                boost: 2,
+                            },
+                        },
+                    },
+                    {
+                        match: {
+                            'location.name': {
+                                query,
+                                fuzziness: 'AUTO',
+                                boost: 4,
+                            },
+                        },
+                    },
+                    {
+                        match: {
+                            'location.name.partial': {
+                                query,
+                                boost: 2,
+                            },
+                        },
+                    },
+                    {
+                        nested: {
+                            path: 'consumers',
+                            query: {
+                                bool: {
+                                    should: [
+                                        {
+                                            match: {
+                                                'consumers.name': {
+                                                    query,
+                                                    fuzziness: 'AUTO',
+                                                    boost: 4,
+                                                },
+                                            },
+                                        },
+                                        {
+                                            match: {
+                                                'consumers.name.partial': {
+                                                    query,
+                                                    boost: 2,
+                                                },
+                                            },
+                                        },
+                                    ],
+                                },
                             },
                         },
                     },
