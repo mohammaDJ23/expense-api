@@ -35,7 +35,8 @@
             "piscina": ">=4.9.3",
             "nodemailer": ">=9.0.1",
             "linkify-it": ">=5.0.2",
-            "liquidjs": ">=10.27.1"
+            "liquidjs": ">=10.27.1",
+            "js-yaml": "4.3.0"
         }
     },
     "scripts": {
