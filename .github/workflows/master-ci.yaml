@@ -51,8 +51,6 @@ jobs:
                   echo "${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}" > ./secrets/google_oauth_client_secret.txt
                   echo "${{ secrets.ELASTICSEARCH_PASSWORD }}" > ./secrets/elasticsearch_password.txt
 
-                  chmod 600 ./secrets/elasticsearch_password.txt
-
             - name: Run the entrypoint
               id: run-entrypoint
               run: pnpm run start:docker:ci
