@@ -21,9 +21,7 @@ export class ElasticSearchService {
             data.operations = data.operations || [];
 
             if (isNotEmpty(data.operations)) {
-                const response = await this.client.bulk({
-                    operations: data.operations,
-                });
+                const response = await this.client.bulk(data);
 
                 if (response.errors) {
                     const errors = response.items

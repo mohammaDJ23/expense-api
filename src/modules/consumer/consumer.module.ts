@@ -2,11 +2,18 @@ import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/authentication/authentication.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
+import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { CreateConsumerHandler } from '@/modules/consumer/applications/commands/createConsumer/createConsumer.handler';
 import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.handler';
 import { DeleteConsumerHandler } from '@/modules/consumer/applications/commands/deleteConsumer/deleteConsumer.handler';
 import { DeleteManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.handler';
 import { UpdateConsumerHandler } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.handler';
+import { CreateConsumerMessageHandler } from '@/modules/consumer/applications/messages/createConsumer/createConsumerMessage.handler';
+import { CreateConsumerMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/createConsumer/createConsumerMessageElasticsearch.processor';
+import { DeleteConsumerMessageHandler } from '@/modules/consumer/applications/messages/deleteConsumer/deleteConsumerMessage.handler';
+import { DeleteConsumerMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/deleteConsumer/deleteConsumerMessageElasticsearch.processor';
+import { UpdateConsumerMessageHandler } from '@/modules/consumer/applications/messages/updateConsumer/updateConsumerMessage.handler';
+import { UpdateConsumerMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/updateConsumer/updateConsumerMessageElasticsearch.processor';
 import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
 import { ExistsConsumerByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.handler';
 import { ExistsConsumerByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndIds/existsConsumerByUserIdAndIds.handler';
@@ -26,7 +33,7 @@ import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositori
 import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1.controller';
 
 @Module({
-    imports: [CqrsModule, AuthenticationModule],
+    imports: [CqrsModule, AuthenticationModule, ElasticsearchModule],
     controllers: [ConsumerController],
     providers: [
         CreateConsumerService,
@@ -48,6 +55,12 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         FindManyBillConsumerTargetsByRefIdsHandler,
         ExistsConsumerByUserIdAndExcludingIdAndNameHandler,
         FindManyBillsConsumersByRefIdHandler,
+        CreateConsumerMessageHandler,
+        CreateConsumerMessageElasticsearchProcessor,
+        UpdateConsumerMessageHandler,
+        UpdateConsumerMessageElasticsearchProcessor,
+        DeleteConsumerMessageHandler,
+        DeleteConsumerMessageElasticsearchProcessor,
         ConsumerRepository,
         BillConsumerRepository,
     ],

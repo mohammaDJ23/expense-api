@@ -7,7 +7,6 @@ import type { IMessageHandler } from '@/core/message/messageHandler.interface';
 import type { IMessageProcessor } from '@/core/message/messageProcessor.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
-import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @MessageHandler()
 export class DeleteLocationMessageHandler implements IMessageHandler<ISelectLocation> {
@@ -18,7 +17,7 @@ export class DeleteLocationMessageHandler implements IMessageHandler<ISelectLoca
     ) {}
 
     async execute(batch: IMessageBatch<ISelectLocation>[]): Promise<void> {
-        const processors: IMessageProcessor<ISelectReceiver>[] = [
+        const processors: IMessageProcessor<ISelectLocation>[] = [
             this.deleteLocationMessageElasticsearchProcessor,
         ];
         await Promise.all(processors.map((processor) => processor.process(batch)));
