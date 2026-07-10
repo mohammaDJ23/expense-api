@@ -9,6 +9,7 @@ import { HealthModule } from '@/modules/health/health.module';
 import { LocationModule } from '@/modules/location/location.module';
 import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { ReceiverModule } from '@/modules/receiver/receiver.module';
+import { SearchModule } from '@/modules/search/search.module';
 import { UserModule } from '@/modules/user/user.module';
 
 @Module({
@@ -23,6 +24,7 @@ import { UserModule } from '@/modules/user/user.module';
         LocationModule,
         ReceiverModule,
         OutboxModule,
+        SearchModule,
     ],
 })
 export class AppModule {}
