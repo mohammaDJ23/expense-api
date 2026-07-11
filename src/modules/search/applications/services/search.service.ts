@@ -45,14 +45,9 @@ export class SearchService implements IServiceHandler, OnModuleInit {
             ];
             await Promise.all(
                 definitions.map((definition) =>
-                    this.elasticsearchService.client.indices.create(
-                        {
-                            index: definition.index,
-                            settings: definition.settings,
-                            mappings: definition.mappings,
-                        },
-                        { ignore: [400] },
-                    ),
+                    this.elasticsearchService.client.indices.create(definition.buildIndex(), {
+                        ignore: [400],
+                    }),
                 ),
             );
         } catch (error) {
@@ -72,15 +67,9 @@ export class SearchService implements IServiceHandler, OnModuleInit {
         userId: string,
         params: Required<SearchRequestDto>,
     ) {
-        return this.elasticsearchService.client.search<T>({
-            size: params.limit,
-            index: definition.index,
-            query: {
-                bool: {
-                    should: definition.createSearchQuery(userId, params.q),
-                },
-            },
-        });
+        return this.elasticsearchService.client.search<T>(
+            definition.buildSearch(userId, params.q, params.limit),
+        );
     }
 
     private extractDocs<T>(response: estypes.SearchResponse<T>): T[] {
