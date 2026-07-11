@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
@@ -80,6 +80,17 @@ export class BillRepository implements IBillRepository {
                 .where(and(eq(bills.id, id), eq(bills.userId, userId)))
                 .execute(),
             'Unable to find',
+        );
+    }
+
+    findManyByUserIdAndIds(userId: string, ids: string[]): Promise<ISelectBill[]> {
+        return toEntities(
+            this.drizzleRepository.db
+                .select()
+                .from(bills)
+                .where(and(eq(bills.userId, userId), inArray(bills.id, ids)))
+                .orderBy(desc(bills.createdAt))
+                .execute(),
         );
     }
 }
