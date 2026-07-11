@@ -3,7 +3,6 @@ import type { estypes } from '@elastic/elasticsearch';
 
 export interface IElasticsearchDefinition {
     index: TOutboxEventAggregateType;
-    settings: estypes.IndicesIndexSettings;
-    mappings: estypes.MappingTypeMapping;
-    createSearchQuery(userId: string, query: string): estypes.QueryDslQueryContainer;
+    buildIndex(): estypes.IndicesCreateRequest;
+    buildSearch(userId: string, query: string, size: number): estypes.SearchRequest;
 }

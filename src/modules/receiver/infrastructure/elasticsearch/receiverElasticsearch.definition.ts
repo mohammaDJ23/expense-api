@@ -10,56 +10,70 @@ import type { estypes } from '@elastic/elasticsearch';
 export class ReceiverElasticsearchDefinition implements IElasticsearchDefinition {
     index: TOutboxEventAggregateType = 'receivers';
 
-    settings: estypes.IndicesIndexSettings = ElasticsearchAnalysisSettings.settings;
-
-    mappings: estypes.MappingTypeMapping = {
-        properties: {
-            userId: {
-                type: 'keyword',
-            },
-            name: {
-                type: 'text',
-                fields: {
-                    partial: {
+    buildIndex(): estypes.IndicesCreateRequest {
+        return {
+            index: this.index,
+            settings: ElasticsearchAnalysisSettings.settings,
+            mappings: {
+                properties: {
+                    userId: {
+                        type: 'keyword',
+                    },
+                    name: {
                         type: 'text',
-                        analyzer: 'partial_index',
-                        search_analyzer: 'partial_search',
+                        fields: {
+                            partial: {
+                                type: 'text',
+                                analyzer: 'partial_index',
+                                search_analyzer: 'partial_search',
+                            },
+                        },
                     },
                 },
             },
-        },
-    };
+        };
+    }
 
-    createSearchQuery(userId: string, query: string): estypes.QueryDslQueryContainer {
+    buildSearch(userId: string, query: string, size: number): estypes.SearchRequest {
         return {
-            bool: {
-                filter: [
-                    {
-                        term: {
-                            userId,
-                        },
-                    },
-                ],
-                should: [
-                    {
-                        match: {
-                            name: {
-                                query,
-                                fuzziness: 'AUTO',
-                                boost: 5,
+            size,
+            index: this.index,
+            query: {
+                bool: {
+                    filter: [
+                        {
+                            term: {
+                                userId,
                             },
                         },
-                    },
-                    {
-                        match: {
-                            'name.partial': {
-                                query,
-                                boost: 3,
+                    ],
+                    must: [
+                        {
+                            bool: {
+                                minimum_should_match: 1,
+                                should: [
+                                    {
+                                        match: {
+                                            name: {
+                                                query,
+                                                fuzziness: 'AUTO',
+                                                boost: 5,
+                                            },
+                                        },
+                                    },
+                                    {
+                                        match: {
+                                            'name.partial': {
+                                                query,
+                                                boost: 3,
+                                            },
+                                        },
+                                    },
+                                ],
                             },
                         },
-                    },
-                ],
-                minimum_should_match: 1,
+                    ],
+                },
             },
         };
     }
