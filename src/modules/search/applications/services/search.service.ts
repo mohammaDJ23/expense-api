@@ -1,27 +1,28 @@
 import { Injectable, InternalServerErrorException, type OnModuleInit } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 
 import { MAX_LIST_LIMIT } from '@/common/common.constants';
+import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
+import { FindManyBillsByUserIdAndIdsService } from '@/modules/bill/applications/services/findManyBillsByUserIdAndIds.service';
 import { BillElasticsearchDefinition } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.definition';
+import { FindManyConsumersByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/findManyConsumersByUserIdAndIds/findManyConsumersByUserIdAndIds.query';
 import { ConsumerElasticsearchDefinition } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearch.definition';
+import { FindManyLocationsByUserIdAndIdsQuery } from '@/modules/location/applications/queries/findManyLocationsByUserIdAndIds/findManyLocationsByUserIdAndIds.query';
 import { LocationElasticsearchDefinition } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.definition';
+import { FindManyReceiversByUserIdAndIdsQuery } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.query';
 import { ReceiverElasticsearchDefinition } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.definition';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IElasticsearchDefinition } from '@/infrastructure/elasticsearch/elasticsearchDefinition.interface';
+import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
+import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
+import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { ISearch } from '@/modules/search/domain/interface/search.interface';
 import type { SearchRequestDto } from '@/modules/search/interfaces/dtos/search.request.dto';
 import type { estypes } from '@elastic/elasticsearch';
-import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
-import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
-import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
-import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
-import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
-import { QueryBus } from '@nestjs/cqrs';
-import { FindManyConsumersByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/findManyConsumersByUserIdAndIds/findManyConsumersByUserIdAndIds.query';
-import { FindManyReceiversByUserIdAndIdsQuery } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.query';
-import { FindManyLocationsByUserIdAndIdsQuery } from '@/modules/location/applications/queries/findManyLocationsByUserIdAndIds/findManyLocationsByUserIdAndIds.query';
 
 @Injectable()
 export class SearchService implements IServiceHandler, OnModuleInit {
@@ -33,6 +34,7 @@ export class SearchService implements IServiceHandler, OnModuleInit {
         private readonly consumerElasticsearchDefinition: ConsumerElasticsearchDefinition,
         private readonly receiverElasticsearchDefinition: ReceiverElasticsearchDefinition,
         private readonly locationElasticsearchDefinition: LocationElasticsearchDefinition,
+        private readonly findManyBillsByUserIdAndIdsService: FindManyBillsByUserIdAndIdsService,
     ) {}
 
     async onModuleInit(): Promise<void> {
@@ -103,9 +105,9 @@ export class SearchService implements IServiceHandler, OnModuleInit {
                 const locationIds = locationDocs.map((doc) => doc.id);
 
                 const [bills, consumers, receivers, locations] = await Promise.all([
-                    // NOTE: bill should be implemented later.
-                    [],
-
+                    whenNotEmpty(billIds, (billIds) =>
+                        this.findManyBillsByUserIdAndIdsService.execute(userId, billIds),
+                    ),
                     whenNotEmpty(consumerIds, (consumerIds) =>
                         this.queryBus.execute<
                             FindManyConsumersByUserIdAndIdsQuery,
