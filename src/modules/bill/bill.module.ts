@@ -54,8 +54,9 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         UpdateBillHandler,
         DeleteBillHandler,
         BillRepository,
+        FindManyBillsByUserIdAndIdsService,
     ],
     controllers: [BillController],
-    exports: [BillElasticsearchDefinition],
+    exports: [BillElasticsearchDefinition, FindManyBillsByUserIdAndIdsService],
 })
 export class BillModule {}
