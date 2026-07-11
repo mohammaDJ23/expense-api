@@ -15,11 +15,14 @@ import { UpdateBillMessageElasticsearchProcessor } from '@/modules/bill/applicat
 import { ExistsBillByUserIdAndIdHandler } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.handler';
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
 import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.handler';
+import { FindManyBillsByUserIdAndIdsHandler } from '@/modules/bill/applications/queries/findManyBillsByUserIdAndIds/findManyBillsByUserIdAndIds.handler';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
+import { BillAggregateService } from '@/modules/bill/applications/services/billAggregate.service';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
 import { DeleteBillService } from '@/modules/bill/applications/services/deleteBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
+import { FindManyBillsByUserIdAndIdsService } from '@/modules/bill/applications/services/findManyBillsByUserIdAndIds.service';
 import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
 import { BillElasticsearchDefinition } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.definition';
 import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.repository';
@@ -32,12 +35,15 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         CreateBillService,
         UpdateBillService,
         DeleteBillService,
+        BillAggregateService,
+        FindManyBillsByUserIdAndIdsService,
         FindBillByUserIdAndIdOrThrowService,
         FindBillListByUserIdService,
         FindBillByUserIdAndIdOrThrowHandler,
         FindBillListByUserIdHandler,
         ExistsBillByUserIdAndIdHandler,
         CreateBillMessageHandler,
+        FindManyBillsByUserIdAndIdsHandler,
         CreateBillMessageElasticsearchProcessor,
         UpdateBillMessageHandler,
         UpdateBillMessageElasticsearchProcessor,
