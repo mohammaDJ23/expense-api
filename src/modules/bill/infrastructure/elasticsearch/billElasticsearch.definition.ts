@@ -14,6 +14,9 @@ export class BillElasticsearchDefinition implements IElasticsearchDefinition {
 
     mappings: estypes.MappingTypeMapping = {
         properties: {
+            userId: {
+                type: 'keyword',
+            },
             amount: {
                 type: 'text',
                 fields: {
@@ -80,15 +83,21 @@ export class BillElasticsearchDefinition implements IElasticsearchDefinition {
         },
     };
 
-    createSearchQuery(query: string): estypes.QueryDslQueryContainer {
+    createSearchQuery(userId: string, query: string): estypes.QueryDslQueryContainer {
         return {
             bool: {
+                filter: [
+                    {
+                        term: {
+                            userId,
+                        },
+                    },
+                ],
                 should: [
                     {
                         match: {
                             amount: {
                                 query,
-                                fuzziness: 'AUTO',
                                 boost: 5,
                             },
                         },

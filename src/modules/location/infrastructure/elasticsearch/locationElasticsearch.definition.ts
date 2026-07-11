@@ -14,6 +14,9 @@ export class LocationElasticsearchDefinition implements IElasticsearchDefinition
 
     mappings: estypes.MappingTypeMapping = {
         properties: {
+            userId: {
+                type: 'keyword',
+            },
             name: {
                 type: 'text',
                 fields: {
@@ -27,9 +30,16 @@ export class LocationElasticsearchDefinition implements IElasticsearchDefinition
         },
     };
 
-    createSearchQuery(query: string): estypes.QueryDslQueryContainer {
+    createSearchQuery(userId: string, query: string): estypes.QueryDslQueryContainer {
         return {
             bool: {
+                filter: [
+                    {
+                        term: {
+                            userId,
+                        },
+                    },
+                ],
                 should: [
                     {
                         match: {
