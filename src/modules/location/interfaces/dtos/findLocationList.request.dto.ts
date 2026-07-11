@@ -1,3 +1,4 @@
+import { MAX_LIST_LIMIT, MIN_LIST_LIMIT } from '@/common/common.constants';
 import { Type } from 'class-transformer';
 import { IsOptional, IsInt, Min, IsString, Max } from 'class-validator';
 
@@ -5,8 +6,8 @@ export class FindLocationListRequestDto {
     @IsOptional()
     @Type(() => Number)
     @IsInt()
-    @Min(1)
-    @Max(20)
+    @Min(MIN_LIST_LIMIT)
+    @Max(MAX_LIST_LIMIT)
     limit?: number;
 
     @IsOptional()
