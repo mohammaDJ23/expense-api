@@ -26,6 +26,7 @@ import { FindManyBillsConsumersByRefIdHandler } from '@/modules/consumer/applica
 import { FindManyConsumersByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/findManyConsumersByUserIdAndIds/findManyConsumersByUserIdAndIds.handler';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { ConsumerSearchService } from '@/modules/consumer/applications/services/consumerSearch.service';
+import { ConsumerSearchAggregateService } from '@/modules/consumer/applications/services/consumerSearchAggregate.service';
 import { CreateConsumerService } from '@/modules/consumer/applications/services/createConsumer.service';
 import { DeleteConsumerService } from '@/modules/consumer/applications/services/deleteConsumer.service';
 import { UpdateConsumerService } from '@/modules/consumer/applications/services/updateConsumer.service';
@@ -69,7 +70,8 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         ConsumerElasticsearchIndex,
         ConsumerElasticsearchQuery,
         ConsumerSearchService,
+        ConsumerSearchAggregateService,
     ],
-    exports: [ConsumerElasticsearchIndex, ConsumerElasticsearchQuery, ConsumerSearchService],
+    exports: [ConsumerSearchService, ConsumerSearchAggregateService],
 })
 export class ConsumerModule {}
