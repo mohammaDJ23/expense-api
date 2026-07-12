@@ -1,40 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
-import { ElasticsearchAnalysisSettings } from '@/infrastructure/elasticsearch/elasticsearchAnalysis.settings';
-
-import type { IElasticsearchDefinition } from '@/infrastructure/elasticsearch/elasticsearchDefinition.interface';
+import type { IElasticsearchQuery } from '@/infrastructure/elasticsearch/elasticsearchQuery.interface';
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
 import type { estypes } from '@elastic/elasticsearch';
 
 @Injectable()
-export class ReceiverElasticsearchDefinition implements IElasticsearchDefinition {
+export class ReceiverElasticsearchQuery implements IElasticsearchQuery {
     index: TOutboxEventAggregateType = 'receivers';
 
-    buildIndex(): estypes.IndicesCreateRequest {
-        return {
-            index: this.index,
-            settings: ElasticsearchAnalysisSettings.settings,
-            mappings: {
-                properties: {
-                    userId: {
-                        type: 'keyword',
-                    },
-                    name: {
-                        type: 'text',
-                        fields: {
-                            partial: {
-                                type: 'text',
-                                analyzer: 'partial_index',
-                                search_analyzer: 'partial_search',
-                            },
-                        },
-                    },
-                },
-            },
-        };
-    }
-
-    buildSearch(userId: string, query: string, size: number): estypes.SearchRequest {
+    buildQuery(userId: string, query: string, size: number): estypes.SearchRequest {
         return {
             size,
             index: this.index,
