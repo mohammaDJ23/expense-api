@@ -1,0 +1,38 @@
+import { Injectable } from '@nestjs/common';
+
+import { BillSearchService } from '@/modules/bill/applications/services/billSearch.service';
+import { ConsumerSearchService } from '@/modules/consumer/applications/services/consumerSearch.service';
+import { LocationSearchService } from '@/modules/location/applications/services/locationSearch.service';
+import { ReceiverSearchService } from '@/modules/receiver/applications/services/receiverSearch.service';
+
+import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IElasticsearchSearch } from '@/infrastructure/elasticsearch/elasticsearchSearch.interface';
+import type { ISearchOrchestrator } from '@/modules/search/domain/interface/searchOrchestrator.interface';
+
+@Injectable()
+export class SearchOrchestratorService implements IServiceHandler {
+    constructor(
+        private readonly billSearchService: BillSearchService,
+        private readonly consumerSearchService: ConsumerSearchService,
+        private readonly locationSearchService: LocationSearchService,
+        private readonly receiverSearchService: ReceiverSearchService,
+    ) {}
+
+    async execute(userId: string, query: string, size: number): Promise<ISearchOrchestrator> {
+        const searchServices: IElasticsearchSearch[] = [
+            this.billSearchService,
+            this.consumerSearchService,
+            this.locationSearchService,
+            this.receiverSearchService,
+        ];
+        const [billIds, consumerIds, locationIds, receiverIds] = await Promise.all(
+            searchServices.map((searchService) => searchService.search(userId, query, size)),
+        );
+        return {
+            billIds,
+            consumerIds,
+            locationIds,
+            receiverIds,
+        };
+    }
+}
