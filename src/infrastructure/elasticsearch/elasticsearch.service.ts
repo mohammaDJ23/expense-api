@@ -39,6 +39,10 @@ export class ElasticSearchService {
         }
     }
 
+    search<T>(searchRequest: estypes.SearchRequest): Promise<estypes.SearchResponse<T>> {
+        return this.client.search<T>(searchRequest);
+    }
+
     extractDocs<T>(response: estypes.SearchResponse<T>): T[] {
         return response.hits.hits.flatMap((hit) => (hit._source ? [hit._source] : []));
     }
