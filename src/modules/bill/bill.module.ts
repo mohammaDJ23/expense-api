@@ -20,6 +20,7 @@ import { BillService } from '@/modules/bill/applications/services/bill.service';
 import { BillAggregateService } from '@/modules/bill/applications/services/billAggregate.service';
 import { BillSearchService } from '@/modules/bill/applications/services/billSearch.service';
 import { BillSearchAggregateService } from '@/modules/bill/applications/services/billSearchAggregate.service';
+import { BillSearchIndexRegisterService } from '@/modules/bill/applications/services/billSearchIndexRegister.service';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
 import { DeleteBillService } from '@/modules/bill/applications/services/deleteBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
@@ -61,6 +62,7 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         BillElasticsearchQuery,
         BillSearchService,
         BillSearchAggregateService,
+        BillSearchIndexRegisterService,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService],
