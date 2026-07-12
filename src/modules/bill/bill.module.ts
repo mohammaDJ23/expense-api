@@ -18,6 +18,7 @@ import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries
 import { FindManyBillsByUserIdAndIdsHandler } from '@/modules/bill/applications/queries/findManyBillsByUserIdAndIds/findManyBillsByUserIdAndIds.handler';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
 import { BillAggregateService } from '@/modules/bill/applications/services/billAggregate.service';
+import { BillSearchService } from '@/modules/bill/applications/services/billSearch.service';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
 import { DeleteBillService } from '@/modules/bill/applications/services/deleteBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
@@ -57,8 +58,14 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         FindManyBillsByUserIdAndIdsService,
         BillElasticsearchIndex,
         BillElasticsearchQuery,
+        BillSearchService,
     ],
     controllers: [BillController],
-    exports: [BillElasticsearchIndex, BillElasticsearchQuery, FindManyBillsByUserIdAndIdsService],
+    exports: [
+        BillElasticsearchIndex,
+        BillElasticsearchQuery,
+        FindManyBillsByUserIdAndIdsService,
+        BillSearchService,
+    ],
 })
 export class BillModule {}

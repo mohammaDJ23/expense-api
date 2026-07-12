@@ -38,4 +38,8 @@ export class ElasticSearchService {
             throw new InternalServerErrorException(error);
         }
     }
+
+    extractDocs<T>(response: estypes.SearchResponse<T>): T[] {
+        return response.hits.hits.flatMap((hit) => (hit._source ? [hit._source] : []));
+    }
 }
