@@ -21,6 +21,7 @@ import { FindManyLocationsByUserIdAndIdsHandler } from '@/modules/location/appli
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
+import { LocationSearchService } from '@/modules/location/applications/services/locationSearch.service';
 import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
 import { LocationElasticsearchIndex } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.index';
 import { LocationElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.query';
@@ -55,7 +56,8 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
         LocationRepository,
         LocationElasticsearchIndex,
         LocationElasticsearchQuery,
+        LocationSearchService,
     ],
-    exports: [LocationElasticsearchIndex, LocationElasticsearchQuery],
+    exports: [LocationElasticsearchIndex, LocationElasticsearchQuery, LocationSearchService],
 })
 export class LocationModule {}
