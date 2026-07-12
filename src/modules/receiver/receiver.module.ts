@@ -24,6 +24,7 @@ import { DeleteReceiverService } from '@/modules/receiver/applications/services/
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
 import { ReceiverSearchService } from '@/modules/receiver/applications/services/receiverSearch.service';
 import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/receiverSearchAggregate.service';
+import { ReceiverSearchIndexRegisterService } from '@/modules/receiver/applications/services/receiverSearchIndexRegister.service';
 import { UpdateReceiverService } from '@/modules/receiver/applications/services/updateReceiver.service';
 import { ReceiverElasticsearchIndex } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.index';
 import { ReceiverElasticsearchQuery } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.query';
@@ -59,6 +60,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ReceiverElasticsearchQuery,
         ReceiverSearchService,
         ReceiverSearchAggregateService,
+        ReceiverSearchIndexRegisterService,
     ],
     exports: [ReceiverSearchService, ReceiverSearchAggregateService],
 })
