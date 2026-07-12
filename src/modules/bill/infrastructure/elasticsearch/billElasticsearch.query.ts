@@ -1,88 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
-import { ElasticsearchAnalysisSettings } from '@/infrastructure/elasticsearch/elasticsearchAnalysis.settings';
-
-import type { IElasticsearchDefinition } from '@/infrastructure/elasticsearch/elasticsearchDefinition.interface';
+import type { IElasticsearchQuery } from '@/infrastructure/elasticsearch/elasticsearchQuery.interface';
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
 import type { estypes } from '@elastic/elasticsearch';
 
 @Injectable()
-export class BillElasticsearchDefinition implements IElasticsearchDefinition {
+export class BillElasticsearchQuery implements IElasticsearchQuery {
     index: TOutboxEventAggregateType = 'bills';
 
-    buildIndex(): estypes.IndicesCreateRequest {
-        return {
-            index: this.index,
-            settings: ElasticsearchAnalysisSettings.settings,
-            mappings: {
-                properties: {
-                    userId: {
-                        type: 'keyword',
-                    },
-                    amount: {
-                        type: 'keyword',
-                    },
-                    description: {
-                        type: 'text',
-                        fields: {
-                            partial: {
-                                type: 'text',
-                                analyzer: 'partial_index',
-                                search_analyzer: 'partial_search',
-                            },
-                        },
-                    },
-                    receiver: {
-                        type: 'object',
-                        properties: {
-                            name: {
-                                type: 'text',
-                                fields: {
-                                    partial: {
-                                        type: 'text',
-                                        analyzer: 'partial_index',
-                                        search_analyzer: 'partial_search',
-                                    },
-                                },
-                            },
-                        },
-                    },
-                    location: {
-                        type: 'object',
-                        properties: {
-                            name: {
-                                type: 'text',
-                                fields: {
-                                    partial: {
-                                        type: 'text',
-                                        analyzer: 'partial_index',
-                                        search_analyzer: 'partial_search',
-                                    },
-                                },
-                            },
-                        },
-                    },
-                    consumers: {
-                        type: 'nested',
-                        properties: {
-                            name: {
-                                type: 'text',
-                                fields: {
-                                    partial: {
-                                        type: 'text',
-                                        analyzer: 'partial_index',
-                                        search_analyzer: 'partial_search',
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-        };
-    }
-
-    buildSearch(userId: string, query: string, size: number): estypes.SearchRequest {
+    buildQuery(userId: string, query: string, size: number): estypes.SearchRequest {
         return {
             size,
             index: this.index,
