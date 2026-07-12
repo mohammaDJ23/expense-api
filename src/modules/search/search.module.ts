@@ -7,6 +7,7 @@ import { BillModule } from '@/modules/bill/bill.module';
 import { ConsumerModule } from '@/modules/consumer/consumer.module';
 import { LocationModule } from '@/modules/location/location.module';
 import { ReceiverModule } from '@/modules/receiver/receiver.module';
+import { ElasticsearchIndexRegisterService } from '@/modules/search/applications/services/elasticsearchIndexRegister.service';
 import { SearchService } from '@/modules/search/applications/services/search.service';
 import { SearchController } from '@/modules/search/interfaces/controllers/v1.controller';
 
@@ -20,7 +21,7 @@ import { SearchController } from '@/modules/search/interfaces/controllers/v1.con
         ConsumerModule,
         LocationModule,
     ],
-    providers: [SearchService],
+    providers: [SearchService, ElasticsearchIndexRegisterService],
     controllers: [SearchController],
 })
 export class SearchModule {}
