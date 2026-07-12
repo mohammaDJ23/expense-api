@@ -23,7 +23,8 @@ import { CreateReceiverService } from '@/modules/receiver/applications/services/
 import { DeleteReceiverService } from '@/modules/receiver/applications/services/deleteReceiver.service';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
 import { UpdateReceiverService } from '@/modules/receiver/applications/services/updateReceiver.service';
-import { ReceiverElasticsearchDefinition } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.definition';
+import { ReceiverElasticsearchIndex } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.index';
+import { ReceiverElasticsearchQuery } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.query';
 import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
 import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1.controller';
 
@@ -52,8 +53,9 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         UpdateReceiverService,
         DeleteReceiverService,
         ReceiverRepository,
-        ReceiverElasticsearchDefinition,
+        ReceiverElasticsearchIndex,
+        ReceiverElasticsearchQuery,
     ],
-    exports: [ReceiverElasticsearchDefinition],
+    exports: [ReceiverElasticsearchIndex, ReceiverElasticsearchQuery],
 })
 export class ReceiverModule {}

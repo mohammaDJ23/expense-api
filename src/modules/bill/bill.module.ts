@@ -24,7 +24,8 @@ import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
 import { FindManyBillsByUserIdAndIdsService } from '@/modules/bill/applications/services/findManyBillsByUserIdAndIds.service';
 import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
-import { BillElasticsearchDefinition } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.definition';
+import { BillElasticsearchIndex } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.index';
+import { BillElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.query';
 import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.repository';
 import { BillController } from '@/modules/bill/interface/controllers/v1.controller';
 
@@ -49,14 +50,15 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         UpdateBillMessageElasticsearchProcessor,
         DeleteBillMessageHandler,
         DeleteBillMessageElasticsearchProcessor,
-        BillElasticsearchDefinition,
         CreateBillHandler,
         UpdateBillHandler,
         DeleteBillHandler,
         BillRepository,
         FindManyBillsByUserIdAndIdsService,
+        BillElasticsearchIndex,
+        BillElasticsearchQuery,
     ],
     controllers: [BillController],
-    exports: [BillElasticsearchDefinition, FindManyBillsByUserIdAndIdsService],
+    exports: [BillElasticsearchIndex, BillElasticsearchQuery, FindManyBillsByUserIdAndIdsService],
 })
 export class BillModule {}
