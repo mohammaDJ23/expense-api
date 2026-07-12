@@ -43,6 +43,10 @@ export class ElasticSearchService {
         return this.client.search<T>(searchRequest);
     }
 
+    createIndex(index: estypes.IndicesCreateRequest): Promise<estypes.IndicesCreateResponse> {
+        return this.client.indices.create(index);
+    }
+
     extractDocs<T>(response: estypes.SearchResponse<T>): T[] {
         return response.hits.hits.flatMap((hit) => (hit._source ? [hit._source] : []));
     }
