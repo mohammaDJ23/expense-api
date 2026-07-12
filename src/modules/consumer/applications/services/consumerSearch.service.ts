@@ -2,27 +2,27 @@ import { Injectable } from '@nestjs/common';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
-import { BillElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.query';
+import { ConsumerElasticsearchQuery } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearch.query';
 
 import type { IElasticsearchSearch } from '@/infrastructure/elasticsearch/elasticsearchSearch.interface';
-import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 @Injectable()
-export class BillSearchService implements IElasticsearchSearch {
+export class ConsumerSearchService implements IElasticsearchSearch {
     constructor(
         private readonly elasticsearchService: ElasticSearchService,
-        private readonly billElasticsearchQuery: BillElasticsearchQuery,
+        private readonly consumerElasticsearchQuery: ConsumerElasticsearchQuery,
     ) {}
 
     async search(userId: string, query: string, size: number): Promise<string[]> {
         try {
-            const response = await this.elasticsearchService.search<ISelectBill>(
-                this.billElasticsearchQuery.buildQuery(userId, query, size),
+            const response = await this.elasticsearchService.search<ISelectConsumer>(
+                this.consumerElasticsearchQuery.buildQuery(userId, query, size),
             );
 
             {
-                const billDocs = this.elasticsearchService.extractDocs(response);
-                return billDocs.map((doc) => doc.id);
+                const consumerDocs = this.elasticsearchService.extractDocs(response);
+                return consumerDocs.map((doc) => doc.id);
             }
         } catch {
             throw new ProcessFailedInternalServerErrorException();
