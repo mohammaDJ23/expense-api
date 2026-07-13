@@ -23,7 +23,7 @@ services:
                 - 'curl -s http://localhost:3000/v1/api/health | grep -q "\"status\":\"ok\"" || exit 1'
             interval: 15s
             timeout: 5s
-            start_period: 30s
+            start_period: 60s
             retries: 3
         secrets:
             - database_password
@@ -109,7 +109,7 @@ services:
                 - 'pg_isready -U expense_api'
             interval: 15s
             timeout: 5s
-            start_period: 30s
+            start_period: 60s
             retries: 3
         restart: unless-stopped
         mem_limit: 1G
@@ -153,7 +153,7 @@ services:
                 - 'ping'
             interval: 15s
             timeout: 5s
-            start_period: 30s
+            start_period: 60s
             retries: 3
         restart: unless-stopped
         mem_limit: 256M
@@ -202,7 +202,7 @@ services:
                 - '/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1'
             interval: 15s
             timeout: 5s
-            start_period: 30s
+            start_period: 60s
             retries: 3
         networks:
             - expense-api-network-internal
@@ -250,7 +250,7 @@ services:
                 - 'curl -fs http://localhost:8083/connectors >/dev/null'
             interval: 15s
             timeout: 5s
-            start_period: 30s
+            start_period: 60s
             retries: 3
         networks:
             - expense-api-network-internal
@@ -328,11 +328,11 @@ services:
                 - 'CMD-SHELL'
                 - >
                     curl -fs -u elastic:$(cat /run/secrets/elasticsearch_password)
-                    "http://localhost:9200/_cluster/health?wait_for_status=green&timeout=30s"
+                    "http://localhost:9200/_cluster/health?wait_for_status=green&timeout=60s"
                     >/dev/null
             interval: 15s
             timeout: 5s
-            start_period: 30s
+            start_period: 60s
             retries: 3
         networks:
             - expense-api-network-internal
