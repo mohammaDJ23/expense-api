@@ -1,3 +1,50 @@
+## [4.2.0](https://github.com/mohammaDJ23/expense-api/compare/v4.1.1...v4.2.0) (2026-07-13)
+
+### ✨ Features
+
+- 389615 add the search api ([c6b944f](https://github.com/mohammaDJ23/expense-api/commit/c6b944f93fd74df816284cf3f37b1e82ddcb3297))
+
+### 🐛 Bug Fixes
+
+- 389615 fix the eslint issues ([7bb89f4](https://github.com/mohammaDJ23/expense-api/commit/7bb89f42193d01a2afa902616a2a2d756a31fb1a))
+- 389615 remove the array and use searches inside promise all diractly ([3f0dc11](https://github.com/mohammaDJ23/expense-api/commit/3f0dc115b77147d78317a9cfde9882af1feb4bb6))
+
+### 🔧 Chores
+
+- 389615 add gitattributes ([15ce3ce](https://github.com/mohammaDJ23/expense-api/commit/15ce3ce90ee52a68fb89ddfbc97af0fe955babec))
+- 389615 add SearchOrchestratorService & SearchAggregateOrchestratorService ([162f2fe](https://github.com/mohammaDJ23/expense-api/commit/162f2fecfacf334c301c37b2c4a8c296965878ca))
+- 389615 add the bill aggregation service and find bills by user id and ids ([5ea0a7c](https://github.com/mohammaDJ23/expense-api/commit/5ea0a7c931e0066bb4b56f67a7e71ed59bb0a05d))
+- 389615 add the bill search aggregate service ([32fb033](https://github.com/mohammaDJ23/expense-api/commit/32fb033f5f75fc392b39aa7a8f610ebc95ee0d22))
+- 389615 add the bill search index register service ([a392331](https://github.com/mohammaDJ23/expense-api/commit/a39233156a65eb7731bb404b6a3b6b4e89778bb5))
+- 389615 add the bill search service ([b69e2a1](https://github.com/mohammaDJ23/expense-api/commit/b69e2a1ce11296ecf943863b984c0f701625df49))
+- 389615 add the consumer search aggregate service ([59cac06](https://github.com/mohammaDJ23/expense-api/commit/59cac068f2da9225a1fac3e0b4529a587f428fb8))
+- 389615 add the consumer search index register service ([f7188ee](https://github.com/mohammaDJ23/expense-api/commit/f7188ee5fe23bc7fd33f98f3dab0d4cb74a8ae83))
+- 389615 add the consumer search service ([9ad889d](https://github.com/mohammaDJ23/expense-api/commit/9ad889d8eabf11ccb4d9e592c0bb25e4db300266))
+- 389615 add the elasticsearch index and query ([738121c](https://github.com/mohammaDJ23/expense-api/commit/738121cf27756fa1b5ecbbb274d420e1348643f6))
+- 389615 add the elasticsearch index and query ([3ca0a43](https://github.com/mohammaDJ23/expense-api/commit/3ca0a435277a0fc74f5ae44d57483528b136dfaa))
+- 389615 add the elasticsearch index and query ([3d98801](https://github.com/mohammaDJ23/expense-api/commit/3d9880102116dcd7185d2b6e6f3eeedd42dfc431))
+- 389615 add the elasticsearch index and query ([9b3223c](https://github.com/mohammaDJ23/expense-api/commit/9b3223c2709555be7b312618d655c0068a18fab9))
+- 389615 add the elasticsearch index and query interfaces ([4bcb11f](https://github.com/mohammaDJ23/expense-api/commit/4bcb11f94de542cc48622ba947058de46e442b3b))
+- 389615 add the elasticsearch index registration index service ([bb33eab](https://github.com/mohammaDJ23/expense-api/commit/bb33eab32f163572836f1743e717f880ba21210b))
+- 389615 add the location search aggregate service ([8a71b36](https://github.com/mohammaDJ23/expense-api/commit/8a71b3661a47266dfef15376c56f65d25c1b48b1))
+- 389615 add the location search index register service ([0eee036](https://github.com/mohammaDJ23/expense-api/commit/0eee036c3b2130ed9773824d382337b7ef51b2b7))
+- 389615 add the location search service ([f1666fe](https://github.com/mohammaDJ23/expense-api/commit/f1666fea44d0abbeecb991349bfe3591025fafd2))
+- 389615 add the receiver search aggregate service ([1595374](https://github.com/mohammaDJ23/expense-api/commit/1595374ce4838873682ad03454e7928f623de4a4))
+- 389615 add the receiver search index register service ([1b17cd9](https://github.com/mohammaDJ23/expense-api/commit/1b17cd9295e95c75edf518b02398424327f258ef))
+- 389615 add the receiver search service ([c6a6ffd](https://github.com/mohammaDJ23/expense-api/commit/c6a6ffd15d56d9b7c45a7c1f9103cc6be63a35fb))
+- 389615 add user id to query ([640df15](https://github.com/mohammaDJ23/expense-api/commit/640df154e872517a91bcb12b33425f49384c995c))
+- 389615 add whenNotEmpty ([77e1aa0](https://github.com/mohammaDJ23/expense-api/commit/77e1aa06ec212053c2209071f0b57ad20855b53c))
+- 389615 get the actual data from db ([97cfa1d](https://github.com/mohammaDJ23/expense-api/commit/97cfa1d28459ea06ef8cdb437b07c9e45c2d8755))
+- 389615 increase start_period ([fc80b87](https://github.com/mohammaDJ23/expense-api/commit/fc80b872f62ef0554d9c202297676545f7446a09))
+- 389615 increase start_period ([feb4c59](https://github.com/mohammaDJ23/expense-api/commit/feb4c594648e2faed7e416c251db4f0e3c912c90))
+- 389615 remove the search index register ([fa58431](https://github.com/mohammaDJ23/expense-api/commit/fa58431ea2b360793f7dea8dac97a03dcd917575))
+- 389615 revise the elasticsearch difinition ([d3f8a7e](https://github.com/mohammaDJ23/expense-api/commit/d3f8a7ea614abddaa5f20a65d60069c3c142c339))
+- 389615 update the query and mapping of bill ([a2418ab](https://github.com/mohammaDJ23/expense-api/commit/a2418ab1c8f519ab7cc9c8454aff989d606df918))
+- 389615 use MIN_LIST_LIMIT & MAX_LIST_LIMIT ([57a265e](https://github.com/mohammaDJ23/expense-api/commit/57a265ea2a69cad463ba3ed8ccd8b1ba33274b02))
+- 389615 use promise all to search ([662fe0f](https://github.com/mohammaDJ23/expense-api/commit/662fe0fa5491cbe78e59877ea18493e1e52093c0))
+- 389615 use services correctly ([0e77c67](https://github.com/mohammaDJ23/expense-api/commit/0e77c673cc3242236182f72b74da54e48c5c060a))
+- 398615 use the definition methods ([82ec332](https://github.com/mohammaDJ23/expense-api/commit/82ec332c9e966813b68463e0564bb6cd3e69e92e))
+
 ## [4.1.1](https://github.com/mohammaDJ23/expense-api/compare/v4.1.0...v4.1.1) (2026-07-10)
 
 ### 🐛 Bug Fixes
