@@ -6,7 +6,6 @@ import { LocationSearchService } from '@/modules/location/applications/services/
 import { ReceiverSearchService } from '@/modules/receiver/applications/services/receiverSearch.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { IElasticsearchSearch } from '@/infrastructure/elasticsearch/elasticsearchSearch.interface';
 import type { ISearchOrchestrator } from '@/modules/search/domain/interface/searchOrchestrator.interface';
 
 @Injectable()
@@ -19,15 +18,12 @@ export class SearchOrchestratorService implements IServiceHandler {
     ) {}
 
     async execute(userId: string, query: string, size: number): Promise<ISearchOrchestrator> {
-        const searchServices: IElasticsearchSearch[] = [
-            this.billSearchService,
-            this.consumerSearchService,
-            this.locationSearchService,
-            this.receiverSearchService,
-        ];
-        const [billIds, consumerIds, locationIds, receiverIds] = await Promise.all(
-            searchServices.map((searchService) => searchService.search(userId, query, size)),
-        );
+        const [billIds, consumerIds, locationIds, receiverIds] = await Promise.all([
+            this.billSearchService.search(userId, query, size),
+            this.consumerSearchService.search(userId, query, size),
+            this.locationSearchService.search(userId, query, size),
+            this.receiverSearchService.search(userId, query, size),
+        ]);
         return {
             billIds,
             consumerIds,
