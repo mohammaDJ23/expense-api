@@ -30,6 +30,7 @@ import { BillSearchService } from '@/modules/bill/applications/services/search/b
 import { BillSearchAggregateService } from '@/modules/bill/applications/services/search/billSearchAggregate.service';
 import { BillSearchIndexRegisterService } from '@/modules/bill/applications/services/search/billSearchIndexRegister.service';
 import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
+import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
 import { BillElasticsearchIndex } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.index';
 import { BillElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.query';
 import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.repository';
@@ -69,6 +70,7 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         BillConsumerRelationLoaderService,
         BillLocationRelationLoaderService,
         BillReceiverRelationLoaderService,
+        BillExistenceValidatorService,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService],

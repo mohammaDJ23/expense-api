@@ -25,6 +25,7 @@ import { LocationSearchService } from '@/modules/location/applications/services/
 import { LocationSearchAggregateService } from '@/modules/location/applications/services/locationSearchAggregate.service';
 import { LocationSearchIndexRegisterService } from '@/modules/location/applications/services/locationSearchIndexRegister.service';
 import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
+import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { LocationElasticsearchIndex } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.index';
 import { LocationElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.query';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
@@ -61,6 +62,7 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
         LocationSearchService,
         LocationSearchAggregateService,
         LocationSearchIndexRegisterService,
+        LocationExistenceValidatorService,
     ],
     exports: [LocationSearchService, LocationSearchAggregateService],
 })
