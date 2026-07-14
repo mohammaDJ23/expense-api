@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { BillSearchAggregateService } from '@/modules/bill/applications/services/billSearchAggregate.service';
+import { BillSearchAggregateService } from '@/modules/bill/applications/services/search/billSearchAggregate.service';
 import { ConsumerSearchAggregateService } from '@/modules/consumer/applications/services/consumerSearchAggregate.service';
 import { LocationSearchAggregateService } from '@/modules/location/applications/services/locationSearchAggregate.service';
 import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/receiverSearchAggregate.service';

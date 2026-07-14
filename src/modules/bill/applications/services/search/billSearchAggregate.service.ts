@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
-
-import { FindManyBillsByUserIdAndIdsService } from './findManyBillsByUserIdAndIds.service';
+import { FindManyBillsByUserIdAndIdsService } from '@/modules/bill/applications/services/findManyBillsByUserIdAndIds.service';
 
 import type { IElasticsearchSearchAggregate } from '@/infrastructure/elasticsearch/elasticsearchSearchAggregate.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
