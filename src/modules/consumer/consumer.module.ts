@@ -31,6 +31,8 @@ import { ConsumerSearchIndexRegisterService } from '@/modules/consumer/applicati
 import { CreateConsumerService } from '@/modules/consumer/applications/services/createConsumer.service';
 import { DeleteConsumerService } from '@/modules/consumer/applications/services/deleteConsumer.service';
 import { UpdateConsumerService } from '@/modules/consumer/applications/services/updateConsumer.service';
+import { ConsumerExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumerExistenceValidator.service';
+import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
 import { ConsumerElasticsearchIndex } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearch.index';
 import { ConsumerElasticsearchQuery } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearch.query';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
@@ -73,6 +75,8 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         ConsumerSearchService,
         ConsumerSearchAggregateService,
         ConsumerSearchIndexRegisterService,
+        ConsumerExistenceValidatorService,
+        ConsumersExistenceValidatorService,
     ],
     exports: [ConsumerSearchService, ConsumerSearchAggregateService],
 })
