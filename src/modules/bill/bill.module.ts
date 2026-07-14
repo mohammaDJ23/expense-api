@@ -17,9 +17,6 @@ import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications
 import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.handler';
 import { FindManyBillsByUserIdAndIdsHandler } from '@/modules/bill/applications/queries/findManyBillsByUserIdAndIds/findManyBillsByUserIdAndIds.handler';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
-import { BillSearchService } from '@/modules/bill/applications/services/billSearch.service';
-import { BillSearchAggregateService } from '@/modules/bill/applications/services/billSearchAggregate.service';
-import { BillSearchIndexRegisterService } from '@/modules/bill/applications/services/billSearchIndexRegister.service';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
 import { DeleteBillService } from '@/modules/bill/applications/services/deleteBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
@@ -29,6 +26,9 @@ import { BillAssemblerService } from '@/modules/bill/applications/services/relat
 import { BillConsumerRelationLoaderService } from '@/modules/bill/applications/services/relations/billConsumerRelationLoader.service';
 import { BillLocationRelationLoaderService } from '@/modules/bill/applications/services/relations/billLocationRelationLoader.service';
 import { BillReceiverRelationLoaderService } from '@/modules/bill/applications/services/relations/billReceiverRelationLoader.service';
+import { BillSearchService } from '@/modules/bill/applications/services/search/billSearch.service';
+import { BillSearchAggregateService } from '@/modules/bill/applications/services/search/billSearchAggregate.service';
+import { BillSearchIndexRegisterService } from '@/modules/bill/applications/services/search/billSearchIndexRegister.service';
 import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
 import { BillElasticsearchIndex } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.index';
 import { BillElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.query';
