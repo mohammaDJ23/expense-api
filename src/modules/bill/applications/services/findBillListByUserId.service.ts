@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
-import { isEmpty } from '@/common/utils/isEmpty.util';
 import { FindBillListByUserIdQuery } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.query';
-
-import { BillAggregateService } from './billAggregate.service';
+import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
@@ -15,7 +13,7 @@ import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findB
 export class FindBillListByUserIdService implements IServiceHandler {
     constructor(
         private readonly queryBus: QueryBus,
-        private readonly billAggregateService: BillAggregateService,
+        private readonly billAssemblerService: BillAssemblerService,
     ) {}
 
     async execute(userId: string, options: FindBillListRequestDto): Promise<IBill[]> {
@@ -26,11 +24,6 @@ export class FindBillListByUserIdService implements IServiceHandler {
                 limit: options.limit,
             }),
         );
-
-        if (isEmpty(bills)) {
-            return [];
-        }
-
-        return this.billAggregateService.execute(userId, bills);
+        return this.billAssemblerService.assembleMany(userId, bills);
     }
 }
