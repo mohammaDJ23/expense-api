@@ -3,11 +3,9 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { isEmpty } from '@/common/utils/isEmpty.util';
 import { IdEntity } from '@/core/entities/id.entity';
-import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
-import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
+import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/createBillsConsumersSynchronization.service';
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
@@ -19,7 +17,6 @@ import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface
 import type { IBillOutboxEvent } from '@/modules/bill/domain/interfaces/billOutboxEvent.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
-import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
@@ -31,6 +28,7 @@ export class CreateBillService implements IServiceHandler {
         private readonly consumersExistenceValidatorService: ConsumersExistenceValidatorService,
         private readonly locationExistenceValidatorService: LocationExistenceValidatorService,
         private readonly receiverExistenceValidatorService: ReceiverExistenceValidatorService,
+        private readonly createBillsConsumerSynchronizationService: CreateBillsConsumersSynchronizationService,
     ) {}
 
     @Transactional()
@@ -55,24 +53,10 @@ export class CreateBillService implements IServiceHandler {
                 }),
             );
 
-            {
-                const createdBillsConsumers = await this.commandBus.execute<
-                    CreateManyBillsConsumersCommand,
-                    ISelectBillConsumer[]
-                >(
-                    new CreateManyBillsConsumersCommand({
-                        billsConsumers: data.consumerIds.map((consumerId) => ({
-                            billId: createdBill.id,
-                            consumerId,
-                            createdAt: getCurrentUTCTimestamp(),
-                        })),
-                    }),
-                );
-
-                if (isEmpty(createdBillsConsumers)) {
-                    throw new ProcessFailedInternalServerErrorException();
-                }
-            }
+            await this.createBillsConsumerSynchronizationService.synchronize({
+                billId: createdBill.id,
+                consumerIds: data.consumerIds,
+            });
 
             {
                 const bill = await this.findBillByUserIdAndIdOrThrowService.execute(
