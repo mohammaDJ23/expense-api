@@ -23,9 +23,12 @@ import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
 import { FindManyBillsByUserIdAndIdsService } from '@/modules/bill/applications/services/findManyBillsByUserIdAndIds.service';
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
-import { BillConsumerRelationLoaderService } from '@/modules/bill/applications/services/relations/billConsumerRelationLoader.service';
+import { BillConsumersRelationLoaderService } from '@/modules/bill/applications/services/relations/billConsumersRelationLoader.service';
 import { BillLocationRelationLoaderService } from '@/modules/bill/applications/services/relations/billLocationRelationLoader.service';
+import { BillLocationsRelationLoaderService } from '@/modules/bill/applications/services/relations/billLocationsRelationLoader.service';
 import { BillReceiverRelationLoaderService } from '@/modules/bill/applications/services/relations/billReceiverRelationLoader.service';
+import { BillReceiversRelationLoaderService } from '@/modules/bill/applications/services/relations/billReceiversRelationLoader.service';
+import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
 import { BillSearchService } from '@/modules/bill/applications/services/search/billSearch.service';
 import { BillSearchAggregateService } from '@/modules/bill/applications/services/search/billSearchAggregate.service';
 import { BillSearchIndexRegisterService } from '@/modules/bill/applications/services/search/billSearchIndexRegister.service';
@@ -44,6 +47,7 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         UpdateBillService,
         DeleteBillService,
         BillAssemblerService,
+        BillsAssemblerService,
         FindManyBillsByUserIdAndIdsService,
         FindBillByUserIdAndIdOrThrowService,
         FindBillListByUserIdService,
@@ -67,10 +71,12 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         BillSearchService,
         BillSearchAggregateService,
         BillSearchIndexRegisterService,
-        BillConsumerRelationLoaderService,
+        BillConsumersRelationLoaderService,
         BillLocationRelationLoaderService,
         BillReceiverRelationLoaderService,
         BillExistenceValidatorService,
+        BillLocationsRelationLoaderService,
+        BillReceiversRelationLoaderService,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService],

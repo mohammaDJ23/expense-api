@@ -1,5 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Injectable } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
@@ -8,10 +8,10 @@ import { IdEntity } from '@/core/entities/id.entity';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
-import { ExistsConsumerByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndIds/existsConsumerByUserIdAndIds.query';
-import { ExistsLocationByUserIdAndIdQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.query';
+import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
+import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
-import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
+import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
@@ -24,48 +24,22 @@ import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas
 
 @Injectable()
 export class CreateBillService implements IServiceHandler {
+    // eslint-disable-next-line max-params
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
         private readonly findBillByUserIdAndIdOrThrowService: FindBillByUserIdAndIdOrThrowService,
+        private readonly consumersExistenceValidatorService: ConsumersExistenceValidatorService,
+        private readonly locationExistenceValidatorService: LocationExistenceValidatorService,
+        private readonly receiverExistenceValidatorService: ReceiverExistenceValidatorService,
     ) {}
 
     @Transactional()
     async execute(data: CreateBillRequestDto, userId: string): Promise<IdEntity> {
-        {
-            const [existsReceiver, existsLocation, existsConsumer] = await Promise.all([
-                this.queryBus.execute<ExistsReceiverByUserIdAndIdQuery, boolean>(
-                    new ExistsReceiverByUserIdAndIdQuery({
-                        userId,
-                        id: data.receiverId,
-                    }),
-                ),
-                this.queryBus.execute<ExistsLocationByUserIdAndIdQuery, boolean>(
-                    new ExistsLocationByUserIdAndIdQuery({
-                        userId,
-                        id: data.locationId,
-                    }),
-                ),
-                this.queryBus.execute<ExistsConsumerByUserIdAndIdsQuery, boolean>(
-                    new ExistsConsumerByUserIdAndIdsQuery({
-                        userId,
-                        ids: data.consumerIds,
-                    }),
-                ),
-            ]);
-
-            if (!existsReceiver) {
-                throw new BadRequestException('Could not found the receiver');
-            }
-
-            if (!existsLocation) {
-                throw new BadRequestException('Could not found the location');
-            }
-
-            if (!existsConsumer) {
-                throw new BadRequestException('Could not found the consumer');
-            }
-        }
+        await Promise.all([
+            this.receiverExistenceValidatorService.validate({ userId, id: data.receiverId }),
+            this.locationExistenceValidatorService.validate({ userId, id: data.locationId }),
+            this.consumersExistenceValidatorService.validate({ userId, ids: data.consumerIds }),
+        ]);
 
         {
             const createdBill = await this.commandBus.execute<CreateBillCommand, ISelectBill>(
