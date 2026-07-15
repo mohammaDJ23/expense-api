@@ -3,7 +3,7 @@ import { QueryBus } from '@nestjs/cqrs';
 
 import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
 
-import type { IValidatorService } from '@/core/interfaces/validators/validatorService.interface';
+import type { IValidatorService } from '@/core/interfaces/validatorService.interface';
 
 interface IInput {
     userId: string;
