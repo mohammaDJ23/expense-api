@@ -32,6 +32,8 @@ import { BillsAssemblerService } from '@/modules/bill/applications/services/rela
 import { BillSearchService } from '@/modules/bill/applications/services/search/billSearch.service';
 import { BillSearchAggregateService } from '@/modules/bill/applications/services/search/billSearchAggregate.service';
 import { BillSearchIndexRegisterService } from '@/modules/bill/applications/services/search/billSearchIndexRegister.service';
+import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/createBillsConsumersSynchronization.service';
+import { DeleteBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/deleteBillsConsumersSynchronization.service';
 import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
 import { BillElasticsearchIndex } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.index';
@@ -77,6 +79,8 @@ import { BillController } from '@/modules/bill/interface/controllers/v1.controll
         BillExistenceValidatorService,
         BillLocationsRelationLoaderService,
         BillReceiversRelationLoaderService,
+        CreateBillsConsumersSynchronizationService,
+        DeleteBillsConsumersSynchronizationService,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService],
