@@ -1,40 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
-import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
-import { FindManyReceiversByUserIdAndIdsQuery } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.query';
 import { FindReceiverByUserIdAndIdOrThrowQuery } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.query';
 
-import type { IManyRelationsLoaderByUserIdService } from '@/core/interfaces/relationLoaders/manyRelationsLoaderByUserIdService.interface';
-import type { IOneRelationLoaderByUserIdService } from '@/core/interfaces/relationLoaders/oneRelationLoaderByUserIdService.interface';
+import type { IRelationLoaderService } from '@/core/interfaces/relationLoaderService.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
+interface IInput {
+    userId: string;
+    bill: ISelectBill;
+}
+
+type TOutput = ISelectReceiver;
+
 @Injectable()
-export class BillReceiverRelationLoaderService
-    implements
-        IOneRelationLoaderByUserIdService<ISelectBill, ISelectReceiver>,
-        IManyRelationsLoaderByUserIdService<ISelectBill, ISelectReceiver>
-{
+export class BillReceiverRelationLoaderService implements IRelationLoaderService<IInput, TOutput> {
     constructor(private readonly queryBus: QueryBus) {}
 
-    loadOne(userId: string, source: ISelectBill): Promise<ISelectReceiver> {
+    load(input: IInput): Promise<TOutput> {
         return this.queryBus.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
             new FindReceiverByUserIdAndIdOrThrowQuery({
-                userId,
-                id: source.receiverId,
+                userId: input.userId,
+                id: input.bill.receiverId,
             }),
-        );
-    }
-
-    loadMany(userId: string, sources: ISelectBill[]): Promise<ISelectReceiver[]> {
-        return whenNotEmpty(sources, (sources) =>
-            this.queryBus.execute<FindManyReceiversByUserIdAndIdsQuery, ISelectReceiver[]>(
-                new FindManyReceiversByUserIdAndIdsQuery({
-                    userId,
-                    ids: sources.map((source) => source.receiverId),
-                }),
-            ),
         );
     }
 }
