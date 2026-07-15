@@ -22,6 +22,6 @@ export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
                 id: billId,
             }),
         );
-        return this.billAssemblerService.assembleOne(userId, bill);
+        return this.billAssemblerService.assemble({ userId, bill });
     }
 }
