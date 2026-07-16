@@ -6,18 +6,17 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { IdEntity } from '@/core/entities/id.entity';
 import { CreateConsumerCommand } from '@/modules/consumer/applications/commands/createConsumer/createConsumer.command';
 import { FindConsumerByUserIdAndNameOrNullQuery } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndNameOrNull/findConsumerByUserIdAndNameOrNull.query';
-import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { IConsumerOutboxEvent } from '@/modules/consumer/domain/interfaces/consumerOutboxEvent.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
-import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
 export class CreateConsumerService implements IServiceHandler {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
     @Transactional()
@@ -40,18 +39,13 @@ export class CreateConsumerService implements IServiceHandler {
                 }),
             );
 
-            await this.commandBus.execute<
-                CreateOutboxEventCommand<IConsumerOutboxEvent>,
-                ISelectOutboxEvent
-            >(
-                new CreateOutboxEventCommand<IConsumerOutboxEvent>({
-                    aggregateId: createdConsumer.id,
-                    aggregateType: 'consumers',
-                    eventType: 'created',
-                    payload: createdConsumer,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
+            await this.outboxEventPublisherService.publish({
+                aggregateId: createdConsumer.id,
+                aggregateType: 'consumers',
+                eventType: 'created',
+                payload: createdConsumer,
+                createdAt: getCurrentUTCTimestamp(),
+            });
 
             return IdEntity.create(createdConsumer.id);
         }

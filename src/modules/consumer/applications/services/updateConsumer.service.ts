@@ -1,82 +1,60 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateConsumerCommand } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.command';
-import { ExistsConsumerByUserIdAndExcludingIdAndNameQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.query';
-import { ExistsConsumerByUserIdAndIdQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.query';
-import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
+import { ConsumerExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumerExistenceValidator.service';
+import { ConsumerUniqueNameValidatorService } from '@/modules/consumer/applications/services/validators/consumerUniqueNameValidator.service';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { IConsumerOutboxEvent } from '@/modules/consumer/domain/interfaces/consumerOutboxEvent.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { UpdateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/updateConsumer.request.dto';
-import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
 export class UpdateConsumerService implements IServiceHandler {
+    // eslint-disable-next-line max-params
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
+        private readonly consumerExistenceValidatorService: ConsumerExistenceValidatorService,
+        private readonly ConsumerUniqueNameValidatorService: ConsumerUniqueNameValidatorService,
     ) {}
 
     @Transactional()
     async execute(userId: string, data: UpdateConsumerRequestDto): Promise<IdEntity> {
-        {
-            const [exists, existsByName] = await Promise.all([
-                this.queryBus.execute<ExistsConsumerByUserIdAndIdQuery, boolean>(
-                    new ExistsConsumerByUserIdAndIdQuery({
-                        userId,
-                        id: data.id,
-                    }),
-                ),
-                this.queryBus.execute<ExistsConsumerByUserIdAndExcludingIdAndNameQuery, boolean>(
-                    new ExistsConsumerByUserIdAndExcludingIdAndNameQuery({
-                        userId,
-                        excludingId: data.id,
-                        name: data.name,
-                    }),
-                ),
-            ]);
+        await Promise.all([
+            this.consumerExistenceValidatorService.validate({ userId, id: data.id }),
+            this.ConsumerUniqueNameValidatorService.validate({
+                userId,
+                excludingId: data.id,
+                name: data.name,
+            }),
+        ]);
 
-            if (!exists) {
-                throw new BadRequestException('Could not found the consumer');
-            }
+        const updatedConsumer = await this.commandBus.execute<
+            UpdateConsumerCommand,
+            ISelectConsumer
+        >(
+            new UpdateConsumerCommand({
+                id: data.id,
+                name: data.name,
+                userId,
+                updatedAt: getCurrentUTCTimestamp(),
+            }),
+        );
 
-            if (existsByName) {
-                throw new BadRequestException('The consumer already exists');
-            }
-        }
+        await this.outboxEventPublisherService.publish({
+            aggregateId: updatedConsumer.id,
+            aggregateType: 'consumers',
+            eventType: 'updated',
+            payload: updatedConsumer,
+            createdAt: getCurrentUTCTimestamp(),
+        });
 
-        {
-            const updatedConsumer = await this.commandBus.execute<
-                UpdateConsumerCommand,
-                ISelectConsumer
-            >(
-                new UpdateConsumerCommand({
-                    id: data.id,
-                    name: data.name,
-                    userId,
-                    updatedAt: getCurrentUTCTimestamp(),
-                }),
-            );
-
-            await this.commandBus.execute<
-                CreateOutboxEventCommand<IConsumerOutboxEvent>,
-                ISelectOutboxEvent
-            >(
-                new CreateOutboxEventCommand<IConsumerOutboxEvent>({
-                    aggregateId: updatedConsumer.id,
-                    aggregateType: 'consumers',
-                    eventType: 'updated',
-                    payload: updatedConsumer,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
-
-            return IdEntity.create(updatedConsumer.id);
-        }
+        return IdEntity.create(updatedConsumer.id);
     }
 }
