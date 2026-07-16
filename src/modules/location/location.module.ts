@@ -26,13 +26,15 @@ import { LocationSearchAggregateService } from '@/modules/location/applications/
 import { LocationSearchIndexRegisterService } from '@/modules/location/applications/services/search/locationSearchIndexRegister.service';
 import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
+import { LocationUniqueNameValidatorService } from '@/modules/location/applications/services/validators/locationUniqueNameValidator.service';
 import { LocationElasticsearchIndex } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.index';
 import { LocationElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.query';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import { LocationController } from '@/modules/location/interfaces/controllers/v1.controller';
+import { OutboxModule } from '@/modules/outbox/outbox.module';
 
 @Module({
-    imports: [CqrsModule, ElasticsearchModule],
+    imports: [CqrsModule, ElasticsearchModule, OutboxModule],
     controllers: [LocationController],
     providers: [
         LocationService,
@@ -63,6 +65,7 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
         LocationSearchAggregateService,
         LocationSearchIndexRegisterService,
         LocationExistenceValidatorService,
+        LocationUniqueNameValidatorService,
     ],
     exports: [
         LocationSearchService,
