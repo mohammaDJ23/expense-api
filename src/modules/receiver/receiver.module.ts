@@ -64,6 +64,10 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ReceiverSearchIndexRegisterService,
         ReceiverExistenceValidatorService,
     ],
-    exports: [ReceiverSearchService, ReceiverSearchAggregateService],
+    exports: [
+        ReceiverSearchService,
+        ReceiverSearchAggregateService,
+        ReceiverExistenceValidatorService,
+    ],
 })
 export class ReceiverModule {}
