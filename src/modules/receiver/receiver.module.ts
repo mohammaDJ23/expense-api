@@ -27,6 +27,7 @@ import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/
 import { ReceiverSearchIndexRegisterService } from '@/modules/receiver/applications/services/search/receiverSearchIndexRegister.service';
 import { UpdateReceiverService } from '@/modules/receiver/applications/services/updateReceiver.service';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
+import { ReceiverUniqueNameValidatorService } from '@/modules/receiver/applications/services/validators/receiverUniqueNameValidator.service';
 import { ReceiverElasticsearchIndex } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.index';
 import { ReceiverElasticsearchQuery } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.query';
 import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
@@ -63,6 +64,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ReceiverSearchAggregateService,
         ReceiverSearchIndexRegisterService,
         ReceiverExistenceValidatorService,
+        ReceiverUniqueNameValidatorService,
     ],
     exports: [
         ReceiverSearchService,

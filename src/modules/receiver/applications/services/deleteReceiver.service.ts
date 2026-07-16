@@ -1,64 +1,46 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Injectable } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { IdEntity } from '@/core/entities/id.entity';
-import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { DeleteReceiverCommand } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.command';
-import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
+import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
-import type { IReceiverOutboxEvent } from '@/modules/receiver/domain/interfaces/receiverOutboxEvent.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @Injectable()
 export class DeleteReceiverService implements IServiceHandler {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
+        private readonly receiverExistenceValidatorService: ReceiverExistenceValidatorService,
     ) {}
 
     @Transactional()
     async execute(userId: string, receiverId: string): Promise<IdEntity> {
-        {
-            const exists = await this.queryBus.execute<ExistsReceiverByUserIdAndIdQuery, boolean>(
-                new ExistsReceiverByUserIdAndIdQuery({
-                    userId,
-                    id: receiverId,
-                }),
-            );
-            if (!exists) {
-                throw new BadRequestException('Could not found the receiver');
-            }
-        }
+        await this.receiverExistenceValidatorService.validate({ userId, id: receiverId });
 
-        {
-            const deletedReceiver = await this.commandBus.execute<
-                DeleteReceiverCommand,
-                ISelectReceiver
-            >(
-                new DeleteReceiverCommand({
-                    userId,
-                    id: receiverId,
-                }),
-            );
+        const deletedReceiver = await this.commandBus.execute<
+            DeleteReceiverCommand,
+            ISelectReceiver
+        >(
+            new DeleteReceiverCommand({
+                userId,
+                id: receiverId,
+            }),
+        );
 
-            await this.commandBus.execute<
-                CreateOutboxEventCommand<IReceiverOutboxEvent>,
-                ISelectOutboxEvent
-            >(
-                new CreateOutboxEventCommand<IReceiverOutboxEvent>({
-                    aggregateId: deletedReceiver.id,
-                    aggregateType: 'receivers',
-                    eventType: 'deleted',
-                    payload: deletedReceiver,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
+        await this.outboxEventPublisherService.publish({
+            aggregateId: deletedReceiver.id,
+            aggregateType: 'receivers',
+            eventType: 'deleted',
+            payload: deletedReceiver,
+            createdAt: getCurrentUTCTimestamp(),
+        });
 
-            return IdEntity.create(deletedReceiver.id);
-        }
+        return IdEntity.create(deletedReceiver.id);
     }
 }

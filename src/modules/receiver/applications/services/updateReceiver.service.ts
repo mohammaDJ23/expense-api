@@ -1,82 +1,58 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Injectable } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { IdEntity } from '@/core/entities/id.entity';
-import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { UpdateReceiverCommand } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.command';
-import { ExistsReceiverByUserIdAndExcludingIdAndNameQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.query';
-import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
+import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
+import { ReceiverUniqueNameValidatorService } from '@/modules/receiver/applications/services/validators/receiverUniqueNameValidator.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
-import type { IReceiverOutboxEvent } from '@/modules/receiver/domain/interfaces/receiverOutboxEvent.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/updateReceiver.request.dto';
 
 @Injectable()
 export class UpdateReceiverService implements IServiceHandler {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
+        private readonly receiverExistenceValidatorService: ReceiverExistenceValidatorService,
+        private readonly receiverUniqueNameValidatorService: ReceiverUniqueNameValidatorService,
     ) {}
 
     @Transactional()
     async execute(userId: string, data: UpdateReceiverRequestDto): Promise<IdEntity> {
-        {
-            const [exists, existsByName] = await Promise.all([
-                this.queryBus.execute<ExistsReceiverByUserIdAndIdQuery, boolean>(
-                    new ExistsReceiverByUserIdAndIdQuery({
-                        userId,
-                        id: data.id,
-                    }),
-                ),
-                this.queryBus.execute<ExistsReceiverByUserIdAndExcludingIdAndNameQuery, boolean>(
-                    new ExistsReceiverByUserIdAndExcludingIdAndNameQuery({
-                        userId,
-                        excludingId: data.id,
-                        name: data.name,
-                    }),
-                ),
-            ]);
+        await Promise.all([
+            this.receiverExistenceValidatorService.validate({ userId, id: data.id }),
+            this.receiverUniqueNameValidatorService.validate({
+                userId,
+                excludingId: data.id,
+                name: data.name,
+            }),
+        ]);
 
-            if (!exists) {
-                throw new BadRequestException('Could not found the receiver');
-            }
+        const updatedReceiver = await this.commandBus.execute<
+            UpdateReceiverCommand,
+            ISelectReceiver
+        >(
+            new UpdateReceiverCommand({
+                id: data.id,
+                name: data.name,
+                userId,
+                updatedAt: getCurrentUTCTimestamp(),
+            }),
+        );
 
-            if (existsByName) {
-                throw new BadRequestException('The receiver already exists');
-            }
-        }
+        await this.outboxEventPublisherService.publish({
+            aggregateId: updatedReceiver.id,
+            aggregateType: 'receivers',
+            eventType: 'updated',
+            payload: updatedReceiver,
+            createdAt: getCurrentUTCTimestamp(),
+        });
 
-        {
-            const updatedReceiver = await this.commandBus.execute<
-                UpdateReceiverCommand,
-                ISelectReceiver
-            >(
-                new UpdateReceiverCommand({
-                    id: data.id,
-                    name: data.name,
-                    userId,
-                    updatedAt: getCurrentUTCTimestamp(),
-                }),
-            );
-
-            await this.commandBus.execute<
-                CreateOutboxEventCommand<IReceiverOutboxEvent>,
-                ISelectOutboxEvent
-            >(
-                new CreateOutboxEventCommand<IReceiverOutboxEvent>({
-                    aggregateId: updatedReceiver.id,
-                    aggregateType: 'receivers',
-                    eventType: 'updated',
-                    payload: updatedReceiver,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
-
-            return IdEntity.create(updatedReceiver.id);
-        }
+        return IdEntity.create(updatedReceiver.id);
     }
 }
