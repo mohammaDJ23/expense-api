@@ -5,10 +5,10 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateBillCommand } from '@/modules/bill/applications/commands/updateBill/updateBill.command';
+import { BillsConsumersRelationLoaderService } from '@/modules/bill/applications/services/relations/billsConsumersRelationLoader.service';
 import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/createBillsConsumersSynchronization.service';
 import { DeleteBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/deleteBillsConsumersSynchronization.service';
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
-import { FindManyBillsConsumersByRefIdQuery } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.query';
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
@@ -20,7 +20,6 @@ import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface
 import type { IBillOutboxEvent } from '@/modules/bill/domain/interfaces/billOutboxEvent.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
-import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
@@ -34,6 +33,7 @@ export class UpdateBillService implements IServiceHandler {
         private readonly consumersExistenceValidatorService: ConsumersExistenceValidatorService,
         private readonly locationExistenceValidatorService: LocationExistenceValidatorService,
         private readonly receiverExistenceValidatorService: ReceiverExistenceValidatorService,
+        private readonly billsConsumersRelationLoaderService: BillsConsumersRelationLoaderService,
         private readonly createBillsConsumersSynchronizationService: CreateBillsConsumersSynchronizationService,
         private readonly deleteBillsConsumersSynchronizationService: DeleteBillsConsumersSynchronizationService,
     ) {}
@@ -48,14 +48,9 @@ export class UpdateBillService implements IServiceHandler {
         ]);
 
         {
-            const billsConsumers = await this.queryBus.execute<
-                FindManyBillsConsumersByRefIdQuery,
-                ISelectBillConsumer[]
-            >(
-                new FindManyBillsConsumersByRefIdQuery({
-                    billId: data.id,
-                }),
-            );
+            const billsConsumers = await this.billsConsumersRelationLoaderService.load({
+                billId: data.id,
+            });
 
             {
                 const existenceConsumerIds = billsConsumers.map(

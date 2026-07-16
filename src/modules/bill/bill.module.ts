@@ -24,6 +24,7 @@ import { FindBillListByUserIdService } from '@/modules/bill/applications/service
 import { FindManyBillsByUserIdAndIdsService } from '@/modules/bill/applications/services/findManyBillsByUserIdAndIds.service';
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
 import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
+import { BillsConsumersRelationLoaderService } from '@/modules/bill/applications/services/relations/billsConsumersRelationLoader.service';
 import { ConsumersRelationLoaderService } from '@/modules/bill/applications/services/relations/consumersRelationLoader.service';
 import { LocationRelationLoaderService } from '@/modules/bill/applications/services/relations/locationRelationLoader.service';
 import { LocationsRelationLoaderService } from '@/modules/bill/applications/services/relations/locationsRelationLoader.service';
@@ -91,6 +92,7 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         ReceiversRelationLoaderService,
         CreateBillsConsumersSynchronizationService,
         DeleteBillsConsumersSynchronizationService,
+        BillsConsumersRelationLoaderService,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService],
