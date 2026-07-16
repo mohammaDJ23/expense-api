@@ -23,23 +23,21 @@ export class DeleteBillService implements IServiceHandler {
     async execute(userId: string, billId: string): Promise<IdEntity> {
         await this.billExistenceValidatorService.validate({ userId, id: billId });
 
-        {
-            const deletedBill = await this.commandBus.execute<DeleteBillCommand, ISelectBill>(
-                new DeleteBillCommand({
-                    userId,
-                    id: billId,
-                }),
-            );
+        const deletedBill = await this.commandBus.execute<DeleteBillCommand, ISelectBill>(
+            new DeleteBillCommand({
+                userId,
+                id: billId,
+            }),
+        );
 
-            await this.outboxEventPublisherService.publish({
-                aggregateId: deletedBill.id,
-                aggregateType: 'bills',
-                eventType: 'deleted',
-                payload: deletedBill,
-                createdAt: getCurrentUTCTimestamp(),
-            });
+        await this.outboxEventPublisherService.publish({
+            aggregateId: deletedBill.id,
+            aggregateType: 'bills',
+            eventType: 'deleted',
+            payload: deletedBill,
+            createdAt: getCurrentUTCTimestamp(),
+        });
 
-            return IdEntity.create(deletedBill.id);
-        }
+        return IdEntity.create(deletedBill.id);
     }
 }
