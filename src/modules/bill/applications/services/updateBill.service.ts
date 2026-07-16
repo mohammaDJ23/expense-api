@@ -46,48 +46,53 @@ export class UpdateBillService implements IServiceHandler {
         ]);
 
         {
-            const billsConsumers = await this.billsConsumersRelationLoaderService.load({
-                billId: data.id,
-            });
-
+            let existenceConsumerIds: string[];
             {
-                const existenceConsumerIds = billsConsumers.map(
+                const billsConsumers = await this.billsConsumersRelationLoaderService.load({
+                    billId: data.id,
+                });
+
+                existenceConsumerIds = billsConsumers.map(
                     (billConsumer) => billConsumer.consumerId,
                 );
+            }
 
+            let idsToCreate: string[];
+            let idsToDelete: string[];
+            {
                 const receivedConsumerIdsSet = new Set<string>(data.consumerIds);
                 const existenceConsumerIdsSet = new Set<string>(existenceConsumerIds);
 
-                const idsToCreate = data.consumerIds.filter(
+                idsToCreate = data.consumerIds.filter(
                     (consumerId) => !existenceConsumerIdsSet.has(consumerId),
                 );
-                const idsToDelete = existenceConsumerIds.filter(
+                idsToDelete = existenceConsumerIds.filter(
                     (existenceId) => !receivedConsumerIdsSet.has(existenceId),
                 );
-
-                await Promise.all([
-                    this.createBillsConsumersSynchronizationService.synchronize({
-                        billId: data.id,
-                        consumerIds: idsToCreate,
-                    }),
-                    this.deleteBillsConsumersSynchronizationService.synchronize({
-                        billId: data.id,
-                        consumerIds: idsToDelete,
-                    }),
-                    this.commandBus.execute<UpdateBillCommand, ISelectBill>(
-                        new UpdateBillCommand({
-                            id: data.id,
-                            amount: data.amount,
-                            description: data.description,
-                            purchasedAt: data.purchasedAt,
-                            updatedAt: getCurrentUTCTimestamp(),
-                            userId,
-                            receiverId: data.receiverId,
-                            locationId: data.locationId,
-                        }),
-                    ),
-                ]);
             }
+
+            await Promise.all([
+                this.createBillsConsumersSynchronizationService.synchronize({
+                    billId: data.id,
+                    consumerIds: idsToCreate,
+                }),
+                this.deleteBillsConsumersSynchronizationService.synchronize({
+                    billId: data.id,
+                    consumerIds: idsToDelete,
+                }),
+                this.commandBus.execute<UpdateBillCommand, ISelectBill>(
+                    new UpdateBillCommand({
+                        id: data.id,
+                        amount: data.amount,
+                        description: data.description,
+                        purchasedAt: data.purchasedAt,
+                        updatedAt: getCurrentUTCTimestamp(),
+                        userId,
+                        receiverId: data.receiverId,
+                        locationId: data.locationId,
+                    }),
+                ),
+            ]);
         }
 
         {

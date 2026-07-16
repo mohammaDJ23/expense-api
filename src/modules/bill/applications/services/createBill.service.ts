@@ -38,41 +38,39 @@ export class CreateBillService implements IServiceHandler {
             this.consumersExistenceValidatorService.validate({ userId, ids: data.consumerIds }),
         ]);
 
+        const createdBill = await this.commandBus.execute<CreateBillCommand, ISelectBill>(
+            new CreateBillCommand({
+                amount: data.amount,
+                description: data.description,
+                purchasedAt: data.purchasedAt ? getCurrentUTCTimestamp(data.purchasedAt) : null,
+                createdAt: getCurrentUTCTimestamp(),
+                updatedAt: getCurrentUTCTimestamp(),
+                userId,
+                locationId: data.locationId,
+                receiverId: data.receiverId,
+            }),
+        );
+
+        await this.createBillsConsumerSynchronizationService.synchronize({
+            billId: createdBill.id,
+            consumerIds: data.consumerIds,
+        });
+
         {
-            const createdBill = await this.commandBus.execute<CreateBillCommand, ISelectBill>(
-                new CreateBillCommand({
-                    amount: data.amount,
-                    description: data.description,
-                    purchasedAt: data.purchasedAt ? getCurrentUTCTimestamp(data.purchasedAt) : null,
-                    createdAt: getCurrentUTCTimestamp(),
-                    updatedAt: getCurrentUTCTimestamp(),
-                    userId,
-                    locationId: data.locationId,
-                    receiverId: data.receiverId,
-                }),
+            const bill = await this.findBillByUserIdAndIdOrThrowService.execute(
+                userId,
+                createdBill.id,
             );
 
-            await this.createBillsConsumerSynchronizationService.synchronize({
-                billId: createdBill.id,
-                consumerIds: data.consumerIds,
+            await this.outboxEventPublisherService.publish({
+                aggregateId: bill.id,
+                aggregateType: 'bills',
+                eventType: 'created',
+                payload: bill,
+                createdAt: getCurrentUTCTimestamp(),
             });
-
-            {
-                const bill = await this.findBillByUserIdAndIdOrThrowService.execute(
-                    userId,
-                    createdBill.id,
-                );
-
-                await this.outboxEventPublisherService.publish({
-                    aggregateId: bill.id,
-                    aggregateType: 'bills',
-                    eventType: 'created',
-                    payload: bill,
-                    createdAt: getCurrentUTCTimestamp(),
-                });
-            }
-
-            return IdEntity.create(createdBill.id);
         }
+
+        return IdEntity.create(createdBill.id);
     }
 }

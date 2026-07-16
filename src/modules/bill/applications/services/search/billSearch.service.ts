@@ -20,10 +20,8 @@ export class BillSearchService implements IElasticsearchSearch {
                 this.billElasticsearchQuery.buildQuery(userId, query, size),
             );
 
-            {
-                const billDocs = this.elasticsearchService.extractDocs(response);
-                return billDocs.map((doc) => doc.id);
-            }
+            const billDocs = this.elasticsearchService.extractDocs(response);
+            return billDocs.map((doc) => doc.id);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
