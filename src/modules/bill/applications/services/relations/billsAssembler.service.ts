@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 
 import { groupBy } from '@/common/utils/groupBy.util';
 
-import { BillConsumersRelationLoaderService } from './billConsumersRelationLoader.service';
-import { BillLocationsRelationLoaderService } from './billLocationsRelationLoader.service';
-import { BillReceiversRelationLoaderService } from './billReceiversRelationLoader.service';
+import { ConsumersRelationLoaderService } from './consumersRelationLoader.service';
+import { LocationsRelationLoaderService } from './locationsRelationLoader.service';
+import { ReceiversRelationLoaderService } from './receiversRelationLoader.service';
 
 import type { IRelationAssemblerService } from '@/core/interfaces/relationAssemblerService.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
@@ -20,16 +20,16 @@ type TOutput = IBill[];
 @Injectable()
 export class BillsAssemblerService implements IRelationAssemblerService<IInput, TOutput> {
     constructor(
-        private readonly billLocationsRelationLoaderService: BillLocationsRelationLoaderService,
-        private readonly billReceiversRelationLoaderService: BillReceiversRelationLoaderService,
-        private readonly billConsumersRelationLoaderService: BillConsumersRelationLoaderService,
+        private readonly locationsRelationLoaderService: LocationsRelationLoaderService,
+        private readonly receiversRelationLoaderService: ReceiversRelationLoaderService,
+        private readonly consumersRelationLoaderService: ConsumersRelationLoaderService,
     ) {}
 
     async assemble(input: IInput): Promise<TOutput> {
         const [locations, receivers, consumers] = await Promise.all([
-            this.billLocationsRelationLoaderService.load(input),
-            this.billReceiversRelationLoaderService.load(input),
-            this.billConsumersRelationLoaderService.load(input.bills),
+            this.locationsRelationLoaderService.load(input),
+            this.receiversRelationLoaderService.load(input),
+            this.consumersRelationLoaderService.load(input.bills),
         ]);
 
         const locationsMap = new Map(locations.map((location) => [location.id, location]));

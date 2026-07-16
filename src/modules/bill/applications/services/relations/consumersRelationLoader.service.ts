@@ -13,7 +13,7 @@ type TInput = ISelectBill[];
 type TOutput = ITargetBillConsumer[];
 
 @Injectable()
-export class BillConsumersRelationLoaderService implements IRelationLoaderService<TInput, TOutput> {
+export class ConsumersRelationLoaderService implements IRelationLoaderService<TInput, TOutput> {
     constructor(private readonly queryBus: QueryBus) {}
 
     load(input: TInput): Promise<TOutput> {

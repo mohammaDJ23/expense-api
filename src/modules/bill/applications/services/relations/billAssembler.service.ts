@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { BillConsumersRelationLoaderService } from './billConsumersRelationLoader.service';
-import { BillLocationRelationLoaderService } from './billLocationRelationLoader.service';
-import { BillReceiverRelationLoaderService } from './billReceiverRelationLoader.service';
+import { ConsumersRelationLoaderService } from './consumersRelationLoader.service';
+import { LocationRelationLoaderService } from './locationRelationLoader.service';
+import { ReceiverRelationLoaderService } from './receiverRelationLoader.service';
 
 import type { IRelationAssemblerService } from '@/core/interfaces/relationAssemblerService.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
@@ -18,16 +18,16 @@ interface IOutput extends IBill {}
 @Injectable()
 export class BillAssemblerService implements IRelationAssemblerService<IInput, IOutput> {
     constructor(
-        private readonly billLocationRelationLoaderService: BillLocationRelationLoaderService,
-        private readonly billReceiverRelationLoaderService: BillReceiverRelationLoaderService,
-        private readonly billConsumersRelationLoaderService: BillConsumersRelationLoaderService,
+        private readonly locationRelationLoaderService: LocationRelationLoaderService,
+        private readonly receiverRelationLoaderService: ReceiverRelationLoaderService,
+        private readonly consumersRelationLoaderService: ConsumersRelationLoaderService,
     ) {}
 
     async assemble(input: IInput): Promise<IOutput> {
         const [location, receiver, consumers] = await Promise.all([
-            this.billLocationRelationLoaderService.load(input),
-            this.billReceiverRelationLoaderService.load(input),
-            this.billConsumersRelationLoaderService.load([input.bill]),
+            this.locationRelationLoaderService.load(input),
+            this.receiverRelationLoaderService.load(input),
+            this.consumersRelationLoaderService.load([input.bill]),
         ]);
 
         return {
