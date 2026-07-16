@@ -33,6 +33,7 @@ import { ConsumerSearchIndexRegisterService } from '@/modules/consumer/applicati
 import { UpdateConsumerService } from '@/modules/consumer/applications/services/updateConsumer.service';
 import { ConsumerExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumerExistenceValidator.service';
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
+import { ConsumerUniqueNameValidatorService } from '@/modules/consumer/applications/services/validators/consumerUniqueNameValidator.service';
 import { ConsumerElasticsearchIndex } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearch.index';
 import { ConsumerElasticsearchQuery } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearch.query';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
@@ -77,6 +78,7 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         ConsumerSearchIndexRegisterService,
         ConsumerExistenceValidatorService,
         ConsumersExistenceValidatorService,
+        ConsumerUniqueNameValidatorService,
     ],
     exports: [
         ConsumerSearchService,
