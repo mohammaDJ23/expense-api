@@ -20,10 +20,8 @@ export class ConsumerSearchService implements IElasticsearchSearch {
                 this.consumerElasticsearchQuery.buildQuery(userId, query, size),
             );
 
-            {
-                const consumerDocs = this.elasticsearchService.extractDocs(response);
-                return consumerDocs.map((doc) => doc.id);
-            }
+            const consumerDocs = this.elasticsearchService.extractDocs(response);
+            return consumerDocs.map((doc) => doc.id);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

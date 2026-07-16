@@ -22,9 +22,9 @@ import { FindReceiverListByUserIdHandler } from '@/modules/receiver/applications
 import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
 import { DeleteReceiverService } from '@/modules/receiver/applications/services/deleteReceiver.service';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
-import { ReceiverSearchService } from '@/modules/receiver/applications/services/receiverSearch.service';
-import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/receiverSearchAggregate.service';
-import { ReceiverSearchIndexRegisterService } from '@/modules/receiver/applications/services/receiverSearchIndexRegister.service';
+import { ReceiverSearchService } from '@/modules/receiver/applications/services/search/receiverSearch.service';
+import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/search/receiverSearchAggregate.service';
+import { ReceiverSearchIndexRegisterService } from '@/modules/receiver/applications/services/search/receiverSearchIndexRegister.service';
 import { UpdateReceiverService } from '@/modules/receiver/applications/services/updateReceiver.service';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 import { ReceiverElasticsearchIndex } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.index';

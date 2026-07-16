@@ -20,10 +20,8 @@ export class LocationSearchService implements IElasticsearchSearch {
                 this.locationElasticsearchQuery.buildQuery(userId, query, size),
             );
 
-            {
-                const locationDocs = this.elasticsearchService.extractDocs(response);
-                return locationDocs.map((doc) => doc.id);
-            }
+            const locationDocs = this.elasticsearchService.extractDocs(response);
+            return locationDocs.map((doc) => doc.id);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
