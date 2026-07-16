@@ -20,14 +20,16 @@ export const outboxEvents = pgTable('outbox_events', {
 type TSelectOutboxEvent = typeof outboxEvents.$inferSelect;
 type TInsertOutboxEvent = typeof outboxEvents.$inferInsert;
 
-export interface ISelectOutboxEvent<
-    T extends TOutboxEventPayload = TOutboxEventPayload,
-> extends Omit<TSelectOutboxEvent, 'payload'> {
+export interface ISelectOutboxEvent<T = TOutboxEventPayload> extends Omit<
+    TSelectOutboxEvent,
+    'payload'
+> {
     payload: T;
 }
 
-export interface IInsertOutboxEvent<
-    T extends TOutboxEventPayload = TOutboxEventPayload,
-> extends Omit<TInsertOutboxEvent, 'payload'> {
+export interface IInsertOutboxEvent<T = TOutboxEventPayload> extends Omit<
+    TInsertOutboxEvent,
+    'payload'
+> {
     payload: T;
 }
