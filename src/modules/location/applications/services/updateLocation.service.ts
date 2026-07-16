@@ -1,82 +1,58 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Injectable } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateLocationCommand } from '@/modules/location/applications/commands/updateLocation/updateLocation.command';
-import { ExistsLocationByUserIdAndExcludingIdAndNameQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.query';
-import { ExistsLocationByUserIdAndIdQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.query';
-import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
+import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
+import { LocationUniqueNameValidatorService } from '@/modules/location/applications/services/validators/locationUniqueNameValidator.service';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { ILocationOutboxEvent } from '@/modules/location/domain/interfaces/locationOutboxEvent.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { UpdateLocationRequestDto } from '@/modules/location/interfaces/dtos/updateLocation.request.dto';
-import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
 export class UpdateLocationService implements IServiceHandler {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
+        private readonly locationExistenceValidatorService: LocationExistenceValidatorService,
+        private readonly locationUniqueNameValidatorService: LocationUniqueNameValidatorService,
     ) {}
 
     @Transactional()
     async execute(userId: string, data: UpdateLocationRequestDto): Promise<IdEntity> {
-        {
-            const [exists, existsByName] = await Promise.all([
-                this.queryBus.execute<ExistsLocationByUserIdAndIdQuery, boolean>(
-                    new ExistsLocationByUserIdAndIdQuery({
-                        userId,
-                        id: data.id,
-                    }),
-                ),
-                this.queryBus.execute<ExistsLocationByUserIdAndExcludingIdAndNameQuery, boolean>(
-                    new ExistsLocationByUserIdAndExcludingIdAndNameQuery({
-                        userId,
-                        excludingId: data.id,
-                        name: data.name,
-                    }),
-                ),
-            ]);
+        await Promise.all([
+            this.locationExistenceValidatorService.validate({ userId, id: data.id }),
+            this.locationUniqueNameValidatorService.validate({
+                userId,
+                excludingId: data.id,
+                name: data.name,
+            }),
+        ]);
 
-            if (!exists) {
-                throw new BadRequestException('Could not found the location');
-            }
+        const updatedLocation = await this.commandBus.execute<
+            UpdateLocationCommand,
+            ISelectLocation
+        >(
+            new UpdateLocationCommand({
+                id: data.id,
+                name: data.name,
+                userId,
+                updatedAt: getCurrentUTCTimestamp(),
+            }),
+        );
 
-            if (existsByName) {
-                throw new BadRequestException('The location already exists');
-            }
-        }
+        await this.outboxEventPublisherService.publish({
+            aggregateId: updatedLocation.id,
+            aggregateType: 'locations',
+            eventType: 'updated',
+            payload: updatedLocation,
+            createdAt: getCurrentUTCTimestamp(),
+        });
 
-        {
-            const updatedLocation = await this.commandBus.execute<
-                UpdateLocationCommand,
-                ISelectLocation
-            >(
-                new UpdateLocationCommand({
-                    id: data.id,
-                    name: data.name,
-                    userId,
-                    updatedAt: getCurrentUTCTimestamp(),
-                }),
-            );
-
-            await this.commandBus.execute<
-                CreateOutboxEventCommand<ILocationOutboxEvent>,
-                ISelectOutboxEvent
-            >(
-                new CreateOutboxEventCommand<ILocationOutboxEvent>({
-                    aggregateId: updatedLocation.id,
-                    aggregateType: 'locations',
-                    eventType: 'updated',
-                    payload: updatedLocation,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
-
-            return IdEntity.create(updatedLocation.id);
-        }
+        return IdEntity.create(updatedLocation.id);
     }
 }

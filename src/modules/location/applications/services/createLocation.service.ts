@@ -6,18 +6,17 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { IdEntity } from '@/core/entities/id.entity';
 import { CreateLocationCommand } from '@/modules/location/applications/commands/createLocation/createLocation.command';
 import { FindLocationByUserIdAndNameOrNullQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.query';
-import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { ILocationOutboxEvent } from '@/modules/location/domain/interfaces/locationOutboxEvent.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
-import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
 export class CreateLocationService implements IServiceHandler {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
     @Transactional()
@@ -40,18 +39,13 @@ export class CreateLocationService implements IServiceHandler {
                 }),
             );
 
-            await this.commandBus.execute<
-                CreateOutboxEventCommand<ILocationOutboxEvent>,
-                ISelectOutboxEvent
-            >(
-                new CreateOutboxEventCommand<ILocationOutboxEvent>({
-                    aggregateId: createdLocation.id,
-                    aggregateType: 'locations',
-                    eventType: 'created',
-                    payload: createdLocation,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
+            await this.outboxEventPublisherService.publish({
+                aggregateId: createdLocation.id,
+                aggregateType: 'locations',
+                eventType: 'created',
+                payload: createdLocation,
+                createdAt: getCurrentUTCTimestamp(),
+            });
 
             return IdEntity.create(createdLocation.id);
         }
