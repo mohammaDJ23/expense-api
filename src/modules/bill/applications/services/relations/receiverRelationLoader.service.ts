@@ -15,7 +15,7 @@ interface IInput {
 type TOutput = ISelectReceiver;
 
 @Injectable()
-export class BillReceiverRelationLoaderService implements IRelationLoaderService<IInput, TOutput> {
+export class ReceiverRelationLoaderService implements IRelationLoaderService<IInput, TOutput> {
     constructor(private readonly queryBus: QueryBus) {}
 
     load(input: IInput): Promise<TOutput> {

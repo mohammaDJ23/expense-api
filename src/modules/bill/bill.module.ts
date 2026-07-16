@@ -23,12 +23,12 @@ import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
 import { FindManyBillsByUserIdAndIdsService } from '@/modules/bill/applications/services/findManyBillsByUserIdAndIds.service';
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
-import { BillConsumersRelationLoaderService } from '@/modules/bill/applications/services/relations/billConsumersRelationLoader.service';
-import { BillLocationRelationLoaderService } from '@/modules/bill/applications/services/relations/billLocationRelationLoader.service';
-import { BillLocationsRelationLoaderService } from '@/modules/bill/applications/services/relations/billLocationsRelationLoader.service';
-import { BillReceiverRelationLoaderService } from '@/modules/bill/applications/services/relations/billReceiverRelationLoader.service';
-import { BillReceiversRelationLoaderService } from '@/modules/bill/applications/services/relations/billReceiversRelationLoader.service';
 import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
+import { ConsumersRelationLoaderService } from '@/modules/bill/applications/services/relations/consumersRelationLoader.service';
+import { LocationRelationLoaderService } from '@/modules/bill/applications/services/relations/locationRelationLoader.service';
+import { LocationsRelationLoaderService } from '@/modules/bill/applications/services/relations/locationsRelationLoader.service';
+import { ReceiverRelationLoaderService } from '@/modules/bill/applications/services/relations/receiverRelationLoader.service';
+import { ReceiversRelationLoaderService } from '@/modules/bill/applications/services/relations/receiversRelationLoader.service';
 import { BillSearchService } from '@/modules/bill/applications/services/search/billSearch.service';
 import { BillSearchAggregateService } from '@/modules/bill/applications/services/search/billSearchAggregate.service';
 import { BillSearchIndexRegisterService } from '@/modules/bill/applications/services/search/billSearchIndexRegister.service';
@@ -83,12 +83,12 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         BillSearchService,
         BillSearchAggregateService,
         BillSearchIndexRegisterService,
-        BillConsumersRelationLoaderService,
-        BillLocationRelationLoaderService,
-        BillReceiverRelationLoaderService,
+        ConsumersRelationLoaderService,
+        LocationRelationLoaderService,
+        ReceiverRelationLoaderService,
         BillExistenceValidatorService,
-        BillLocationsRelationLoaderService,
-        BillReceiversRelationLoaderService,
+        LocationsRelationLoaderService,
+        ReceiversRelationLoaderService,
         CreateBillsConsumersSynchronizationService,
         DeleteBillsConsumersSynchronizationService,
     ],

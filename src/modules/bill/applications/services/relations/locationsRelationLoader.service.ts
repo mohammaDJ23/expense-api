@@ -16,7 +16,7 @@ interface IInput {
 type TOutput = ISelectLocation[];
 
 @Injectable()
-export class BillLocationsRelationLoaderService implements IRelationLoaderService<IInput, TOutput> {
+export class LocationsRelationLoaderService implements IRelationLoaderService<IInput, TOutput> {
     constructor(private readonly queryBus: QueryBus) {}
 
     load(input: IInput): Promise<TOutput> {
