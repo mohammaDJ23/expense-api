@@ -20,10 +20,8 @@ export class ReceiverSearchService implements IElasticsearchSearch {
                 this.receiverElasticsearchQuery.buildQuery(userId, query, size),
             );
 
-            {
-                const receiverDocs = this.elasticsearchService.extractDocs(response);
-                return receiverDocs.map((doc) => doc.id);
-            }
+            const receiverDocs = this.elasticsearchService.extractDocs(response);
+            return receiverDocs.map((doc) => doc.id);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

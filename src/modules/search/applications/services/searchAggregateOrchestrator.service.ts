@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { BillSearchAggregateService } from '@/modules/bill/applications/services/search/billSearchAggregate.service';
 import { ConsumerSearchAggregateService } from '@/modules/consumer/applications/services/search/consumerSearchAggregate.service';
 import { LocationSearchAggregateService } from '@/modules/location/applications/services/search/locationSearchAggregate.service';
-import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/receiverSearchAggregate.service';
+import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/search/receiverSearchAggregate.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
 import type { ISearch } from '@/modules/search/domain/interface/search.interface';
