@@ -8,16 +8,14 @@ import { CreateBillCommand } from '@/modules/bill/applications/commands/createBi
 import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/createBillsConsumersSynchronization.service';
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
-import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { IBillOutboxEvent } from '@/modules/bill/domain/interfaces/billOutboxEvent.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
-import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
 export class CreateBillService implements IServiceHandler {
@@ -29,6 +27,7 @@ export class CreateBillService implements IServiceHandler {
         private readonly locationExistenceValidatorService: LocationExistenceValidatorService,
         private readonly receiverExistenceValidatorService: ReceiverExistenceValidatorService,
         private readonly createBillsConsumerSynchronizationService: CreateBillsConsumersSynchronizationService,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
     @Transactional()
@@ -64,18 +63,13 @@ export class CreateBillService implements IServiceHandler {
                     createdBill.id,
                 );
 
-                await this.commandBus.execute<
-                    CreateOutboxEventCommand<IBillOutboxEvent>,
-                    ISelectOutboxEvent
-                >(
-                    new CreateOutboxEventCommand<IBillOutboxEvent>({
-                        aggregateId: bill.id,
-                        aggregateType: 'bills',
-                        eventType: 'created',
-                        payload: bill,
-                        createdAt: getCurrentUTCTimestamp(),
-                    }),
-                );
+                await this.outboxEventPublisherService.publish({
+                    aggregateId: bill.id,
+                    aggregateType: 'bills',
+                    eventType: 'created',
+                    payload: bill,
+                    createdAt: getCurrentUTCTimestamp(),
+                });
             }
 
             return IdEntity.create(createdBill.id);

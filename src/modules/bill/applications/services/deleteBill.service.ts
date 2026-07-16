@@ -6,18 +6,17 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { IdEntity } from '@/core/entities/id.entity';
 import { DeleteBillCommand } from '@/modules/bill/applications/commands/deleteBill/deleteBill.command';
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
-import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { IBillOutboxEvent } from '@/modules/bill/domain/interfaces/billOutboxEvent.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
-import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
 export class DeleteBillService implements IServiceHandler {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly billExistenceValidatorService: BillExistenceValidatorService,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
     @Transactional()
@@ -32,18 +31,13 @@ export class DeleteBillService implements IServiceHandler {
                 }),
             );
 
-            await this.commandBus.execute<
-                CreateOutboxEventCommand<IBillOutboxEvent>,
-                ISelectOutboxEvent
-            >(
-                new CreateOutboxEventCommand<IBillOutboxEvent>({
-                    aggregateId: deletedBill.id,
-                    aggregateType: 'bills',
-                    eventType: 'deleted',
-                    payload: deletedBill,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
+            await this.outboxEventPublisherService.publish({
+                aggregateId: deletedBill.id,
+                aggregateType: 'bills',
+                eventType: 'deleted',
+                payload: deletedBill,
+                createdAt: getCurrentUTCTimestamp(),
+            });
 
             return IdEntity.create(deletedBill.id);
         }

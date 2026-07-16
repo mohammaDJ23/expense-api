@@ -43,6 +43,7 @@ import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.
 import { BillController } from '@/modules/bill/interface/controllers/v1.controller';
 import { ConsumerModule } from '@/modules/consumer/consumer.module';
 import { LocationModule } from '@/modules/location/location.module';
+import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { ReceiverModule } from '@/modules/receiver/receiver.module';
 
 @Module({
@@ -53,6 +54,7 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         LocationModule,
         ConsumerModule,
         ReceiverModule,
+        OutboxModule,
     ],
     providers: [
         BillService,
