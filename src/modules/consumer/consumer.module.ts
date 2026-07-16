@@ -78,6 +78,10 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         ConsumerExistenceValidatorService,
         ConsumersExistenceValidatorService,
     ],
-    exports: [ConsumerSearchService, ConsumerSearchAggregateService],
+    exports: [
+        ConsumerSearchService,
+        ConsumerSearchAggregateService,
+        ConsumersExistenceValidatorService,
+    ],
 })
 export class ConsumerModule {}

@@ -64,6 +64,10 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
         LocationSearchIndexRegisterService,
         LocationExistenceValidatorService,
     ],
-    exports: [LocationSearchService, LocationSearchAggregateService],
+    exports: [
+        LocationSearchService,
+        LocationSearchAggregateService,
+        LocationExistenceValidatorService,
+    ],
 })
 export class LocationModule {}
