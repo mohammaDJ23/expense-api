@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
@@ -11,22 +11,19 @@ import { DeleteBillsConsumersSynchronizationService } from '@/modules/bill/appli
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
-import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
 import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
-import type { IBillOutboxEvent } from '@/modules/bill/domain/interfaces/billOutboxEvent.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
-import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
 export class UpdateBillService implements IServiceHandler {
     // eslint-disable-next-line max-params
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
         private readonly findBillByUserIdAndIdOrThrowService: FindBillByUserIdAndIdOrThrowService,
         private readonly billExistenceValidatorService: BillExistenceValidatorService,
@@ -36,6 +33,7 @@ export class UpdateBillService implements IServiceHandler {
         private readonly billsConsumersRelationLoaderService: BillsConsumersRelationLoaderService,
         private readonly createBillsConsumersSynchronizationService: CreateBillsConsumersSynchronizationService,
         private readonly deleteBillsConsumersSynchronizationService: DeleteBillsConsumersSynchronizationService,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
     @Transactional()
@@ -95,18 +93,13 @@ export class UpdateBillService implements IServiceHandler {
         {
             const bill = await this.findBillByUserIdAndIdOrThrowService.execute(userId, data.id);
 
-            await this.commandBus.execute<
-                CreateOutboxEventCommand<IBillOutboxEvent>,
-                ISelectOutboxEvent
-            >(
-                new CreateOutboxEventCommand<IBillOutboxEvent>({
-                    aggregateId: bill.id,
-                    aggregateType: 'bills',
-                    eventType: 'updated',
-                    payload: bill,
-                    createdAt: getCurrentUTCTimestamp(),
-                }),
-            );
+            await this.outboxEventPublisherService.publish({
+                aggregateId: bill.id,
+                aggregateType: 'bills',
+                eventType: 'updated',
+                payload: bill,
+                createdAt: getCurrentUTCTimestamp(),
+            });
         }
 
         return IdEntity.create(data.id);
