@@ -21,9 +21,9 @@ import { FindManyLocationsByUserIdAndIdsHandler } from '@/modules/location/appli
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
-import { LocationSearchService } from '@/modules/location/applications/services/locationSearch.service';
-import { LocationSearchAggregateService } from '@/modules/location/applications/services/locationSearchAggregate.service';
-import { LocationSearchIndexRegisterService } from '@/modules/location/applications/services/locationSearchIndexRegister.service';
+import { LocationSearchService } from '@/modules/location/applications/services/search/locationSearch.service';
+import { LocationSearchAggregateService } from '@/modules/location/applications/services/search/locationSearchAggregate.service';
+import { LocationSearchIndexRegisterService } from '@/modules/location/applications/services/search/locationSearchIndexRegister.service';
 import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { LocationElasticsearchIndex } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.index';
