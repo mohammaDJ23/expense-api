@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { BillSearchService } from '@/modules/bill/applications/services/search/billSearch.service';
-import { ConsumerSearchService } from '@/modules/consumer/applications/services/consumerSearch.service';
+import { ConsumerSearchService } from '@/modules/consumer/applications/services/search/consumerSearch.service';
 import { LocationSearchService } from '@/modules/location/applications/services/locationSearch.service';
 import { ReceiverSearchService } from '@/modules/receiver/applications/services/receiverSearch.service';
 
