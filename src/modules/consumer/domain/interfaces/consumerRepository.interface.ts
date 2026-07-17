@@ -4,6 +4,7 @@ import type { IDeleteByUserIdAndIdRepository } from '@/core/interfaces/repositor
 import type { IExistsByUserIdAndExcludingIdAndNameRepository } from '@/core/interfaces/repositories/existsByUserIdAndExcludingIdAndNameRepository.interface';
 import type { IExistsByUserIdAndIdRepository } from '@/core/interfaces/repositories/existsByUserIdAndIdRepository.interface';
 import type { IExistsByUserIdAndIdsRepository } from '@/core/interfaces/repositories/existsByUserIdAndIdsRepository.interface';
+import type { IExistsByUserIdAndNameRepository } from '@/core/interfaces/repositories/existsByUserIdAndNameRepository.interface';
 import type { IFindByUserIdAndIdOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrNullRepository.interface';
 import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrThrowRepository.interface';
 import type { IFindByUserIdAndNameOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndNameOrNullRepository.interface';
@@ -27,4 +28,5 @@ export interface IConsumerRepository
         IFindByUserIdAndNameOrNullRepository<ISelectConsumer>,
         IExistsByUserIdAndIdsRepository,
         IExistsByUserIdAndIdRepository,
-        IExistsByUserIdAndExcludingIdAndNameRepository {}
+        IExistsByUserIdAndExcludingIdAndNameRepository,
+        IExistsByUserIdAndNameRepository {}
