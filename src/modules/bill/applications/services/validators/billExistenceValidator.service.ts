@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { ExistsBillByUserIdAndIdQuery } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.query';
@@ -22,7 +22,7 @@ export class BillExistenceValidatorService implements IValidatorService<IInput> 
             }),
         );
         if (!exists) {
-            throw new BadRequestException('Could not found the bill');
+            throw new NotFoundException('Could not found the bill');
         }
     }
 }

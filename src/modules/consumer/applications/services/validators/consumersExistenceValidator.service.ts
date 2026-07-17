@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { ExistsConsumerByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndIds/existsConsumerByUserIdAndIds.query';
@@ -22,7 +22,7 @@ export class ConsumersExistenceValidatorService implements IValidatorService<IIn
             }),
         );
         if (!exists) {
-            throw new BadRequestException('Could not found the consumer');
+            throw new NotFoundException('Could not found the consumer');
         }
     }
 }

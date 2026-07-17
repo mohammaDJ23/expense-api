@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { ExistsReceiverByUserIdAndExcludingIdAndNameQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.query';
@@ -27,7 +27,7 @@ export class ReceiverUniqueNameValidatorService implements IValidatorService<IIn
             }),
         );
         if (exists) {
-            throw new BadRequestException('The receiver already exists');
+            throw new ConflictException('The receiver already exists');
         }
     }
 }
