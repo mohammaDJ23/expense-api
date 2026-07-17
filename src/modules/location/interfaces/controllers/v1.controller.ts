@@ -45,8 +45,8 @@ export class LocationController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_CREATE_LOCATION_MESSAGE, HttpStatus.CREATED)
     create(
-        @Body() body: CreateLocationRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Body() body: CreateLocationRequestDto,
     ): Promise<IdEntity> {
         return this.locationService.create(user.id, body.name);
     }
@@ -56,8 +56,8 @@ export class LocationController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_UPDATE_LOCATION_MESSAGE, HttpStatus.OK)
     update(
-        @Body() body: UpdateLocationRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Body() body: UpdateLocationRequestDto,
     ): Promise<IdEntity> {
         return this.locationService.update(user.id, body);
     }
@@ -67,8 +67,8 @@ export class LocationController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_DELETE_LOCATION_MESSAGE, HttpStatus.OK)
     delete(
-        @Param() param: DeleteLocationRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Param() param: DeleteLocationRequestDto,
     ): Promise<IdEntity> {
         return this.locationService.delete(user.id, param.id);
     }
@@ -78,8 +78,8 @@ export class LocationController {
     @SerializerInterceptor(LocationResponseDto)
     @HttpResponse(SUCCESS_FIND_LOCATIONS_MESSAGE, HttpStatus.OK)
     findListByUserId(
-        @Query() query: FindLocationListRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Query() query: FindLocationListRequestDto,
     ): Promise<ISelectLocation[]> {
         return this.locationService.findListByUserId(user.id, query);
     }
@@ -89,8 +89,8 @@ export class LocationController {
     @SerializerInterceptor(LocationResponseDto)
     @HttpResponse(SUCCESS_FIND_LOCATION_MESSAGE, HttpStatus.OK)
     findByUserIdAndId(
-        @Param() param: FindLocationByIdRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Param() param: FindLocationByIdRequestDto,
     ): Promise<ISelectLocation> {
         return this.locationService.findByUserIdAndId(user.id, param.id);
     }

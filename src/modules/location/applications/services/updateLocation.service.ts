@@ -9,12 +9,17 @@ import { LocationExistenceValidatorService } from '@/modules/location/applicatio
 import { LocationUniqueNameValidatorService } from '@/modules/location/applications/services/validators/locationUniqueNameValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { UpdateLocationRequestDto } from '@/modules/location/interfaces/dtos/updateLocation.request.dto';
 
+interface IInput {
+    userId: string;
+    body: UpdateLocationRequestDto;
+}
+
 @Injectable()
-export class UpdateLocationService implements IServiceHandler {
+export class UpdateLocationService implements IService<IInput, IdEntity> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
@@ -23,13 +28,16 @@ export class UpdateLocationService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(userId: string, data: UpdateLocationRequestDto): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IdEntity> {
         await Promise.all([
-            this.locationExistenceValidatorService.validate({ userId, id: data.id }),
+            this.locationExistenceValidatorService.validate({
+                userId: input.userId,
+                id: input.body.id,
+            }),
             this.locationUniqueNameValidatorService.validate({
-                userId,
-                excludingId: data.id,
-                name: data.name,
+                userId: input.userId,
+                excludingId: input.body.id,
+                name: input.body.name,
             }),
         ]);
 
@@ -38,9 +46,9 @@ export class UpdateLocationService implements IServiceHandler {
             ISelectLocation
         >(
             new UpdateLocationCommand({
-                id: data.id,
-                name: data.name,
-                userId,
+                id: input.body.id,
+                name: input.body.name,
+                userId: input.userId,
                 updatedAt: getCurrentUTCTimestamp(),
             }),
         );

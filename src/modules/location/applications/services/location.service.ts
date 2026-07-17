@@ -22,23 +22,26 @@ export class LocationService {
     ) {}
 
     create(userId: string, name: string): Promise<IdEntity> {
-        return this.createLocationService.execute(userId, name);
+        return this.createLocationService.execute({ userId, name });
     }
 
-    update(userId: string, data: UpdateLocationRequestDto): Promise<IdEntity> {
-        return this.updateLocationService.execute(userId, data);
+    update(userId: string, body: UpdateLocationRequestDto): Promise<IdEntity> {
+        return this.updateLocationService.execute({ userId, body });
     }
 
     delete(userId: string, locationId: string): Promise<IdEntity> {
-        return this.deleteLocationService.execute(userId, locationId);
+        return this.deleteLocationService.execute({ userId, locationId });
     }
 
-    findListByUserId(userId: string, data: FindLocationListRequestDto): Promise<ISelectLocation[]> {
+    findListByUserId(
+        userId: string,
+        query: FindLocationListRequestDto,
+    ): Promise<ISelectLocation[]> {
         return this.queryBus.execute<FindLocationListByUserIdQuery, ISelectLocation[]>(
             new FindLocationListByUserIdQuery({
                 userId,
-                offset: data.offset,
-                limit: data.limit,
+                offset: query.offset,
+                limit: query.limit,
             }),
         );
     }
