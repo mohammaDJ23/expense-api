@@ -33,7 +33,7 @@ import {
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
-import type { IdEntity } from '@/core/entities/id.entity';
+import type { IId } from '@/core/interfaces/id.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 @Controller({ version: '1', path: 'api/consumers' })
@@ -47,7 +47,7 @@ export class ConsumerController {
     create(
         @CurrentUser() user: ICurrentUser,
         @Body() body: CreateConsumerRequestDto,
-    ): Promise<IdEntity> {
+    ): Promise<IId> {
         return this.consumerService.create(user.id, body.name);
     }
 
@@ -58,7 +58,7 @@ export class ConsumerController {
     update(
         @CurrentUser() user: ICurrentUser,
         @Body() body: UpdateConsumerRequestDto,
-    ): Promise<IdEntity> {
+    ): Promise<IId> {
         return this.consumerService.update(user.id, body);
     }
 
@@ -69,7 +69,7 @@ export class ConsumerController {
     delete(
         @CurrentUser() user: ICurrentUser,
         @Param() param: DeleteConsumerRequestDto,
-    ): Promise<IdEntity> {
+    ): Promise<IId> {
         return this.consumerService.delete(user.id, param.id);
     }
 

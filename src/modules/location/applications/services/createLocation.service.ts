@@ -1,13 +1,13 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { CreateLocationCommand } from '@/modules/location/applications/commands/createLocation/createLocation.command';
 import { FindLocationByUserIdAndNameOrNullQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.query';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
@@ -17,7 +17,7 @@ interface IInput {
 }
 
 @Injectable()
-export class CreateLocationService implements IService<IInput, IdEntity> {
+export class CreateLocationService implements IService<IInput, IId> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
@@ -25,7 +25,7 @@ export class CreateLocationService implements IService<IInput, IdEntity> {
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         const location = await this.queryBus.execute<
             FindLocationByUserIdAndNameOrNullQuery,
             ISelectLocation | null
@@ -57,9 +57,11 @@ export class CreateLocationService implements IService<IInput, IdEntity> {
                 createdAt: getCurrentUTCTimestamp(),
             });
 
-            return IdEntity.create(createdLocation.id);
+            return {
+                id: createdLocation.id,
+            };
         }
 
-        throw new BadRequestException('You already have the location');
+        throw new ConflictException('You already have the location');
     }
 }

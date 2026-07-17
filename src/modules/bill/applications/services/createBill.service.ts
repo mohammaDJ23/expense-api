@@ -3,7 +3,6 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/createBillsConsumersSynchronization.service';
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
@@ -13,6 +12,7 @@ import { ReceiverExistenceValidatorService } from '@/modules/receiver/applicatio
 
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
@@ -23,7 +23,7 @@ interface IInput {
 }
 
 @Injectable()
-export class CreateBillService implements IService<IInput, IdEntity> {
+export class CreateBillService implements IService<IInput, IId> {
     // eslint-disable-next-line max-params
     constructor(
         private readonly commandBus: CommandBus,
@@ -36,7 +36,7 @@ export class CreateBillService implements IService<IInput, IdEntity> {
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         await Promise.all([
             this.receiverExistenceValidatorService.validate({
                 userId: input.userId,
@@ -87,6 +87,8 @@ export class CreateBillService implements IService<IInput, IdEntity> {
             });
         }
 
-        return IdEntity.create(createdBill.id);
+        return {
+            id: createdBill.id,
+        };
     }
 }

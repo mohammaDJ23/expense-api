@@ -3,11 +3,11 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { DeleteBillCommand } from '@/modules/bill/applications/commands/deleteBill/deleteBill.command';
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
@@ -17,7 +17,7 @@ interface IInput {
 }
 
 @Injectable()
-export class DeleteBillService implements IService<IInput, IdEntity> {
+export class DeleteBillService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly billExistenceValidatorService: BillExistenceValidatorService,
@@ -25,7 +25,7 @@ export class DeleteBillService implements IService<IInput, IdEntity> {
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         await this.billExistenceValidatorService.validate({
             userId: input.userId,
             id: input.billId,
@@ -46,6 +46,8 @@ export class DeleteBillService implements IService<IInput, IdEntity> {
             createdAt: getCurrentUTCTimestamp(),
         });
 
-        return IdEntity.create(deletedBill.id);
+        return {
+            id: deletedBill.id,
+        };
     }
 }

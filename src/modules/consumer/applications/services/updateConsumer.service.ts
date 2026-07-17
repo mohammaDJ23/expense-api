@@ -3,12 +3,12 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateConsumerCommand } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.command';
 import { ConsumerExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumerExistenceValidator.service';
 import { ConsumerUniqueNameValidatorService } from '@/modules/consumer/applications/services/validators/consumerUniqueNameValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { UpdateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/updateConsumer.request.dto';
@@ -19,7 +19,7 @@ interface IInput {
 }
 
 @Injectable()
-export class UpdateConsumerService implements IService<IInput, IdEntity> {
+export class UpdateConsumerService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
@@ -28,7 +28,7 @@ export class UpdateConsumerService implements IService<IInput, IdEntity> {
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         await Promise.all([
             this.consumerExistenceValidatorService.validate({
                 userId: input.userId,
@@ -61,6 +61,8 @@ export class UpdateConsumerService implements IService<IInput, IdEntity> {
             createdAt: getCurrentUTCTimestamp(),
         });
 
-        return IdEntity.create(updatedConsumer.id);
+        return {
+            id: updatedConsumer.id,
+        };
     }
 }

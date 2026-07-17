@@ -30,7 +30,7 @@ import {
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
-import type { IdEntity } from '@/core/entities/id.entity';
+import type { IId } from '@/core/interfaces/id.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/users' })
@@ -41,10 +41,7 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_UPDATE_USER_MESSAGE, HttpStatus.OK)
-    update(
-        @CurrentUser() user: ICurrentUser,
-        @Body() body: UpdateUserRequestDto,
-    ): Promise<IdEntity> {
+    update(@CurrentUser() user: ICurrentUser, @Body() body: UpdateUserRequestDto): Promise<IId> {
         return this.userService.update(user.id, body);
     }
 
@@ -52,7 +49,7 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_DELETE_USER_MESSAGE, HttpStatus.OK)
-    delete(@CurrentUser() user: ICurrentUser): Promise<IdEntity> {
+    delete(@CurrentUser() user: ICurrentUser): Promise<IId> {
         return this.userService.delete(user.id);
     }
 

@@ -8,7 +8,7 @@ import { FindUserListQuery } from '@/modules/user/applications/queries/findUserL
 import { DeleteUserService } from '@/modules/user/applications/services/deleteUser.service';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 
-import type { IdEntity } from '@/core/entities/id.entity';
+import type { IId } from '@/core/interfaces/id.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
 import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
@@ -22,11 +22,11 @@ export class UserService {
         private readonly deleteUserService: DeleteUserService,
     ) {}
 
-    update(userId: string, body: UpdateUserRequestDto): Promise<IdEntity> {
+    update(userId: string, body: UpdateUserRequestDto): Promise<IId> {
         return this.updateUserService.execute({ userId, body });
     }
 
-    delete(userId: string): Promise<IdEntity> {
+    delete(userId: string): Promise<IId> {
         return this.deleteUserService.execute({ userId });
     }
 

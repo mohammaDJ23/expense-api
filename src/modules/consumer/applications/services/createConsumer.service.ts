@@ -1,13 +1,13 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { CreateConsumerCommand } from '@/modules/consumer/applications/commands/createConsumer/createConsumer.command';
 import { FindConsumerByUserIdAndNameOrNullQuery } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndNameOrNull/findConsumerByUserIdAndNameOrNull.query';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
@@ -17,7 +17,7 @@ interface IInput {
 }
 
 @Injectable()
-export class CreateConsumerService implements IService<IInput, IdEntity> {
+export class CreateConsumerService implements IService<IInput, IId> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
@@ -25,7 +25,7 @@ export class CreateConsumerService implements IService<IInput, IdEntity> {
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         const consumer = await this.queryBus.execute<
             FindConsumerByUserIdAndNameOrNullQuery,
             ISelectConsumer | null
@@ -57,9 +57,11 @@ export class CreateConsumerService implements IService<IInput, IdEntity> {
                 createdAt: getCurrentUTCTimestamp(),
             });
 
-            return IdEntity.create(createdConsumer.id);
+            return {
+                id: createdConsumer.id,
+            };
         }
 
-        throw new BadRequestException('You already have the consumer');
+        throw new ConflictException('You already have the consumer');
     }
 }

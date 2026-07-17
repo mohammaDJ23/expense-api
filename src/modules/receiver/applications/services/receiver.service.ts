@@ -8,7 +8,7 @@ import { CreateReceiverService } from './createReceiver.service';
 import { DeleteReceiverService } from './deleteReceiver.service';
 import { UpdateReceiverService } from './updateReceiver.service';
 
-import type { IdEntity } from '@/core/entities/id.entity';
+import type { IId } from '@/core/interfaces/id.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';
 import type { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/updateReceiver.request.dto';
@@ -22,15 +22,15 @@ export class ReceiverService {
         private readonly deleteReceiverService: DeleteReceiverService,
     ) {}
 
-    create(userId: string, name: string): Promise<IdEntity> {
+    create(userId: string, name: string): Promise<IId> {
         return this.createReceiverService.execute({ userId, name });
     }
 
-    update(userId: string, body: UpdateReceiverRequestDto): Promise<IdEntity> {
+    update(userId: string, body: UpdateReceiverRequestDto): Promise<IId> {
         return this.updateReceiverService.execute({ userId, body });
     }
 
-    delete(userId: string, receiverId: string): Promise<IdEntity> {
+    delete(userId: string, receiverId: string): Promise<IId> {
         return this.deleteReceiverService.execute({ userId, receiverId });
     }
 

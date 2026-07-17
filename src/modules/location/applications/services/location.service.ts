@@ -7,7 +7,7 @@ import { CreateLocationService } from '@/modules/location/applications/services/
 import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
 import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
 
-import type { IdEntity } from '@/core/entities/id.entity';
+import type { IId } from '@/core/interfaces/id.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { FindLocationListRequestDto } from '@/modules/location/interfaces/dtos/findLocationList.request.dto';
 import type { UpdateLocationRequestDto } from '@/modules/location/interfaces/dtos/updateLocation.request.dto';
@@ -21,15 +21,15 @@ export class LocationService {
         private readonly deleteLocationService: DeleteLocationService,
     ) {}
 
-    create(userId: string, name: string): Promise<IdEntity> {
+    create(userId: string, name: string): Promise<IId> {
         return this.createLocationService.execute({ userId, name });
     }
 
-    update(userId: string, body: UpdateLocationRequestDto): Promise<IdEntity> {
+    update(userId: string, body: UpdateLocationRequestDto): Promise<IId> {
         return this.updateLocationService.execute({ userId, body });
     }
 
-    delete(userId: string, locationId: string): Promise<IdEntity> {
+    delete(userId: string, locationId: string): Promise<IId> {
         return this.deleteLocationService.execute({ userId, locationId });
     }
 
