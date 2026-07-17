@@ -5,11 +5,17 @@ import { ConsumerSearchService } from '@/modules/consumer/applications/services/
 import { LocationSearchService } from '@/modules/location/applications/services/search/locationSearch.service';
 import { ReceiverSearchService } from '@/modules/receiver/applications/services/search/receiverSearch.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISearchOrchestrator } from '@/modules/search/domain/interface/searchOrchestrator.interface';
 
+interface IInput {
+    userId: string;
+    query: string;
+    size: number;
+}
+
 @Injectable()
-export class SearchOrchestratorService implements IServiceHandler {
+export class SearchOrchestratorService implements IService<IInput, ISearchOrchestrator> {
     constructor(
         private readonly billSearchService: BillSearchService,
         private readonly consumerSearchService: ConsumerSearchService,
@@ -17,12 +23,12 @@ export class SearchOrchestratorService implements IServiceHandler {
         private readonly receiverSearchService: ReceiverSearchService,
     ) {}
 
-    async execute(userId: string, query: string, size: number): Promise<ISearchOrchestrator> {
+    async execute(input: IInput): Promise<ISearchOrchestrator> {
         const [billIds, consumerIds, locationIds, receiverIds] = await Promise.all([
-            this.billSearchService.search(userId, query, size),
-            this.consumerSearchService.search(userId, query, size),
-            this.locationSearchService.search(userId, query, size),
-            this.receiverSearchService.search(userId, query, size),
+            this.billSearchService.search(input.userId, input.query, input.size),
+            this.consumerSearchService.search(input.userId, input.query, input.size),
+            this.locationSearchService.search(input.userId, input.query, input.size),
+            this.receiverSearchService.search(input.userId, input.query, input.size),
         ]);
         return {
             billIds,

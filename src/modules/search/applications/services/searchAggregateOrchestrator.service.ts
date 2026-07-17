@@ -5,12 +5,17 @@ import { ConsumerSearchAggregateService } from '@/modules/consumer/applications/
 import { LocationSearchAggregateService } from '@/modules/location/applications/services/search/locationSearchAggregate.service';
 import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/search/receiverSearchAggregate.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISearch } from '@/modules/search/domain/interface/search.interface';
 import type { ISearchOrchestrator } from '@/modules/search/domain/interface/searchOrchestrator.interface';
 
+interface IInput {
+    userId: string;
+    searchOrchestrators: ISearchOrchestrator;
+}
+
 @Injectable()
-export class SearchAggregateOrchestratorService implements IServiceHandler {
+export class SearchAggregateOrchestratorService implements IService<IInput, ISearch> {
     constructor(
         private readonly billSearchAggregateService: BillSearchAggregateService,
         private readonly consumerSearchAggregateService: ConsumerSearchAggregateService,
@@ -18,12 +23,24 @@ export class SearchAggregateOrchestratorService implements IServiceHandler {
         private readonly receiverSearchAggregateService: ReceiverSearchAggregateService,
     ) {}
 
-    async execute(userId: string, searchOrchestrator: ISearchOrchestrator): Promise<ISearch> {
+    async execute(input: IInput): Promise<ISearch> {
         const [bills, consumers, locations, receivers] = await Promise.all([
-            this.billSearchAggregateService.aggregate(userId, searchOrchestrator.billIds),
-            this.consumerSearchAggregateService.aggregate(userId, searchOrchestrator.consumerIds),
-            this.locationSearchAggregateService.aggregate(userId, searchOrchestrator.locationIds),
-            this.receiverSearchAggregateService.aggregate(userId, searchOrchestrator.receiverIds),
+            this.billSearchAggregateService.aggregate(
+                input.userId,
+                input.searchOrchestrators.billIds,
+            ),
+            this.consumerSearchAggregateService.aggregate(
+                input.userId,
+                input.searchOrchestrators.consumerIds,
+            ),
+            this.locationSearchAggregateService.aggregate(
+                input.userId,
+                input.searchOrchestrators.locationIds,
+            ),
+            this.receiverSearchAggregateService.aggregate(
+                input.userId,
+                input.searchOrchestrators.receiverIds,
+            ),
         ]);
         return {
             bills,
