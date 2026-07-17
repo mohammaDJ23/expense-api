@@ -42,8 +42,8 @@ export class UserController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_UPDATE_USER_MESSAGE, HttpStatus.OK)
     update(
-        @Body() body: UpdateUserRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Body() body: UpdateUserRequestDto,
     ): Promise<IdEntity> {
         return this.userService.update(user.id, body);
     }
