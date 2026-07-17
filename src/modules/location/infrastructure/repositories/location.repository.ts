@@ -5,7 +5,7 @@ import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.rep
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
-import { toIsExistsByCount } from '@/infrastructure/database/drizzle/transformers/toIsExistsByCount.transformer';
+import { toExistsByCount } from '@/infrastructure/database/drizzle/transformers/toExistsByCount.transformer';
 import {
     locations,
     type IInsertLocation,
@@ -107,7 +107,7 @@ export class LocationRepository implements ILocationRepository {
     }
 
     existsByUserIdAndId(userId: string, id: string): Promise<boolean> {
-        return toIsExistsByCount(
+        return toExistsByCount(
             this.drizzleRepository.db.$count(
                 locations,
                 and(eq(locations.userId, userId), eq(locations.id, id)),
@@ -120,7 +120,7 @@ export class LocationRepository implements ILocationRepository {
         excludingId: string,
         name: string,
     ): Promise<boolean> {
-        return toIsExistsByCount(
+        return toExistsByCount(
             this.drizzleRepository.db.$count(
                 locations,
                 and(

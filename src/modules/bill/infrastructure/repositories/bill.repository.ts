@@ -4,7 +4,7 @@ import { and, desc, eq, inArray } from 'drizzle-orm';
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
-import { toIsExistsByCount } from '@/infrastructure/database/drizzle/transformers/toIsExistsByCount.transformer';
+import { toExistsByCount } from '@/infrastructure/database/drizzle/transformers/toExistsByCount.transformer';
 import {
     bills,
     type IInsertBill,
@@ -51,7 +51,7 @@ export class BillRepository implements IBillRepository {
     }
 
     existsByUserIdAndId(userId: string, id: string): Promise<boolean> {
-        return toIsExistsByCount(
+        return toExistsByCount(
             this.drizzleRepository.db.$count(
                 bills,
                 and(eq(bills.id, id), eq(bills.userId, userId)),

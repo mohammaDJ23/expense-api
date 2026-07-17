@@ -5,7 +5,7 @@ import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.rep
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
-import { toIsExistsByCount } from '@/infrastructure/database/drizzle/transformers/toIsExistsByCount.transformer';
+import { toExistsByCount } from '@/infrastructure/database/drizzle/transformers/toExistsByCount.transformer';
 import {
     consumers,
     type IInsertConsumer,
@@ -106,7 +106,7 @@ export class ConsumerRepository implements IConsumerRepository {
     }
 
     existsByUserIdAndIds(userId: string, ids: string[]): Promise<boolean> {
-        return toIsExistsByCount(
+        return toExistsByCount(
             this.drizzleRepository.db.$count(
                 consumers,
                 and(eq(consumers.userId, userId), inArray(consumers.id, ids)),
@@ -116,7 +116,7 @@ export class ConsumerRepository implements IConsumerRepository {
     }
 
     existsByUserIdAndId(userId: string, id: string): Promise<boolean> {
-        return toIsExistsByCount(
+        return toExistsByCount(
             this.drizzleRepository.db.$count(
                 consumers,
                 and(eq(consumers.userId, userId), eq(consumers.id, id)),
@@ -129,7 +129,7 @@ export class ConsumerRepository implements IConsumerRepository {
         excludingId: string,
         name: string,
     ): Promise<boolean> {
-        return toIsExistsByCount(
+        return toExistsByCount(
             this.drizzleRepository.db.$count(
                 consumers,
                 and(
