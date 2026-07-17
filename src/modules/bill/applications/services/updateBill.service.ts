@@ -3,7 +3,6 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateBillCommand } from '@/modules/bill/applications/commands/updateBill/updateBill.command';
 import { BillsConsumersRelationLoaderService } from '@/modules/bill/applications/services/relations/billsConsumersRelationLoader.service';
 import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/createBillsConsumersSynchronization.service';
@@ -16,6 +15,7 @@ import { ReceiverExistenceValidatorService } from '@/modules/receiver/applicatio
 
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
@@ -26,7 +26,7 @@ interface IInput {
 }
 
 @Injectable()
-export class UpdateBillService implements IService<IInput, IdEntity> {
+export class UpdateBillService implements IService<IInput, IId> {
     // eslint-disable-next-line max-params
     constructor(
         private readonly commandBus: CommandBus,
@@ -42,7 +42,7 @@ export class UpdateBillService implements IService<IInput, IdEntity> {
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         await Promise.all([
             this.billExistenceValidatorService.validate({
                 userId: input.userId,
@@ -127,6 +127,8 @@ export class UpdateBillService implements IService<IInput, IdEntity> {
             });
         }
 
-        return IdEntity.create(input.body.id);
+        return {
+            id: input.body.id,
+        };
     }
 }

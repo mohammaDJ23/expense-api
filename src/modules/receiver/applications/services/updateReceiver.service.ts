@@ -3,12 +3,12 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { UpdateReceiverCommand } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.command';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 import { ReceiverUniqueNameValidatorService } from '@/modules/receiver/applications/services/validators/receiverUniqueNameValidator.service';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/updateReceiver.request.dto';
@@ -19,7 +19,7 @@ interface IInput {
 }
 
 @Injectable()
-export class UpdateReceiverService implements IService<IInput, IdEntity> {
+export class UpdateReceiverService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
@@ -28,7 +28,7 @@ export class UpdateReceiverService implements IService<IInput, IdEntity> {
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         await Promise.all([
             this.receiverExistenceValidatorService.validate({
                 userId: input.userId,
@@ -61,6 +61,8 @@ export class UpdateReceiverService implements IService<IInput, IdEntity> {
             createdAt: getCurrentUTCTimestamp(),
         });
 
-        return IdEntity.create(updatedReceiver.id);
+        return {
+            id: updatedReceiver.id,
+        };
     }
 }

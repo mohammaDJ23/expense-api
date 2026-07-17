@@ -1,13 +1,13 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { CreateReceiverCommand } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.command';
 import { FindReceiverByUserIdAndNameOrNullQuery } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndNameOrNull/findReceiverByUserIdAndNameOrNull.query';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
@@ -17,7 +17,7 @@ interface IInput {
 }
 
 @Injectable()
-export class CreateReceiverService implements IService<IInput, IdEntity> {
+export class CreateReceiverService implements IService<IInput, IId> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
@@ -25,7 +25,7 @@ export class CreateReceiverService implements IService<IInput, IdEntity> {
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         const receiver = await this.queryBus.execute<
             FindReceiverByUserIdAndNameOrNullQuery,
             ISelectReceiver | null
@@ -57,9 +57,11 @@ export class CreateReceiverService implements IService<IInput, IdEntity> {
                 createdAt: getCurrentUTCTimestamp(),
             });
 
-            return IdEntity.create(createdReceiver.id);
+            return {
+                id: createdReceiver.id,
+            };
         }
 
-        throw new BadRequestException('You already have the receiver');
+        throw new ConflictException('You already have the receiver');
     }
 }

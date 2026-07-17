@@ -7,7 +7,7 @@ import { CreateBillService } from './createBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from './findBillListByUserId.service';
 
-import type { IdEntity } from '@/core/entities/id.entity';
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
@@ -24,15 +24,15 @@ export class BillService {
         private readonly findBillListByUserIdService: FindBillListByUserIdService,
     ) {}
 
-    create(userId: string, body: CreateBillRequestDto): Promise<IdEntity> {
+    create(userId: string, body: CreateBillRequestDto): Promise<IId> {
         return this.createBillService.execute({ body, userId });
     }
 
-    update(userId: string, body: UpdateBillRequestDto): Promise<IdEntity> {
+    update(userId: string, body: UpdateBillRequestDto): Promise<IId> {
         return this.updateBillService.execute({ body, userId });
     }
 
-    delete(userId: string, billId: string): Promise<IdEntity> {
+    delete(userId: string, billId: string): Promise<IId> {
         return this.deleteBillService.execute({ userId, billId });
     }
 

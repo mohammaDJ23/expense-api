@@ -3,12 +3,12 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateLocationCommand } from '@/modules/location/applications/commands/updateLocation/updateLocation.command';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { LocationUniqueNameValidatorService } from '@/modules/location/applications/services/validators/locationUniqueNameValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { UpdateLocationRequestDto } from '@/modules/location/interfaces/dtos/updateLocation.request.dto';
@@ -19,7 +19,7 @@ interface IInput {
 }
 
 @Injectable()
-export class UpdateLocationService implements IService<IInput, IdEntity> {
+export class UpdateLocationService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
@@ -28,7 +28,7 @@ export class UpdateLocationService implements IService<IInput, IdEntity> {
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         await Promise.all([
             this.locationExistenceValidatorService.validate({
                 userId: input.userId,
@@ -61,6 +61,8 @@ export class UpdateLocationService implements IService<IInput, IdEntity> {
             createdAt: getCurrentUTCTimestamp(),
         });
 
-        return IdEntity.create(updatedLocation.id);
+        return {
+            id: updatedLocation.id,
+        };
     }
 }

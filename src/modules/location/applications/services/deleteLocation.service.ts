@@ -3,11 +3,11 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { DeleteLocationCommand } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.command';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
@@ -17,7 +17,7 @@ interface IInput {
 }
 
 @Injectable()
-export class DeleteLocationService implements IService<IInput, IdEntity> {
+export class DeleteLocationService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
@@ -25,7 +25,7 @@ export class DeleteLocationService implements IService<IInput, IdEntity> {
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         await this.locationExistenceValidatorService.validate({
             userId: input.userId,
             id: input.locationId,
@@ -49,6 +49,8 @@ export class DeleteLocationService implements IService<IInput, IdEntity> {
             createdAt: getCurrentUTCTimestamp(),
         });
 
-        return IdEntity.create(deletedLocation.id);
+        return {
+            id: deletedLocation.id,
+        };
     }
 }

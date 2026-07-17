@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { IdEntity } from '@/core/entities/id.entity';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
 
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
@@ -16,13 +16,13 @@ interface IInput {
 }
 
 @Injectable()
-export class UpdateUserService implements IService<IInput, IdEntity> {
+export class UpdateUserService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly userExistenceValidatorService: UserExistenceValidatorService,
     ) {}
 
-    async execute(input: IInput): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IId> {
         await this.userExistenceValidatorService.validate({ userId: input.userId });
 
         const updatedUser = await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
@@ -35,6 +35,8 @@ export class UpdateUserService implements IService<IInput, IdEntity> {
             }),
         );
 
-        return IdEntity.create(updatedUser.id);
+        return {
+            id: updatedUser.id,
+        };
     }
 }

@@ -8,7 +8,7 @@ import { CreateConsumerService } from './createConsumer.service';
 import { DeleteConsumerService } from './deleteConsumer.service';
 import { UpdateConsumerService } from './updateConsumer.service';
 
-import type { IdEntity } from '@/core/entities/id.entity';
+import type { IId } from '@/core/interfaces/id.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { FindConsumerListRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerList.request.dto';
 import type { UpdateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/updateConsumer.request.dto';
@@ -22,15 +22,15 @@ export class ConsumerService {
         private readonly deleteConsumerService: DeleteConsumerService,
     ) {}
 
-    create(userId: string, name: string): Promise<IdEntity> {
+    create(userId: string, name: string): Promise<IId> {
         return this.createConsumerService.execute({ userId, name });
     }
 
-    update(userId: string, body: UpdateConsumerRequestDto): Promise<IdEntity> {
+    update(userId: string, body: UpdateConsumerRequestDto): Promise<IId> {
         return this.updateConsumerService.execute({ userId, body });
     }
 
-    delete(userId: string, consumerId: string): Promise<IdEntity> {
+    delete(userId: string, consumerId: string): Promise<IId> {
         return this.deleteConsumerService.execute({ userId, consumerId });
     }
 

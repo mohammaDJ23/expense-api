@@ -33,7 +33,7 @@ import {
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
-import type { IdEntity } from '@/core/entities/id.entity';
+import type { IId } from '@/core/interfaces/id.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 
 @Controller({ version: '1', path: 'api/bills' })
@@ -44,10 +44,7 @@ export class BillController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_CREATE_BILL_MESSAGE, HttpStatus.CREATED)
-    create(
-        @CurrentUser() user: ICurrentUser,
-        @Body() body: CreateBillRequestDto,
-    ): Promise<IdEntity> {
+    create(@CurrentUser() user: ICurrentUser, @Body() body: CreateBillRequestDto): Promise<IId> {
         return this.billService.create(user.id, body);
     }
 
@@ -55,10 +52,7 @@ export class BillController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_UPDATE_BILL_MESSAGE, HttpStatus.OK)
-    update(
-        @CurrentUser() user: ICurrentUser,
-        @Body() body: UpdateBillRequestDto,
-    ): Promise<IdEntity> {
+    update(@CurrentUser() user: ICurrentUser, @Body() body: UpdateBillRequestDto): Promise<IId> {
         return this.billService.update(user.id, body);
     }
 
@@ -66,10 +60,7 @@ export class BillController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_DELETE_BILL_MESSAGE, HttpStatus.OK)
-    delete(
-        @CurrentUser() user: ICurrentUser,
-        @Param() param: DeleteBillRequestDto,
-    ): Promise<IdEntity> {
+    delete(@CurrentUser() user: ICurrentUser, @Param() param: DeleteBillRequestDto): Promise<IId> {
         return this.billService.delete(user.id, param.id);
     }
 

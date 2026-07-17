@@ -33,7 +33,7 @@ import {
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
-import type { IdEntity } from '@/core/entities/id.entity';
+import type { IId } from '@/core/interfaces/id.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 @Controller({ version: '1', path: 'api/locations' })
@@ -47,7 +47,7 @@ export class LocationController {
     create(
         @CurrentUser() user: ICurrentUser,
         @Body() body: CreateLocationRequestDto,
-    ): Promise<IdEntity> {
+    ): Promise<IId> {
         return this.locationService.create(user.id, body.name);
     }
 
@@ -58,7 +58,7 @@ export class LocationController {
     update(
         @CurrentUser() user: ICurrentUser,
         @Body() body: UpdateLocationRequestDto,
-    ): Promise<IdEntity> {
+    ): Promise<IId> {
         return this.locationService.update(user.id, body);
     }
 
@@ -69,7 +69,7 @@ export class LocationController {
     delete(
         @CurrentUser() user: ICurrentUser,
         @Param() param: DeleteLocationRequestDto,
-    ): Promise<IdEntity> {
+    ): Promise<IId> {
         return this.locationService.delete(user.id, param.id);
     }
 

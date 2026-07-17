@@ -33,7 +33,7 @@ import {
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
-import type { IdEntity } from '@/core/entities/id.entity';
+import type { IId } from '@/core/interfaces/id.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @Controller({ version: '1', path: 'api/receivers' })
@@ -47,7 +47,7 @@ export class ReceiverController {
     create(
         @CurrentUser() user: ICurrentUser,
         @Body() body: CreateReceiverRequestDto,
-    ): Promise<IdEntity> {
+    ): Promise<IId> {
         return this.receiverService.create(user.id, body.name);
     }
 
@@ -58,7 +58,7 @@ export class ReceiverController {
     update(
         @CurrentUser() user: ICurrentUser,
         @Body() body: UpdateReceiverRequestDto,
-    ): Promise<IdEntity> {
+    ): Promise<IId> {
         return this.receiverService.update(user.id, body);
     }
 
@@ -69,7 +69,7 @@ export class ReceiverController {
     delete(
         @CurrentUser() user: ICurrentUser,
         @Param() param: DeleteReceiverRequestDto,
-    ): Promise<IdEntity> {
+    ): Promise<IId> {
         return this.receiverService.delete(user.id, param.id);
     }
 
