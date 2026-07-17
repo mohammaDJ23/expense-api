@@ -17,6 +17,7 @@ import { DeleteUserService } from '@/modules/user/applications/services/deleteUs
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { UserService } from '@/modules/user/applications/services/user.service';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
+import { UserUniqueEmailValidatorService } from '@/modules/user/applications/services/validators/userUniqueEmailValidator.service';
 import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository';
 import { UserController } from '@/modules/user/interfaces/controllers/v1.controller';
 
@@ -40,6 +41,8 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         FindUserListHandler,
         OwnerGuard,
         UserExistenceValidatorService,
+        UserUniqueEmailValidatorService,
     ],
+    exports: [UserUniqueEmailValidatorService],
 })
 export class UserModule {}

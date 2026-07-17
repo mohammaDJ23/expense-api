@@ -1,10 +1,10 @@
-import { ConflictException, Injectable, ServiceUnavailableException } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
-import { IsUserExistsByEmailQuery } from '@/modules/user/applications/queries/isUserExistsByEmail/isUserExistsByEmail.query';
+import { UserUniqueEmailValidatorService } from '@/modules/user/applications/services/validators/userUniqueEmailValidator.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
@@ -20,24 +20,18 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 @Injectable()
 export class LocalSignupService implements IService<LocalSignupRequestDto, boolean> {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
+        private readonly userUniqueEmailValidationService: UserUniqueEmailValidatorService,
     ) {}
 
     async execute(input: LocalSignupRequestDto): Promise<boolean> {
-        {
-            const isExists = await this.queryBus.execute<IsUserExistsByEmailQuery, boolean>(
-                new IsUserExistsByEmailQuery({ email: input.email }),
-            );
-
-            if (isExists) {
-                throw new ConflictException('The Email already exists.');
-            }
-        }
+        await this.userUniqueEmailValidationService.validate({
+            email: input.email,
+        });
 
         let createdUser: ISelectUser;
         try {
