@@ -18,6 +18,6 @@ export interface IUserRepository
         IDeleteByIdRepository<ISelectUser>,
         IExistsByIdRepository {
     deleteManyNotVerified(): Promise<ISelectUser[]>;
-    isExistsByEmail(email: string): Promise<boolean>;
+    existsByEmail(email: string): Promise<boolean>;
     findByEmailOrNull(email: string): Promise<ISelectUser | null>;
 }
