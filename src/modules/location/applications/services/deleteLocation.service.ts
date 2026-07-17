@@ -8,11 +8,16 @@ import { DeleteLocationCommand } from '@/modules/location/applications/commands/
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
+interface IInput {
+    userId: string;
+    locationId: string;
+}
+
 @Injectable()
-export class DeleteLocationService implements IServiceHandler {
+export class DeleteLocationService implements IService<IInput, IdEntity> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
@@ -20,16 +25,19 @@ export class DeleteLocationService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(userId: string, locationId: string): Promise<IdEntity> {
-        await this.locationExistenceValidatorService.validate({ userId, id: locationId });
+    async execute(input: IInput): Promise<IdEntity> {
+        await this.locationExistenceValidatorService.validate({
+            userId: input.userId,
+            id: input.locationId,
+        });
 
         const deletedLocation = await this.commandBus.execute<
             DeleteLocationCommand,
             ISelectLocation
         >(
             new DeleteLocationCommand({
-                userId,
-                id: locationId,
+                userId: input.userId,
+                id: input.locationId,
             }),
         );
 

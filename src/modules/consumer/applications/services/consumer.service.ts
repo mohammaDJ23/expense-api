@@ -34,12 +34,15 @@ export class ConsumerService {
         return this.deleteConsumerService.execute({ userId, consumerId });
     }
 
-    findListByUserId(userId: string, data: FindConsumerListRequestDto): Promise<ISelectConsumer[]> {
+    findListByUserId(
+        userId: string,
+        query: FindConsumerListRequestDto,
+    ): Promise<ISelectConsumer[]> {
         return this.queryBus.execute<FindConsumerListByUserIdQuery, ISelectConsumer[]>(
             new FindConsumerListByUserIdQuery({
                 userId,
-                offset: data.offset,
-                limit: data.limit,
+                offset: query.offset,
+                limit: query.limit,
             }),
         );
     }

@@ -8,11 +8,16 @@ import { CreateLocationCommand } from '@/modules/location/applications/commands/
 import { FindLocationByUserIdAndNameOrNullQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.query';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
+interface IInput {
+    userId: string;
+    name: string;
+}
+
 @Injectable()
-export class CreateLocationService implements IServiceHandler {
+export class CreateLocationService implements IService<IInput, IdEntity> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
@@ -20,11 +25,16 @@ export class CreateLocationService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(userId: string, name: string): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IdEntity> {
         const location = await this.queryBus.execute<
             FindLocationByUserIdAndNameOrNullQuery,
             ISelectLocation | null
-        >(new FindLocationByUserIdAndNameOrNullQuery({ userId, name }));
+        >(
+            new FindLocationByUserIdAndNameOrNullQuery({
+                userId: input.userId,
+                name: input.name,
+            }),
+        );
 
         if (!location) {
             const createdLocation = await this.commandBus.execute<
@@ -32,8 +42,8 @@ export class CreateLocationService implements IServiceHandler {
                 ISelectLocation
             >(
                 new CreateLocationCommand({
-                    name,
-                    userId,
+                    name: input.name,
+                    userId: input.userId,
                     createdAt: getCurrentUTCTimestamp(),
                     updatedAt: getCurrentUTCTimestamp(),
                 }),
