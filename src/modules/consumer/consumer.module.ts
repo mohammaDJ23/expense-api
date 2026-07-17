@@ -41,9 +41,10 @@ import { ConsumerElasticsearchQuery } from '@/modules/consumer/infrastructure/el
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
 import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
 import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1.controller';
+import { OutboxModule } from '@/modules/outbox/outbox.module';
 
 @Module({
-    imports: [CqrsModule, AuthenticationModule, ElasticsearchModule],
+    imports: [CqrsModule, AuthenticationModule, ElasticsearchModule, OutboxModule],
     controllers: [ConsumerController],
     providers: [
         CreateConsumerService,
