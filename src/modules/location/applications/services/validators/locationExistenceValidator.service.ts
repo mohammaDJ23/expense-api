@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { ExistsLocationByUserIdAndIdQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.query';
@@ -22,7 +22,7 @@ export class LocationExistenceValidatorService implements IValidatorService<IInp
             }),
         );
         if (!exists) {
-            throw new BadRequestException('Could not found the location');
+            throw new NotFoundException('Could not found the location');
         }
     }
 }

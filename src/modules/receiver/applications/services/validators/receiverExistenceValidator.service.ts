@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { ExistsReceiverByUserIdAndIdQuery } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.query';
@@ -22,7 +22,7 @@ export class ReceiverExistenceValidatorService implements IValidatorService<IInp
             }),
         );
         if (!exists) {
-            throw new BadRequestException('Could not found the receiver');
+            throw new NotFoundException('Could not found the receiver');
         }
     }
 }

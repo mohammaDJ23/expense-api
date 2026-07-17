@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { ExistsConsumerByUserIdAndExcludingIdAndNameQuery } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.query';
@@ -27,7 +27,7 @@ export class ConsumerUniqueNameValidatorService implements IValidatorService<IIn
             }),
         );
         if (exists) {
-            throw new BadRequestException('The consumer already exists');
+            throw new ConflictException('The consumer already exists');
         }
     }
 }

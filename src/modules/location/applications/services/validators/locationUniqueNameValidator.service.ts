@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { ExistsLocationByUserIdAndExcludingIdAndNameQuery } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.query';
@@ -27,7 +27,7 @@ export class LocationUniqueNameValidatorService implements IValidatorService<IIn
             }),
         );
         if (exists) {
-            throw new BadRequestException('The location already exists');
+            throw new ConflictException('The location already exists');
         }
     }
 }
