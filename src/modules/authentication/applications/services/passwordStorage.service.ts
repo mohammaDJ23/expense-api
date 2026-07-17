@@ -9,12 +9,7 @@ export class PasswordStorageService {
 
     async set(key: string, value: string): Promise<void> {
         const redis = this.redisService.getOrThrow();
-        await redis.setex(
-            `${this.prefixKey}:${key}`,
-            // this time should be syncing with the token expiration time
-            1 * 60 * 10,
-            value,
-        );
+        await redis.setex(`${this.prefixKey}:${key}`, 1 * 60 * 10, value);
     }
 
     get(key: string): Promise<string | null> {

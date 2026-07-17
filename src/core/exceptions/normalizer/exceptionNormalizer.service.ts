@@ -11,7 +11,6 @@ import type { IExceptionNormalizerStrategy } from './exceptionNormalizerStrategy
 
 @Injectable()
 export class ExceptionNormalizerService {
-    // eslint-disable-next-line max-params
     constructor(
         private readonly httpExceptionNormalizer: HttpExceptionNormalizerStrategy,
         private readonly errorExceptionNormalizer: ErrorExceptionNormalizerStrategy,

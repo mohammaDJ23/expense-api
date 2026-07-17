@@ -35,8 +35,7 @@ export class KafkaBatchParserService implements IService<Batch, IMessageBatch[]>
             throw new InternalServerErrorException(`Missing kafka headers`);
         }
 
-        // eslint-disable-next-line security/detect-object-injection
-        const value = headers[key];
+        const value = headers[key as keyof typeof headers];
 
         if (!value) {
             throw new InternalServerErrorException(`Missing ${String(key)} header`);

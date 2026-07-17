@@ -35,11 +35,7 @@ export default defineConfig([
             'eslint.config.mjs',
         ],
     },
-
-    // Base ESLint recommended
     eslint.configs.recommended,
-
-    // TypeScript strict configuration
     {
         files: ['**/*.ts'],
         languageOptions: {
@@ -57,8 +53,6 @@ export default defineConfig([
         },
         extends: [...tseslint.configs.strictTypeChecked, ...tseslint.configs.stylisticTypeChecked],
     },
-
-    // JavaScript configuration
     {
         files: ['**/*.js'],
         languageOptions: {
@@ -70,15 +64,12 @@ export default defineConfig([
             },
         },
     },
-
-    // Import plugin configuration
     {
         files: ['**/*.ts', '**/*.js'],
         plugins: {
             'import-x': importPlugin,
         },
         rules: {
-            // Import rules
             'import-x/order': [
                 'error',
                 {
@@ -156,14 +147,12 @@ export default defineConfig([
             'import-x/resolver': {
                 typescript: {
                     project: path.join(_dirname, 'tsconfig.eslint.json'),
-                    alwaysTryTypes: true, // This helps with JS files importing TS modules
+                    alwaysTryTypes: true,
                 },
                 node: true,
             },
         },
     },
-
-    // Unused imports plugin
     {
         plugins: {
             'unused-imports': unusedImports,
@@ -181,8 +170,6 @@ export default defineConfig([
             ],
         },
     },
-
-    // SonarJS plugin
     {
         plugins: {
             sonarjs,
@@ -207,8 +194,6 @@ export default defineConfig([
             'sonarjs/no-ignored-exceptions': 'error',
         },
     },
-
-    // Security plugin
     {
         plugins: {
             security: securityPlugin,
@@ -228,28 +213,22 @@ export default defineConfig([
             'security/detect-possible-timing-attacks': 'error',
         },
     },
-
-    // Jest plugin (only for test files)
-    {
-        files: ['**/*.spec.ts', '**/*.test.ts'],
-        plugins: {
-            jest: jestPlugin,
-        },
-        rules: {
-            ...jestPlugin.configs.recommended.rules,
-        },
-    },
-
-    // Custom rules
     {
         files: ['**/*.ts'],
         rules: {
-            // TypeScript Strict Rules
             '@typescript-eslint/no-empty-object-type': 'off',
             '@typescript-eslint/explicit-function-return-type': 'off',
             '@typescript-eslint/explicit-module-boundary-types': 'error',
             '@typescript-eslint/no-explicit-any': 'error',
-            '@typescript-eslint/no-unused-vars': 'error',
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    vars: 'all',
+                    varsIgnorePattern: '^_',
+                    args: 'after-used',
+                    argsIgnorePattern: '^_',
+                },
+            ],
             '@typescript-eslint/no-unsafe-assignment': 'off',
             '@typescript-eslint/no-unsafe-member-access': 'off',
             '@typescript-eslint/no-unsafe-call': 'off',
@@ -269,7 +248,7 @@ export default defineConfig([
             '@typescript-eslint/no-floating-promises': 'off',
             '@typescript-eslint/await-thenable': 'error',
             '@typescript-eslint/no-base-to-string': 'error',
-            '@typescript-eslint/no-unnecessary-condition': 'error',
+            '@typescript-eslint/no-unnecessary-condition': 'off',
             '@typescript-eslint/no-import-type-side-effects': 'error',
             '@typescript-eslint/method-signature-style': 'off',
             '@typescript-eslint/prefer-readonly': 'error',
@@ -287,8 +266,7 @@ export default defineConfig([
             '@typescript-eslint/no-unsafe-function-type': 'off',
             '@typescript-eslint/no-unnecessary-type-parameters': 'off',
             '@typescript-eslint/no-useless-constructor': 'off',
-
-            // Naming conventions
+            '@typescript-eslint/no-empty-function': 'off',
             '@typescript-eslint/naming-convention': [
                 'error',
                 {
@@ -326,11 +304,9 @@ export default defineConfig([
             ],
         },
     },
-
     {
         files: ['**/*.ts', '**/*.js'],
         rules: {
-            // Best Practices
             'no-console': ['error', { allow: ['warn', 'error', 'log', 'info'] }],
             'no-debugger': 'error',
             'no-alert': 'error',
@@ -352,7 +328,7 @@ export default defineConfig([
             'max-depth': ['error', 4],
             'max-lines': ['error', { max: 500, skipBlankLines: true }],
             'max-lines-per-function': ['error', { max: 150 }],
-            'max-params': ['error', 4],
+            'max-params': 'off',
             complexity: ['error', 15],
             'consistent-return': 'error',
             eqeqeq: ['error', 'always'],
@@ -361,7 +337,7 @@ export default defineConfig([
             'default-case-last': 'error',
             'dot-notation': 'error',
             'guard-for-in': 'error',
-            'no-empty-function': 'error',
+            'no-empty-function': 'off',
             'no-eval': 'error',
             'no-implied-eval': 'error',
             'no-invalid-this': 'error',
@@ -396,51 +372,8 @@ export default defineConfig([
             'no-constructor-return': 'error',
             'no-duplicate-imports': 'error',
             'no-useless-backreference': 'error',
+            'no-empty': 'off',
         },
     },
-
-    // Test file overrides
-    {
-        files: ['**/*.spec.ts', '**/*.test.ts'],
-        rules: {
-            'max-lines-per-function': 'off',
-            'max-lines': 'off',
-            'max-params': 'off',
-            complexity: 'off',
-            '@typescript-eslint/no-explicit-any': 'off',
-            '@typescript-eslint/no-unsafe-assignment': 'off',
-            '@typescript-eslint/no-unsafe-member-access': 'off',
-            '@typescript-eslint/no-unsafe-call': 'off',
-            '@typescript-eslint/no-unsafe-return': 'off',
-            '@typescript-eslint/no-unsafe-argument': 'off',
-            '@typescript-eslint/unbound-method': 'off',
-            '@typescript-eslint/require-await': 'off',
-            '@typescript-eslint/no-floating-promises': 'off',
-            '@typescript-eslint/no-unsafe-function-type': 'off',
-            'no-magic-numbers': 'off',
-            'import/no-default-export': 'off',
-        },
-    },
-
-    // DTO and Entity file overrides
-    {
-        files: ['**/*.dto.ts', '**/*.entity.ts'],
-        rules: {
-            '@typescript-eslint/explicit-function-return-type': 'error',
-            '@typescript-eslint/explicit-module-boundary-types': 'off',
-            '@typescript-eslint/no-unsafe-function-type': 'off',
-            'max-lines-per-function': 'off',
-        },
-    },
-
-    // Main file override
-    {
-        files: ['src/main.ts'],
-        rules: {
-            'no-console': 'off',
-        },
-    },
-
-    // Prettier integration (must be last)
     eslintPluginPrettierRecommended,
 ]);

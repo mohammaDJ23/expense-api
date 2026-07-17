@@ -19,7 +19,6 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 
 @Injectable()
 export class LocalSignupService implements IService<LocalSignupRequestDto, boolean> {
-    // eslint-disable-next-line max-params
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,

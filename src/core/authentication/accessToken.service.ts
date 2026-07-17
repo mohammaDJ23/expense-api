@@ -24,7 +24,6 @@ export class AccessTokenService {
     }
 
     verify(payload: IAccessTokenPayload): IAccessTokenPayload {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (payload.type === 'ACCESS_TOKEN') {
             return payload;
         }

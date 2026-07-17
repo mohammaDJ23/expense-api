@@ -58,7 +58,6 @@ export class LocalSendVerificationService implements IService<
             } catch {
                 try {
                     await this.verificationStorageService.delete(user.email);
-                    // eslint-disable-next-line no-empty
                 } catch {}
 
                 throw new ServiceUnavailableException('Could not send you a verification link');

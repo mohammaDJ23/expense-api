@@ -18,7 +18,6 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 
 @Injectable()
 export class LocalResetPasswordService implements IService<LocalResetPasswordRequestDto, boolean> {
-    // eslint-disable-next-line max-params
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
@@ -37,7 +36,6 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
                 let storedToken: string | null = null;
                 try {
                     storedToken = await this.passwordStorageService.get(payload.email);
-                    // eslint-disable-next-line no-empty
                 } catch {}
                 if (storedToken !== input.token) {
                     throw new BadRequestException();
@@ -76,7 +74,6 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
                 this.resetPasswordMailerService.execute(user);
 
                 await this.passwordStorageService.delete(user.email);
-                // eslint-disable-next-line no-empty
             } catch {}
         }
 
