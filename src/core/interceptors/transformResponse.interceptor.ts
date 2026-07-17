@@ -7,6 +7,7 @@ import {
     type NestInterceptor,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+// eslint-disable-next-line import-x/no-deprecated
 import { map } from 'rxjs/operators';
 
 import {
@@ -46,6 +47,7 @@ export class TransformResponseInterceptor<T> implements NestInterceptor<T, HttpR
         }
 
         return next.handle().pipe(
+            // eslint-disable-next-line import-x/no-deprecated
             map((data): HttpResponseEntity<T> => {
                 return HttpResponseEntity.success<T>({
                     message,
