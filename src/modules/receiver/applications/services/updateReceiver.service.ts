@@ -9,12 +9,17 @@ import { UpdateReceiverCommand } from '@/modules/receiver/applications/commands/
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 import { ReceiverUniqueNameValidatorService } from '@/modules/receiver/applications/services/validators/receiverUniqueNameValidator.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/updateReceiver.request.dto';
 
+interface IInput {
+    userId: string;
+    body: UpdateReceiverRequestDto;
+}
+
 @Injectable()
-export class UpdateReceiverService implements IServiceHandler {
+export class UpdateReceiverService implements IService<IInput, IdEntity> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
@@ -23,13 +28,16 @@ export class UpdateReceiverService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(userId: string, data: UpdateReceiverRequestDto): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IdEntity> {
         await Promise.all([
-            this.receiverExistenceValidatorService.validate({ userId, id: data.id }),
+            this.receiverExistenceValidatorService.validate({
+                userId: input.userId,
+                id: input.body.id,
+            }),
             this.receiverUniqueNameValidatorService.validate({
-                userId,
-                excludingId: data.id,
-                name: data.name,
+                userId: input.userId,
+                excludingId: input.body.id,
+                name: input.body.name,
             }),
         ]);
 
@@ -38,9 +46,9 @@ export class UpdateReceiverService implements IServiceHandler {
             ISelectReceiver
         >(
             new UpdateReceiverCommand({
-                id: data.id,
-                name: data.name,
-                userId,
+                id: input.body.id,
+                name: input.body.name,
+                userId: input.userId,
                 updatedAt: getCurrentUTCTimestamp(),
             }),
         );

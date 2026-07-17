@@ -8,11 +8,16 @@ import { OutboxEventPublisherService } from '@/modules/outbox/applications/servi
 import { DeleteReceiverCommand } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.command';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
+interface IInput {
+    userId: string;
+    receiverId: string;
+}
+
 @Injectable()
-export class DeleteReceiverService implements IServiceHandler {
+export class DeleteReceiverService implements IService<IInput, IdEntity> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
@@ -20,16 +25,19 @@ export class DeleteReceiverService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(userId: string, receiverId: string): Promise<IdEntity> {
-        await this.receiverExistenceValidatorService.validate({ userId, id: receiverId });
+    async execute(input: IInput): Promise<IdEntity> {
+        await this.receiverExistenceValidatorService.validate({
+            userId: input.userId,
+            id: input.receiverId,
+        });
 
         const deletedReceiver = await this.commandBus.execute<
             DeleteReceiverCommand,
             ISelectReceiver
         >(
             new DeleteReceiverCommand({
-                userId,
-                id: receiverId,
+                userId: input.userId,
+                id: input.receiverId,
             }),
         );
 

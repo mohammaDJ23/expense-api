@@ -8,11 +8,16 @@ import { OutboxEventPublisherService } from '@/modules/outbox/applications/servi
 import { CreateReceiverCommand } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.command';
 import { FindReceiverByUserIdAndNameOrNullQuery } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndNameOrNull/findReceiverByUserIdAndNameOrNull.query';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
+interface IInput {
+    userId: string;
+    name: string;
+}
+
 @Injectable()
-export class CreateReceiverService implements IServiceHandler {
+export class CreateReceiverService implements IService<IInput, IdEntity> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
@@ -20,11 +25,16 @@ export class CreateReceiverService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(userId: string, name: string): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IdEntity> {
         const receiver = await this.queryBus.execute<
             FindReceiverByUserIdAndNameOrNullQuery,
             ISelectReceiver | null
-        >(new FindReceiverByUserIdAndNameOrNullQuery({ userId, name }));
+        >(
+            new FindReceiverByUserIdAndNameOrNullQuery({
+                userId: input.userId,
+                name: input.name,
+            }),
+        );
 
         if (!receiver) {
             const createdReceiver = await this.commandBus.execute<
@@ -32,8 +42,8 @@ export class CreateReceiverService implements IServiceHandler {
                 ISelectReceiver
             >(
                 new CreateReceiverCommand({
-                    name,
-                    userId,
+                    name: input.name,
+                    userId: input.userId,
                     createdAt: getCurrentUTCTimestamp(),
                     updatedAt: getCurrentUTCTimestamp(),
                 }),
