@@ -1,10 +1,10 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Injectable } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { CreateLocationCommand } from '@/modules/location/applications/commands/createLocation/createLocation.command';
-import { FindLocationByUserIdAndNameOrNullQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.query';
+import { LocationNameAvailableValidatorService } from '@/modules/location/applications/services/validators/locationNameAvailableValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IId } from '@/core/interfaces/id.interface';
@@ -19,49 +19,40 @@ interface IInput {
 @Injectable()
 export class CreateLocationService implements IService<IInput, IId> {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
+        private readonly locationNameAvailableValidatorService: LocationNameAvailableValidatorService,
     ) {}
 
     @Transactional()
     async execute(input: IInput): Promise<IId> {
-        const location = await this.queryBus.execute<
-            FindLocationByUserIdAndNameOrNullQuery,
-            ISelectLocation | null
+        await this.locationNameAvailableValidatorService.validate({
+            userId: input.userId,
+            name: input.name,
+        });
+
+        const createdLocation = await this.commandBus.execute<
+            CreateLocationCommand,
+            ISelectLocation
         >(
-            new FindLocationByUserIdAndNameOrNullQuery({
-                userId: input.userId,
+            new CreateLocationCommand({
                 name: input.name,
+                userId: input.userId,
+                createdAt: getCurrentUTCTimestamp(),
+                updatedAt: getCurrentUTCTimestamp(),
             }),
         );
 
-        if (!location) {
-            const createdLocation = await this.commandBus.execute<
-                CreateLocationCommand,
-                ISelectLocation
-            >(
-                new CreateLocationCommand({
-                    name: input.name,
-                    userId: input.userId,
-                    createdAt: getCurrentUTCTimestamp(),
-                    updatedAt: getCurrentUTCTimestamp(),
-                }),
-            );
+        await this.outboxEventPublisherService.publish({
+            aggregateId: createdLocation.id,
+            aggregateType: 'locations',
+            eventType: 'created',
+            payload: createdLocation,
+            createdAt: getCurrentUTCTimestamp(),
+        });
 
-            await this.outboxEventPublisherService.publish({
-                aggregateId: createdLocation.id,
-                aggregateType: 'locations',
-                eventType: 'created',
-                payload: createdLocation,
-                createdAt: getCurrentUTCTimestamp(),
-            });
-
-            return {
-                id: createdLocation.id,
-            };
-        }
-
-        throw new ConflictException('You already have the location');
+        return {
+            id: createdLocation.id,
+        };
     }
 }
