@@ -2,6 +2,6 @@ interface IProps {
     email: string;
 }
 
-export class IsUserExistsByEmailQuery {
+export class ExistsUserByEmailQuery {
     constructor(public readonly props: IProps) {}
 }

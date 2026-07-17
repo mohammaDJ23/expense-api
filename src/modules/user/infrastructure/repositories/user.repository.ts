@@ -55,10 +55,6 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    isExistsByEmail(email: string): Promise<boolean> {
-        return toIsExistsByCount(this.drizzleRepository.db.$count(users, eq(users.email, email)));
-    }
-
     findByEmailOrNull(email: string): Promise<ISelectUser | null> {
         return toEntityOrNull(
             this.drizzleRepository.db.select().from(users).where(eq(users.email, email)).execute(),
@@ -92,5 +88,9 @@ export class UserRepository implements IUserRepository {
 
     existsById(id: string): Promise<boolean> {
         return toIsExistsByCount(this.drizzleRepository.db.$count(users, eq(users.id, id)));
+    }
+
+    existsByEmail(email: string): Promise<boolean> {
+        return toIsExistsByCount(this.drizzleRepository.db.$count(users, eq(users.email, email)));
     }
 }
