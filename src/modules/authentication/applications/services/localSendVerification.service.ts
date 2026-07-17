@@ -10,12 +10,15 @@ import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class LocalSendVerificationService implements IServiceHandler {
+export class LocalSendVerificationService implements IService<
+    LocalSendVerificationRequestDto,
+    boolean
+> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly verificationMailerService: VerificationMailerService,
@@ -23,9 +26,9 @@ export class LocalSendVerificationService implements IServiceHandler {
         private readonly verificationStorageService: VerificationStorageService,
     ) {}
 
-    async execute(data: LocalSendVerificationRequestDto): Promise<boolean> {
+    async execute(input: LocalSendVerificationRequestDto): Promise<boolean> {
         try {
-            const storedToken = await this.verificationStorageService.get(data.email);
+            const storedToken = await this.verificationStorageService.get(input.email);
             if (storedToken) {
                 return true;
             }
@@ -33,36 +36,33 @@ export class LocalSendVerificationService implements IServiceHandler {
             throw new ProcessFailedInternalServerErrorException();
         }
 
-        {
-            const user = await this.queryBus.execute<
-                FindUserByEmailOrNullQuery,
-                ISelectUser | null
-            >(new FindUserByEmailOrNullQuery({ email: data.email }));
+        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+            new FindUserByEmailOrNullQuery({ email: input.email }),
+        );
 
-            if (!user) {
-                return true;
-            }
-
-            if (user.authProvider !== AuthProvider.LOCAL) {
-                throw new LocalAuthProviderForbiddenException();
-            }
-
-            if (!user.verifiedAt) {
-                try {
-                    const token = this.verificationTokenService.sign(user);
-                    await this.verificationStorageService.set(user.email, token);
-                    await this.verificationMailerService.execute(user, token);
-                } catch {
-                    try {
-                        await this.verificationStorageService.delete(user.email);
-                        // eslint-disable-next-line no-empty
-                    } catch {}
-
-                    throw new ServiceUnavailableException('Could not send you a verification link');
-                }
-            }
-
+        if (!user) {
             return true;
         }
+
+        if (user.authProvider !== AuthProvider.LOCAL) {
+            throw new LocalAuthProviderForbiddenException();
+        }
+
+        if (!user.verifiedAt) {
+            try {
+                const token = this.verificationTokenService.sign(user);
+                await this.verificationStorageService.set(user.email, token);
+                await this.verificationMailerService.execute({ user, token });
+            } catch {
+                try {
+                    await this.verificationStorageService.delete(user.email);
+                    // eslint-disable-next-line no-empty
+                } catch {}
+
+                throw new ServiceUnavailableException('Could not send you a verification link');
+            }
+        }
+
+        return true;
     }
 }
