@@ -17,6 +17,7 @@ import { UpdateConsumerMessageElasticsearchProcessor } from '@/modules/consumer/
 import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
 import { ExistsConsumerByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.handler';
 import { ExistsConsumerByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndIds/existsConsumerByUserIdAndIds.handler';
+import { ExistsConsumerByUserIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndName/existsConsumerByUserIdAndName.handler';
 import { FindConsumerByUserIdAndIdOrNullHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndIdOrNull/findConsumerByUserIdAndIdOrNull.handler';
 import { FindConsumerByUserIdAndIdOrThrowHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndIdOrThrow/findConsumerByUserIdAndIdOrThrow.handler';
 import { FindConsumerByUserIdAndNameOrNullHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndNameOrNull/findConsumerByUserIdAndNameOrNull.handler';
@@ -53,6 +54,7 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
         FindManyConsumersByUserIdAndIdsHandler,
         ExistsConsumerByUserIdAndIdsHandler,
         ExistsConsumerByUserIdAndIdHandler,
+        ExistsConsumerByUserIdAndNameHandler,
         DeleteConsumerHandler,
         UpdateConsumerHandler,
         FindConsumerByUserIdAndNameOrNullHandler,
