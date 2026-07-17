@@ -45,8 +45,8 @@ export class ConsumerController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_CREATE_CONSUMER_MESSAGE, HttpStatus.CREATED)
     create(
-        @Body() body: CreateConsumerRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Body() body: CreateConsumerRequestDto,
     ): Promise<IdEntity> {
         return this.consumerService.create(user.id, body.name);
     }
@@ -56,8 +56,8 @@ export class ConsumerController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_UPDATE_CONSUMER_MESSAGE, HttpStatus.OK)
     update(
-        @Body() body: UpdateConsumerRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Body() body: UpdateConsumerRequestDto,
     ): Promise<IdEntity> {
         return this.consumerService.update(user.id, body);
     }
@@ -67,8 +67,8 @@ export class ConsumerController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_DELETE_CONSUMER_MESSAGE, HttpStatus.OK)
     delete(
-        @Param() param: DeleteConsumerRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Param() param: DeleteConsumerRequestDto,
     ): Promise<IdEntity> {
         return this.consumerService.delete(user.id, param.id);
     }
@@ -78,8 +78,8 @@ export class ConsumerController {
     @SerializerInterceptor(ConsumerResponseDto)
     @HttpResponse(SUCCESS_FIND_CONSUMERS_MESSAGE, HttpStatus.OK)
     findListByUserId(
-        @Query() query: FindConsumerListRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Query() query: FindConsumerListRequestDto,
     ): Promise<ISelectConsumer[]> {
         return this.consumerService.findListByUserId(user.id, query);
     }
@@ -89,8 +89,8 @@ export class ConsumerController {
     @SerializerInterceptor(ConsumerResponseDto)
     @HttpResponse(SUCCESS_FIND_CONSUMER_MESSAGE, HttpStatus.OK)
     findByUserIdAndId(
-        @Param() param: FindConsumerByIdRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Param() param: FindConsumerByIdRequestDto,
     ): Promise<ISelectConsumer> {
         return this.consumerService.findByUserIdAndId(user.id, param.id);
     }

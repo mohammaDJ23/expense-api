@@ -8,11 +8,16 @@ import { DeleteConsumerCommand } from '@/modules/consumer/applications/commands/
 import { ConsumerExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumerExistenceValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
+interface IInput {
+    userId: string;
+    consumerId: string;
+}
+
 @Injectable()
-export class DeleteConsumerService implements IServiceHandler {
+export class DeleteConsumerService implements IService<IInput, IdEntity> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
@@ -20,16 +25,19 @@ export class DeleteConsumerService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(userId: string, consumerId: string): Promise<IdEntity> {
-        await this.consumerExistenceValidatorService.validate({ userId, id: consumerId });
+    async execute(input: IInput): Promise<IdEntity> {
+        await this.consumerExistenceValidatorService.validate({
+            userId: input.userId,
+            id: input.consumerId,
+        });
 
         const deletedConsumer = await this.commandBus.execute<
             DeleteConsumerCommand,
             ISelectConsumer
         >(
             new DeleteConsumerCommand({
-                userId,
-                id: consumerId,
+                userId: input.userId,
+                id: input.consumerId,
             }),
         );
 

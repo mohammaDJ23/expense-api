@@ -9,12 +9,17 @@ import { ConsumerExistenceValidatorService } from '@/modules/consumer/applicatio
 import { ConsumerUniqueNameValidatorService } from '@/modules/consumer/applications/services/validators/consumerUniqueNameValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { UpdateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/updateConsumer.request.dto';
 
+interface IInput {
+    userId: string;
+    body: UpdateConsumerRequestDto;
+}
+
 @Injectable()
-export class UpdateConsumerService implements IServiceHandler {
+export class UpdateConsumerService implements IService<IInput, IdEntity> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
@@ -23,13 +28,16 @@ export class UpdateConsumerService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(userId: string, data: UpdateConsumerRequestDto): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IdEntity> {
         await Promise.all([
-            this.consumerExistenceValidatorService.validate({ userId, id: data.id }),
+            this.consumerExistenceValidatorService.validate({
+                userId: input.userId,
+                id: input.body.id,
+            }),
             this.ConsumerUniqueNameValidatorService.validate({
-                userId,
-                excludingId: data.id,
-                name: data.name,
+                userId: input.userId,
+                excludingId: input.body.id,
+                name: input.body.name,
             }),
         ]);
 
@@ -38,9 +46,9 @@ export class UpdateConsumerService implements IServiceHandler {
             ISelectConsumer
         >(
             new UpdateConsumerCommand({
-                id: data.id,
-                name: data.name,
-                userId,
+                id: input.body.id,
+                name: input.body.name,
+                userId: input.userId,
                 updatedAt: getCurrentUTCTimestamp(),
             }),
         );

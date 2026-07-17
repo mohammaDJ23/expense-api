@@ -23,15 +23,15 @@ export class ConsumerService {
     ) {}
 
     create(userId: string, name: string): Promise<IdEntity> {
-        return this.createConsumerService.execute(userId, name);
+        return this.createConsumerService.execute({ userId, name });
     }
 
-    update(userId: string, data: UpdateConsumerRequestDto): Promise<IdEntity> {
-        return this.updateConsumerService.execute(userId, data);
+    update(userId: string, body: UpdateConsumerRequestDto): Promise<IdEntity> {
+        return this.updateConsumerService.execute({ userId, body });
     }
 
     delete(userId: string, consumerId: string): Promise<IdEntity> {
-        return this.deleteConsumerService.execute(userId, consumerId);
+        return this.deleteConsumerService.execute({ userId, consumerId });
     }
 
     findListByUserId(userId: string, data: FindConsumerListRequestDto): Promise<ISelectConsumer[]> {
