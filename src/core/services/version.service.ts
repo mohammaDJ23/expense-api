@@ -31,7 +31,6 @@ export class VersionService {
                     continue;
                 }
             }
-            // eslint-disable-next-line no-empty
         } catch {}
 
         throw new Error('Unable to find the app version.');

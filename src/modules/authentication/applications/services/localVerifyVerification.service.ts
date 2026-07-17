@@ -20,7 +20,6 @@ export class LocalVerifyVerificationService implements IService<
     LocalVerifyVerificationRequestDto,
     boolean
 > {
-    // eslint-disable-next-line max-params
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
@@ -38,7 +37,6 @@ export class LocalVerifyVerificationService implements IService<
                 let storedToken: string | null = null;
                 try {
                     storedToken = await this.verificationStorageService.get(payload.email);
-                    // eslint-disable-next-line no-empty
                 } catch {}
                 if (storedToken !== input.token) {
                     throw new BadRequestException();
@@ -75,7 +73,6 @@ export class LocalVerifyVerificationService implements IService<
                 this.verifiedVerificationMailerService.execute(user);
 
                 await this.verificationStorageService.delete(user.email);
-                // eslint-disable-next-line no-empty
             } catch {}
         }
 

@@ -18,7 +18,6 @@ export class PasswordTokenService {
                 type: 'NEW_PASSWORD',
                 issuedAt: getCurrentUTCTimestamp(),
             },
-            // this time should be syncing with the ttl of redis
             { expiresIn: '10m' },
         );
     }
@@ -26,7 +25,7 @@ export class PasswordTokenService {
     verify(token: string): INewPasswordPayload {
         {
             const payload = this.jwtService.verify<INewPasswordPayload>(token);
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
             if (payload.type === 'NEW_PASSWORD') {
                 return payload;
             }

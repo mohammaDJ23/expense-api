@@ -1,5 +1,4 @@
 import { plainToClass } from 'class-transformer';
-// eslint-disable-next-line import-x/no-deprecated
 import { map, type Observable } from 'rxjs';
 
 import type { TClassConstructor } from '@/common/common.types';
@@ -10,7 +9,6 @@ export class SerializerInterceptor implements NestInterceptor {
 
     intercept(_: ExecutionContext, next: CallHandler): Observable<unknown> {
         return next.handle().pipe(
-            // eslint-disable-next-line import-x/no-deprecated
             map((data: unknown) => {
                 return this.transformValue(data);
             }),

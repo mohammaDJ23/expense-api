@@ -20,7 +20,6 @@ import type { Response } from 'express';
 
 @Injectable()
 export class AuthenticationService {
-    // eslint-disable-next-line max-params
     constructor(
         private readonly localSignupService: LocalSignupService,
         private readonly localLoginService: LocalLoginService,

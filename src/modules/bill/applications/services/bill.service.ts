@@ -15,7 +15,6 @@ import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateB
 
 @Injectable()
 export class BillService {
-    // eslint-disable-next-line max-params
     constructor(
         private readonly createBillService: CreateBillService,
         private readonly updateBillService: UpdateBillService,

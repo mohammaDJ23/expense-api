@@ -27,7 +27,6 @@ interface IInput {
 
 @Injectable()
 export class UpdateBillService implements IService<IInput, IId> {
-    // eslint-disable-next-line max-params
     constructor(
         private readonly commandBus: CommandBus,
         private readonly findBillByUserIdAndIdOrThrowService: FindBillByUserIdAndIdOrThrowService,
