@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { IMessageBatch } from '@/core/message/messageBatch.interface';
 import type { IMessagePayload } from '@/core/message/messagePayload.interface';
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
@@ -9,11 +9,11 @@ import type { TOutboxEventType } from '@/modules/outbox/domain/interfaces/outbox
 import type { Batch, IHeaders, KafkaMessage } from 'kafkajs';
 
 @Injectable()
-export class KafkaBatchParserService implements IServiceHandler {
-    execute<T = object>(batch: Batch): IMessageBatch<T>[] {
+export class KafkaBatchParserService implements IService<Batch, IMessageBatch[]> {
+    execute<T = object>(input: Batch): IMessageBatch<T>[] {
         const messages: IMessageBatch<T>[] = [];
 
-        for (const message of batch.messages) {
+        for (const message of input.messages) {
             messages.push({
                 aggregateType: this.getRequiredHeader<TOutboxEventAggregateType>(
                     message.headers,
