@@ -3,6 +3,7 @@ import type { ICreateRepository } from '@/core/interfaces/repositories/createRep
 import type { IDeleteByUserIdAndIdRepository } from '@/core/interfaces/repositories/deleteByUserIdAndIdRepository.interface';
 import type { IExistsByUserIdAndExcludingIdAndNameRepository } from '@/core/interfaces/repositories/existsByUserIdAndExcludingIdAndNameRepository.interface';
 import type { IExistsByUserIdAndIdRepository } from '@/core/interfaces/repositories/existsByUserIdAndIdRepository.interface';
+import type { IExistsByUserIdAndNameRepository } from '@/core/interfaces/repositories/existsByUserIdAndNameRepository.interface';
 import type { IFindByUserIdAndIdOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrNullRepository.interface';
 import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrThrowRepository.interface';
 import type { IFindByUserIdAndNameOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndNameOrNullRepository.interface';
@@ -25,4 +26,5 @@ export interface ILocationRepository
         IFindListByUserIdRepository<IList, ISelectLocation>,
         IFindByUserIdAndNameOrNullRepository<ISelectLocation>,
         IExistsByUserIdAndIdRepository,
-        IExistsByUserIdAndExcludingIdAndNameRepository {}
+        IExistsByUserIdAndExcludingIdAndNameRepository,
+        IExistsByUserIdAndNameRepository {}

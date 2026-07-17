@@ -131,4 +131,13 @@ export class LocationRepository implements ILocationRepository {
             ),
         );
     }
+
+    existsByUserIdAndName(userId: string, name: string): Promise<boolean> {
+        return toExistsByCount(
+            this.drizzleRepository.db.$count(
+                locations,
+                and(eq(locations.userId, userId), eq(locations.name, name)),
+            ),
+        );
+    }
 }
