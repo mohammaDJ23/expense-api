@@ -5,7 +5,7 @@ import { ConsumerSearchService } from '@/modules/consumer/applications/services/
 import { LocationSearchService } from '@/modules/location/applications/services/search/locationSearch.service';
 import { ReceiverSearchService } from '@/modules/receiver/applications/services/search/receiverSearch.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IServiceHandler } from '@/core/interfaces/service.interface';
 import type { ISearchOrchestrator } from '@/modules/search/domain/interface/searchOrchestrator.interface';
 
 @Injectable()

@@ -5,7 +5,7 @@ import { MAX_LIST_LIMIT } from '@/common/common.constants';
 import { SearchAggregateOrchestratorService } from './searchAggregateOrchestrator.service';
 import { SearchOrchestratorService } from './searchOrchestrator.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IServiceHandler } from '@/core/interfaces/service.interface';
 import type { ISearch } from '@/modules/search/domain/interface/search.interface';
 import type { SearchRequestDto } from '@/modules/search/interfaces/dtos/search.request.dto';
 
