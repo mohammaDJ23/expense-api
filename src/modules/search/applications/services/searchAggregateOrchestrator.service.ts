@@ -5,7 +5,7 @@ import { ConsumerSearchAggregateService } from '@/modules/consumer/applications/
 import { LocationSearchAggregateService } from '@/modules/location/applications/services/search/locationSearchAggregate.service';
 import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/search/receiverSearchAggregate.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IServiceHandler } from '@/core/interfaces/service.interface';
 import type { ISearch } from '@/modules/search/domain/interface/search.interface';
 import type { ISearchOrchestrator } from '@/modules/search/domain/interface/searchOrchestrator.interface';
 

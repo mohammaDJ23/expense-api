@@ -8,7 +8,7 @@ import { CreateLocationCommand } from '@/modules/location/applications/commands/
 import { FindLocationByUserIdAndNameOrNullQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.query';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IServiceHandler } from '@/core/interfaces/service.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 @Injectable()

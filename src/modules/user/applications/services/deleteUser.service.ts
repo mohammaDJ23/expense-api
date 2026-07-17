@@ -5,7 +5,7 @@ import { IdEntity } from '@/core/entities/id.entity';
 import { DeleteUserCommand } from '@/modules/user/applications/commands/deleteUser/deleteUser.command';
 import { ExistsUserByIdQuery } from '@/modules/user/applications/queries/existsUserById/existsUserById.query';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IServiceHandler } from '@/core/interfaces/service.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()

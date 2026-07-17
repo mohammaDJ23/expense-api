@@ -5,7 +5,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { DeleteManyOutboxEventsByDateCommand } from '@/modules/outbox/applications/commands/deleteManyOutboxEventsByDate/deleteManyOutboxEventsByDate.command';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IServiceHandler } from '@/core/interfaces/service.interface';
 import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()

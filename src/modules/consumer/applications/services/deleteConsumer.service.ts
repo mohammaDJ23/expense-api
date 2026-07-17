@@ -8,7 +8,7 @@ import { DeleteConsumerCommand } from '@/modules/consumer/applications/commands/
 import { ConsumerExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumerExistenceValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IServiceHandler } from '@/core/interfaces/service.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 @Injectable()

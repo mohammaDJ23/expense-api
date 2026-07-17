@@ -4,7 +4,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { FindBillByUserIdAndIdOrThrowQuery } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.query';
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IServiceHandler } from '@/core/interfaces/service.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
