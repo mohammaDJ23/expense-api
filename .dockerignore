@@ -8,6 +8,7 @@ Dockerfile*
 .dockerignore
 .git
 .gitignore
+.gitattributes
 secrets
 TODO.txt
 /drizzle/
