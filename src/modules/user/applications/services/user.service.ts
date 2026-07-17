@@ -22,12 +22,12 @@ export class UserService {
         private readonly deleteUserService: DeleteUserService,
     ) {}
 
-    update(userId: string, data: UpdateUserRequestDto): Promise<IdEntity> {
-        return this.updateUserService.execute(userId, data);
+    update(userId: string, body: UpdateUserRequestDto): Promise<IdEntity> {
+        return this.updateUserService.execute({ userId, body });
     }
 
     delete(userId: string): Promise<IdEntity> {
-        return this.deleteUserService.execute(userId);
+        return this.deleteUserService.execute({ userId });
     }
 
     findList(query: FindUserListRequestDto): Promise<ISelectUser[]> {
@@ -39,9 +39,9 @@ export class UserService {
         );
     }
 
-    findById(id: string): Promise<ISelectUser> {
+    findById(userId: string): Promise<ISelectUser> {
         return this.queryBus.execute<FindUserByIdOrThrowQuery, ISelectUser>(
-            new FindUserByIdOrThrowQuery({ id }),
+            new FindUserByIdOrThrowQuery({ id: userId }),
         );
     }
 

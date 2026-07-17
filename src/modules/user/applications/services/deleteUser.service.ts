@@ -5,21 +5,25 @@ import { IdEntity } from '@/core/entities/id.entity';
 import { DeleteUserCommand } from '@/modules/user/applications/commands/deleteUser/deleteUser.command';
 import { ExistsUserByIdQuery } from '@/modules/user/applications/queries/existsUserById/existsUserById.query';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
+interface IInput {
+    userId: string;
+}
+
 @Injectable()
-export class DeleteUserService implements IServiceHandler {
+export class DeleteUserService implements IService<IInput, IdEntity> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
     ) {}
 
-    async execute(userId: string): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IdEntity> {
         {
             const isExists = await this.queryBus.execute<ExistsUserByIdQuery, boolean>(
                 new ExistsUserByIdQuery({
-                    id: userId,
+                    id: input.userId,
                 }),
             );
             if (!isExists) {
@@ -30,7 +34,7 @@ export class DeleteUserService implements IServiceHandler {
         {
             const deletedUser = await this.commandBus.execute<DeleteUserCommand, ISelectUser>(
                 new DeleteUserCommand({
-                    userId,
+                    userId: input.userId,
                 }),
             );
             return IdEntity.create(deletedUser.id);
