@@ -131,4 +131,13 @@ export class ReceiverRepository implements IReceiverRepository {
             ),
         );
     }
+
+    existsByUserIdAndName(userId: string, name: string): Promise<boolean> {
+        return toExistsByCount(
+            this.drizzleRepository.db.$count(
+                receivers,
+                and(eq(receivers.userId, userId), eq(receivers.name, name)),
+            ),
+        );
+    }
 }

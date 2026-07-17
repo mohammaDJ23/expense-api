@@ -14,6 +14,7 @@ import { UpdateReceiverMessageHandler } from '@/modules/receiver/applications/me
 import { UpdateReceiverMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/updateReceiver/updateReceiverMessageElasticsearch.processor';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
 import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.handler';
+import { ExistsReceiverByUserIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndName/existsReceiverByUserIdAndName.handler';
 import { FindManyReceiversByUserIdAndIdsHandler } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.handler';
 import { FindReceiverByUserIdAndIdOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrNull/findReceiverByUserIdAndIdOrNull.handler';
 import { FindReceiverByUserIdAndIdOrThrowHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.handler';
@@ -47,6 +48,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         FindReceiverListByUserIdHandler,
         ExistsReceiverByUserIdAndIdHandler,
         ExistsReceiverByUserIdAndExcludingIdAndNameHandler,
+        ExistsReceiverByUserIdAndNameHandler,
         CreateReceiverMessageElasticsearchProcessor,
         CreateReceiverMessageHandler,
         UpdateReceiverMessageHandler,
