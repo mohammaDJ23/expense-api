@@ -5,7 +5,7 @@ import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.rep
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
-import { toIsExistsByCount } from '@/infrastructure/database/drizzle/transformers/toIsExistsByCount.transformer';
+import { toExistsByCount } from '@/infrastructure/database/drizzle/transformers/toExistsByCount.transformer';
 import {
     users,
     type IInsertUser,
@@ -87,10 +87,10 @@ export class UserRepository implements IUserRepository {
     }
 
     existsById(id: string): Promise<boolean> {
-        return toIsExistsByCount(this.drizzleRepository.db.$count(users, eq(users.id, id)));
+        return toExistsByCount(this.drizzleRepository.db.$count(users, eq(users.id, id)));
     }
 
     existsByEmail(email: string): Promise<boolean> {
-        return toIsExistsByCount(this.drizzleRepository.db.$count(users, eq(users.email, email)));
+        return toExistsByCount(this.drizzleRepository.db.$count(users, eq(users.email, email)));
     }
 }
