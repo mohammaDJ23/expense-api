@@ -15,17 +15,15 @@ interface IInput {
     bills: ISelectBill[];
 }
 
-type TOutput = IBill[];
-
 @Injectable()
-export class BillsAssemblerService implements IRelationAssemblerService<IInput, TOutput> {
+export class BillsAssemblerService implements IRelationAssemblerService<IInput, IBill[]> {
     constructor(
         private readonly locationsRelationLoaderService: LocationsRelationLoaderService,
         private readonly receiversRelationLoaderService: ReceiversRelationLoaderService,
         private readonly consumersRelationLoaderService: ConsumersRelationLoaderService,
     ) {}
 
-    async assemble(input: IInput): Promise<TOutput> {
+    async assemble(input: IInput): Promise<IBill[]> {
         const [locations, receivers, consumers] = await Promise.all([
             this.locationsRelationLoaderService.load(input),
             this.receiversRelationLoaderService.load(input),

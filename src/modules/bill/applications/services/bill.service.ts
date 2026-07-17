@@ -24,23 +24,23 @@ export class BillService {
         private readonly findBillListByUserIdService: FindBillListByUserIdService,
     ) {}
 
-    create(data: CreateBillRequestDto, userId: string): Promise<IdEntity> {
-        return this.createBillService.execute(data, userId);
+    create(userId: string, body: CreateBillRequestDto): Promise<IdEntity> {
+        return this.createBillService.execute({ body, userId });
     }
 
-    update(data: UpdateBillRequestDto, userId: string): Promise<IdEntity> {
-        return this.updateBillService.execute(data, userId);
+    update(userId: string, body: UpdateBillRequestDto): Promise<IdEntity> {
+        return this.updateBillService.execute({ body, userId });
     }
 
     delete(userId: string, billId: string): Promise<IdEntity> {
-        return this.deleteBillService.execute(userId, billId);
+        return this.deleteBillService.execute({ userId, billId });
     }
 
     findListByUserId(userId: string, query: FindBillListRequestDto): Promise<IBill[]> {
-        return this.findBillListByUserIdService.execute(userId, query);
+        return this.findBillListByUserIdService.execute({ userId, query });
     }
 
     findByUserIdAndId(userId: string, billId: string): Promise<IBill> {
-        return this.findBillByUserIdAndIdOrThrowService.execute(userId, billId);
+        return this.findBillByUserIdAndIdOrThrowService.execute({ userId, billId });
     }
 }

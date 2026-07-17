@@ -16,12 +16,17 @@ import { ReceiverExistenceValidatorService } from '@/modules/receiver/applicatio
 
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
 
+interface IInput {
+    userId: string;
+    body: UpdateBillRequestDto;
+}
+
 @Injectable()
-export class UpdateBillService implements IServiceHandler {
+export class UpdateBillService implements IService<IInput, IdEntity> {
     // eslint-disable-next-line max-params
     constructor(
         private readonly commandBus: CommandBus,
@@ -37,19 +42,31 @@ export class UpdateBillService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(data: UpdateBillRequestDto, userId: string): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IdEntity> {
         await Promise.all([
-            this.billExistenceValidatorService.validate({ userId, id: data.id }),
-            this.receiverExistenceValidatorService.validate({ userId, id: data.receiverId }),
-            this.locationExistenceValidatorService.validate({ userId, id: data.locationId }),
-            this.consumersExistenceValidatorService.validate({ userId, ids: data.consumerIds }),
+            this.billExistenceValidatorService.validate({
+                userId: input.userId,
+                id: input.body.id,
+            }),
+            this.receiverExistenceValidatorService.validate({
+                userId: input.userId,
+                id: input.body.receiverId,
+            }),
+            this.locationExistenceValidatorService.validate({
+                userId: input.userId,
+                id: input.body.locationId,
+            }),
+            this.consumersExistenceValidatorService.validate({
+                userId: input.userId,
+                ids: input.body.consumerIds,
+            }),
         ]);
 
         {
             let existenceConsumerIds: string[];
             {
                 const billsConsumers = await this.billsConsumersRelationLoaderService.load({
-                    billId: data.id,
+                    billId: input.body.id,
                 });
 
                 existenceConsumerIds = billsConsumers.map(
@@ -60,10 +77,10 @@ export class UpdateBillService implements IServiceHandler {
             let idsToCreate: string[];
             let idsToDelete: string[];
             {
-                const receivedConsumerIdsSet = new Set<string>(data.consumerIds);
+                const receivedConsumerIdsSet = new Set<string>(input.body.consumerIds);
                 const existenceConsumerIdsSet = new Set<string>(existenceConsumerIds);
 
-                idsToCreate = data.consumerIds.filter(
+                idsToCreate = input.body.consumerIds.filter(
                     (consumerId) => !existenceConsumerIdsSet.has(consumerId),
                 );
                 idsToDelete = existenceConsumerIds.filter(
@@ -73,30 +90,33 @@ export class UpdateBillService implements IServiceHandler {
 
             await Promise.all([
                 this.createBillsConsumersSynchronizationService.synchronize({
-                    billId: data.id,
+                    billId: input.body.id,
                     consumerIds: idsToCreate,
                 }),
                 this.deleteBillsConsumersSynchronizationService.synchronize({
-                    billId: data.id,
+                    billId: input.body.id,
                     consumerIds: idsToDelete,
                 }),
                 this.commandBus.execute<UpdateBillCommand, ISelectBill>(
                     new UpdateBillCommand({
-                        id: data.id,
-                        amount: data.amount,
-                        description: data.description,
-                        purchasedAt: data.purchasedAt,
+                        id: input.body.id,
+                        amount: input.body.amount,
+                        description: input.body.description,
+                        purchasedAt: input.body.purchasedAt,
                         updatedAt: getCurrentUTCTimestamp(),
-                        userId,
-                        receiverId: data.receiverId,
-                        locationId: data.locationId,
+                        userId: input.userId,
+                        receiverId: input.body.receiverId,
+                        locationId: input.body.locationId,
                     }),
                 ),
             ]);
         }
 
         {
-            const bill = await this.findBillByUserIdAndIdOrThrowService.execute(userId, data.id);
+            const bill = await this.findBillByUserIdAndIdOrThrowService.execute({
+                userId: input.userId,
+                billId: input.body.id,
+            });
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: bill.id,
@@ -107,6 +127,6 @@ export class UpdateBillService implements IServiceHandler {
             });
         }
 
-        return IdEntity.create(data.id);
+        return IdEntity.create(input.body.id);
     }
 }

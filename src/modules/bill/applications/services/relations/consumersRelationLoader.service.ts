@@ -8,15 +8,14 @@ import type { IRelationLoaderService } from '@/core/interfaces/relationLoaderSer
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { ITargetBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
 
-type TInput = ISelectBill[];
-
-type TOutput = ITargetBillConsumer[];
-
 @Injectable()
-export class ConsumersRelationLoaderService implements IRelationLoaderService<TInput, TOutput> {
+export class ConsumersRelationLoaderService implements IRelationLoaderService<
+    ISelectBill[],
+    ITargetBillConsumer[]
+> {
     constructor(private readonly queryBus: QueryBus) {}
 
-    load(input: TInput): Promise<TOutput> {
+    load(input: ISelectBill[]): Promise<ITargetBillConsumer[]> {
         return whenNotEmpty(input, (input) =>
             this.queryBus.execute<FindManyBillConsumerTargetsByRefIdsQuery, ITargetBillConsumer[]>(
                 new FindManyBillConsumerTargetsByRefIdsQuery({

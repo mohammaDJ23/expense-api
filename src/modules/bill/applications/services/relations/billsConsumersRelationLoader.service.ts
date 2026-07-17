@@ -10,16 +10,14 @@ interface IInput {
     billId: string;
 }
 
-type TOutput = ISelectBillConsumer[];
-
 @Injectable()
 export class BillsConsumersRelationLoaderService implements IRelationLoaderService<
     IInput,
-    TOutput
+    ISelectBillConsumer[]
 > {
     constructor(private readonly queryBus: QueryBus) {}
 
-    load(input: IInput): Promise<TOutput> {
+    load(input: IInput): Promise<ISelectBillConsumer[]> {
         return this.queryBus.execute<FindManyBillsConsumersByRefIdQuery, ISelectBillConsumer[]>(
             new FindManyBillsConsumersByRefIdQuery({
                 billId: input.billId,

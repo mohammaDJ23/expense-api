@@ -45,10 +45,10 @@ export class BillController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_CREATE_BILL_MESSAGE, HttpStatus.CREATED)
     create(
-        @Body() body: CreateBillRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Body() body: CreateBillRequestDto,
     ): Promise<IdEntity> {
-        return this.billService.create(body, user.id);
+        return this.billService.create(user.id, body);
     }
 
     @Put()
@@ -56,10 +56,10 @@ export class BillController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_UPDATE_BILL_MESSAGE, HttpStatus.OK)
     update(
-        @Body() body: UpdateBillRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Body() body: UpdateBillRequestDto,
     ): Promise<IdEntity> {
-        return this.billService.update(body, user.id);
+        return this.billService.update(user.id, body);
     }
 
     @Delete(':id')
@@ -67,8 +67,8 @@ export class BillController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_DELETE_BILL_MESSAGE, HttpStatus.OK)
     delete(
-        @Param() param: DeleteBillRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Param() param: DeleteBillRequestDto,
     ): Promise<IdEntity> {
         return this.billService.delete(user.id, param.id);
     }
@@ -78,8 +78,8 @@ export class BillController {
     @SerializerInterceptor(BillResponseDto)
     @HttpResponse(SUCCESS_FIND_BILLS_MESSAGE, HttpStatus.OK)
     findListByUserId(
-        @Query() query: FindBillListRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Query() query: FindBillListRequestDto,
     ): Promise<IBill[]> {
         return this.billService.findListByUserId(user.id, query);
     }
@@ -89,8 +89,8 @@ export class BillController {
     @SerializerInterceptor(BillResponseDto)
     @HttpResponse(SUCCESS_FIND_BILL_MESSAGE, HttpStatus.OK)
     findByUserIdAndId(
-        @Param() param: FindBillRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Param() param: FindBillRequestDto,
     ): Promise<IBill> {
         return this.billService.findByUserIdAndId(user.id, param.id);
     }

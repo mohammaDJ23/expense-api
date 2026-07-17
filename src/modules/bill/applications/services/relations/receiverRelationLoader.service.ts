@@ -12,13 +12,14 @@ interface IInput {
     bill: ISelectBill;
 }
 
-type TOutput = ISelectReceiver;
-
 @Injectable()
-export class ReceiverRelationLoaderService implements IRelationLoaderService<IInput, TOutput> {
+export class ReceiverRelationLoaderService implements IRelationLoaderService<
+    IInput,
+    ISelectReceiver
+> {
     constructor(private readonly queryBus: QueryBus) {}
 
-    load(input: IInput): Promise<TOutput> {
+    load(input: IInput): Promise<ISelectReceiver> {
         return this.queryBus.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
             new FindReceiverByUserIdAndIdOrThrowQuery({
                 userId: input.userId,

@@ -13,17 +13,15 @@ interface IInput {
     bill: ISelectBill;
 }
 
-interface IOutput extends IBill {}
-
 @Injectable()
-export class BillAssemblerService implements IRelationAssemblerService<IInput, IOutput> {
+export class BillAssemblerService implements IRelationAssemblerService<IInput, IBill> {
     constructor(
         private readonly locationRelationLoaderService: LocationRelationLoaderService,
         private readonly receiverRelationLoaderService: ReceiverRelationLoaderService,
         private readonly consumersRelationLoaderService: ConsumersRelationLoaderService,
     ) {}
 
-    async assemble(input: IInput): Promise<IOutput> {
+    async assemble(input: IInput): Promise<IBill> {
         const [location, receiver, consumers] = await Promise.all([
             this.locationRelationLoaderService.load(input),
             this.receiverRelationLoaderService.load(input),
