@@ -45,8 +45,8 @@ export class ReceiverController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_CREATE_RECEIVER_MESSAGE, HttpStatus.CREATED)
     create(
-        @Body() body: CreateReceiverRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Body() body: CreateReceiverRequestDto,
     ): Promise<IdEntity> {
         return this.receiverService.create(user.id, body.name);
     }
@@ -56,8 +56,8 @@ export class ReceiverController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_UPDATE_RECEIVER_MESSAGE, HttpStatus.OK)
     update(
-        @Body() body: UpdateReceiverRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Body() body: UpdateReceiverRequestDto,
     ): Promise<IdEntity> {
         return this.receiverService.update(user.id, body);
     }
@@ -67,8 +67,8 @@ export class ReceiverController {
     @SerializerInterceptor(IdResponseDto)
     @HttpResponse(SUCCESS_DELETE_RECEIVER_MESSAGE, HttpStatus.OK)
     delete(
-        @Param() param: DeleteReceiverRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Param() param: DeleteReceiverRequestDto,
     ): Promise<IdEntity> {
         return this.receiverService.delete(user.id, param.id);
     }
@@ -78,8 +78,8 @@ export class ReceiverController {
     @SerializerInterceptor(ReceiverResponseDto)
     @HttpResponse(SUCCESS_FIND_RECEIVERS_MESSAGE, HttpStatus.OK)
     findListByUserId(
-        @Query() query: FindReceiverListRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Query() query: FindReceiverListRequestDto,
     ): Promise<ISelectReceiver[]> {
         return this.receiverService.findListByUserId(user.id, query);
     }
@@ -89,8 +89,8 @@ export class ReceiverController {
     @SerializerInterceptor(ReceiverResponseDto)
     @HttpResponse(SUCCESS_FIND_RECEIVER_MESSAGE, HttpStatus.OK)
     findByUserIdAndId(
-        @Param() param: FindReceiverByIdRequestDto,
         @CurrentUser() user: ICurrentUser,
+        @Param() param: FindReceiverByIdRequestDto,
     ): Promise<ISelectReceiver> {
         return this.receiverService.findByUserIdAndId(user.id, param.id);
     }

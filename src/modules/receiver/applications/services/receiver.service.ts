@@ -23,23 +23,26 @@ export class ReceiverService {
     ) {}
 
     create(userId: string, name: string): Promise<IdEntity> {
-        return this.createReceiverService.execute(userId, name);
+        return this.createReceiverService.execute({ userId, name });
     }
 
-    update(userId: string, data: UpdateReceiverRequestDto): Promise<IdEntity> {
-        return this.updateReceiverService.execute(userId, data);
+    update(userId: string, body: UpdateReceiverRequestDto): Promise<IdEntity> {
+        return this.updateReceiverService.execute({ userId, body });
     }
 
     delete(userId: string, receiverId: string): Promise<IdEntity> {
-        return this.deleteReceiverService.execute(userId, receiverId);
+        return this.deleteReceiverService.execute({ userId, receiverId });
     }
 
-    findListByUserId(userId: string, data: FindReceiverListRequestDto): Promise<ISelectReceiver[]> {
+    findListByUserId(
+        userId: string,
+        query: FindReceiverListRequestDto,
+    ): Promise<ISelectReceiver[]> {
         return this.queryBus.execute<FindReceiverListByUserIdQuery, ISelectReceiver[]>(
             new FindReceiverListByUserIdQuery({
                 userId,
-                offset: data.offset,
-                limit: data.limit,
+                offset: query.offset,
+                limit: query.limit,
             }),
         );
     }
