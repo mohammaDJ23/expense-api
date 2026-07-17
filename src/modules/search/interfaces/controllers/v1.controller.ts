@@ -21,7 +21,7 @@ export class SearchController {
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(SearchResponseDto)
     @HttpResponse(SUCCESS_SEARCH_MESSAGE, HttpStatus.OK)
-    search(@Query() query: SearchRequestDto, @CurrentUser() user: ICurrentUser): Promise<ISearch> {
-        return this.searchService.execute(user.id, query);
+    search(@CurrentUser() user: ICurrentUser, @Query() query: SearchRequestDto): Promise<ISearch> {
+        return this.searchService.execute({ userId: user.id, query });
     }
 }
