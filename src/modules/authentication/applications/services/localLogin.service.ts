@@ -11,13 +11,18 @@ import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { PasswordHasherService } from './passwordHasher.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { Response } from 'express';
 
+interface IInput {
+    response: Response;
+    body: LocalLoginRequestDto;
+}
+
 @Injectable()
-export class LocalLoginService implements IServiceHandler {
+export class LocalLoginService implements IService<IInput, ISelectUser> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
@@ -25,10 +30,10 @@ export class LocalLoginService implements IServiceHandler {
         private readonly accessTokenService: AccessTokenService,
     ) {}
 
-    async execute(response: Response, data: LocalLoginRequestDto): Promise<ISelectUser> {
+    async execute(input: IInput): Promise<ISelectUser> {
         const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
             new FindUserByEmailOrNullQuery({
-                email: data.email,
+                email: input.body.email,
             }),
         );
 
@@ -49,7 +54,7 @@ export class LocalLoginService implements IServiceHandler {
             try {
                 isPasswordValid = await this.passwordHasherService.verify(
                     user.hashedPassword,
-                    data.password,
+                    input.body.password,
                 );
             } catch {
                 throw new ProcessFailedInternalServerErrorException();
@@ -61,7 +66,7 @@ export class LocalLoginService implements IServiceHandler {
 
         {
             const token = this.accessTokenService.sign(user);
-            this.accessTokenService.setCookie(response, token);
+            this.accessTokenService.setCookie(input.response, token);
         }
 
         return this.commandBus.execute<UpdateUserCommand, ISelectUser>(

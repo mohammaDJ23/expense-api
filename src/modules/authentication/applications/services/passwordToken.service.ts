@@ -24,10 +24,12 @@ export class PasswordTokenService {
     }
 
     verify(token: string): INewPasswordPayload {
-        const payload = this.jwtService.verify<INewPasswordPayload>(token);
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (payload.type === 'NEW_PASSWORD') {
-            return payload;
+        {
+            const payload = this.jwtService.verify<INewPasswordPayload>(token);
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (payload.type === 'NEW_PASSWORD') {
+                return payload;
+            }
         }
         throw new BadRequestException();
     }

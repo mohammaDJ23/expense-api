@@ -13,12 +13,12 @@ import { VerificationMailerService } from './verificationMailer.service';
 import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class LocalSignupService implements IServiceHandler {
+export class LocalSignupService implements IService<LocalSignupRequestDto, boolean> {
     // eslint-disable-next-line max-params
     constructor(
         private readonly queryBus: QueryBus,
@@ -29,10 +29,10 @@ export class LocalSignupService implements IServiceHandler {
         private readonly verificationStorageService: VerificationStorageService,
     ) {}
 
-    async execute(data: LocalSignupRequestDto): Promise<boolean> {
+    async execute(input: LocalSignupRequestDto): Promise<boolean> {
         {
             const isExists = await this.queryBus.execute<IsUserExistsByEmailQuery, boolean>(
-                new IsUserExistsByEmailQuery({ email: data.email }),
+                new IsUserExistsByEmailQuery({ email: input.email }),
             );
 
             if (isExists) {
@@ -40,36 +40,34 @@ export class LocalSignupService implements IServiceHandler {
             }
         }
 
-        {
-            let createdUser: ISelectUser;
-            try {
-                const hashedPassword = await this.passwordHasherService.hash(data.password);
+        let createdUser: ISelectUser;
+        try {
+            const hashedPassword = await this.passwordHasherService.hash(input.password);
 
-                createdUser = await this.commandBus.execute<CreateUserCommand, ISelectUser>(
-                    new CreateUserCommand({
-                        email: data.email,
-                        hashedPassword,
-                        role: UserRoles.USER,
-                        authProvider: AuthProvider.LOCAL,
-                        createdAt: getCurrentUTCTimestamp(),
-                        updatedAt: getCurrentUTCTimestamp(),
-                    }),
-                );
-            } catch {
-                throw new ProcessFailedInternalServerErrorException();
-            }
-
-            try {
-                const token = this.verificationTokenService.sign(createdUser);
-                await this.verificationStorageService.set(createdUser.email, token);
-                await this.verificationMailerService.execute(createdUser, token);
-            } catch {
-                throw new ServiceUnavailableException(
-                    'Your email has been saved but we could not send you the verification link, send the verification link manually',
-                );
-            }
-
-            return true;
+            createdUser = await this.commandBus.execute<CreateUserCommand, ISelectUser>(
+                new CreateUserCommand({
+                    email: input.email,
+                    hashedPassword,
+                    role: UserRoles.USER,
+                    authProvider: AuthProvider.LOCAL,
+                    createdAt: getCurrentUTCTimestamp(),
+                    updatedAt: getCurrentUTCTimestamp(),
+                }),
+            );
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
         }
+
+        try {
+            const token = this.verificationTokenService.sign(createdUser);
+            await this.verificationStorageService.set(createdUser.email, token);
+            await this.verificationMailerService.execute({ user: createdUser, token });
+        } catch {
+            throw new ServiceUnavailableException(
+                'Your email has been saved but we could not send you the verification link, send the verification link manually',
+            );
+        }
+
+        return true;
     }
 }

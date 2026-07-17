@@ -10,12 +10,15 @@ import { PasswordMailerService } from './passwordMailer.service';
 import { PasswordStorageService } from './passwordStorage.service';
 import { PasswordTokenService } from './passwordToken.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class LocalForgotPasswordService implements IServiceHandler {
+export class LocalForgotPasswordService implements IService<
+    LocalForgotPasswordRequestDto,
+    boolean
+> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly passwordMailerService: PasswordMailerService,
@@ -23,9 +26,9 @@ export class LocalForgotPasswordService implements IServiceHandler {
         private readonly passwordStorageService: PasswordStorageService,
     ) {}
 
-    async execute(data: LocalForgotPasswordRequestDto): Promise<boolean> {
+    async execute(input: LocalForgotPasswordRequestDto): Promise<boolean> {
         try {
-            const storedToken = await this.passwordStorageService.get(data.email);
+            const storedToken = await this.passwordStorageService.get(input.email);
             if (storedToken) {
                 return true;
             }
@@ -33,36 +36,35 @@ export class LocalForgotPasswordService implements IServiceHandler {
             throw new ProcessFailedInternalServerErrorException();
         }
 
-        {
-            const user = await this.queryBus.execute<
-                FindUserByEmailOrNullQuery,
-                ISelectUser | null
-            >(new FindUserByEmailOrNullQuery({ email: data.email }));
+        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+            new FindUserByEmailOrNullQuery({
+                email: input.email,
+            }),
+        );
 
-            if (!user) {
-                return true;
-            }
-
-            if (user.authProvider !== AuthProvider.LOCAL) {
-                throw new LocalAuthProviderForbiddenException();
-            }
-
-            if (user.verifiedAt) {
-                try {
-                    const token = this.passwordTokenService.sign(user);
-                    await this.passwordStorageService.set(user.email, token);
-                    await this.passwordMailerService.execute(user, token);
-                } catch {
-                    try {
-                        await this.passwordStorageService.delete(user.email);
-                        // eslint-disable-next-line no-empty
-                    } catch {}
-
-                    throw new ServiceUnavailableException('Could not send you a verification link');
-                }
-            }
-
+        if (!user) {
             return true;
         }
+
+        if (user.authProvider !== AuthProvider.LOCAL) {
+            throw new LocalAuthProviderForbiddenException();
+        }
+
+        if (user.verifiedAt) {
+            try {
+                const token = this.passwordTokenService.sign(user);
+                await this.passwordStorageService.set(user.email, token);
+                await this.passwordMailerService.execute({ user, token });
+            } catch {
+                try {
+                    await this.passwordStorageService.delete(user.email);
+                    // eslint-disable-next-line no-empty
+                } catch {}
+
+                throw new ServiceUnavailableException('Could not send you a verification link');
+            }
+        }
+
+        return true;
     }
 }

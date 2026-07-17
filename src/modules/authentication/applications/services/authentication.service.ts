@@ -31,31 +31,31 @@ export class AuthenticationService {
         private readonly googleLoginService: GoogleLoginService,
     ) {}
 
-    localSignup(data: LocalSignupRequestDto): Promise<boolean> {
-        return this.localSignupService.execute(data);
+    localSignup(body: LocalSignupRequestDto): Promise<boolean> {
+        return this.localSignupService.execute(body);
     }
 
-    localLogin(response: Response, data: LocalLoginRequestDto): Promise<ISelectUser> {
-        return this.localLoginService.execute(response, data);
+    localLogin(response: Response, body: LocalLoginRequestDto): Promise<ISelectUser> {
+        return this.localLoginService.execute({ response, body });
     }
 
-    localSendVerification(data: LocalSendVerificationRequestDto): Promise<boolean> {
-        return this.localSendVerificationService.execute(data);
+    localSendVerification(body: LocalSendVerificationRequestDto): Promise<boolean> {
+        return this.localSendVerificationService.execute(body);
     }
 
-    localVerifyVerification(data: LocalVerifyVerificationRequestDto): Promise<boolean> {
-        return this.localVerifyVerificationService.execute(data);
+    localVerifyVerification(body: LocalVerifyVerificationRequestDto): Promise<boolean> {
+        return this.localVerifyVerificationService.execute(body);
     }
 
-    localForgotPassword(data: LocalForgotPasswordRequestDto): Promise<boolean> {
-        return this.localForgotPasswordService.execute(data);
+    localForgotPassword(body: LocalForgotPasswordRequestDto): Promise<boolean> {
+        return this.localForgotPasswordService.execute(body);
     }
 
-    localResetPassword(data: LocalResetPasswordRequestDto): Promise<boolean> {
-        return this.localResetPasswordService.execute(data);
+    localResetPassword(body: LocalResetPasswordRequestDto): Promise<boolean> {
+        return this.localResetPasswordService.execute(body);
     }
 
     googleLogin(response: Response, user: ICurrentUser): Promise<ISelectUser> {
-        return this.googleLoginService.execute(response, user);
+        return this.googleLoginService.execute({ response, user });
     }
 }

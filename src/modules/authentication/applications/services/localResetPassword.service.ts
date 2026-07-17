@@ -12,12 +12,12 @@ import { PasswordHasherService } from './passwordHasher.service';
 import { PasswordStorageService } from './passwordStorage.service';
 import { PasswordTokenService } from './passwordToken.service';
 
-import type { IServiceHandler } from '@/core/interfaces/serviceHandler.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class LocalResetPasswordService implements IServiceHandler {
+export class LocalResetPasswordService implements IService<LocalResetPasswordRequestDto, boolean> {
     // eslint-disable-next-line max-params
     constructor(
         private readonly queryBus: QueryBus,
@@ -28,60 +28,58 @@ export class LocalResetPasswordService implements IServiceHandler {
         private readonly resetPasswordMailerService: ResetPasswordMailerService,
     ) {}
 
-    async execute(data: LocalResetPasswordRequestDto): Promise<boolean> {
-        const payload = this.passwordTokenService.verify(data.token);
-
+    async execute(input: LocalResetPasswordRequestDto): Promise<boolean> {
+        let user: ISelectUser | null;
         {
-            let storedToken: string | null = null;
-            try {
-                storedToken = await this.passwordStorageService.get(payload.email);
-                // eslint-disable-next-line no-empty
-            } catch {}
-            if (storedToken !== data.token) {
-                throw new BadRequestException();
-            }
-        }
+            const payload = this.passwordTokenService.verify(input.token);
 
-        {
-            const user = await this.queryBus.execute<
-                FindUserByEmailOrNullQuery,
-                ISelectUser | null
-            >(new FindUserByEmailOrNullQuery({ email: payload.email }));
-
-            if (!user) {
-                return true;
-            }
-
-            if (user.authProvider !== AuthProvider.LOCAL) {
-                throw new LocalAuthProviderForbiddenException();
-            }
-
-            if (user.verifiedAt) {
+            {
+                let storedToken: string | null = null;
                 try {
-                    const hashedPassword = await this.passwordHasherService.hash(data.newPassword);
-
-                    await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-                        new UpdateUserCommand({
-                            id: user.id,
-                            updatedAt: getCurrentUTCTimestamp(),
-                            hashedPassword,
-                        }),
-                    );
-                } catch {
-                    throw new InternalServerErrorException(
-                        'Could not change your password, try again',
-                    );
-                }
-
-                try {
-                    this.resetPasswordMailerService.execute(user);
-
-                    await this.passwordStorageService.delete(user.email);
+                    storedToken = await this.passwordStorageService.get(payload.email);
                     // eslint-disable-next-line no-empty
                 } catch {}
+                if (storedToken !== input.token) {
+                    throw new BadRequestException();
+                }
             }
 
+            user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+                new FindUserByEmailOrNullQuery({ email: payload.email }),
+            );
+        }
+
+        if (!user) {
             return true;
         }
+
+        if (user.authProvider !== AuthProvider.LOCAL) {
+            throw new LocalAuthProviderForbiddenException();
+        }
+
+        if (user.verifiedAt) {
+            try {
+                const hashedPassword = await this.passwordHasherService.hash(input.newPassword);
+
+                await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
+                    new UpdateUserCommand({
+                        id: user.id,
+                        updatedAt: getCurrentUTCTimestamp(),
+                        hashedPassword,
+                    }),
+                );
+            } catch {
+                throw new InternalServerErrorException('Could not change your password, try again');
+            }
+
+            try {
+                this.resetPasswordMailerService.execute(user);
+
+                await this.passwordStorageService.delete(user.email);
+                // eslint-disable-next-line no-empty
+            } catch {}
+        }
+
+        return true;
     }
 }

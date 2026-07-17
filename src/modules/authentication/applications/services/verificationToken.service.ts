@@ -24,10 +24,12 @@ export class VerificationTokenService {
     }
 
     verify(token: string): IVerificationPayload {
-        const payload = this.jwtService.verify<IVerificationPayload>(token);
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (payload.type === 'VERIFICATION') {
-            return payload;
+        {
+            const payload = this.jwtService.verify<IVerificationPayload>(token);
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (payload.type === 'VERIFICATION') {
+                return payload;
+            }
         }
         throw new BadRequestException();
     }
