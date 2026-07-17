@@ -13,6 +13,7 @@ import { UpdateLocationMessageHandler } from '@/modules/location/applications/me
 import { UpdateLocationMessageElasticsearchProcessor } from '@/modules/location/applications/messages/updateLocation/updateLocationMessageElasticsearch.processor';
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
 import { ExistsLocationByUserIdAndIdHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.handler';
+import { ExistsLocationByUserIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndName/existsLocationByUserIdAndName.handler';
 import { FindLocationByUserIdAndIdOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrNull/findLocationByUserIdAndIdOrNull.handler';
 import { FindLocationByUserIdAndIdOrThrowHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.handler';
 import { FindLocationByUserIdAndNameOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.handler';
@@ -51,6 +52,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         FindManyLocationsByUserIdAndIdsHandler,
         ExistsLocationByUserIdAndIdHandler,
         ExistsLocationByUserIdAndExcludingIdAndNameHandler,
+        ExistsLocationByUserIdAndNameHandler,
         CreateLocationMessageHandler,
         CreateLocationMessageElasticsearchProcessor,
         UpdateLocationMessageHandler,
