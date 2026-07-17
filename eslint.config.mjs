@@ -19,74 +19,20 @@ export default defineConfig([
     {
         ignores: [
             'dist/',
-            'build/',
-            '.nest/',
-
             'node_modules/',
-
-            'coverage/',
-            '.nyc_output/',
-            'test-results/',
-
-            '*.log',
-            'logs/',
-            'npm-debug.log*',
-            'yarn-debug.log*',
-            'yarn-error.log*',
-
-            '.pnp.*',
-            '.yarn/',
-            '.yarnrc.yml',
-
             '.env',
             '.env.*',
-            '!.env.example',
-
             '.vscode/',
-            '.idea/',
-            '*.swp',
-            '*.swo',
-            '*~',
-
-            '.DS_Store',
-            'Thumbs.db',
-
             '*.md',
             '!README.md',
-            '!CONTRIBUTING.md',
-
             '*.json',
             '*.yml',
             '*.yaml',
-            '*.toml',
-
-            'Dockerfile',
-            'Dockerfile.development',
-            'Dockerfile.staging',
-            'Dockerfile.production',
-            'Dockerfile.ci',
-            'docker-compose.yml',
-            'docker-compose.development.yml',
-            'docker-compose.staging.yml',
-            'docker-compose.production.yml',
-            '.dockerignore',
-
-            '.eslintrc.js',
-            '.eslintrc.*',
             'tsconfig.json',
             'tsconfig.*.json',
             'nest-cli.json',
-
-            'package-lock.json',
-            'yarn.lock',
             'pnpm-lock.yaml',
-
-            'tmp/',
-            'temp/',
-
             'eslint.config.mjs',
-            'eslint.config.js',
-            'eslint.config.cjs',
         ],
     },
 
