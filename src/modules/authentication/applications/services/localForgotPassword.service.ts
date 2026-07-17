@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, ServiceUnavailableException } from '@nestjs/common';
+import {
+    BadRequestException,
+    ForbiddenException,
+    Injectable,
+    ServiceUnavailableException,
+} from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
@@ -50,18 +55,20 @@ export class LocalForgotPasswordService implements IService<
             throw new LocalAuthProviderForbiddenException();
         }
 
-        if (user.verifiedAt) {
-            try {
-                const token = this.passwordTokenService.sign(user);
-                await this.passwordStorageService.set(user.email, token);
-                await this.passwordMailerService.execute({ user, token });
-            } catch {
-                try {
-                    await this.passwordStorageService.delete(user.email);
-                } catch {}
+        if (!user.verifiedAt) {
+            throw new ForbiddenException();
+        }
 
-                throw new ServiceUnavailableException('Could not send you a verification link');
-            }
+        try {
+            const token = this.passwordTokenService.sign(user);
+            await this.passwordStorageService.set(user.email, token);
+            await this.passwordMailerService.execute({ user, token });
+        } catch {
+            try {
+                await this.passwordStorageService.delete(user.email);
+            } catch {}
+
+            throw new ServiceUnavailableException('Could not send you a verification link');
         }
 
         return true;

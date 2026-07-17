@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+    BadRequestException,
+    ForbiddenException,
+    Injectable,
+    InternalServerErrorException,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
@@ -55,27 +60,29 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
             throw new LocalAuthProviderForbiddenException();
         }
 
-        if (user.verifiedAt) {
-            try {
-                const hashedPassword = await this.passwordHasherService.hash(input.newPassword);
-
-                await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-                    new UpdateUserCommand({
-                        id: user.id,
-                        updatedAt: getCurrentUTCTimestamp(),
-                        hashedPassword,
-                    }),
-                );
-            } catch {
-                throw new InternalServerErrorException('Could not change your password, try again');
-            }
-
-            try {
-                this.resetPasswordMailerService.execute(user);
-
-                await this.passwordStorageService.delete(user.email);
-            } catch {}
+        if (!user.verifiedAt) {
+            throw new ForbiddenException();
         }
+
+        try {
+            const hashedPassword = await this.passwordHasherService.hash(input.newPassword);
+
+            await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
+                new UpdateUserCommand({
+                    id: user.id,
+                    updatedAt: getCurrentUTCTimestamp(),
+                    hashedPassword,
+                }),
+            );
+        } catch {
+            throw new InternalServerErrorException('Could not change your password, try again');
+        }
+
+        try {
+            this.resetPasswordMailerService.execute(user);
+
+            await this.passwordStorageService.delete(user.email);
+        } catch {}
 
         return true;
     }

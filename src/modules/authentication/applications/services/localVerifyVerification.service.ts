@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+    BadRequestException,
+    ForbiddenException,
+    Injectable,
+    InternalServerErrorException,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
@@ -56,25 +61,27 @@ export class LocalVerifyVerificationService implements IService<
             throw new LocalAuthProviderForbiddenException();
         }
 
-        if (!user.verifiedAt) {
-            try {
-                await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-                    new UpdateUserCommand({
-                        id: user.id,
-                        updatedAt: getCurrentUTCTimestamp(),
-                        verifiedAt: getCurrentUTCTimestamp(),
-                    }),
-                );
-            } catch {
-                throw new InternalServerErrorException('Could not verify your email, try again');
-            }
-
-            try {
-                this.verifiedVerificationMailerService.execute(user);
-
-                await this.verificationStorageService.delete(user.email);
-            } catch {}
+        if (user.verifiedAt) {
+            throw new ForbiddenException();
         }
+
+        try {
+            await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
+                new UpdateUserCommand({
+                    id: user.id,
+                    updatedAt: getCurrentUTCTimestamp(),
+                    verifiedAt: getCurrentUTCTimestamp(),
+                }),
+            );
+        } catch {
+            throw new InternalServerErrorException('Could not verify your email, try again');
+        }
+
+        try {
+            this.verifiedVerificationMailerService.execute(user);
+
+            await this.verificationStorageService.delete(user.email);
+        } catch {}
 
         return true;
     }
