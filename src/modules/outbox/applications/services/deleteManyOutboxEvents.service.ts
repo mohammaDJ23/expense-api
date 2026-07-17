@@ -5,11 +5,11 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { DeleteManyOutboxEventsByDateCommand } from '@/modules/outbox/applications/commands/deleteManyOutboxEventsByDate/deleteManyOutboxEventsByDate.command';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
-export class DeleteManyOutboxEventsService implements IServiceHandler {
+export class DeleteManyOutboxEventsService implements IService<void, void> {
     constructor(private readonly commandBus: CommandBus) {}
 
     @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
