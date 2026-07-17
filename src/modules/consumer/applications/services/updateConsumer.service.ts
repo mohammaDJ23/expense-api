@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
@@ -15,9 +15,7 @@ import type { UpdateConsumerRequestDto } from '@/modules/consumer/interfaces/dto
 
 @Injectable()
 export class UpdateConsumerService implements IServiceHandler {
-    // eslint-disable-next-line max-params
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
         private readonly consumerExistenceValidatorService: ConsumerExistenceValidatorService,
