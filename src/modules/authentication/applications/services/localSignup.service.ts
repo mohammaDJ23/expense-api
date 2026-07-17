@@ -64,7 +64,7 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
             await this.verificationMailerService.execute({ user: createdUser, token });
         } catch {
             throw new ServiceUnavailableException(
-                'Your email has been saved but we could not send you the verification link, send the verification link manually',
+                'Your email has been saved but we could not send you the verification link',
             );
         }
 

@@ -51,7 +51,7 @@ export class LocalVerifyVerificationService implements IService<
         }
 
         if (!user) {
-            return true;
+            throw new BadRequestException();
         }
 
         if (user.authProvider !== AuthProvider.LOCAL) {

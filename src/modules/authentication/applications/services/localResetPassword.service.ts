@@ -50,7 +50,7 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
         }
 
         if (!user) {
-            return true;
+            throw new BadRequestException();
         }
 
         if (user.authProvider !== AuthProvider.LOCAL) {

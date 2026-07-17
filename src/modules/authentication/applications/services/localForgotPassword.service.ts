@@ -1,4 +1,4 @@
-import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+import { BadRequestException, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
@@ -43,7 +43,7 @@ export class LocalForgotPasswordService implements IService<
         );
 
         if (!user) {
-            return true;
+            throw new BadRequestException();
         }
 
         if (user.authProvider !== AuthProvider.LOCAL) {
