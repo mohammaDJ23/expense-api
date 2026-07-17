@@ -14,7 +14,10 @@ export class BillSearchAggregateService implements IElasticsearchSearchAggregate
 
     aggregate(userId: string, ids: string[]): Promise<IBill[]> {
         return whenNotEmpty(ids, (ids) =>
-            this.findManyBillsByUserIdAndIdsService.execute(userId, ids),
+            this.findManyBillsByUserIdAndIdsService.execute({
+                userId,
+                billIds: ids,
+            }),
         );
     }
 }

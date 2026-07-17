@@ -8,11 +8,16 @@ import { DeleteBillCommand } from '@/modules/bill/applications/commands/deleteBi
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
+interface IInput {
+    userId: string;
+    billId: string;
+}
+
 @Injectable()
-export class DeleteBillService implements IServiceHandler {
+export class DeleteBillService implements IService<IInput, IdEntity> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly billExistenceValidatorService: BillExistenceValidatorService,
@@ -20,13 +25,16 @@ export class DeleteBillService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(userId: string, billId: string): Promise<IdEntity> {
-        await this.billExistenceValidatorService.validate({ userId, id: billId });
+    async execute(input: IInput): Promise<IdEntity> {
+        await this.billExistenceValidatorService.validate({
+            userId: input.userId,
+            id: input.billId,
+        });
 
         const deletedBill = await this.commandBus.execute<DeleteBillCommand, ISelectBill>(
             new DeleteBillCommand({
-                userId,
-                id: billId,
+                userId: input.userId,
+                id: input.billId,
             }),
         );
 

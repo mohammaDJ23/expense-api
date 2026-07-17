@@ -12,13 +12,14 @@ interface IInput {
     bill: ISelectBill;
 }
 
-type TOutput = ISelectLocation;
-
 @Injectable()
-export class LocationRelationLoaderService implements IRelationLoaderService<IInput, TOutput> {
+export class LocationRelationLoaderService implements IRelationLoaderService<
+    IInput,
+    ISelectLocation
+> {
     constructor(private readonly queryBus: QueryBus) {}
 
-    load(input: IInput): Promise<TOutput> {
+    load(input: IInput): Promise<ISelectLocation> {
         return this.queryBus.execute<FindLocationByUserIdAndIdOrThrowQuery, ISelectLocation>(
             new FindLocationByUserIdAndIdOrThrowQuery({
                 userId: input.userId,

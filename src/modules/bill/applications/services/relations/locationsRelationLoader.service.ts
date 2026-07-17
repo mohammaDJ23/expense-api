@@ -13,13 +13,14 @@ interface IInput {
     bills: ISelectBill[];
 }
 
-type TOutput = ISelectLocation[];
-
 @Injectable()
-export class LocationsRelationLoaderService implements IRelationLoaderService<IInput, TOutput> {
+export class LocationsRelationLoaderService implements IRelationLoaderService<
+    IInput,
+    ISelectLocation[]
+> {
     constructor(private readonly queryBus: QueryBus) {}
 
-    load(input: IInput): Promise<TOutput> {
+    load(input: IInput): Promise<ISelectLocation[]> {
         return whenNotEmpty(input.bills, (bills) =>
             this.queryBus.execute<FindManyLocationsByUserIdAndIdsQuery, ISelectLocation[]>(
                 new FindManyLocationsByUserIdAndIdsQuery({

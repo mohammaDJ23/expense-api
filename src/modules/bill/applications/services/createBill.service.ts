@@ -13,12 +13,17 @@ import { ReceiverExistenceValidatorService } from '@/modules/receiver/applicatio
 
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 
+interface IInput {
+    body: CreateBillRequestDto;
+    userId: string;
+}
+
 @Injectable()
-export class CreateBillService implements IServiceHandler {
+export class CreateBillService implements IService<IInput, IdEntity> {
     // eslint-disable-next-line max-params
     constructor(
         private readonly commandBus: CommandBus,
@@ -31,36 +36,47 @@ export class CreateBillService implements IServiceHandler {
     ) {}
 
     @Transactional()
-    async execute(data: CreateBillRequestDto, userId: string): Promise<IdEntity> {
+    async execute(input: IInput): Promise<IdEntity> {
         await Promise.all([
-            this.receiverExistenceValidatorService.validate({ userId, id: data.receiverId }),
-            this.locationExistenceValidatorService.validate({ userId, id: data.locationId }),
-            this.consumersExistenceValidatorService.validate({ userId, ids: data.consumerIds }),
+            this.receiverExistenceValidatorService.validate({
+                userId: input.userId,
+                id: input.body.receiverId,
+            }),
+            this.locationExistenceValidatorService.validate({
+                userId: input.userId,
+                id: input.body.locationId,
+            }),
+            this.consumersExistenceValidatorService.validate({
+                userId: input.userId,
+                ids: input.body.consumerIds,
+            }),
         ]);
 
         const createdBill = await this.commandBus.execute<CreateBillCommand, ISelectBill>(
             new CreateBillCommand({
-                amount: data.amount,
-                description: data.description,
-                purchasedAt: data.purchasedAt ? getCurrentUTCTimestamp(data.purchasedAt) : null,
+                amount: input.body.amount,
+                description: input.body.description,
+                purchasedAt: input.body.purchasedAt
+                    ? getCurrentUTCTimestamp(input.body.purchasedAt)
+                    : null,
                 createdAt: getCurrentUTCTimestamp(),
                 updatedAt: getCurrentUTCTimestamp(),
-                userId,
-                locationId: data.locationId,
-                receiverId: data.receiverId,
+                userId: input.userId,
+                locationId: input.body.locationId,
+                receiverId: input.body.receiverId,
             }),
         );
 
         await this.createBillsConsumerSynchronizationService.synchronize({
             billId: createdBill.id,
-            consumerIds: data.consumerIds,
+            consumerIds: input.body.consumerIds,
         });
 
         {
-            const bill = await this.findBillByUserIdAndIdOrThrowService.execute(
-                userId,
-                createdBill.id,
-            );
+            const bill = await this.findBillByUserIdAndIdOrThrowService.execute({
+                userId: input.userId,
+                billId: createdBill.id,
+            });
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: bill.id,

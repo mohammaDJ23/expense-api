@@ -12,16 +12,14 @@ interface IInput {
     consumerIds: string[];
 }
 
-type TOutput = ISelectBillConsumer[];
-
 @Injectable()
 export class DeleteBillsConsumersSynchronizationService implements IRelationSynchronizationService<
     IInput,
-    TOutput
+    ISelectBillConsumer[]
 > {
     constructor(private readonly commandBus: CommandBus) {}
 
-    synchronize(input: IInput): Promise<TOutput> {
+    synchronize(input: IInput): Promise<ISelectBillConsumer[]> {
         return whenNotEmpty(input.consumerIds, (consumerIds) =>
             this.commandBus.execute<DeleteManyBillsConsumersCommand, ISelectBillConsumer[]>(
                 new DeleteManyBillsConsumersCommand({

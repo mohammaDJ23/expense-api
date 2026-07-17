@@ -4,24 +4,29 @@ import { QueryBus } from '@nestjs/cqrs';
 import { FindBillByUserIdAndIdOrThrowQuery } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.query';
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
 
-import type { IServiceHandler } from '@/core/interfaces/service.interface';
+import type { IService } from '@/core/interfaces/service.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
+interface IInput {
+    userId: string;
+    billId: string;
+}
+
 @Injectable()
-export class FindBillByUserIdAndIdOrThrowService implements IServiceHandler {
+export class FindBillByUserIdAndIdOrThrowService implements IService<IInput, IBill> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly billAssemblerService: BillAssemblerService,
     ) {}
 
-    async execute(userId: string, billId: string): Promise<IBill> {
+    async execute(input: IInput): Promise<IBill> {
         const bill = await this.queryBus.execute<FindBillByUserIdAndIdOrThrowQuery, ISelectBill>(
             new FindBillByUserIdAndIdOrThrowQuery({
-                userId,
-                id: billId,
+                userId: input.userId,
+                id: input.billId,
             }),
         );
-        return this.billAssemblerService.assemble({ userId, bill });
+        return this.billAssemblerService.assemble({ userId: input.userId, bill });
     }
 }
