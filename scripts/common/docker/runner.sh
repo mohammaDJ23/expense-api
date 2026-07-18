@@ -152,4 +152,4 @@ cleanup() {
     docker image prune -f >/dev/null 2>&1 || true
 }
 
-trap cleanup EXIT ERR INT TERM
+# trap cleanup EXIT ERR INT TERM
