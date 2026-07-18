@@ -21,7 +21,6 @@ import { CreateBillService } from '@/modules/bill/applications/services/createBi
 import { DeleteBillService } from '@/modules/bill/applications/services/deleteBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
-import { FindManyBillsByUserIdAndIdsService } from '@/modules/bill/applications/services/findManyBillsByUserIdAndIds.service';
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
 import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
 import { BillsConsumersRelationLoaderService } from '@/modules/bill/applications/services/relations/billsConsumersRelationLoader.service';
@@ -63,7 +62,6 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         DeleteBillService,
         BillAssemblerService,
         BillsAssemblerService,
-        FindManyBillsByUserIdAndIdsService,
         FindBillByUserIdAndIdOrThrowService,
         FindBillListByUserIdService,
         FindBillByUserIdAndIdOrThrowHandler,
@@ -80,7 +78,6 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         UpdateBillHandler,
         DeleteBillHandler,
         BillRepository,
-        FindManyBillsByUserIdAndIdsService,
         BillElasticsearchIndex,
         BillElasticsearchQuery,
         BillSearchService,
