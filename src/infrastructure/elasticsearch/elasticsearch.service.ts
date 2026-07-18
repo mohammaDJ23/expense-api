@@ -44,7 +44,9 @@ export class ElasticSearchService {
     }
 
     createIndex(index: estypes.IndicesCreateRequest): Promise<estypes.IndicesCreateResponse> {
-        return this.client.indices.create(index);
+        return this.client.indices.create(index, {
+            ignore: [400],
+        });
     }
 
     extractDocs<T>(response: estypes.SearchResponse<T>): T[] {
