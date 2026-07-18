@@ -7,7 +7,6 @@ import { Strategy, type Profile } from 'passport-google-oauth20';
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { readSecret } from '@/common/utils/readSecret.util';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
-import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
@@ -74,24 +73,18 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
                 throw new ForbiddenException();
             }
 
+            if (user.authProvider !== AuthProvider.GOOGLE) {
+                throw new ForbiddenException();
+            }
+
             if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
                 throw new ForbiddenException();
             }
 
-            {
-                const updatedUser = await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-                    new UpdateUserCommand({
-                        id: user.id,
-                        updatedAt: getCurrentUTCTimestamp(),
-                        lastLoginAt: getCurrentUTCTimestamp(),
-                    }),
-                );
-
-                return {
-                    id: updatedUser.id,
-                    role: updatedUser.role,
-                };
-            }
+            return {
+                id: user.id,
+                role: user.role,
+            };
         }
     }
 }

@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 
+import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 import { AccessTokenService } from '@/core/authentication/accessToken.service';
-import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
+import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IService } from '@/core/interfaces/service.interface';
@@ -17,7 +18,7 @@ interface IInput {
 @Injectable()
 export class GoogleLoginService implements IService<IInput, ISelectUser> {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly commandBus: CommandBus,
         private readonly accessTokenService: AccessTokenService,
     ) {}
 
@@ -27,9 +28,11 @@ export class GoogleLoginService implements IService<IInput, ISelectUser> {
             this.accessTokenService.setCookie(input.response, token);
         }
 
-        return this.queryBus.execute<FindUserByIdOrThrowQuery, ISelectUser>(
-            new FindUserByIdOrThrowQuery({
+        return this.commandBus.execute<UpdateUserCommand, ISelectUser>(
+            new UpdateUserCommand({
                 id: input.user.id,
+                updatedAt: getCurrentUTCTimestamp(),
+                lastLoginAt: getCurrentUTCTimestamp(),
             }),
         );
     }
