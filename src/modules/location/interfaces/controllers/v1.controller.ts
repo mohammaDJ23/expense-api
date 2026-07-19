@@ -21,6 +21,7 @@ import { CreateLocationRequestDto } from '@/modules/location/interfaces/dtos/cre
 import { DeleteLocationRequestDto } from '@/modules/location/interfaces/dtos/deleteLocation.request.dto';
 import { FindLocationByIdRequestDto } from '@/modules/location/interfaces/dtos/findLocationById.request.dto';
 import { FindLocationListRequestDto } from '@/modules/location/interfaces/dtos/findLocationList.request.dto';
+import { FindLocationListResponseDto } from '@/modules/location/interfaces/dtos/findLocationList.response.dto';
 import { LocationResponseDto } from '@/modules/location/interfaces/dtos/location.response.dto';
 import { UpdateLocationRequestDto } from '@/modules/location/interfaces/dtos/updateLocation.request.dto';
 
@@ -34,6 +35,7 @@ import {
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IId } from '@/core/interfaces/id.interface';
+import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 @Controller({ version: '1', path: 'api/locations' })
@@ -75,12 +77,12 @@ export class LocationController {
 
     @Get()
     @UseGuards(JwtAuthGuard)
-    @SerializerInterceptor(LocationResponseDto)
+    @SerializerInterceptor(FindLocationListResponseDto)
     @HttpResponse(SUCCESS_FIND_LOCATIONS_MESSAGE, HttpStatus.OK)
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindLocationListRequestDto,
-    ): Promise<ISelectLocation[]> {
+    ): Promise<IListResult<ISelectLocation>> {
         return this.locationService.findListByUserId(user.id, query);
     }
 

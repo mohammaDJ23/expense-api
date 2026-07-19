@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { and, desc, eq, inArray, ne } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
+import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
@@ -139,5 +140,9 @@ export class LocationRepository implements ILocationRepository {
                 and(eq(locations.userId, userId), eq(locations.name, name)),
             ),
         );
+    }
+
+    findTotalByUserId(userId: string): Promise<number> {
+        return toCount(this.drizzleRepository.db.$count(locations, eq(locations.userId, userId)));
     }
 }

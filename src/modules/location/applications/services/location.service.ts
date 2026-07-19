@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { FindLocationByUserIdAndIdOrThrowQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.query';
-import { FindLocationListByUserIdQuery } from '@/modules/location/applications/queries/findLocationListByUserId/findLocationListByUserId.query';
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
+import { FindLocationListByUserIdService } from '@/modules/location/applications/services/findLocationListByUserId.service';
 import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
 
 import type { IId } from '@/core/interfaces/id.interface';
+import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { FindLocationListRequestDto } from '@/modules/location/interfaces/dtos/findLocationList.request.dto';
 import type { UpdateLocationRequestDto } from '@/modules/location/interfaces/dtos/updateLocation.request.dto';
@@ -19,6 +20,7 @@ export class LocationService {
         private readonly createLocationService: CreateLocationService,
         private readonly updateLocationService: UpdateLocationService,
         private readonly deleteLocationService: DeleteLocationService,
+        private readonly findLocationListByUserIdService: FindLocationListByUserIdService,
     ) {}
 
     create(userId: string, name: string): Promise<IId> {
@@ -36,14 +38,8 @@ export class LocationService {
     findListByUserId(
         userId: string,
         query: FindLocationListRequestDto,
-    ): Promise<ISelectLocation[]> {
-        return this.queryBus.execute<FindLocationListByUserIdQuery, ISelectLocation[]>(
-            new FindLocationListByUserIdQuery({
-                userId,
-                offset: query.offset,
-                limit: query.limit,
-            }),
-        );
+    ): Promise<IListResult<ISelectLocation>> {
+        return this.findLocationListByUserIdService.execute({ userId, query });
     }
 
     findByUserIdAndId(userId: string, locationId: string): Promise<ISelectLocation> {

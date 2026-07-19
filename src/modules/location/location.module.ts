@@ -19,8 +19,10 @@ import { FindLocationByUserIdAndIdOrThrowHandler } from '@/modules/location/appl
 import { FindLocationByUserIdAndNameOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.handler';
 import { FindLocationListByUserIdHandler } from '@/modules/location/applications/queries/findLocationListByUserId/findLocationListByUserId.handler';
 import { FindManyLocationsByUserIdAndIdsHandler } from '@/modules/location/applications/queries/findManyLocationsByUserIdAndIds/findManyLocationsByUserIdAndIds.handler';
+import { FindTotalLocationsByUserIdHandler } from '@/modules/location/applications/queries/findTotalLocationsByUserId/findTotalLocationsByUserId.handler';
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
+import { FindLocationListByUserIdService } from '@/modules/location/applications/services/findLocationListByUserId.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
 import { LocationSearchService } from '@/modules/location/applications/services/search/locationSearch.service';
 import { LocationSearchAggregateService } from '@/modules/location/applications/services/search/locationSearchAggregate.service';
@@ -51,6 +53,8 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         FindLocationByUserIdAndNameOrNullHandler,
         FindLocationListByUserIdHandler,
         FindManyLocationsByUserIdAndIdsHandler,
+        FindTotalLocationsByUserIdHandler,
+        FindLocationListByUserIdService,
         ExistsLocationByUserIdAndIdHandler,
         ExistsLocationByUserIdAndExcludingIdAndNameHandler,
         ExistsLocationByUserIdAndNameHandler,
