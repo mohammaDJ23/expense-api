@@ -8,6 +8,7 @@ import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrTh
 import { FindBillListByUserIdService } from './findBillListByUserId.service';
 
 import type { IId } from '@/core/interfaces/id.interface';
+import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
@@ -35,7 +36,7 @@ export class BillService {
         return this.deleteBillService.execute({ userId, billId });
     }
 
-    findListByUserId(userId: string, query: FindBillListRequestDto): Promise<IBill[]> {
+    findListByUserId(userId: string, query: FindBillListRequestDto): Promise<IListResult<IBill>> {
         return this.findBillListByUserIdService.execute({ userId, query });
     }
 
