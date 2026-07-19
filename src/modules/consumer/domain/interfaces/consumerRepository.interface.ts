@@ -10,6 +10,7 @@ import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repo
 import type { IFindByUserIdAndNameOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndNameOrNullRepository.interface';
 import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories/findListByUserIdRepository.interface';
 import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
+import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type {
     IInsertConsumer,
@@ -29,4 +30,5 @@ export interface IConsumerRepository
         IExistsByUserIdAndIdsRepository,
         IExistsByUserIdAndIdRepository,
         IExistsByUserIdAndExcludingIdAndNameRepository,
-        IExistsByUserIdAndNameRepository {}
+        IExistsByUserIdAndNameRepository,
+        IFindTotalByUserIdRepository {}

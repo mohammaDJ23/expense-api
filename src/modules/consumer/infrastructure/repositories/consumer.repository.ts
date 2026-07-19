@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { and, eq, inArray, desc, ne } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
+import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
@@ -148,5 +149,9 @@ export class ConsumerRepository implements IConsumerRepository {
                 and(eq(consumers.userId, userId), eq(consumers.name, name)),
             ),
         );
+    }
+
+    findTotalByUserId(userId: string): Promise<number> {
+        return toCount(this.drizzleRepository.db.$count(consumers, eq(consumers.userId, userId)));
     }
 }

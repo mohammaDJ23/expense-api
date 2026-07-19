@@ -22,6 +22,7 @@ import { CreateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/cre
 import { DeleteConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/deleteConsumer.request.dto';
 import { FindConsumerByIdRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerById.request.dto';
 import { FindConsumerListRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerList.request.dto';
+import { FindConsumerListResponseDto } from '@/modules/consumer/interfaces/dtos/findConsumerList.response.dto';
 import { UpdateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/updateConsumer.request.dto';
 
 import {
@@ -34,6 +35,7 @@ import {
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IId } from '@/core/interfaces/id.interface';
+import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 @Controller({ version: '1', path: 'api/consumers' })
@@ -75,12 +77,12 @@ export class ConsumerController {
 
     @Get()
     @UseGuards(JwtAuthGuard)
-    @SerializerInterceptor(ConsumerResponseDto)
+    @SerializerInterceptor(FindConsumerListResponseDto)
     @HttpResponse(SUCCESS_FIND_CONSUMERS_MESSAGE, HttpStatus.OK)
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindConsumerListRequestDto,
-    ): Promise<ISelectConsumer[]> {
+    ): Promise<IListResult<ISelectConsumer>> {
         return this.consumerService.findListByUserId(user.id, query);
     }
 
