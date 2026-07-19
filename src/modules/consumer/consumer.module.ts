@@ -25,9 +25,11 @@ import { FindConsumerListByUserIdHandler } from '@/modules/consumer/applications
 import { FindManyBillConsumerTargetsByRefIdsHandler } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.handler';
 import { FindManyBillsConsumersByRefIdHandler } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.handler';
 import { FindManyConsumersByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/findManyConsumersByUserIdAndIds/findManyConsumersByUserIdAndIds.handler';
+import { FindTotalConsumersByUserIdHandler } from '@/modules/consumer/applications/queries/findTotalConsumersByUserId/findTotalConsumersByUserId.handler';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { CreateConsumerService } from '@/modules/consumer/applications/services/createConsumer.service';
 import { DeleteConsumerService } from '@/modules/consumer/applications/services/deleteConsumer.service';
+import { FindConsumerListByUserIdService } from '@/modules/consumer/applications/services/findConsumerListByUserId.service';
 import { ConsumerSearchService } from '@/modules/consumer/applications/services/search/consumerSearch.service';
 import { ConsumerSearchAggregateService } from '@/modules/consumer/applications/services/search/consumerSearchAggregate.service';
 import { ConsumerSearchIndexRegisterService } from '@/modules/consumer/applications/services/search/consumerSearchIndexRegister.service';
@@ -60,6 +62,8 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         DeleteConsumerHandler,
         UpdateConsumerHandler,
         FindConsumerByUserIdAndNameOrNullHandler,
+        FindTotalConsumersByUserIdHandler,
+        FindConsumerListByUserIdService,
         ConsumerService,
         DeleteManyBillsConsumersHandler,
         CreateConsumerHandler,
