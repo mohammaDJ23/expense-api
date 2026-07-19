@@ -5,6 +5,7 @@ import type { IExistsByUserIdAndIdRepository } from '@/core/interfaces/repositor
 import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrThrowRepository.interface';
 import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories/findListByUserIdRepository.interface';
 import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
+import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type { IInsertBill, ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
@@ -19,4 +20,5 @@ export interface IBillRepository
             ISelectBill
         >,
         IExistsByUserIdAndIdRepository,
-        IFindManyByUserIdAndIdsRepository<ISelectBill> {}
+        IFindManyByUserIdAndIdsRepository<ISelectBill>,
+        IFindTotalByUserIdRepository {}

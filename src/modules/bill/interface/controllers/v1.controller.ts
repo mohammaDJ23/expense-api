@@ -22,6 +22,7 @@ import { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.r
 import { DeleteBillRequestDto } from '@/modules/bill/interface/dtos/deleteBill.request.dto';
 import { FindBillRequestDto } from '@/modules/bill/interface/dtos/findBill.request.dto';
 import { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
+import { FindBillListResponseDto } from '@/modules/bill/interface/dtos/findBillList.response.dto';
 import { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
 
 import {
@@ -34,6 +35,7 @@ import {
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IId } from '@/core/interfaces/id.interface';
+import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 
 @Controller({ version: '1', path: 'api/bills' })
@@ -66,12 +68,12 @@ export class BillController {
 
     @Get()
     @UseGuards(JwtAuthGuard)
-    @SerializerInterceptor(BillResponseDto)
+    @SerializerInterceptor(FindBillListResponseDto)
     @HttpResponse(SUCCESS_FIND_BILLS_MESSAGE, HttpStatus.OK)
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindBillListRequestDto,
-    ): Promise<IBill[]> {
+    ): Promise<IListResult<IBill>> {
         return this.billService.findListByUserId(user.id, query);
     }
 

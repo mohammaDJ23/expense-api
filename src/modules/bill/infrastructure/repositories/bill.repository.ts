@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { and, desc, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
+import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
 import { toExistsByCount } from '@/infrastructure/database/drizzle/transformers/toExistsByCount.transformer';
@@ -92,5 +93,9 @@ export class BillRepository implements IBillRepository {
                 .orderBy(desc(bills.createdAt))
                 .execute(),
         );
+    }
+
+    findTotalByUserId(userId: string): Promise<number> {
+        return toCount(this.drizzleRepository.db.$count(bills, eq(bills.userId, userId)));
     }
 }
