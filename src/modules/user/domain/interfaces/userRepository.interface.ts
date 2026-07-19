@@ -1,4 +1,4 @@
-import type { IList } from '@/core/interfaces/list.interface';
+import type { IListQuery } from '@/core/interfaces/listQuery.interface';
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
 import type { IDeleteByIdRepository } from '@/core/interfaces/repositories/deleteByIdRepository.interface';
 import type { IExistsByIdRepository } from '@/core/interfaces/repositories/existsByIdRepository.interface';
@@ -14,7 +14,7 @@ export interface IUserRepository
         IUpdateRepository<Partial<ISelectUser> & Required<Pick<ISelectUser, 'id'>>, ISelectUser>,
         IFindByIdOrNullRepository<ISelectUser>,
         IFindByIdOrThrowRepository<ISelectUser>,
-        IFindListRepository<IList, ISelectUser>,
+        IFindListRepository<IListQuery, ISelectUser>,
         IDeleteByIdRepository<ISelectUser>,
         IExistsByIdRepository {
     deleteManyNotVerified(): Promise<ISelectUser[]>;

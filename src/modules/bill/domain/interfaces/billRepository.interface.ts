@@ -1,4 +1,4 @@
-import type { IList } from '@/core/interfaces/list.interface';
+import type { IListQuery } from '@/core/interfaces/listQuery.interface';
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
 import type { IDeleteByUserIdAndIdRepository } from '@/core/interfaces/repositories/deleteByUserIdAndIdRepository.interface';
 import type { IExistsByUserIdAndIdRepository } from '@/core/interfaces/repositories/existsByUserIdAndIdRepository.interface';
@@ -12,7 +12,7 @@ export interface IBillRepository
     extends
         ICreateRepository<IInsertBill, ISelectBill>,
         IDeleteByUserIdAndIdRepository<ISelectBill>,
-        IFindListByUserIdRepository<IList, ISelectBill>,
+        IFindListByUserIdRepository<IListQuery, ISelectBill>,
         IFindByUserIdAndIdOrThrowRepository<ISelectBill>,
         IUpdateRepository<
             Partial<ISelectBill> & Required<Pick<ISelectBill, 'id' | 'userId'>>,

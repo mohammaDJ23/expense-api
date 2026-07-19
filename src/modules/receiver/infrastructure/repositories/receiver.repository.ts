@@ -12,7 +12,7 @@ import {
     type ISelectReceiver,
 } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
-import type { IList } from '@/core/interfaces/list.interface';
+import type { IListQuery } from '@/core/interfaces/listQuery.interface';
 import type { IReceiverRepository } from '@/modules/receiver/domain/interfaces/receiverRepository.interface';
 
 @Injectable()
@@ -93,7 +93,7 @@ export class ReceiverRepository implements IReceiverRepository {
         );
     }
 
-    findListByUserId(userId: string, options: IList): Promise<ISelectReceiver[]> {
+    findListByUserId(userId: string, options: IListQuery): Promise<ISelectReceiver[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()
