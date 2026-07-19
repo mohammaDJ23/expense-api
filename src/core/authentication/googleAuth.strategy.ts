@@ -36,55 +36,50 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
             throw new UnauthorizedException();
         }
 
-        {
-            const user = await this.queryBus.execute<
-                FindUserByEmailOrNullQuery,
-                ISelectUser | null
-            >(
-                new FindUserByEmailOrNullQuery({
+        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+            new FindUserByEmailOrNullQuery({
+                email: email.value,
+            }),
+        );
+
+        if (!user) {
+            const createdUser = await this.commandBus.execute<CreateUserCommand, ISelectUser>(
+                new CreateUserCommand({
+                    firstName: profile.name?.givenName,
+                    lastName: profile.name?.familyName,
+                    googleId: profile.id,
                     email: email.value,
+                    avatar: profile.photos?.[0]?.value,
+                    authProvider: AuthProvider.GOOGLE,
+                    role: UserRoles.USER,
+                    verifiedAt: getCurrentUTCTimestamp(),
+                    createdAt: getCurrentUTCTimestamp(),
+                    updatedAt: getCurrentUTCTimestamp(),
+                    lastLoginAt: getCurrentUTCTimestamp(),
                 }),
             );
 
-            if (!user) {
-                const createdUser = await this.commandBus.execute<CreateUserCommand, ISelectUser>(
-                    new CreateUserCommand({
-                        firstName: profile.name?.givenName,
-                        lastName: profile.name?.familyName,
-                        googleId: profile.id,
-                        email: email.value,
-                        avatar: profile.photos?.[0]?.value,
-                        authProvider: AuthProvider.GOOGLE,
-                        role: UserRoles.USER,
-                        verifiedAt: getCurrentUTCTimestamp(),
-                        createdAt: getCurrentUTCTimestamp(),
-                        updatedAt: getCurrentUTCTimestamp(),
-                        lastLoginAt: getCurrentUTCTimestamp(),
-                    }),
-                );
-
-                return {
-                    id: createdUser.id,
-                    role: createdUser.role,
-                };
-            }
-
-            if (!user.verifiedAt) {
-                throw new ForbiddenException();
-            }
-
-            if (user.authProvider !== AuthProvider.GOOGLE) {
-                throw new ForbiddenException();
-            }
-
-            if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
-                throw new ForbiddenException();
-            }
-
             return {
-                id: user.id,
-                role: user.role,
+                id: createdUser.id,
+                role: createdUser.role,
             };
         }
+
+        if (!user.verifiedAt) {
+            throw new ForbiddenException();
+        }
+
+        if (user.authProvider !== AuthProvider.GOOGLE) {
+            throw new ForbiddenException();
+        }
+
+        if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
+            throw new ForbiddenException();
+        }
+
+        return {
+            id: user.id,
+            role: user.role,
+        };
     }
 }

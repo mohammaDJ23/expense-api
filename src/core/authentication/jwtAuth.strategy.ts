@@ -31,25 +31,23 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
     async validate(payload: IAccessTokenPayload): Promise<ICurrentUser> {
         const verifiedPayload = this.accessTokenService.verify(payload);
 
-        {
-            const user = await this.queryBus.execute<FindUserByIdOrNullQuery, ISelectUser | null>(
-                new FindUserByIdOrNullQuery({
-                    id: verifiedPayload.id,
-                }),
-            );
+        const user = await this.queryBus.execute<FindUserByIdOrNullQuery, ISelectUser | null>(
+            new FindUserByIdOrNullQuery({
+                id: verifiedPayload.id,
+            }),
+        );
 
-            if (!user) {
-                throw new UnauthorizedException();
-            }
-
-            if (!user.verifiedAt) {
-                throw new ForbiddenException();
-            }
-
-            return {
-                id: user.id,
-                role: user.role,
-            };
+        if (!user) {
+            throw new UnauthorizedException();
         }
+
+        if (!user.verifiedAt) {
+            throw new ForbiddenException();
+        }
+
+        return {
+            id: user.id,
+            role: user.role,
+        };
     }
 }
