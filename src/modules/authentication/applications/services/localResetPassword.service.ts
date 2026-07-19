@@ -18,6 +18,7 @@ import { PasswordStorageService } from './passwordStorage.service';
 import { PasswordTokenService } from './passwordToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
+import type { INewPasswordPayload } from '@/modules/authentication/domain/interfaces/newPasswordPayload.interface';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
@@ -33,24 +34,26 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
     ) {}
 
     async execute(input: LocalResetPasswordRequestDto): Promise<boolean> {
-        let user: ISelectUser | null;
-        {
-            const payload = this.passwordTokenService.verify(input.token);
-
-            {
-                let storedToken: string | null = null;
-                try {
-                    storedToken = await this.passwordStorageService.get(payload.email);
-                } catch {}
-                if (storedToken !== input.token) {
-                    throw new BadRequestException();
-                }
-            }
-
-            user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
-                new FindUserByEmailOrNullQuery({ email: payload.email }),
-            );
+        let payload: INewPasswordPayload;
+        try {
+            payload = this.passwordTokenService.verify(input.token);
+        } catch {
+            throw new BadRequestException();
         }
+
+        {
+            let storedToken: string | null = null;
+            try {
+                storedToken = await this.passwordStorageService.get(payload.email);
+            } catch {}
+            if (storedToken !== input.token) {
+                throw new BadRequestException();
+            }
+        }
+
+        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+            new FindUserByEmailOrNullQuery({ email: payload.email }),
+        );
 
         if (!user) {
             throw new BadRequestException();

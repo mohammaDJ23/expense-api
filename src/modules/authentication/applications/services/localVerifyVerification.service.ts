@@ -17,6 +17,7 @@ import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
 import type { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
@@ -34,24 +35,26 @@ export class LocalVerifyVerificationService implements IService<
     ) {}
 
     async execute(input: LocalVerifyVerificationRequestDto): Promise<boolean> {
-        let user: ISelectUser | null;
-        {
-            const payload = this.verificationTokenService.verify(input.token);
-
-            {
-                let storedToken: string | null = null;
-                try {
-                    storedToken = await this.verificationStorageService.get(payload.email);
-                } catch {}
-                if (storedToken !== input.token) {
-                    throw new BadRequestException();
-                }
-            }
-
-            user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
-                new FindUserByEmailOrNullQuery({ email: payload.email }),
-            );
+        let payload: IVerificationPayload;
+        try {
+            payload = this.verificationTokenService.verify(input.token);
+        } catch {
+            throw new BadRequestException();
         }
+
+        {
+            let storedToken: string | null = null;
+            try {
+                storedToken = await this.verificationStorageService.get(payload.email);
+            } catch {}
+            if (storedToken !== input.token) {
+                throw new BadRequestException();
+            }
+        }
+
+        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+            new FindUserByEmailOrNullQuery({ email: payload.email }),
+        );
 
         if (!user) {
             throw new BadRequestException();
