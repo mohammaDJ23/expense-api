@@ -1,4 +1,4 @@
-import type { IList } from '@/core/interfaces/list.interface';
+import type { IListQuery } from '@/core/interfaces/listQuery.interface';
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
 import type { IDeleteByUserIdAndIdRepository } from '@/core/interfaces/repositories/deleteByUserIdAndIdRepository.interface';
 import type { IExistsByUserIdAndExcludingIdAndNameRepository } from '@/core/interfaces/repositories/existsByUserIdAndExcludingIdAndNameRepository.interface';
@@ -23,7 +23,7 @@ export interface ILocationRepository
         IFindByUserIdAndIdOrNullRepository<ISelectLocation>,
         IFindByUserIdAndIdOrThrowRepository<ISelectLocation>,
         IFindManyByUserIdAndIdsRepository<ISelectLocation>,
-        IFindListByUserIdRepository<IList, ISelectLocation>,
+        IFindListByUserIdRepository<IListQuery, ISelectLocation>,
         IFindByUserIdAndNameOrNullRepository<ISelectLocation>,
         IExistsByUserIdAndIdRepository,
         IExistsByUserIdAndExcludingIdAndNameRepository,

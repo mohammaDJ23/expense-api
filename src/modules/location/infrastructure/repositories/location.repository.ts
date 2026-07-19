@@ -12,7 +12,7 @@ import {
     type ISelectLocation,
 } from '@/modules/location/infrastructure/schemas/location.schema';
 
-import type { IList } from '@/core/interfaces/list.interface';
+import type { IListQuery } from '@/core/interfaces/listQuery.interface';
 import type { ILocationRepository } from '@/modules/location/domain/interfaces/locationRepository.interface';
 
 @Injectable()
@@ -93,7 +93,7 @@ export class LocationRepository implements ILocationRepository {
         );
     }
 
-    findListByUserId(userId: string, options: IList): Promise<ISelectLocation[]> {
+    findListByUserId(userId: string, options: IListQuery): Promise<ISelectLocation[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()

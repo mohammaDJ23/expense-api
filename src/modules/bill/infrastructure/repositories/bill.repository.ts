@@ -11,7 +11,7 @@ import {
     type ISelectBill,
 } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
-import type { IList } from '@/core/interfaces/list.interface';
+import type { IListQuery } from '@/core/interfaces/listQuery.interface';
 import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepository.interface';
 
 @Injectable()
@@ -59,7 +59,7 @@ export class BillRepository implements IBillRepository {
         );
     }
 
-    findListByUserId(userId: string, options: IList): Promise<ISelectBill[]> {
+    findListByUserId(userId: string, options: IListQuery): Promise<ISelectBill[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()

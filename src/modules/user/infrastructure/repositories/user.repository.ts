@@ -12,7 +12,7 @@ import {
     type ISelectUser,
 } from '@/modules/user/infrastructure/schemas/user.schema';
 
-import type { IList } from '@/core/interfaces/list.interface';
+import type { IListQuery } from '@/core/interfaces/listQuery.interface';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
 
 @Injectable()
@@ -74,7 +74,7 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    findList(options: IList): Promise<ISelectUser[]> {
+    findList(options: IListQuery): Promise<ISelectUser[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()

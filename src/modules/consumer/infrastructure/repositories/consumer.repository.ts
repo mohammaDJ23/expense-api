@@ -12,7 +12,7 @@ import {
     type ISelectConsumer,
 } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
-import type { IList } from '@/core/interfaces/list.interface';
+import type { IListQuery } from '@/core/interfaces/listQuery.interface';
 import type { IConsumerRepository } from '@/modules/consumer/domain/interfaces/consumerRepository.interface';
 
 @Injectable()
@@ -92,7 +92,7 @@ export class ConsumerRepository implements IConsumerRepository {
         );
     }
 
-    findListByUserId(userId: string, options: IList): Promise<ISelectConsumer[]> {
+    findListByUserId(userId: string, options: IListQuery): Promise<ISelectConsumer[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()
