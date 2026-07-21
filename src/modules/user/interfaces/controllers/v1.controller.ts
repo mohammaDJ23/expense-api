@@ -19,6 +19,7 @@ import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.
 import { UserService } from '@/modules/user/applications/services/user.service';
 import { FindUserByIdRequestDto } from '@/modules/user/interfaces/dtos/findUserById.request.dto';
 import { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
+import { FindUserListResponseDto } from '@/modules/user/interfaces/dtos/findUserList.response.dto';
 import { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
 import { UserResponseDto } from '@/modules/user/interfaces/dtos/user.response.dto';
 
@@ -31,6 +32,7 @@ import {
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IId } from '@/core/interfaces/id.interface';
+import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/users' })
@@ -55,9 +57,9 @@ export class UserController {
 
     @Get()
     @UseGuards(JwtAuthGuard, OwnerGuard)
-    @SerializerInterceptor(UserResponseDto)
+    @SerializerInterceptor(FindUserListResponseDto)
     @HttpResponse(SUCCESS_FIND_USERS_MESSAGE, HttpStatus.OK)
-    findList(@Query() query: FindUserListRequestDto): Promise<ISelectUser[]> {
+    findList(@Query() query: FindUserListRequestDto): Promise<IListResult<ISelectUser>> {
         return this.userService.findList(query);
     }
 
