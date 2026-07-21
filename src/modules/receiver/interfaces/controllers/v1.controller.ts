@@ -21,6 +21,7 @@ import { CreateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/cre
 import { DeleteReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/deleteReceiver.request.dto';
 import { FindReceiverByIdRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverById.request.dto';
 import { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';
+import { FindReceiverListResponseDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.response.dto';
 import { ReceiverResponseDto } from '@/modules/receiver/interfaces/dtos/receiver.response.dto';
 import { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/updateReceiver.request.dto';
 
@@ -34,6 +35,7 @@ import {
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IId } from '@/core/interfaces/id.interface';
+import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @Controller({ version: '1', path: 'api/receivers' })
@@ -75,12 +77,12 @@ export class ReceiverController {
 
     @Get()
     @UseGuards(JwtAuthGuard)
-    @SerializerInterceptor(ReceiverResponseDto)
+    @SerializerInterceptor(FindReceiverListResponseDto)
     @HttpResponse(SUCCESS_FIND_RECEIVERS_MESSAGE, HttpStatus.OK)
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindReceiverListRequestDto,
-    ): Promise<ISelectReceiver[]> {
+    ): Promise<IListResult<ISelectReceiver>> {
         return this.receiverService.findListByUserId(user.id, query);
     }
 

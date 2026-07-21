@@ -21,8 +21,10 @@ import { FindReceiverByUserIdAndIdOrNullHandler } from '@/modules/receiver/appli
 import { FindReceiverByUserIdAndIdOrThrowHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.handler';
 import { FindReceiverByUserIdAndNameOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndNameOrNull/findReceiverByUserIdAndNameOrNull.handler';
 import { FindReceiverListByUserIdHandler } from '@/modules/receiver/applications/queries/findReceiverListByUserId/findReceiverListByUserId.handler';
+import { FindTotalReceiversByUserIdHandler } from '@/modules/receiver/applications/queries/findTotalReceiversByUserId/findTotalReceiversByUserId.handler';
 import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
 import { DeleteReceiverService } from '@/modules/receiver/applications/services/deleteReceiver.service';
+import { FindReceiverListByUserIdService } from '@/modules/receiver/applications/services/findReceiverListByUserId.service';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
 import { ReceiverSearchService } from '@/modules/receiver/applications/services/search/receiverSearch.service';
 import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/search/receiverSearchAggregate.service';
@@ -48,6 +50,8 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         FindReceiverByUserIdAndIdOrThrowHandler,
         FindReceiverByUserIdAndNameOrNullHandler,
         FindReceiverListByUserIdHandler,
+        FindTotalReceiversByUserIdHandler,
+        FindReceiverListByUserIdService,
         ExistsReceiverByUserIdAndIdHandler,
         ExistsReceiverByUserIdAndExcludingIdAndNameHandler,
         ExistsReceiverByUserIdAndNameHandler,

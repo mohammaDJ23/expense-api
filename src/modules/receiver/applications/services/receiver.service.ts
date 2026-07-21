@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { FindReceiverByUserIdAndIdOrThrowQuery } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.query';
-import { FindReceiverListByUserIdQuery } from '@/modules/receiver/applications/queries/findReceiverListByUserId/findReceiverListByUserId.query';
 
 import { CreateReceiverService } from './createReceiver.service';
 import { DeleteReceiverService } from './deleteReceiver.service';
+import { FindReceiverListByUserIdService } from './findReceiverListByUserId.service';
 import { UpdateReceiverService } from './updateReceiver.service';
 
 import type { IId } from '@/core/interfaces/id.interface';
+import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';
 import type { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/updateReceiver.request.dto';
@@ -20,6 +21,7 @@ export class ReceiverService {
         private readonly createReceiverService: CreateReceiverService,
         private readonly updateReceiverService: UpdateReceiverService,
         private readonly deleteReceiverService: DeleteReceiverService,
+        private readonly findReceiverListByUserIdService: FindReceiverListByUserIdService,
     ) {}
 
     create(userId: string, name: string): Promise<IId> {
@@ -37,14 +39,8 @@ export class ReceiverService {
     findListByUserId(
         userId: string,
         query: FindReceiverListRequestDto,
-    ): Promise<ISelectReceiver[]> {
-        return this.queryBus.execute<FindReceiverListByUserIdQuery, ISelectReceiver[]>(
-            new FindReceiverListByUserIdQuery({
-                userId,
-                offset: query.offset,
-                limit: query.limit,
-            }),
-        );
+    ): Promise<IListResult<ISelectReceiver>> {
+        return this.findReceiverListByUserIdService.execute({ userId, query });
     }
 
     findByUserIdAndId(userId: string, receiverId: string): Promise<ISelectReceiver> {
