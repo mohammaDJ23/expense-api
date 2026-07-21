@@ -9,11 +9,13 @@ import { DeleteUserHandler } from '@/modules/user/applications/commands/deleteUs
 import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUser/updateUser.handler';
 import { ExistsUserByEmailHandler } from '@/modules/user/applications/queries/existsUserByEmail/existsUserByEmail.handler';
 import { ExistsUserByIdHandler } from '@/modules/user/applications/queries/existsUserById/existsUserById.handler';
+import { FindTotalUsersHandler } from '@/modules/user/applications/queries/findTotalUsers/findTotalUsers.handler';
 import { FindUserByEmailOrNullHandler } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.handler';
 import { FindUserByIdOrNullHandler } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.handler';
 import { FindUserByIdOrThrowHandler } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.handler';
 import { FindUserListHandler } from '@/modules/user/applications/queries/findUserList/findUserList.handler';
 import { DeleteUserService } from '@/modules/user/applications/services/deleteUser.service';
+import { FindUserListService } from '@/modules/user/applications/services/findUserList.service';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { UserService } from '@/modules/user/applications/services/user.service';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
@@ -33,6 +35,7 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         UpdateUserHandler,
         ExistsUserByEmailHandler,
         DeleteManyNotVerifiedUsersHandler,
+        FindTotalUsersHandler,
         ExistsUserByIdHandler,
         DeleteUserHandler,
         FindUserByEmailOrNullHandler,
@@ -42,6 +45,7 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         OwnerGuard,
         UserExistenceValidatorService,
         UserUniqueEmailValidatorService,
+        FindUserListService,
     ],
     exports: [UserUniqueEmailValidatorService],
 })

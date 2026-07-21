@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { desc, eq, isNull } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
+import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
@@ -92,5 +93,9 @@ export class UserRepository implements IUserRepository {
 
     existsByEmail(email: string): Promise<boolean> {
         return toExistsByCount(this.drizzleRepository.db.$count(users, eq(users.email, email)));
+    }
+
+    findTotal(): Promise<number> {
+        return toCount(this.drizzleRepository.db.$count(users));
     }
 }

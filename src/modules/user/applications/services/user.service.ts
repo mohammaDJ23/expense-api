@@ -4,11 +4,13 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 
 import { DeleteManyNotVerifiedUsersCommand } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.command';
 import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
-import { FindUserListQuery } from '@/modules/user/applications/queries/findUserList/findUserList.query';
-import { DeleteUserService } from '@/modules/user/applications/services/deleteUser.service';
-import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
+
+import { DeleteUserService } from './deleteUser.service';
+import { FindUserListService } from './findUserList.service';
+import { UpdateUserService } from './updateUser.service';
 
 import type { IId } from '@/core/interfaces/id.interface';
+import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
 import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
@@ -20,6 +22,7 @@ export class UserService {
         private readonly commandBus: CommandBus,
         private readonly updateUserService: UpdateUserService,
         private readonly deleteUserService: DeleteUserService,
+        private readonly findUserListService: FindUserListService,
     ) {}
 
     update(userId: string, body: UpdateUserRequestDto): Promise<IId> {
@@ -30,13 +33,8 @@ export class UserService {
         return this.deleteUserService.execute({ userId });
     }
 
-    findList(query: FindUserListRequestDto): Promise<ISelectUser[]> {
-        return this.queryBus.execute<FindUserListQuery, ISelectUser[]>(
-            new FindUserListQuery({
-                offset: query.offset,
-                limit: query.limit,
-            }),
-        );
+    findList(query: FindUserListRequestDto): Promise<IListResult<ISelectUser>> {
+        return this.findUserListService.execute({ query });
     }
 
     findById(userId: string): Promise<ISelectUser> {
