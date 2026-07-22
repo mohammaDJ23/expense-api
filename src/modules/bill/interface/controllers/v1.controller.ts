@@ -14,6 +14,7 @@ import {
 import { CurrentUser } from '@/core/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
+import { TotalResponseDto } from '@/core/dtos/total.response.dto';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
@@ -30,12 +31,14 @@ import {
     SUCCESS_DELETE_BILL_MESSAGE,
     SUCCESS_FIND_BILL_MESSAGE,
     SUCCESS_FIND_BILLS_MESSAGE,
+    SUCCESS_TOTAL_BILLS_MESSAGE,
     SUCCESS_UPDATE_BILL_MESSAGE,
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IId } from '@/core/interfaces/id.interface';
 import type { IListResult } from '@/core/interfaces/listResult.interface';
+import type { ITotal } from '@/core/interfaces/total.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 
 @Controller({ version: '1', path: 'api/bills' })
@@ -75,6 +78,14 @@ export class BillController {
         @Query() query: FindBillListRequestDto,
     ): Promise<IListResult<IBill>> {
         return this.billService.findListByUserId(user.id, query);
+    }
+
+    @Get('total')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(TotalResponseDto)
+    @HttpResponse(SUCCESS_TOTAL_BILLS_MESSAGE, HttpStatus.OK)
+    findTotal(@CurrentUser() user: ICurrentUser): Promise<ITotal> {
+        return this.billService.findTotal(user.id);
     }
 
     @Get(':id')
