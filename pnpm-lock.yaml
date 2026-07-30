@@ -33,7 +33,7 @@ overrides:
     js-yaml: 5.2.2
     svgo: '>=4.0.2'
     postcss: '>=8.5.18'
-    typeorm: '>=1.1.0'
+    typeorm: 1.1.0
 
 importers:
     .:
@@ -2437,7 +2437,7 @@ packages:
             reflect-metadata: 0.1.x || 0.2.x
             rxjs: 7.x
             sequelize: '*'
-            typeorm: '>=1.1.0'
+            typeorm: 1.1.0
         peerDependenciesMeta:
             '@grpc/grpc-js':
                 optional: true
@@ -2502,7 +2502,7 @@ packages:
             '@nestjs/core': ^10.0.0 || ^11.0.0
             reflect-metadata: ^0.1.13 || ^0.2.0
             rxjs: ^7.2.0
-            typeorm: '>=1.1.0'
+            typeorm: 1.1.0
 
     '@noble/hashes@1.8.0':
         resolution:
