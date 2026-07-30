@@ -13,6 +13,7 @@ import {
 import { CurrentUser } from '@/core/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
+import { TotalResponseDto } from '@/core/dtos/total.response.dto';
 import { OwnerGuard } from '@/core/guards/owner.guard';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
@@ -28,11 +29,13 @@ import {
     SUCCESS_FIND_USER_MESSAGE,
     SUCCESS_FIND_USERS_MESSAGE,
     SUCCESS_UPDATE_USER_MESSAGE,
+    SUCCESS_TOTAL_USERS_MESSAGE,
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IId } from '@/core/interfaces/id.interface';
 import type { IListResult } from '@/core/interfaces/listResult.interface';
+import type { ITotal } from '@/core/interfaces/total.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/users' })
@@ -69,6 +72,14 @@ export class UserController {
     @HttpResponse(SUCCESS_FIND_USER_MESSAGE, HttpStatus.OK)
     findMe(@CurrentUser() user: ICurrentUser): Promise<ISelectUser> {
         return this.userService.findById(user.id);
+    }
+
+    @Get('total')
+    @UseGuards(JwtAuthGuard, OwnerGuard)
+    @SerializerInterceptor(TotalResponseDto)
+    @HttpResponse(SUCCESS_TOTAL_USERS_MESSAGE, HttpStatus.OK)
+    findTotal(): Promise<ITotal> {
+        return this.userService.findTotal();
     }
 
     @Get(':id')

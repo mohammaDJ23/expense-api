@@ -2,3 +2,4 @@ export const SUCCESS_FIND_USERS_MESSAGE = 'You have received the users successfu
 export const SUCCESS_FIND_USER_MESSAGE = 'You have received the user successfully';
 export const SUCCESS_DELETE_USER_MESSAGE = 'The user was deleted successfully';
 export const SUCCESS_UPDATE_USER_MESSAGE = 'The user was updated successfully';
+export const SUCCESS_TOTAL_USERS_MESSAGE = 'You have got the total users';

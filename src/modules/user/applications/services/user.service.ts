@@ -3,6 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
 import { DeleteManyNotVerifiedUsersCommand } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.command';
+import { FindTotalUsersQuery } from '@/modules/user/applications/queries/findTotalUsers/findTotalUsers.query';
 import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 
 import { DeleteUserService } from './deleteUser.service';
@@ -11,6 +12,7 @@ import { UpdateUserService } from './updateUser.service';
 
 import type { IId } from '@/core/interfaces/id.interface';
 import type { IListResult } from '@/core/interfaces/listResult.interface';
+import type { ITotal } from '@/core/interfaces/total.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
 import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
@@ -41,6 +43,12 @@ export class UserService {
         return this.queryBus.execute<FindUserByIdOrThrowQuery, ISelectUser>(
             new FindUserByIdOrThrowQuery({ id: userId }),
         );
+    }
+
+    findTotal(): Promise<ITotal> {
+        return this.queryBus
+            .execute<FindTotalUsersQuery, number>(new FindTotalUsersQuery())
+            .then((total) => ({ total }));
     }
 
     @Cron(CronExpression.EVERY_WEEK)
