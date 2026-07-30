@@ -14,10 +14,8 @@ import {
 import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
 import type { IListQuery } from '@/core/interfaces/listQuery.interface';
-import type {
-    IBillRepository,
-    IMostUsed,
-} from '@/modules/bill/domain/interfaces/billRepository.interface';
+import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepository.interface';
+import type { IMostUsed } from '@/modules/bill/domain/interfaces/mostUsed.interface';
 
 @Injectable()
 export class BillRepository implements IBillRepository {

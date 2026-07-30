@@ -16,6 +16,7 @@ import { ExistsBillByUserIdAndIdHandler } from '@/modules/bill/applications/quer
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
 import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.handler';
 import { FindManyBillsByUserIdAndIdsHandler } from '@/modules/bill/applications/queries/findManyBillsByUserIdAndIds/findManyBillsByUserIdAndIds.handler';
+import { FindMostUsedLocationsHandler } from '@/modules/bill/applications/queries/findMostUsedLocations/findMostUsedLocations.handler';
 import { FindTotalBillsByUserIdHandler } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.handler';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
@@ -71,6 +72,7 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         CreateBillMessageHandler,
         FindManyBillsByUserIdAndIdsHandler,
         FindTotalBillsByUserIdHandler,
+        FindMostUsedLocationsHandler,
         CreateBillMessageElasticsearchProcessor,
         UpdateBillMessageHandler,
         UpdateBillMessageElasticsearchProcessor,
