@@ -1,3 +1,4 @@
+import type { IMostUsed } from './mostUsed.interface';
 import type { IListQuery } from '@/core/interfaces/listQuery.interface';
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
 import type { IDeleteByUserIdAndIdRepository } from '@/core/interfaces/repositories/deleteByUserIdAndIdRepository.interface';
@@ -8,11 +9,6 @@ import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/reposi
 import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type { IInsertBill, ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
-
-export interface IMostUsed {
-    id: string;
-    total: number;
-}
 
 export interface IBillRepository
     extends
