@@ -3,13 +3,13 @@ import { QueryBus } from '@nestjs/cqrs';
 
 import { GetHealthQuery } from '@/modules/health/applications/queries/getHealth/getHealth.query';
 
-import type { HealthCheckResult } from '@nestjs/terminus';
+import type { IHealthCheckResult } from '@/modules/health/domain/interfaces/healthCheckResult.interface';
 
 @Injectable()
 export class HealthService {
     constructor(private readonly queryBus: QueryBus) {}
 
-    getHealth(): Promise<HealthCheckResult> {
-        return this.queryBus.execute(new GetHealthQuery());
+    getHealth(): Promise<IHealthCheckResult> {
+        return this.queryBus.execute<GetHealthQuery, IHealthCheckResult>(new GetHealthQuery());
     }
 }

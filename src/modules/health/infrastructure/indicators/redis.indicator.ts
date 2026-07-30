@@ -5,13 +5,13 @@ import { REDIS_NAME } from '@/infrastructure/redis/redis.constants';
 import { HealthEntity } from '@/modules/health/domain/entities/health.entity';
 
 import type { IHealthIndicator } from '@/modules/health/domain/interfaces/healthIndicator.interface';
-import type { HealthIndicatorResult } from '@nestjs/terminus';
+import type { THealthIndicatorResult } from '@/modules/health/domain/interfaces/healthIndicatorResult.interface';
 
 @Injectable()
 export class RedisIndicator implements IHealthIndicator {
     constructor(private readonly redisService: RedisService) {}
 
-    async check(): Promise<HealthIndicatorResult> {
+    async check(): Promise<THealthIndicatorResult> {
         try {
             const redis = this.redisService.getOrNil();
 

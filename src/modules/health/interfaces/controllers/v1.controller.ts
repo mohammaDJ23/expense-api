@@ -5,7 +5,7 @@ import { HealthService } from '@/modules/health/applications/services/health.ser
 
 import { SUCCESS_HEALTH_MESSAGE } from './controllers.constants';
 
-import type { HealthCheckResult } from '@nestjs/terminus';
+import type { IHealthCheckResult } from '@/modules/health/domain/interfaces/healthCheckResult.interface';
 
 @Controller({ version: '1', path: 'api/health' })
 export class HealthController {
@@ -13,7 +13,7 @@ export class HealthController {
 
     @Get()
     @HttpResponse(SUCCESS_HEALTH_MESSAGE, HttpStatus.OK)
-    getHealth(): Promise<HealthCheckResult> {
+    getHealth(): Promise<IHealthCheckResult> {
         return this.healthService.getHealth();
     }
 }
