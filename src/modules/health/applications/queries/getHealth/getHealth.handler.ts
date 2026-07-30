@@ -1,5 +1,4 @@
 import { type IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { type HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { DatabaseIndicator } from '@/modules/health/infrastructure/indicators/database.indicator';
@@ -7,20 +6,39 @@ import { RedisIndicator } from '@/modules/health/infrastructure/indicators/redis
 
 import { GetHealthQuery } from './getHealth.query';
 
+import type { IHealthCheckResult } from '@/modules/health/domain/interfaces/healthCheckResult.interface';
+
 @QueryHandler(GetHealthQuery)
-export class GetHealthHandler implements IQueryHandler<GetHealthQuery, HealthCheckResult> {
+export class GetHealthHandler implements IQueryHandler<GetHealthQuery, IHealthCheckResult> {
     constructor(
         private readonly databaseIndicator: DatabaseIndicator,
         private readonly redisIndicator: RedisIndicator,
-        private readonly health: HealthCheckService,
     ) {}
 
-    async execute(): Promise<HealthCheckResult> {
+    async execute(): Promise<IHealthCheckResult> {
         try {
-            return await this.health.check([
-                () => this.databaseIndicator.check(),
-                () => this.redisIndicator.check(),
-            ]);
+            const result: IHealthCheckResult = {
+                status: 'up',
+                details: {},
+            };
+
+            {
+                const checks = await Promise.all([
+                    this.databaseIndicator.check(),
+                    this.redisIndicator.check(),
+                ]);
+                for (const check of checks) {
+                    result.details = Object.assign(result.details, check);
+                }
+            }
+
+            result.status = Object.values(result.details).every(
+                (indicator) => indicator.status === 'up',
+            )
+                ? 'up'
+                : 'down';
+
+            return result;
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

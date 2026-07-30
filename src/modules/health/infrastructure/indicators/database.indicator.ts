@@ -6,11 +6,11 @@ import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.rep
 import { HealthEntity } from '@/modules/health/domain/entities/health.entity';
 
 import type { IHealthIndicator } from '@/modules/health/domain/interfaces/healthIndicator.interface';
-import type { HealthIndicatorResult } from '@nestjs/terminus';
+import type { THealthIndicatorResult } from '@/modules/health/domain/interfaces/healthIndicatorResult.interface';
 
 @Injectable()
 export class DatabaseIndicator extends DrizzleRepository implements IHealthIndicator {
-    async check(): Promise<HealthIndicatorResult> {
+    async check(): Promise<THealthIndicatorResult> {
         try {
             await this.db.execute(sql`SELECT 1`);
 

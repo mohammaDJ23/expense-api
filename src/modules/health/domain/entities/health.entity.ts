@@ -1,12 +1,13 @@
 import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
 
 import type { IHealthEntity } from '@/modules/health/domain/interfaces/healthEntity.interface';
-import type { HealthIndicatorResult, HealthIndicatorStatus } from '@nestjs/terminus';
+import type { THealthIndicatorResult } from '@/modules/health/domain/interfaces/healthIndicatorResult.interface';
+import type { THealthIndicatorStatus } from '@/modules/health/domain/interfaces/healthIndicatorStatus.interface';
 
 export class HealthEntity implements IHealthEntity {
     public readonly timestamp: string;
     public readonly name: string;
-    public readonly status: HealthIndicatorStatus;
+    public readonly status: THealthIndicatorStatus;
     public readonly details: Record<string, unknown>;
 
     private constructor(data: IHealthEntity) {
@@ -18,7 +19,7 @@ export class HealthEntity implements IHealthEntity {
 
     static create(
         name: string,
-        status: HealthIndicatorStatus,
+        status: THealthIndicatorStatus,
         details: Record<string, unknown> = {},
     ): HealthEntity {
         return new HealthEntity({
@@ -37,12 +38,13 @@ export class HealthEntity implements IHealthEntity {
         return HealthEntity.create(name, 'down', details);
     }
 
-    toJSON(): HealthIndicatorResult {
+    toJSON(): THealthIndicatorResult {
         return {
             [this.name]: {
                 status: this.status,
                 timestamp: this.timestamp,
                 details: this.details,
+                name: this.name,
             },
         };
     }

@@ -1,6 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { TerminusModule } from '@nestjs/terminus';
 
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { GetHealthHandler } from '@/modules/health/applications/queries/getHealth/getHealth.handler';
@@ -10,7 +9,7 @@ import { RedisIndicator } from '@/modules/health/infrastructure/indicators/redis
 import { HealthController } from '@/modules/health/interfaces/controllers/v1.controller';
 
 @Module({
-    imports: [HttpModule, TerminusModule, CqrsModule],
+    imports: [HttpModule, CqrsModule],
     controllers: [HealthController],
     providers: [HealthService, GetHealthHandler, DatabaseIndicator, RedisIndicator],
 })
