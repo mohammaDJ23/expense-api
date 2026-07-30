@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, desc, eq, inArray } from 'drizzle-orm';
+import { and, count, desc, eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -11,9 +11,13 @@ import {
     type IInsertBill,
     type ISelectBill,
 } from '@/modules/bill/infrastructure/schemas/bill.schema';
+import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
 import type { IListQuery } from '@/core/interfaces/listQuery.interface';
-import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepository.interface';
+import type {
+    IBillRepository,
+    IMostUsed,
+} from '@/modules/bill/domain/interfaces/billRepository.interface';
 
 @Injectable()
 export class BillRepository implements IBillRepository {
@@ -97,5 +101,57 @@ export class BillRepository implements IBillRepository {
 
     findTotalByUserId(userId: string): Promise<number> {
         return toCount(this.drizzleRepository.db.$count(bills, eq(bills.userId, userId)));
+    }
+
+    findMostUsedLocations(userId: string, limit: number): Promise<IMostUsed[]> {
+        const total = count();
+        return toEntities(
+            this.drizzleRepository.db
+                .select({
+                    id: bills.locationId,
+                    total,
+                })
+                .from(bills)
+                .where(eq(bills.userId, userId))
+                .groupBy(bills.locationId)
+                .orderBy(desc(total))
+                .limit(limit)
+                .execute(),
+        );
+    }
+
+    findMostUsedReceivers(userId: string, limit: number): Promise<IMostUsed[]> {
+        const total = count();
+        return toEntities(
+            this.drizzleRepository.db
+                .select({
+                    id: bills.receiverId,
+                    total,
+                })
+                .from(bills)
+                .where(eq(bills.userId, userId))
+                .groupBy(bills.receiverId)
+                .orderBy(desc(total))
+                .limit(limit)
+                .execute(),
+        );
+    }
+
+    findMostUsedConsumers(userId: string, limit: number): Promise<IMostUsed[]> {
+        const total = count();
+        return toEntities(
+            this.drizzleRepository.db
+                .select({
+                    id: billsConsumers.consumerId,
+                    total,
+                })
+                .from(bills)
+                .innerJoin(billsConsumers, eq(billsConsumers.billId, bills.id))
+                .where(eq(bills.userId, userId))
+                .groupBy(billsConsumers.consumerId)
+                .orderBy(desc(total))
+                .limit(limit)
+                .execute(),
+        );
     }
 }
