@@ -18,7 +18,7 @@ export class GetHealthHandler implements IQueryHandler<GetHealthQuery, IHealthCh
     async execute(): Promise<IHealthCheckResult> {
         try {
             const result: IHealthCheckResult = {
-                status: 'up',
+                status: 'ok',
                 details: {},
             };
 
@@ -35,8 +35,8 @@ export class GetHealthHandler implements IQueryHandler<GetHealthQuery, IHealthCh
             result.status = Object.values(result.details).every(
                 (indicator) => indicator.status === 'up',
             )
-                ? 'up'
-                : 'down';
+                ? 'ok'
+                : 'error';
 
             return result;
         } catch {

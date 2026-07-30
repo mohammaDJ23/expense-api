@@ -1,7 +1,8 @@
 import type { THealthIndicatorResult } from './healthIndicatorResult.interface';
-import type { THealthIndicatorStatus } from './healthIndicatorStatus.interface';
+
+type TStatus = 'ok' | 'error';
 
 export interface IHealthCheckResult {
-    status: THealthIndicatorStatus;
+    status: TStatus;
     details: THealthIndicatorResult;
 }
