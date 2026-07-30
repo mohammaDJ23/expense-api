@@ -14,6 +14,7 @@ import {
 import { CurrentUser } from '@/core/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
+import { TotalResponseDto } from '@/core/dtos/total.response.dto';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
@@ -30,12 +31,14 @@ import {
     SUCCESS_DELETE_RECEIVER_MESSAGE,
     SUCCESS_FIND_RECEIVER_MESSAGE,
     SUCCESS_FIND_RECEIVERS_MESSAGE,
+    SUCCESS_TOTAL_RECEIVERS_MESSAGE,
     SUCCESS_UPDATE_RECEIVER_MESSAGE,
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
 import type { IId } from '@/core/interfaces/id.interface';
 import type { IListResult } from '@/core/interfaces/listResult.interface';
+import type { ITotal } from '@/core/interfaces/total.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 @Controller({ version: '1', path: 'api/receivers' })
@@ -84,6 +87,14 @@ export class ReceiverController {
         @Query() query: FindReceiverListRequestDto,
     ): Promise<IListResult<ISelectReceiver>> {
         return this.receiverService.findListByUserId(user.id, query);
+    }
+
+    @Get('total')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(TotalResponseDto)
+    @HttpResponse(SUCCESS_TOTAL_RECEIVERS_MESSAGE, HttpStatus.OK)
+    findTotal(@CurrentUser() user: ICurrentUser): Promise<ITotal> {
+        return this.receiverService.findTotal(user.id);
     }
 
     @Get(':id')
