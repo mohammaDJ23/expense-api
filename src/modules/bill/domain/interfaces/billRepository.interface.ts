@@ -9,6 +9,11 @@ import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositorie
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type { IInsertBill, ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
+export interface IMostUsed {
+    id: string;
+    total: number;
+}
+
 export interface IBillRepository
     extends
         ICreateRepository<IInsertBill, ISelectBill>,
@@ -21,4 +26,8 @@ export interface IBillRepository
         >,
         IExistsByUserIdAndIdRepository,
         IFindManyByUserIdAndIdsRepository<ISelectBill>,
-        IFindTotalByUserIdRepository {}
+        IFindTotalByUserIdRepository {
+    findMostUsedLocations(userId: string, limit: number): Promise<IMostUsed[]>;
+    findMostUsedReceivers(userId: string, limit: number): Promise<IMostUsed[]>;
+    findMostUsedConsumers(userId: string, limit: number): Promise<IMostUsed[]>;
+}

@@ -20,7 +20,6 @@ export const billsConsumers = pgTable(
     },
     (table) => [
         primaryKey({ columns: [table.billId, table.consumerId] }),
-        index('idx_bills_consumers_bill_id').on(table.billId),
         index('idx_bills_consumers_consumer_id').on(table.consumerId),
     ],
 );
