@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { FindReceiverByUserIdAndIdOrThrowQuery } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.query';
+import { FindTotalReceiversByUserIdQuery } from '@/modules/receiver/applications/queries/findTotalReceiversByUserId/findTotalReceiversByUserId.query';
 
 import { CreateReceiverService } from './createReceiver.service';
 import { DeleteReceiverService } from './deleteReceiver.service';
@@ -10,6 +11,7 @@ import { UpdateReceiverService } from './updateReceiver.service';
 
 import type { IId } from '@/core/interfaces/id.interface';
 import type { IListResult } from '@/core/interfaces/listResult.interface';
+import type { ITotal } from '@/core/interfaces/total.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';
 import type { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/updateReceiver.request.dto';
@@ -47,5 +49,15 @@ export class ReceiverService {
         return this.queryBus.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
             new FindReceiverByUserIdAndIdOrThrowQuery({ userId, id: receiverId }),
         );
+    }
+
+    findTotal(userId: string): Promise<ITotal> {
+        return this.queryBus
+            .execute<FindTotalReceiversByUserIdQuery, number>(
+                new FindTotalReceiversByUserIdQuery({
+                    userId,
+                }),
+            )
+            .then((total) => ({ total }));
     }
 }
