@@ -1,3 +1,31 @@
+## [4.2.2](https://github.com/mohammaDJ23/expense-api/compare/v4.2.1...v4.2.2) (2026-07-30)
+
+### 🔧 Chores
+
+- 013723 update the status ([3821e95](https://github.com/mohammaDJ23/expense-api/commit/3821e95839a18c3277bef286662c9e386c401e0d))
+- 440883 add the find total of bills api ([9ba91f8](https://github.com/mohammaDJ23/expense-api/commit/9ba91f83a5311f70e36200f30cfbd207f5d31625))
+- 440883 add the find total of consumers api ([2a22fbd](https://github.com/mohammaDJ23/expense-api/commit/2a22fbd8ad3a6dda09a4ae584500eb7eeccb0e63))
+- 440883 add the find total of locations api ([020e2db](https://github.com/mohammaDJ23/expense-api/commit/020e2db9785d66a8f615c0c175c95b190fef1608))
+- 440883 add the find total of receivers api ([eb45674](https://github.com/mohammaDJ23/expense-api/commit/eb45674fdee33ccddf30a192a65534392088cb3a))
+- 440883 add the find total of users api ([8d1003e](https://github.com/mohammaDJ23/expense-api/commit/8d1003e7bd3e1b4c6b1d9b89954f701e3aef0e93))
+- 440883 add the total api to the bill list ([bfd10d1](https://github.com/mohammaDJ23/expense-api/commit/bfd10d18fa800a039c4e403bb22cfdb10d9e915c))
+- 440883 add the total api to the consumer list ([2fbabb0](https://github.com/mohammaDJ23/expense-api/commit/2fbabb08a2c44f679398b386dd520f2c1a0f8f94))
+- 440883 add the total api to the location list ([9a23f41](https://github.com/mohammaDJ23/expense-api/commit/9a23f41a22866e5f9740ae045624bd8320747730))
+- 440883 add the total api to the receiver list ([ae666dc](https://github.com/mohammaDJ23/expense-api/commit/ae666dce8881eb20b2a72bbe471e4cf56486512b))
+- 440883 add the total api to the user list ([f89a679](https://github.com/mohammaDJ23/expense-api/commit/f89a6796942e9e31b4a24d100459496802229411))
+- 440883 remove the unused package ([d29b234](https://github.com/mohammaDJ23/expense-api/commit/d29b2347352534228ce9b17b80287588e839a188))
+- 440883 rename add the related interfaces ([61ebb7e](https://github.com/mohammaDJ23/expense-api/commit/61ebb7edc409ad0e704699673cbd298147706456))
+- 440883 rename IList to IListQuery ([a6b58bc](https://github.com/mohammaDJ23/expense-api/commit/a6b58bcaffa248fe2183e92b638e9354455b7181))
+- 440883 update some packages ([15240cd](https://github.com/mohammaDJ23/expense-api/commit/15240cddcbfe9177a033be55578bd3e7d93dacc0))
+- 440883 update some packages ([b8d612e](https://github.com/mohammaDJ23/expense-api/commit/b8d612eab353847f0f5b16a8d0bd4c282f76b348))
+- 440883 update some packages ([996b849](https://github.com/mohammaDJ23/expense-api/commit/996b8492e2b0f475fba2d0619713c22b8cf40879))
+- 440883 update some packages ([34edfd5](https://github.com/mohammaDJ23/expense-api/commit/34edfd5b3de74bcd071acaa8c645e0451b8bafcb))
+- 440883 update the logic of healthcheck ([944f41e](https://github.com/mohammaDJ23/expense-api/commit/944f41e3bace881564d78683dbc49490ff0dbac4))
+- 440883 update the package ([51a255f](https://github.com/mohammaDJ23/expense-api/commit/51a255f5aeff3b0d05e506e3c442d8fe51751456))
+- 440883 update the package ([a2dbd0b](https://github.com/mohammaDJ23/expense-api/commit/a2dbd0b325e5129b7ea246458a6356c6ef150321))
+- 440883 update the package ([1541369](https://github.com/mohammaDJ23/expense-api/commit/1541369f2ab0c3cf423a03c1e666982b6afb75c1))
+- 440883 update the packages ([4beb63e](https://github.com/mohammaDJ23/expense-api/commit/4beb63e720a0393451e280ddc5802d56c382f88a))
+
 ## [4.2.1](https://github.com/mohammaDJ23/expense-api/compare/v4.2.0...v4.2.1) (2026-07-19)
 
 ### ♻️ Code Refactoring
