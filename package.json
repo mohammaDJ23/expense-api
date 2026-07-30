@@ -36,9 +36,10 @@
             "nodemailer": ">=9.0.1",
             "linkify-it": ">=5.0.2",
             "liquidjs": ">=10.27.1",
-            "js-yaml": "4.3.0",
+            "js-yaml": "5.2.2",
             "svgo": ">=4.0.2",
-            "postcss": ">=8.5.18"
+            "postcss": ">=8.5.18",
+            "typeorm": ">=1.1.0"
         }
     },
     "scripts": {
