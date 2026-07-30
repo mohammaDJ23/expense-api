@@ -16,6 +16,7 @@ import { ExistsBillByUserIdAndIdHandler } from '@/modules/bill/applications/quer
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
 import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.handler';
 import { FindManyBillsByUserIdAndIdsHandler } from '@/modules/bill/applications/queries/findManyBillsByUserIdAndIds/findManyBillsByUserIdAndIds.handler';
+import { FindMostUsedConsumersHandler } from '@/modules/bill/applications/queries/findMostUsedConsumers/findMostUsedConsumers.handler';
 import { FindMostUsedLocationsHandler } from '@/modules/bill/applications/queries/findMostUsedLocations/findMostUsedLocations.handler';
 import { FindMostUsedReceiversHandler } from '@/modules/bill/applications/queries/findMostUsedReceivers/findMostUsedReceivers.handler';
 import { FindTotalBillsByUserIdHandler } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.handler';
@@ -75,6 +76,7 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         FindTotalBillsByUserIdHandler,
         FindMostUsedLocationsHandler,
         FindMostUsedReceiversHandler,
+        FindMostUsedConsumersHandler,
         CreateBillMessageElasticsearchProcessor,
         UpdateBillMessageHandler,
         UpdateBillMessageElasticsearchProcessor,
