@@ -32,7 +32,7 @@ import {
     SUCCESS_FIND_CONSUMER_MESSAGE,
     SUCCESS_FIND_CONSUMERS_MESSAGE,
     SUCCESS_UPDATE_CONSUMER_MESSAGE,
-    SUCCESS_TOTAL_CONSUMER_MESSAGE,
+    SUCCESS_TOTAL_CONSUMERS_MESSAGE,
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
@@ -92,7 +92,7 @@ export class ConsumerController {
     @Get('total')
     @UseGuards(JwtAuthGuard)
     @SerializerInterceptor(TotalResponseDto)
-    @HttpResponse(SUCCESS_TOTAL_CONSUMER_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_TOTAL_CONSUMERS_MESSAGE, HttpStatus.OK)
     findTotal(@CurrentUser() user: ICurrentUser): Promise<ITotal> {
         return this.consumerService.findTotal(user.id);
     }

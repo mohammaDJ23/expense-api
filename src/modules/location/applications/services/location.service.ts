@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { FindLocationByUserIdAndIdOrThrowQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.query';
+import { FindTotalLocationsByUserIdQuery } from '@/modules/location/applications/queries/findTotalLocationsByUserId/findTotalLocationsByUserId.query';
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
 import { FindLocationListByUserIdService } from '@/modules/location/applications/services/findLocationListByUserId.service';
@@ -9,6 +10,7 @@ import { UpdateLocationService } from '@/modules/location/applications/services/
 
 import type { IId } from '@/core/interfaces/id.interface';
 import type { IListResult } from '@/core/interfaces/listResult.interface';
+import type { ITotal } from '@/core/interfaces/total.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { FindLocationListRequestDto } from '@/modules/location/interfaces/dtos/findLocationList.request.dto';
 import type { UpdateLocationRequestDto } from '@/modules/location/interfaces/dtos/updateLocation.request.dto';
@@ -46,5 +48,15 @@ export class LocationService {
         return this.queryBus.execute<FindLocationByUserIdAndIdOrThrowQuery, ISelectLocation>(
             new FindLocationByUserIdAndIdOrThrowQuery({ userId, id: locationId }),
         );
+    }
+
+    findTotal(userId: string): Promise<ITotal> {
+        return this.queryBus
+            .execute<FindTotalLocationsByUserIdQuery, number>(
+                new FindTotalLocationsByUserIdQuery({
+                    userId,
+                }),
+            )
+            .then((total) => ({ total }));
     }
 }
