@@ -2,7 +2,7 @@ import { HttpStatus } from '@nestjs/common';
 
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from './httpResponse.constants';
 
-import type { IHttpResponse } from './httpResponse.interface';
+import type { IHttpResponse } from './httpResponse.type';
 
 export class HttpResponseEntity<T> implements IHttpResponse<T> {
     public message: string;
