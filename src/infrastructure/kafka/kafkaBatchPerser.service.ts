@@ -1,8 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IMessageBatch } from '@/core/message/messageBatch.interface';
-import type { IMessagePayload } from '@/core/message/messagePayload.interface';
+import type { IMessageBatch } from '@/core/message/messageBatch.type';
+import type { IMessagePayload } from '@/core/message/messagePayload.type';
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
 import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
 import type { TOutboxEventType } from '@/modules/outbox/domain/interfaces/outboxEventType.interface';
