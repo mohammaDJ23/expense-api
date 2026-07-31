@@ -7,7 +7,7 @@ import { BillsAssemblerService } from '@/modules/bill/applications/services/rela
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IListResult } from '@/core/types/listResult.type';
-import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
+import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 

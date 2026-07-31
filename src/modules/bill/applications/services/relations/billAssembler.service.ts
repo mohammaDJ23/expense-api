@@ -5,7 +5,7 @@ import { LocationRelationLoaderService } from './locationRelationLoader.service'
 import { ReceiverRelationLoaderService } from './receiverRelationLoader.service';
 
 import type { IRelationAssemblerService } from '@/core/interfaces/relations/relationAssemblerService.interface';
-import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
+import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
 interface IInput {

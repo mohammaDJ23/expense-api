@@ -6,8 +6,8 @@ import { FindMostUsedConsumersQuery } from '@/modules/bill/applications/queries/
 import { ConsumersRelationLoaderService } from './consumersRelationLoader.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IMostUsed } from '@/modules/bill/domain/interfaces/mostUsed.interface';
-import type { IMostUsedConsumer } from '@/modules/bill/domain/interfaces/mostUsedConsumer.interface';
+import type { IMostUsed } from '@/modules/bill/domain/types/mostUsed.type';
+import type { IMostUsedConsumer } from '@/modules/bill/domain/types/mostUsedConsumer.type';
 
 interface IProps {
     userId: string;
