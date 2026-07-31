@@ -6,7 +6,7 @@ import { BillConsumerTargetsRelationLoaderService } from './billConsumerTargetsR
 import { LocationsRelationLoaderService } from './locationsRelationLoader.service';
 import { ReceiversRelationLoaderService } from './receiversRelationLoader.service';
 
-import type { IRelationAssemblerService } from '@/core/interfaces/relationAssemblerService.interface';
+import type { IRelationAssemblerService } from '@/core/interfaces/relations/relationAssemblerService.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 

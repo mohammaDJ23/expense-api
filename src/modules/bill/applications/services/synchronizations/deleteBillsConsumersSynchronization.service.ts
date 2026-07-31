@@ -4,7 +4,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
 import { DeleteManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.command';
 
-import type { IRelationSynchronizationService } from '@/core/interfaces/relationSynchronizationService.interface';
+import type { IRelationSynchronizationService } from '@/core/interfaces/relations/relationSynchronizationService.interface';
 import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
 interface IInput {
