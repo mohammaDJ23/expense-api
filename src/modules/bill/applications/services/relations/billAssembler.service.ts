@@ -25,7 +25,7 @@ export class BillAssemblerService implements IRelationAssemblerService<IInput, I
         const [location, receiver, consumers] = await Promise.all([
             this.locationRelationLoaderService.load(input),
             this.receiverRelationLoaderService.load(input),
-            this.consumersRelationLoaderService.load([input.bill]),
+            this.consumersRelationLoaderService.load({ billIds: [input.bill.id] }),
         ]);
 
         return {

@@ -24,10 +24,19 @@ export class BillsAssemblerService implements IRelationAssemblerService<IInput, 
     ) {}
 
     async assemble(input: IInput): Promise<IBill[]> {
+        const billIds: string[] = [];
+        const locationIds: string[] = [];
+        const receiverIds: string[] = [];
+        input.bills.forEach((bill) => {
+            billIds.push(bill.id);
+            locationIds.push(bill.locationId);
+            receiverIds.push(bill.receiverId);
+        });
+
         const [locations, receivers, consumers] = await Promise.all([
-            this.locationsRelationLoaderService.load(input),
-            this.receiversRelationLoaderService.load(input),
-            this.consumersRelationLoaderService.load(input.bills),
+            this.locationsRelationLoaderService.load({ userId: input.userId, locationIds }),
+            this.receiversRelationLoaderService.load({ userId: input.userId, receiverIds }),
+            this.consumersRelationLoaderService.load({ billIds }),
         ]);
 
         const locationsMap = new Map(locations.map((location) => [location.id, location]));
