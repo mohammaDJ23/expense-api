@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 
-import { PORT } from '@/common/common.constants';
+import { PORT } from '@/core/core.constants';
 import { ApiVersioningService } from '@/core/services/apiVersioning.service';
 import { AppInstanceService } from '@/core/services/appInstance.service';
 
