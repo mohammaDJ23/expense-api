@@ -6,7 +6,6 @@ import {
     ArrayMinSize,
     ArrayMaxSize,
     Matches,
-    ValidateIf,
     IsDateString,
     ArrayUnique,
     IsUUID,
@@ -27,12 +26,11 @@ export class UpdateBillRequestDto {
     @Matches(/^[^\s]+(\s+[^\s]+)*$/, { message: 'Invalid description.' })
     description: string;
 
-    @ValidateIf((_object, value) => value !== undefined && value !== null)
     @IsDateString(
         { strictSeparator: true },
         { message: 'PurchasedAt must be in ISO 8601 format: YYYY-MM-DDThh:mm:ss.sssZ' },
     )
-    purchasedAt: string | null;
+    purchasedAt: string;
 
     @IsUUID()
     receiverId: string;

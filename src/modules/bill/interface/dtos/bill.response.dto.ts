@@ -15,7 +15,7 @@ export class BillResponseDto {
     description: string;
 
     @Expose()
-    purchasedAt: string | null;
+    purchasedAt: string;
 
     @Expose()
     createdAt: string;

@@ -55,9 +55,7 @@ export class CreateBillService implements IService<IInput, IId> {
             new CreateBillCommand({
                 amount: input.body.amount,
                 description: input.body.description,
-                purchasedAt: input.body.purchasedAt
-                    ? getCurrentUTCTimestamp(input.body.purchasedAt)
-                    : null,
+                purchasedAt: getCurrentUTCTimestamp(input.body.purchasedAt),
                 createdAt: getCurrentUTCTimestamp(),
                 updatedAt: getCurrentUTCTimestamp(),
                 userId: input.userId,
