@@ -5,7 +5,7 @@ import { FindReceiverListByUserIdQuery } from '@/modules/receiver/applications/q
 import { FindTotalReceiversByUserIdQuery } from '@/modules/receiver/applications/queries/findTotalReceiversByUserId/findTotalReceiversByUserId.query';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IListResult } from '@/core/types/listResult.interface';
+import type { IListResult } from '@/core/types/listResult.type';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';
 

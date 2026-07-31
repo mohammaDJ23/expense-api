@@ -33,9 +33,9 @@ import {
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.type';
-import type { IId } from '@/core/types/id.interface';
-import type { IListResult } from '@/core/types/listResult.interface';
-import type { ITotal } from '@/core/types/total.interface';
+import type { IId } from '@/core/types/id.type';
+import type { IListResult } from '@/core/types/listResult.type';
+import type { ITotal } from '@/core/types/total.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Controller({ version: '1', path: 'api/users' })

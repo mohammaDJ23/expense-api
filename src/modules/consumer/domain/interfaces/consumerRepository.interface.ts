@@ -11,7 +11,7 @@ import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories
 import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
 import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
-import type { IListQuery } from '@/core/types/listQuery.interface';
+import type { IListQuery } from '@/core/types/listQuery.type';
 import type {
     IInsertConsumer,
     ISelectConsumer,

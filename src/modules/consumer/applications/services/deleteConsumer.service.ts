@@ -8,7 +8,7 @@ import { ConsumerExistenceValidatorService } from '@/modules/consumer/applicatio
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IId } from '@/core/types/id.interface';
+import type { IId } from '@/core/types/id.type';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 interface IInput {

@@ -6,7 +6,7 @@ import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUs
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IId } from '@/core/types/id.interface';
+import type { IId } from '@/core/types/id.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
 

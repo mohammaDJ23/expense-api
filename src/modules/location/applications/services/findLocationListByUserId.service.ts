@@ -5,7 +5,7 @@ import { FindLocationListByUserIdQuery } from '@/modules/location/applications/q
 import { FindTotalLocationsByUserIdQuery } from '@/modules/location/applications/queries/findTotalLocationsByUserId/findTotalLocationsByUserId.query';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IListResult } from '@/core/types/listResult.interface';
+import type { IListResult } from '@/core/types/listResult.type';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { FindLocationListRequestDto } from '@/modules/location/interfaces/dtos/findLocationList.request.dto';
 

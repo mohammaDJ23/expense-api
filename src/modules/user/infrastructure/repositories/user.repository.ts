@@ -13,7 +13,7 @@ import {
     type ISelectUser,
 } from '@/modules/user/infrastructure/schemas/user.schema';
 
-import type { IListQuery } from '@/core/types/listQuery.interface';
+import type { IListQuery } from '@/core/types/listQuery.type';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
 
 @Injectable()
