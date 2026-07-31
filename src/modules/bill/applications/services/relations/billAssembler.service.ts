@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { ConsumersRelationLoaderService } from './consumersRelationLoader.service';
+import { BillConsumerTargetsRelationLoaderService } from './billConsumerTargetsRelationLoader.service';
 import { LocationRelationLoaderService } from './locationRelationLoader.service';
 import { ReceiverRelationLoaderService } from './receiverRelationLoader.service';
 
@@ -18,14 +18,14 @@ export class BillAssemblerService implements IRelationAssemblerService<IInput, I
     constructor(
         private readonly locationRelationLoaderService: LocationRelationLoaderService,
         private readonly receiverRelationLoaderService: ReceiverRelationLoaderService,
-        private readonly consumersRelationLoaderService: ConsumersRelationLoaderService,
+        private readonly BillConsumerTargetsRelationLoaderService: BillConsumerTargetsRelationLoaderService,
     ) {}
 
     async assemble(input: IInput): Promise<IBill> {
         const [location, receiver, consumers] = await Promise.all([
             this.locationRelationLoaderService.load(input),
             this.receiverRelationLoaderService.load(input),
-            this.consumersRelationLoaderService.load({ billIds: [input.bill.id] }),
+            this.BillConsumerTargetsRelationLoaderService.load({ billIds: [input.bill.id] }),
         ]);
 
         return {
