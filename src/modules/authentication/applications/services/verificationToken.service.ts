@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 
-import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
+import type { IVerificationPayload } from '@/modules/authentication/domain/types/verificationPayload.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
