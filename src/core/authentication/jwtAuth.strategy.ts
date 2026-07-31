@@ -10,8 +10,8 @@ import { FindUserByIdOrNullQuery } from '@/modules/user/applications/queries/fin
 import { accessTokenExtractor } from './accessToken.extractor';
 import { AccessTokenService } from './accessToken.service';
 
+import type { IAccessTokenPayload } from './accessTokenPayload.type';
 import type { ICurrentUser } from './currentUser.type';
-import type { IAccessTokenPayload } from '@/modules/authentication/domain/interfaces/accessTokenPayload.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()

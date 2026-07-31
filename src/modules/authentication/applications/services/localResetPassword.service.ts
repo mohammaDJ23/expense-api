@@ -18,7 +18,7 @@ import { PasswordStorageService } from './passwordStorage.service';
 import { PasswordTokenService } from './passwordToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { INewPasswordPayload } from '@/modules/authentication/domain/interfaces/newPasswordPayload.interface';
+import type { INewPasswordPayload } from '@/modules/authentication/domain/types/newPasswordPayload.type';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 

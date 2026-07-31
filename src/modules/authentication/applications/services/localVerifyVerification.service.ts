@@ -17,7 +17,7 @@ import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IVerificationPayload } from '@/modules/authentication/domain/interfaces/verificationPayload.interface';
+import type { IVerificationPayload } from '@/modules/authentication/domain/types/verificationPayload.type';
 import type { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
