@@ -5,12 +5,11 @@ import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
 import { FindManyReceiversByUserIdAndIdsQuery } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.query';
 
 import type { IRelationLoaderService } from '@/core/interfaces/relationLoaderService.interface';
-import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 interface IInput {
     userId: string;
-    bills: ISelectBill[];
+    receiverIds: string[];
 }
 
 @Injectable()
@@ -21,11 +20,11 @@ export class ReceiversRelationLoaderService implements IRelationLoaderService<
     constructor(private readonly queryBus: QueryBus) {}
 
     load(input: IInput): Promise<ISelectReceiver[]> {
-        return whenNotEmpty(input.bills, (bills) =>
+        return whenNotEmpty(input.receiverIds, (receiverIds) =>
             this.queryBus.execute<FindManyReceiversByUserIdAndIdsQuery, ISelectReceiver[]>(
                 new FindManyReceiversByUserIdAndIdsQuery({
                     userId: input.userId,
-                    ids: bills.map((bill) => bill.receiverId),
+                    ids: receiverIds,
                 }),
             ),
         );
