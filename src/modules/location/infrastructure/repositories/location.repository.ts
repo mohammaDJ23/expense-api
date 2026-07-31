@@ -13,7 +13,7 @@ import {
     type ISelectLocation,
 } from '@/modules/location/infrastructure/schemas/location.schema';
 
-import type { IListQuery } from '@/core/types/listQuery.interface';
+import type { IListQuery } from '@/core/types/listQuery.type';
 import type { ILocationRepository } from '@/modules/location/domain/interfaces/locationRepository.interface';
 
 @Injectable()

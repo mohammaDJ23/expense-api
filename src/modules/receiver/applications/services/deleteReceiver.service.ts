@@ -8,7 +8,7 @@ import { DeleteReceiverCommand } from '@/modules/receiver/applications/commands/
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IId } from '@/core/types/id.interface';
+import type { IId } from '@/core/types/id.type';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 interface IInput {

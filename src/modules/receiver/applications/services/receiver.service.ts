@@ -9,9 +9,9 @@ import { DeleteReceiverService } from './deleteReceiver.service';
 import { FindReceiverListByUserIdService } from './findReceiverListByUserId.service';
 import { UpdateReceiverService } from './updateReceiver.service';
 
-import type { IId } from '@/core/types/id.interface';
-import type { IListResult } from '@/core/types/listResult.interface';
-import type { ITotal } from '@/core/types/total.interface';
+import type { IId } from '@/core/types/id.type';
+import type { IListResult } from '@/core/types/listResult.type';
+import type { ITotal } from '@/core/types/total.type';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';
 import type { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/updateReceiver.request.dto';

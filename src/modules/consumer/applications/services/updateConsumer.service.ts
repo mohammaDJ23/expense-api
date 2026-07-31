@@ -9,7 +9,7 @@ import { ConsumerUniqueNameValidatorService } from '@/modules/consumer/applicati
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IId } from '@/core/types/id.interface';
+import type { IId } from '@/core/types/id.type';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { UpdateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/updateConsumer.request.dto';
 

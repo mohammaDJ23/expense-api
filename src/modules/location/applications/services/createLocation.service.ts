@@ -8,7 +8,7 @@ import { LocationNameAvailableValidatorService } from '@/modules/location/applic
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IId } from '@/core/types/id.interface';
+import type { IId } from '@/core/types/id.type';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 interface IInput {

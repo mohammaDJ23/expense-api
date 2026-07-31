@@ -9,7 +9,7 @@ import { LocationUniqueNameValidatorService } from '@/modules/location/applicati
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IId } from '@/core/types/id.interface';
+import type { IId } from '@/core/types/id.type';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { UpdateLocationRequestDto } from '@/modules/location/interfaces/dtos/updateLocation.request.dto';
 

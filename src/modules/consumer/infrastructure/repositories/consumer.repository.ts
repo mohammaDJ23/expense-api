@@ -13,7 +13,7 @@ import {
     type ISelectConsumer,
 } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
-import type { IListQuery } from '@/core/types/listQuery.interface';
+import type { IListQuery } from '@/core/types/listQuery.type';
 import type { IConsumerRepository } from '@/modules/consumer/domain/interfaces/consumerRepository.interface';
 
 @Injectable()
