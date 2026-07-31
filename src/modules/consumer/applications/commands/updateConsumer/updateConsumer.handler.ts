@@ -1,8 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import { omitUndefined } from '@/common/utils/omitUndefined.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { omitUndefined } from '@/core/utils/omitUndefined.util';
 import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
 
 import { UpdateConsumerCommand } from './updateConsumer.command';

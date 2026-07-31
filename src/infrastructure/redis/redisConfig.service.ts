@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { readSecret } from '@/common/utils/readSecret.util';
+import { readSecret } from '@/core/utils/readSecret.util';
 
 import type { RedisModuleOptions, RedisOptionsFactory } from '@liaoliaots/nestjs-redis';
 

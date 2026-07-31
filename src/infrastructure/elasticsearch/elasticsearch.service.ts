@@ -1,7 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Client, estypes } from '@elastic/elasticsearch';
 
-import { isNotEmpty } from '@/common/utils/isNotEmpty.util';
+import { isNotEmpty } from '@/core/utils/isNotEmpty.util';
 
 import { ELASTICSEARCH_PROVIDER } from './elasticsearch.constants';
 

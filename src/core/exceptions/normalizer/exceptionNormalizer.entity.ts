@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 
-import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
+import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 
 import { INTERNAL_SERVER_ERROR_MESSAGE } from './normalizerException.constants';
 
