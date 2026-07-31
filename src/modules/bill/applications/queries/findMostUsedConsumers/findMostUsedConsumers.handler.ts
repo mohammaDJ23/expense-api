@@ -5,7 +5,7 @@ import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.
 
 import { FindMostUsedConsumersQuery } from './findMostUsedConsumers.query';
 
-import type { IMostUsed } from '@/modules/bill/domain/interfaces/mostUsed.interface';
+import type { IMostUsed } from '@/modules/bill/domain/types/mostUsed.type';
 
 @QueryHandler(FindMostUsedConsumersQuery)
 export class FindMostUsedConsumersHandler implements IQueryHandler<

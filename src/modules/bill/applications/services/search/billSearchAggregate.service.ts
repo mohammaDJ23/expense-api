@@ -6,7 +6,7 @@ import { FindManyBillsByUserIdAndIdsQuery } from '@/modules/bill/applications/qu
 import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
 
 import type { IElasticsearchSearchAggregate } from '@/infrastructure/elasticsearch/elasticsearchSearchAggregate.interface';
-import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
+import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
 @Injectable()

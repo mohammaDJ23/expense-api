@@ -6,8 +6,8 @@ import { FindMostUsedReceiversQuery } from '@/modules/bill/applications/queries/
 import { ReceiversRelationLoaderService } from './receiversRelationLoader.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IMostUsed } from '@/modules/bill/domain/interfaces/mostUsed.interface';
-import type { IMostUsedReceiver } from '@/modules/bill/domain/interfaces/mostUsedReceiver.interface';
+import type { IMostUsed } from '@/modules/bill/domain/types/mostUsed.type';
+import type { IMostUsedReceiver } from '@/modules/bill/domain/types/mostUsedReceiver.type';
 
 interface IProps {
     userId: string;

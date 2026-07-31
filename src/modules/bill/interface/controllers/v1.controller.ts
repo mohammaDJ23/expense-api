@@ -46,10 +46,10 @@ import type { ICurrentUser } from '@/core/authentication/currentUser.type';
 import type { IId } from '@/core/types/id.type';
 import type { IListResult } from '@/core/types/listResult.type';
 import type { ITotal } from '@/core/types/total.type';
-import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
-import type { IMostUsedConsumer } from '@/modules/bill/domain/interfaces/mostUsedConsumer.interface';
-import type { IMostUsedLocation } from '@/modules/bill/domain/interfaces/mostUsedLocation.interface';
-import type { IMostUsedReceiver } from '@/modules/bill/domain/interfaces/mostUsedReceiver.interface';
+import type { IBill } from '@/modules/bill/domain/types/bill.type';
+import type { IMostUsedConsumer } from '@/modules/bill/domain/types/mostUsedConsumer.type';
+import type { IMostUsedLocation } from '@/modules/bill/domain/types/mostUsedLocation.type';
+import type { IMostUsedReceiver } from '@/modules/bill/domain/types/mostUsedReceiver.type';
 
 @Controller({ version: '1', path: 'api/bills' })
 export class BillController {

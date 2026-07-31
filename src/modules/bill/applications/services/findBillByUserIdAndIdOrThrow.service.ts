@@ -5,7 +5,7 @@ import { FindBillByUserIdAndIdOrThrowQuery } from '@/modules/bill/applications/q
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
+import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
 interface IInput {

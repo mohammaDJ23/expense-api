@@ -6,8 +6,8 @@ import { FindMostUsedLocationsQuery } from '@/modules/bill/applications/queries/
 import { LocationsRelationLoaderService } from './locationsRelationLoader.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IMostUsed } from '@/modules/bill/domain/interfaces/mostUsed.interface';
-import type { IMostUsedLocation } from '@/modules/bill/domain/interfaces/mostUsedLocation.interface';
+import type { IMostUsed } from '@/modules/bill/domain/types/mostUsed.type';
+import type { IMostUsedLocation } from '@/modules/bill/domain/types/mostUsedLocation.type';
 
 interface IProps {
     userId: string;
