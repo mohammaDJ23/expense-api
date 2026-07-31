@@ -1,4 +1,4 @@
-import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
+import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 
 import type { IHealthEntity } from '@/modules/health/domain/interfaces/healthEntity.interface';
 import type { THealthIndicatorResult } from '@/modules/health/domain/interfaces/healthIndicatorResult.interface';

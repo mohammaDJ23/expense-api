@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtModule as BaseJwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
-import { readSecret } from '@/common/utils/readSecret.util';
+import { readSecret } from '@/core/utils/readSecret.util';
 
 @Module({
     imports: [

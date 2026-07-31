@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.util';
-import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
+import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
+import { whenNotEmpty } from '@/core/utils/whenNotEmpty.util';
 import { CreateManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/createManyBillsConsumers/createManyBillsConsumers.command';
 
 import type { IRelationSynchronizationService } from '@/core/interfaces/relations/relationSynchronizationService.interface';

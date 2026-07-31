@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Client } from '@elastic/elasticsearch';
 
-import { readSecret } from '@/common/utils/readSecret.util';
+import { readSecret } from '@/core/utils/readSecret.util';
 
 import { ELASTICSEARCH_PROVIDER } from './elasticsearch.constants';
 import { ElasticSearchService } from './elasticsearch.service';

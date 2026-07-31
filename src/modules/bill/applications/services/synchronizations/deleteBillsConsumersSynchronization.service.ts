@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
+import { whenNotEmpty } from '@/core/utils/whenNotEmpty.util';
 import { DeleteManyBillsConsumersCommand } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.command';
 
 import type { IRelationSynchronizationService } from '@/core/interfaces/relations/relationSynchronizationService.interface';

@@ -1,8 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
 import { CommandHandler, type ICommandHandler } from '@nestjs/cqrs';
 
-import { omitUndefined } from '@/common/utils/omitUndefined.util';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { omitUndefined } from '@/core/utils/omitUndefined.util';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 
 import { UpdateLocationCommand } from './updateLocation.command';

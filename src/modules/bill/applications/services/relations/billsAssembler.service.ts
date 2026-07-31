@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { groupBy } from '@/common/utils/groupBy.util';
+import { groupBy } from '@/core/utils/groupBy.util';
 
 import { BillConsumerTargetsRelationLoaderService } from './billConsumerTargetsRelationLoader.service';
 import { LocationsRelationLoaderService } from './locationsRelationLoader.service';

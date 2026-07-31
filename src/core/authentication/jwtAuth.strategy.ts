@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { readSecret } from '@/common/utils/readSecret.util';
+import { readSecret } from '@/core/utils/readSecret.util';
 import { FindUserByIdOrNullQuery } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.query';
 
 import { accessTokenExtractor } from './accessToken.extractor';

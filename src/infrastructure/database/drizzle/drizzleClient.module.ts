@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { Pool, type PoolClient } from 'pg';
 
-import { readSecret } from '@/common/utils/readSecret.util';
+import { readSecret } from '@/core/utils/readSecret.util';
 
 import { DRIZZLE_CLIENT_TOKEN } from './drizzle.constants';
 
