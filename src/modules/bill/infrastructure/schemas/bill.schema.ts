@@ -12,7 +12,7 @@ export const bills = pgTable(
         id: uuid('id').primaryKey().defaultRandom().notNull(),
         amount: varchar('amount', { length: 12 }).notNull(),
         description: varchar('description', { length: 500 }).notNull(),
-        purchasedAt: timestamp('purchased_at', { withTimezone: true, mode: 'string' }),
+        purchasedAt: timestamp('purchased_at', { withTimezone: true, mode: 'string' }).notNull(),
         createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
             .notNull()
             .defaultNow(),
