@@ -4,7 +4,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
 import { FindManyConsumersByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/findManyConsumersByUserIdAndIds/findManyConsumersByUserIdAndIds.query';
 
-import type { IRelationLoaderService } from '@/core/interfaces/relationLoaderService.interface';
+import type { IRelationLoaderService } from '@/core/interfaces/relations/relationLoaderService.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 interface IInput {

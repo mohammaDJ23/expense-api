@@ -4,7 +4,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
 import { FindManyLocationsByUserIdAndIdsQuery } from '@/modules/location/applications/queries/findManyLocationsByUserIdAndIds/findManyLocationsByUserIdAndIds.query';
 
-import type { IRelationLoaderService } from '@/core/interfaces/relationLoaderService.interface';
+import type { IRelationLoaderService } from '@/core/interfaces/relations/relationLoaderService.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 interface IInput {

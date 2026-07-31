@@ -3,7 +3,7 @@ import { QueryBus } from '@nestjs/cqrs';
 
 import { FindLocationByUserIdAndIdOrThrowQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.query';
 
-import type { IRelationLoaderService } from '@/core/interfaces/relationLoaderService.interface';
+import type { IRelationLoaderService } from '@/core/interfaces/relations/relationLoaderService.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 

@@ -3,7 +3,7 @@ import { QueryBus } from '@nestjs/cqrs';
 
 import { FindManyBillsConsumersByRefIdQuery } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.query';
 
-import type { IRelationLoaderService } from '@/core/interfaces/relationLoaderService.interface';
+import type { IRelationLoaderService } from '@/core/interfaces/relations/relationLoaderService.interface';
 import type { ISelectBillConsumer } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
 interface IInput {

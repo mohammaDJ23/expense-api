@@ -4,7 +4,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
 import { FindManyReceiversByUserIdAndIdsQuery } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.query';
 
-import type { IRelationLoaderService } from '@/core/interfaces/relationLoaderService.interface';
+import type { IRelationLoaderService } from '@/core/interfaces/relations/relationLoaderService.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
 interface IInput {
