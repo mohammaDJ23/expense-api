@@ -4,7 +4,7 @@ import {
     type ExecutionContext,
 } from '@nestjs/common';
 
-import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
+import type { ICurrentUser } from '@/core/authentication/currentUser.type';
 import type { IRequest } from '@/core/types/request.interface';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

@@ -35,7 +35,7 @@ import {
     SUCCESS_UPDATE_LOCATION_MESSAGE,
 } from './controllers.constants';
 
-import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
+import type { ICurrentUser } from '@/core/authentication/currentUser.type';
 import type { IId } from '@/core/types/id.interface';
 import type { IListResult } from '@/core/types/listResult.interface';
 import type { ITotal } from '@/core/types/total.interface';

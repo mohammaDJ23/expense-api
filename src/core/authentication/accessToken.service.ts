@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 
-import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
+import type { ICurrentUser } from '@/core/authentication/currentUser.type';
 import type { IAccessTokenPayload } from '@/modules/authentication/domain/interfaces/accessTokenPayload.interface';
 import type { Response } from 'express';
 

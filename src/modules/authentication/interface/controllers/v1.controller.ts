@@ -23,7 +23,7 @@ import {
     SUCCESS_RESET_PASSWORD_MESSAGE,
 } from './controllers.constants';
 
-import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
+import type { ICurrentUser } from '@/core/authentication/currentUser.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { Response } from 'express';
 
