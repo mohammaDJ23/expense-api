@@ -4,8 +4,8 @@ import { QueryBus } from '@nestjs/cqrs';
 import { FindReceiverListByUserIdQuery } from '@/modules/receiver/applications/queries/findReceiverListByUserId/findReceiverListByUserId.query';
 import { FindTotalReceiversByUserIdQuery } from '@/modules/receiver/applications/queries/findTotalReceiversByUserId/findTotalReceiversByUserId.query';
 
-import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IListResult } from '@/core/types/listResult.interface';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';
 

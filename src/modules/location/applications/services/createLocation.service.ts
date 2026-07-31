@@ -7,8 +7,8 @@ import { CreateLocationCommand } from '@/modules/location/applications/commands/
 import { LocationNameAvailableValidatorService } from '@/modules/location/applications/services/validators/locationNameAvailableValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IId } from '@/core/types/id.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
 interface IInput {

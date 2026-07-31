@@ -7,8 +7,8 @@ import { DeleteBillCommand } from '@/modules/bill/applications/commands/deleteBi
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IId } from '@/core/types/id.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
 interface IInput {

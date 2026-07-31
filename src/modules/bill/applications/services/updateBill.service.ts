@@ -15,8 +15,8 @@ import { ReceiverExistenceValidatorService } from '@/modules/receiver/applicatio
 
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
-import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IId } from '@/core/types/id.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
 

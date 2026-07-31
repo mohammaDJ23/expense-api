@@ -5,8 +5,8 @@ import { FindBillListByUserIdQuery } from '@/modules/bill/applications/queries/f
 import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
 import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
 
-import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IListResult } from '@/core/types/listResult.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';

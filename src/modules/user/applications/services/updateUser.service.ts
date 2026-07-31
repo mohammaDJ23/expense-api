@@ -5,8 +5,8 @@ import { getCurrentUTCTimestamp } from '@/common/utils/getCurrentUTCTimestamp.ut
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
 
-import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IId } from '@/core/types/id.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
 

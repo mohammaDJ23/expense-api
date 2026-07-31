@@ -13,7 +13,7 @@ import {
 } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
-import type { IListQuery } from '@/core/interfaces/listQuery.interface';
+import type { IListQuery } from '@/core/types/listQuery.interface';
 import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepository.interface';
 import type { IMostUsed } from '@/modules/bill/domain/interfaces/mostUsed.interface';
 

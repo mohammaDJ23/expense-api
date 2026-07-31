@@ -4,8 +4,8 @@ import { CommandBus } from '@nestjs/cqrs';
 import { DeleteUserCommand } from '@/modules/user/applications/commands/deleteUser/deleteUser.command';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
 
-import type { IId } from '@/core/interfaces/id.interface';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IId } from '@/core/types/id.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 interface IInput {

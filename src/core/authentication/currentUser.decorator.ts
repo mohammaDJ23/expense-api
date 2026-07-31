@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.interface';
-import type { IRequest } from '@/core/interfaces/request.interface';
+import type { IRequest } from '@/core/types/request.interface';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const CurrentUser = createParamDecorator((_: never, ctx: ExecutionContext): ICurrentUser => {

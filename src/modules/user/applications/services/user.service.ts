@@ -10,9 +10,9 @@ import { DeleteUserService } from './deleteUser.service';
 import { FindUserListService } from './findUserList.service';
 import { UpdateUserService } from './updateUser.service';
 
-import type { IId } from '@/core/interfaces/id.interface';
-import type { IListResult } from '@/core/interfaces/listResult.interface';
-import type { ITotal } from '@/core/interfaces/total.interface';
+import type { IId } from '@/core/types/id.interface';
+import type { IListResult } from '@/core/types/listResult.interface';
+import type { ITotal } from '@/core/types/total.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
 import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
