@@ -1,4 +1,4 @@
-import type { IMessageBatch } from './messageBatch.interface';
+import type { IMessageBatch } from './messageBatch.type';
 import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
 
 export interface IMessageHandler<T> {
