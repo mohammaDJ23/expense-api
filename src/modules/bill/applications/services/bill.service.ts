@@ -1,22 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
-import { FindMostUsedConsumersQuery } from '@/modules/bill/applications/queries/findMostUsedConsumers/findMostUsedConsumers.query';
-import { FindMostUsedLocationsQuery } from '@/modules/bill/applications/queries/findMostUsedLocations/findMostUsedLocations.query';
-import { FindMostUsedReceiversQuery } from '@/modules/bill/applications/queries/findMostUsedReceivers/findMostUsedReceivers.query';
 import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
-import { DeleteBillService } from '@/modules/bill/applications/services/deleteBill.service';
-import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
+import { MostUsedConsumersService } from '@/modules/bill/applications/services/relations/mostUsedConsumers.service';
+import { MostUsedLocationsService } from '@/modules/bill/applications/services/relations/mostUsedLocations.service';
+import { MostUsedReceiversService } from '@/modules/bill/applications/services/relations/mostUsedReceivers.service';
 
 import { CreateBillService } from './createBill.service';
+import { DeleteBillService } from './deleteBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from './findBillListByUserId.service';
+import { UpdateBillService } from './updateBill.service';
 
 import type { IId } from '@/core/interfaces/id.interface';
 import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { ITotal } from '@/core/interfaces/total.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
-import type { IMostUsed } from '@/modules/bill/domain/interfaces/mostUsed.interface';
+import type { IMostUsedConsumer } from '@/modules/bill/domain/interfaces/mostUsedConsumer.interface';
+import type { IMostUsedLocation } from '@/modules/bill/domain/interfaces/mostUsedLocation.interface';
+import type { IMostUsedReceiver } from '@/modules/bill/domain/interfaces/mostUsedReceiver.interface';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
@@ -30,6 +32,9 @@ export class BillService {
         private readonly deleteBillService: DeleteBillService,
         private readonly findBillByUserIdAndIdOrThrowService: FindBillByUserIdAndIdOrThrowService,
         private readonly findBillListByUserIdService: FindBillListByUserIdService,
+        private readonly mostUsedLocationsService: MostUsedLocationsService,
+        private readonly mostUsedReceiversService: MostUsedReceiversService,
+        private readonly mostUsedConsumersService: MostUsedConsumersService,
     ) {}
 
     create(userId: string, body: CreateBillRequestDto): Promise<IId> {
@@ -62,30 +67,15 @@ export class BillService {
             .then((total) => ({ total }));
     }
 
-    findMostUsedLocations(userId: string, limit: number): Promise<IMostUsed[]> {
-        return this.queryBus.execute<FindMostUsedLocationsQuery, IMostUsed[]>(
-            new FindMostUsedLocationsQuery({
-                userId,
-                limit,
-            }),
-        );
+    findMostUsedLocations(userId: string, limit: number): Promise<IMostUsedLocation[]> {
+        return this.mostUsedLocationsService.execute({ userId, limit });
     }
 
-    findMostUsedReceivers(userId: string, limit: number): Promise<IMostUsed[]> {
-        return this.queryBus.execute<FindMostUsedReceiversQuery, IMostUsed[]>(
-            new FindMostUsedReceiversQuery({
-                userId,
-                limit,
-            }),
-        );
+    findMostUsedReceivers(userId: string, limit: number): Promise<IMostUsedReceiver[]> {
+        return this.mostUsedReceiversService.execute({ userId, limit });
     }
 
-    findMostUsedConsumers(userId: string, limit: number): Promise<IMostUsed[]> {
-        return this.queryBus.execute<FindMostUsedConsumersQuery, IMostUsed[]>(
-            new FindMostUsedConsumersQuery({
-                userId,
-                limit,
-            }),
-        );
+    findMostUsedConsumers(userId: string, limit: number): Promise<IMostUsedConsumer[]> {
+        return this.mostUsedConsumersService.execute({ userId, limit });
     }
 }

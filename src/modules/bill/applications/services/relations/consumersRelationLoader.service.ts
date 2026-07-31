@@ -2,27 +2,29 @@ import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { whenNotEmpty } from '@/common/utils/whenNotEmpty.util';
-import { FindManyBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.query';
+import { FindManyConsumersByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/findManyConsumersByUserIdAndIds/findManyConsumersByUserIdAndIds.query';
 
 import type { IRelationLoaderService } from '@/core/interfaces/relationLoaderService.interface';
-import type { ITargetBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
+import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
 interface IInput {
-    billIds: string[];
+    userId: string;
+    consumerIds: string[];
 }
 
 @Injectable()
 export class ConsumersRelationLoaderService implements IRelationLoaderService<
     IInput,
-    ITargetBillConsumer[]
+    ISelectConsumer[]
 > {
     constructor(private readonly queryBus: QueryBus) {}
 
-    load(input: IInput): Promise<ITargetBillConsumer[]> {
-        return whenNotEmpty(input.billIds, (billIds) =>
-            this.queryBus.execute<FindManyBillConsumerTargetsByRefIdsQuery, ITargetBillConsumer[]>(
-                new FindManyBillConsumerTargetsByRefIdsQuery({
-                    billIds,
+    load(input: IInput): Promise<ISelectConsumer[]> {
+        return whenNotEmpty(input.consumerIds, (consumerIds) =>
+            this.queryBus.execute<FindManyConsumersByUserIdAndIdsQuery, ISelectConsumer[]>(
+                new FindManyConsumersByUserIdAndIdsQuery({
+                    userId: input.userId,
+                    ids: consumerIds,
                 }),
             ),
         );

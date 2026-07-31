@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { groupBy } from '@/common/utils/groupBy.util';
 
-import { ConsumersRelationLoaderService } from './consumersRelationLoader.service';
+import { BillConsumerTargetsRelationLoaderService } from './billConsumerTargetsRelationLoader.service';
 import { LocationsRelationLoaderService } from './locationsRelationLoader.service';
 import { ReceiversRelationLoaderService } from './receiversRelationLoader.service';
 
@@ -20,7 +20,7 @@ export class BillsAssemblerService implements IRelationAssemblerService<IInput, 
     constructor(
         private readonly locationsRelationLoaderService: LocationsRelationLoaderService,
         private readonly receiversRelationLoaderService: ReceiversRelationLoaderService,
-        private readonly consumersRelationLoaderService: ConsumersRelationLoaderService,
+        private readonly billConsumerTargetsRelationLoaderService: BillConsumerTargetsRelationLoaderService,
     ) {}
 
     async assemble(input: IInput): Promise<IBill[]> {
@@ -36,7 +36,7 @@ export class BillsAssemblerService implements IRelationAssemblerService<IInput, 
         const [locations, receivers, consumers] = await Promise.all([
             this.locationsRelationLoaderService.load({ userId: input.userId, locationIds }),
             this.receiversRelationLoaderService.load({ userId: input.userId, receiverIds }),
-            this.consumersRelationLoaderService.load({ billIds }),
+            this.billConsumerTargetsRelationLoaderService.load({ billIds }),
         ]);
 
         const locationsMap = new Map(locations.map((location) => [location.id, location]));

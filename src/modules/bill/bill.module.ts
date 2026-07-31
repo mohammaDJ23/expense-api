@@ -26,11 +26,15 @@ import { DeleteBillService } from '@/modules/bill/applications/services/deleteBi
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
+import { BillConsumerTargetsRelationLoaderService } from '@/modules/bill/applications/services/relations/billConsumerTargetsRelationLoader.service';
 import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
 import { BillsConsumersRelationLoaderService } from '@/modules/bill/applications/services/relations/billsConsumersRelationLoader.service';
 import { ConsumersRelationLoaderService } from '@/modules/bill/applications/services/relations/consumersRelationLoader.service';
 import { LocationRelationLoaderService } from '@/modules/bill/applications/services/relations/locationRelationLoader.service';
 import { LocationsRelationLoaderService } from '@/modules/bill/applications/services/relations/locationsRelationLoader.service';
+import { MostUsedConsumersService } from '@/modules/bill/applications/services/relations/mostUsedConsumers.service';
+import { MostUsedLocationsService } from '@/modules/bill/applications/services/relations/mostUsedLocations.service';
+import { MostUsedReceiversService } from '@/modules/bill/applications/services/relations/mostUsedReceivers.service';
 import { ReceiverRelationLoaderService } from '@/modules/bill/applications/services/relations/receiverRelationLoader.service';
 import { ReceiversRelationLoaderService } from '@/modules/bill/applications/services/relations/receiversRelationLoader.service';
 import { BillSearchService } from '@/modules/bill/applications/services/search/billSearch.service';
@@ -97,9 +101,13 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         BillExistenceValidatorService,
         LocationsRelationLoaderService,
         ReceiversRelationLoaderService,
+        BillConsumerTargetsRelationLoaderService,
         CreateBillsConsumersSynchronizationService,
         DeleteBillsConsumersSynchronizationService,
         BillsConsumersRelationLoaderService,
+        MostUsedReceiversService,
+        MostUsedLocationsService,
+        MostUsedConsumersService,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService],

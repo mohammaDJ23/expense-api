@@ -25,7 +25,9 @@ import { FindBillRequestDto } from '@/modules/bill/interface/dtos/findBill.reque
 import { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 import { FindBillListResponseDto } from '@/modules/bill/interface/dtos/findBillList.response.dto';
 import { MostUsedRequestDto } from '@/modules/bill/interface/dtos/mostUsed.request.dto';
-import { MostUsedResponseDto } from '@/modules/bill/interface/dtos/mostUsed.response.dto';
+import { MostUsedConsumerResponseDto } from '@/modules/bill/interface/dtos/mostUsedConsumer.response.dto';
+import { MostUsedLocationResponseDto } from '@/modules/bill/interface/dtos/mostUsedLocation.response.dto';
+import { MostUsedReceiverResponseDto } from '@/modules/bill/interface/dtos/mostUsedReceiver.response.dto';
 import { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
 
 import {
@@ -45,7 +47,9 @@ import type { IId } from '@/core/interfaces/id.interface';
 import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { ITotal } from '@/core/interfaces/total.interface';
 import type { IBill } from '@/modules/bill/domain/interfaces/bill.interface';
-import type { IMostUsed } from '@/modules/bill/domain/interfaces/mostUsed.interface';
+import type { IMostUsedConsumer } from '@/modules/bill/domain/interfaces/mostUsedConsumer.interface';
+import type { IMostUsedLocation } from '@/modules/bill/domain/interfaces/mostUsedLocation.interface';
+import type { IMostUsedReceiver } from '@/modules/bill/domain/interfaces/mostUsedReceiver.interface';
 
 @Controller({ version: '1', path: 'api/bills' })
 export class BillController {
@@ -96,34 +100,34 @@ export class BillController {
 
     @Get('most-used-locations')
     @UseGuards(JwtAuthGuard)
-    @SerializerInterceptor(MostUsedResponseDto)
+    @SerializerInterceptor(MostUsedLocationResponseDto)
     @HttpResponse(SUCCESS_FIND_MOST_LOCATIONS_MESSAGE, HttpStatus.OK)
     findMostUsedLocations(
         @CurrentUser() user: ICurrentUser,
         @Query() query: MostUsedRequestDto,
-    ): Promise<IMostUsed[]> {
+    ): Promise<IMostUsedLocation[]> {
         return this.billService.findMostUsedLocations(user.id, query.limit);
     }
 
     @Get('most-used-receivers')
     @UseGuards(JwtAuthGuard)
-    @SerializerInterceptor(MostUsedResponseDto)
+    @SerializerInterceptor(MostUsedReceiverResponseDto)
     @HttpResponse(SUCCESS_FIND_MOST_RECEIVERS_MESSAGE, HttpStatus.OK)
     findMostUsedReceivers(
         @CurrentUser() user: ICurrentUser,
         @Query() query: MostUsedRequestDto,
-    ): Promise<IMostUsed[]> {
+    ): Promise<IMostUsedReceiver[]> {
         return this.billService.findMostUsedReceivers(user.id, query.limit);
     }
 
     @Get('most-used-consumers')
     @UseGuards(JwtAuthGuard)
-    @SerializerInterceptor(MostUsedResponseDto)
+    @SerializerInterceptor(MostUsedConsumerResponseDto)
     @HttpResponse(SUCCESS_FIND_MOST_CONSUMERS_MESSAGE, HttpStatus.OK)
     findMostUsedConsumers(
         @CurrentUser() user: ICurrentUser,
         @Query() query: MostUsedRequestDto,
-    ): Promise<IMostUsed[]> {
+    ): Promise<IMostUsedConsumer[]> {
         return this.billService.findMostUsedConsumers(user.id, query.limit);
     }
 
