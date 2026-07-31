@@ -1,3 +1,15 @@
+## [4.2.3](https://github.com/mohammaDJ23/expense-api/compare/v4.2.2...v4.2.3) (2026-07-31)
+
+### 🔧 Chores
+
+- 505929 add FindMostUsedConsumers query ([f53165b](https://github.com/mohammaDJ23/expense-api/commit/f53165b87208eb93721dcba71122fc3cc53673de))
+- 505929 add FindMostUsedLocations query ([11d0062](https://github.com/mohammaDJ23/expense-api/commit/11d00623dfdeacf6bcba5d5b76e2748fc72bb5a5))
+- 505929 add FindMostUsedReceivers query ([ceb9908](https://github.com/mohammaDJ23/expense-api/commit/ceb9908980acd511422876a37a3664b0b7b15886))
+- 505929 add the most used apis of a bill ([6cc1973](https://github.com/mohammaDJ23/expense-api/commit/6cc1973220e2ce21f8c6c7ba80e97b28e2c53dc6))
+- 505929 add the repos of the most used statistics ([324bfe9](https://github.com/mohammaDJ23/expense-api/commit/324bfe97fd14ee2d04a069f3f0ce149553edaec1))
+- 505929 add the services related to the most used statistics of a bill ([c71fd67](https://github.com/mohammaDJ23/expense-api/commit/c71fd67f8db7b68bcde3d4214e6ae123f74f8aa9))
+- 505929 pass just related ids to load the relations ([f27e7c7](https://github.com/mohammaDJ23/expense-api/commit/f27e7c7e465484e34bd28cab75b2234daee5f691))
+
 ## [4.2.2](https://github.com/mohammaDJ23/expense-api/compare/v4.2.1...v4.2.2) (2026-07-30)
 
 ### 🔧 Chores
