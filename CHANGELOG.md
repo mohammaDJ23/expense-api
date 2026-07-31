@@ -1,3 +1,10 @@
+## [4.2.4](https://github.com/mohammaDJ23/expense-api/compare/v4.2.3...v4.2.4) (2026-07-31)
+
+### 🔧 Chores
+
+- 009932 do not use nullable for purchasedAt ([a3c8fed](https://github.com/mohammaDJ23/expense-api/commit/a3c8fed796a937d7bbdacc30a23d24f4f1711771))
+- 009932 use the default values inside dtos ([f61a294](https://github.com/mohammaDJ23/expense-api/commit/f61a2942a6ad64886ef39e12cc8780cd88f37b58))
+
 ## [4.2.3](https://github.com/mohammaDJ23/expense-api/compare/v4.2.2...v4.2.3) (2026-07-31)
 
 ### 🔧 Chores
