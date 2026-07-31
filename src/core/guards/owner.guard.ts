@@ -8,7 +8,7 @@ import {
 
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-import type { IRequest } from '@/core/interfaces/request.interface';
+import type { IRequest } from '@/core/types/request.interface';
 
 @Injectable()
 export class OwnerGuard implements CanActivate {

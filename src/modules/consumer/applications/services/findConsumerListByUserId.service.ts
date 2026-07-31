@@ -4,8 +4,8 @@ import { QueryBus } from '@nestjs/cqrs';
 import { FindConsumerListByUserIdQuery } from '@/modules/consumer/applications/queries/findConsumerListByUserId/findConsumerListByUserId.query';
 import { FindTotalConsumersByUserIdQuery } from '@/modules/consumer/applications/queries/findTotalConsumersByUserId/findTotalConsumersByUserId.query';
 
-import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IListResult } from '@/core/types/listResult.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { FindConsumerListRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerList.request.dto';
 

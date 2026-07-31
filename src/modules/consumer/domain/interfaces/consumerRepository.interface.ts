@@ -1,4 +1,3 @@
-import type { IListQuery } from '@/core/interfaces/listQuery.interface';
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
 import type { IDeleteByUserIdAndIdRepository } from '@/core/interfaces/repositories/deleteByUserIdAndIdRepository.interface';
 import type { IExistsByUserIdAndExcludingIdAndNameRepository } from '@/core/interfaces/repositories/existsByUserIdAndExcludingIdAndNameRepository.interface';
@@ -12,6 +11,7 @@ import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories
 import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
 import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
+import type { IListQuery } from '@/core/types/listQuery.interface';
 import type {
     IInsertConsumer,
     ISelectConsumer,

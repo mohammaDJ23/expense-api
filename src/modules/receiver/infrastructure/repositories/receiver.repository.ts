@@ -13,7 +13,7 @@ import {
     type ISelectReceiver,
 } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
-import type { IListQuery } from '@/core/interfaces/listQuery.interface';
+import type { IListQuery } from '@/core/types/listQuery.interface';
 import type { IReceiverRepository } from '@/modules/receiver/domain/interfaces/receiverRepository.interface';
 
 @Injectable()

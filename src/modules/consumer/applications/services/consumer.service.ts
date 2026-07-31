@@ -9,9 +9,9 @@ import { DeleteConsumerService } from './deleteConsumer.service';
 import { FindConsumerListByUserIdService } from './findConsumerListByUserId.service';
 import { UpdateConsumerService } from './updateConsumer.service';
 
-import type { IId } from '@/core/interfaces/id.interface';
-import type { IListResult } from '@/core/interfaces/listResult.interface';
-import type { ITotal } from '@/core/interfaces/total.interface';
+import type { IId } from '@/core/types/id.interface';
+import type { IListResult } from '@/core/types/listResult.interface';
+import type { ITotal } from '@/core/types/total.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { FindConsumerListRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerList.request.dto';
 import type { UpdateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/updateConsumer.request.dto';

@@ -4,8 +4,8 @@ import { QueryBus } from '@nestjs/cqrs';
 import { FindTotalUsersQuery } from '@/modules/user/applications/queries/findTotalUsers/findTotalUsers.query';
 import { FindUserListQuery } from '@/modules/user/applications/queries/findUserList/findUserList.query';
 
-import type { IListResult } from '@/core/interfaces/listResult.interface';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IListResult } from '@/core/types/listResult.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
 
