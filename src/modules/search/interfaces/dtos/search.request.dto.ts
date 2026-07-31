@@ -9,9 +9,10 @@ export class SearchRequestDto {
     @IsInt()
     @Min(MIN_LIST_LIMIT)
     @Max(MAX_LIST_LIMIT)
-    limit?: number;
+    limit: number = MAX_LIST_LIMIT;
 
     @IsOptional()
+    @Type(() => String)
     @IsString()
-    q?: string;
+    q = '';
 }

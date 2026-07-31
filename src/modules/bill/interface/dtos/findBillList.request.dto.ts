@@ -9,15 +9,16 @@ export class FindBillListRequestDto {
     @IsInt()
     @Min(MIN_LIST_LIMIT)
     @Max(MAX_LIST_LIMIT)
-    limit?: number;
+    limit: number = MAX_LIST_LIMIT;
 
     @IsOptional()
     @Type(() => Number)
     @IsInt()
     @Min(0)
-    offset?: number;
+    offset = 0;
 
     @IsOptional()
+    @Type(() => String)
     @IsString()
-    q?: string;
+    q = '';
 }

@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 
-import { MAX_LIST_LIMIT } from '@/common/common.constants';
-
 import { SearchAggregateOrchestratorService } from './searchAggregateOrchestrator.service';
 import { SearchOrchestratorService } from './searchOrchestrator.service';
 
@@ -22,22 +20,14 @@ export class SearchService implements IService<IInput, ISearch> {
     ) {}
 
     async execute(input: IInput): Promise<ISearch> {
-        const query = this.getQuery(input.query);
         const searchOrchestrators = await this.searchOrchestratorService.execute({
             userId: input.userId,
-            query: query.q,
-            size: query.limit,
+            query: input.query.q,
+            size: input.query.limit,
         });
         return this.searchAggregateOrchestratorService.execute({
             userId: input.userId,
             searchOrchestrators,
         });
-    }
-
-    private getQuery(data: SearchRequestDto): Required<SearchRequestDto> {
-        const q = data.q ?? '';
-        const limit = data.limit ?? MAX_LIST_LIMIT;
-
-        return { q, limit };
     }
 }
