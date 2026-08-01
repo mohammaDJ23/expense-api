@@ -6,7 +6,7 @@ import { LocationSearchService } from '@/modules/location/applications/services/
 import { ReceiverSearchService } from '@/modules/receiver/applications/services/search/receiverSearch.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { ISearchOrchestrator } from '@/modules/search/domain/interface/searchOrchestrator.interface';
+import type { ISearchOrchestrator } from '@/modules/search/domain/types/searchOrchestrator.type';
 
 interface IInput {
     userId: string;

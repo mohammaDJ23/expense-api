@@ -11,7 +11,7 @@ import { SearchResponseDto } from '@/modules/search/interfaces/dtos/search.respo
 import { SUCCESS_SEARCH_MESSAGE } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.type';
-import type { ISearch } from '@/modules/search/domain/interface/search.interface';
+import type { ISearch } from '@/modules/search/domain/types/search.type';
 
 @Controller({ version: '1', path: 'api/search' })
 export class SearchController {
