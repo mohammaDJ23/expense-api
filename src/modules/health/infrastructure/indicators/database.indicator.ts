@@ -6,7 +6,7 @@ import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.rep
 import { HealthEntity } from '@/modules/health/domain/entities/health.entity';
 
 import type { IHealthIndicator } from '@/modules/health/domain/interfaces/healthIndicator.interface';
-import type { THealthIndicatorResult } from '@/modules/health/domain/interfaces/healthIndicatorResult.interface';
+import type { THealthIndicatorResult } from '@/modules/health/domain/types/healthIndicatorResult.type';
 
 @Injectable()
 export class DatabaseIndicator extends DrizzleRepository implements IHealthIndicator {

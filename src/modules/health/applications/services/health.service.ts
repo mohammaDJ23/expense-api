@@ -3,7 +3,7 @@ import { QueryBus } from '@nestjs/cqrs';
 
 import { GetHealthQuery } from '@/modules/health/applications/queries/getHealth/getHealth.query';
 
-import type { IHealthCheckResult } from '@/modules/health/domain/interfaces/healthCheckResult.interface';
+import type { IHealthCheckResult } from '@/modules/health/domain/types/healthCheckResult.type';
 
 @Injectable()
 export class HealthService {

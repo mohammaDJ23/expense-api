@@ -6,7 +6,7 @@ import { RedisIndicator } from '@/modules/health/infrastructure/indicators/redis
 
 import { GetHealthQuery } from './getHealth.query';
 
-import type { IHealthCheckResult } from '@/modules/health/domain/interfaces/healthCheckResult.interface';
+import type { IHealthCheckResult } from '@/modules/health/domain/types/healthCheckResult.type';
 
 @QueryHandler(GetHealthQuery)
 export class GetHealthHandler implements IQueryHandler<GetHealthQuery, IHealthCheckResult> {

@@ -1,8 +1,8 @@
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 
-import type { IHealthEntity } from '@/modules/health/domain/interfaces/healthEntity.interface';
-import type { THealthIndicatorResult } from '@/modules/health/domain/interfaces/healthIndicatorResult.interface';
-import type { THealthIndicatorStatus } from '@/modules/health/domain/interfaces/healthIndicatorStatus.interface';
+import type { IHealthEntity } from '@/modules/health/domain/types/healthEntity.type';
+import type { THealthIndicatorResult } from '@/modules/health/domain/types/healthIndicatorResult.type';
+import type { THealthIndicatorStatus } from '@/modules/health/domain/types/healthIndicatorStatus.type';
 
 export class HealthEntity implements IHealthEntity {
     public readonly timestamp: string;

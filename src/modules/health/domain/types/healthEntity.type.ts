@@ -1,4 +1,4 @@
-import type { THealthIndicatorStatus } from './healthIndicatorStatus.interface';
+import type { THealthIndicatorStatus } from './healthIndicatorStatus.type';
 
 export interface IHealthEntity {
     readonly timestamp: string;
