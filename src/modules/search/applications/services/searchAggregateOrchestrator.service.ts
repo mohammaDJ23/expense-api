@@ -6,8 +6,8 @@ import { LocationSearchAggregateService } from '@/modules/location/applications/
 import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/search/receiverSearchAggregate.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { ISearch } from '@/modules/search/domain/interface/search.interface';
-import type { ISearchOrchestrator } from '@/modules/search/domain/interface/searchOrchestrator.interface';
+import type { ISearch } from '@/modules/search/domain/types/search.type';
+import type { ISearchOrchestrator } from '@/modules/search/domain/types/searchOrchestrator.type';
 
 interface IInput {
     userId: string;

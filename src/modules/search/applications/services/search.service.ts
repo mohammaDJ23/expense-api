@@ -4,7 +4,7 @@ import { SearchAggregateOrchestratorService } from './searchAggregateOrchestrato
 import { SearchOrchestratorService } from './searchOrchestrator.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { ISearch } from '@/modules/search/domain/interface/search.interface';
+import type { ISearch } from '@/modules/search/domain/types/search.type';
 import type { SearchRequestDto } from '@/modules/search/interfaces/dtos/search.request.dto';
 
 interface IInput {
