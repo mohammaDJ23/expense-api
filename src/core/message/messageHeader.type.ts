@@ -1,6 +1,6 @@
-import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/interfaces/outboxEventAggregateType.interface';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
-import type { TOutboxEventType } from '@/modules/outbox/domain/interfaces/outboxEventType.interface';
+import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
+import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
+import type { TOutboxEventType } from '@/modules/outbox/domain/types/outboxEventType.type';
 
 export interface IMessageHeader {
     aggregateType: TOutboxEventAggregateType;

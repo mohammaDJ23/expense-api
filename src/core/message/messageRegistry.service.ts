@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import type { IMessageHandler } from './messageHandler.interface';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
+import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
 @Injectable()
 export class MessageRegistryService {

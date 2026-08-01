@@ -1,6 +1,6 @@
 import { createOutboxRoute } from '@/modules/outbox/domain/utils/createOutboxRoute.util';
 
-import type { TOutboxEventPayload } from '@/modules/outbox/domain/interfaces/outboxEventPayload.interface';
+import type { TOutboxEventPayload } from '@/modules/outbox/domain/types/outboxEventPayload.type';
 import type { IInsertOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 export class CreateOutboxEventCommand<T = TOutboxEventPayload> {

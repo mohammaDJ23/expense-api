@@ -8,7 +8,7 @@ import { OUTBOX_EVENT_ROUTES } from '@/modules/outbox/domain/domain.constants';
 import { KAFKA_PROVIDER } from './kafka.constants';
 import { KafkaBatchParserService } from './kafkaBatchPerser.service';
 
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
+import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
 @Injectable()
 export class KafkaConsumerService implements OnModuleInit {
