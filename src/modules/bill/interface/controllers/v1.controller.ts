@@ -24,6 +24,7 @@ import { DeleteBillRequestDto } from '@/modules/bill/interface/dtos/deleteBill.r
 import { FindBillRequestDto } from '@/modules/bill/interface/dtos/findBill.request.dto';
 import { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 import { FindBillListResponseDto } from '@/modules/bill/interface/dtos/findBillList.response.dto';
+import { FindBillsPeriodResponseDto } from '@/modules/bill/interface/dtos/findBillsPeriod.response.dto';
 import { MostUsedRequestDto } from '@/modules/bill/interface/dtos/mostUsed.request.dto';
 import { MostUsedConsumerResponseDto } from '@/modules/bill/interface/dtos/mostUsedConsumer.response.dto';
 import { MostUsedLocationResponseDto } from '@/modules/bill/interface/dtos/mostUsedLocation.response.dto';
@@ -35,6 +36,7 @@ import {
     SUCCESS_DELETE_BILL_MESSAGE,
     SUCCESS_FIND_BILL_MESSAGE,
     SUCCESS_FIND_BILLS_MESSAGE,
+    SUCCESS_FIND_BILLS_PERIOD_MESSAGE,
     SUCCESS_FIND_MOST_CONSUMERS_MESSAGE,
     SUCCESS_FIND_MOST_LOCATIONS_MESSAGE,
     SUCCESS_FIND_MOST_RECEIVERS_MESSAGE,
@@ -47,6 +49,7 @@ import type { IId } from '@/core/types/id.type';
 import type { IListResult } from '@/core/types/listResult.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
+import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
 import type { IMostUsedConsumer } from '@/modules/bill/domain/types/mostUsedConsumer.type';
 import type { IMostUsedLocation } from '@/modules/bill/domain/types/mostUsedLocation.type';
 import type { IMostUsedReceiver } from '@/modules/bill/domain/types/mostUsedReceiver.type';
@@ -129,6 +132,14 @@ export class BillController {
         @Query() query: MostUsedRequestDto,
     ): Promise<IMostUsedConsumer[]> {
         return this.billService.findMostUsedConsumers(user.id, query.limit);
+    }
+
+    @Get('period')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(FindBillsPeriodResponseDto)
+    @HttpResponse(SUCCESS_FIND_BILLS_PERIOD_MESSAGE, HttpStatus.OK)
+    findPeriod(@CurrentUser() user: ICurrentUser): Promise<IBillPeriod> {
+        return this.billService.findPeriod(user.id);
     }
 
     @Get(':id')

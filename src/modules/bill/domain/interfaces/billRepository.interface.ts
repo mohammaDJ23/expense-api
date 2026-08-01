@@ -7,6 +7,7 @@ import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/reposi
 import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type { IListQuery } from '@/core/types/listQuery.type';
+import type { IBillPeriod } from '@/modules/bill/domain//types/billPeriod.type';
 import type { IMostUsed } from '@/modules/bill/domain/types/mostUsed.type';
 import type { IInsertBill, ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 
@@ -26,4 +27,5 @@ export interface IBillRepository
     findMostUsedLocations(userId: string, limit: number): Promise<IMostUsed[]>;
     findMostUsedReceivers(userId: string, limit: number): Promise<IMostUsed[]>;
     findMostUsedConsumers(userId: string, limit: number): Promise<IMostUsed[]>;
+    findPeriodByPurchasedAt(userId: string): Promise<IBillPeriod>;
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, count, desc, eq, inArray } from 'drizzle-orm';
+import { and, count, desc, eq, inArray, max, min } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -15,6 +15,7 @@ import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billCo
 
 import type { IListQuery } from '@/core/types/listQuery.type';
 import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepository.interface';
+import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
 import type { IMostUsed } from '@/modules/bill/domain/types/mostUsed.type';
 
 @Injectable()
@@ -150,6 +151,20 @@ export class BillRepository implements IBillRepository {
                 .orderBy(desc(total))
                 .limit(limit)
                 .execute(),
+        );
+    }
+
+    findPeriodByPurchasedAt(userId: string): Promise<IBillPeriod> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .select({
+                    start: min(bills.purchasedAt),
+                    end: max(bills.purchasedAt),
+                })
+                .from(bills)
+                .where(eq(bills.userId, userId))
+                .execute(),
+            'Unable to find the period',
         );
     }
 }
