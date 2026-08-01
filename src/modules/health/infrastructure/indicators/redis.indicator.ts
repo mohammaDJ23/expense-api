@@ -5,7 +5,7 @@ import { REDIS_NAME } from '@/infrastructure/redis/redis.constants';
 import { HealthEntity } from '@/modules/health/domain/entities/health.entity';
 
 import type { IHealthIndicator } from '@/modules/health/domain/interfaces/healthIndicator.interface';
-import type { THealthIndicatorResult } from '@/modules/health/domain/interfaces/healthIndicatorResult.interface';
+import type { THealthIndicatorResult } from '@/modules/health/domain/types/healthIndicatorResult.type';
 
 @Injectable()
 export class RedisIndicator implements IHealthIndicator {

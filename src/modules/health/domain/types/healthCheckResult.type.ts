@@ -1,4 +1,4 @@
-import type { THealthIndicatorResult } from './healthIndicatorResult.interface';
+import type { THealthIndicatorResult } from './healthIndicatorResult.type';
 
 type TStatus = 'ok' | 'error';
 
