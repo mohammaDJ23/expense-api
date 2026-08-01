@@ -11,6 +11,7 @@ import { CreateBillService } from './createBill.service';
 import { DeleteBillService } from './deleteBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from './findBillListByUserId.service';
+import { FindBillsTimelineByPurchasedAtService } from './findBillsTimelineByPurchasedAt.service';
 import { UpdateBillService } from './updateBill.service';
 
 import type { IId } from '@/core/types/id.type';
@@ -18,11 +19,13 @@ import type { IListResult } from '@/core/types/listResult.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
+import type { IBillTimeline } from '@/modules/bill/domain/types/billTimeline.type';
 import type { IMostUsedConsumer } from '@/modules/bill/domain/types/mostUsedConsumer.type';
 import type { IMostUsedLocation } from '@/modules/bill/domain/types/mostUsedLocation.type';
 import type { IMostUsedReceiver } from '@/modules/bill/domain/types/mostUsedReceiver.type';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
+import type { FindBillsTimelineRequestDto } from '@/modules/bill/interface/dtos/findBillsTimeline.request.dto';
 import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
 
 @Injectable()
@@ -37,6 +40,7 @@ export class BillService {
         private readonly mostUsedLocationsService: MostUsedLocationsService,
         private readonly mostUsedReceiversService: MostUsedReceiversService,
         private readonly mostUsedConsumersService: MostUsedConsumersService,
+        private readonly findBillsTimelineByPurchasedAtService: FindBillsTimelineByPurchasedAtService,
     ) {}
 
     create(userId: string, body: CreateBillRequestDto): Promise<IId> {
@@ -87,5 +91,13 @@ export class BillService {
                 userId,
             }),
         );
+    }
+
+    findTimeline(userId: string, query: FindBillsTimelineRequestDto): Promise<IBillTimeline[]> {
+        return this.findBillsTimelineByPurchasedAtService.execute({
+            userId,
+            start: query.start,
+            end: query.end,
+        });
     }
 }

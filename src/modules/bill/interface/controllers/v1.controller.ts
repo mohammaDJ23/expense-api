@@ -25,6 +25,8 @@ import { FindBillRequestDto } from '@/modules/bill/interface/dtos/findBill.reque
 import { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 import { FindBillListResponseDto } from '@/modules/bill/interface/dtos/findBillList.response.dto';
 import { FindBillsPeriodResponseDto } from '@/modules/bill/interface/dtos/findBillsPeriod.response.dto';
+import { FindBillsTimelineRequestDto } from '@/modules/bill/interface/dtos/findBillsTimeline.request.dto';
+import { FindBillsTimelineResponseDto } from '@/modules/bill/interface/dtos/findBillsTimeline.response.dto';
 import { MostUsedRequestDto } from '@/modules/bill/interface/dtos/mostUsed.request.dto';
 import { MostUsedConsumerResponseDto } from '@/modules/bill/interface/dtos/mostUsedConsumer.response.dto';
 import { MostUsedLocationResponseDto } from '@/modules/bill/interface/dtos/mostUsedLocation.response.dto';
@@ -42,6 +44,7 @@ import {
     SUCCESS_FIND_MOST_RECEIVERS_MESSAGE,
     SUCCESS_TOTAL_BILLS_MESSAGE,
     SUCCESS_UPDATE_BILL_MESSAGE,
+    SUCCESS_FIND_BILLS_TIMELINE_MESSAGE,
 } from './controllers.constants';
 
 import type { ICurrentUser } from '@/core/authentication/currentUser.type';
@@ -50,6 +53,7 @@ import type { IListResult } from '@/core/types/listResult.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
+import type { IBillTimeline } from '@/modules/bill/domain/types/billTimeline.type';
 import type { IMostUsedConsumer } from '@/modules/bill/domain/types/mostUsedConsumer.type';
 import type { IMostUsedLocation } from '@/modules/bill/domain/types/mostUsedLocation.type';
 import type { IMostUsedReceiver } from '@/modules/bill/domain/types/mostUsedReceiver.type';
@@ -140,6 +144,17 @@ export class BillController {
     @HttpResponse(SUCCESS_FIND_BILLS_PERIOD_MESSAGE, HttpStatus.OK)
     findPeriod(@CurrentUser() user: ICurrentUser): Promise<IBillPeriod> {
         return this.billService.findPeriod(user.id);
+    }
+
+    @Get('timeline')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(FindBillsTimelineResponseDto)
+    @HttpResponse(SUCCESS_FIND_BILLS_TIMELINE_MESSAGE, HttpStatus.OK)
+    findTimeline(
+        @CurrentUser() user: ICurrentUser,
+        @Query() query: FindBillsTimelineRequestDto,
+    ): Promise<IBillTimeline[]> {
+        return this.billService.findTimeline(user.id, query);
     }
 
     @Get(':id')
