@@ -10,8 +10,8 @@ import {
 } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 import { consumers } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
-import type { ITargetBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
 import type { IBillConsumerRepository } from '@/modules/consumer/domain/interfaces/billConsumerRepository.interface';
+import type { ITargetBillConsumer } from '@/modules/consumer/domain/types/billConsumer.type';
 
 @Injectable()
 export class BillConsumerRepository implements IBillConsumerRepository {

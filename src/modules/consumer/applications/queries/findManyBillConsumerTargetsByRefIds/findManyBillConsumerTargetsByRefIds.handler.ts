@@ -5,7 +5,7 @@ import { BillConsumerRepository } from '@/modules/consumer/infrastructure/reposi
 
 import { FindManyBillConsumerTargetsByRefIdsQuery } from './findManyBillConsumerTargetsByRefIds.query';
 
-import type { ITargetBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
+import type { ITargetBillConsumer } from '@/modules/consumer/domain/types/billConsumer.type';
 
 @QueryHandler(FindManyBillConsumerTargetsByRefIdsQuery)
 export class FindManyBillConsumerTargetsByRefIdsHandler implements IQueryHandler<

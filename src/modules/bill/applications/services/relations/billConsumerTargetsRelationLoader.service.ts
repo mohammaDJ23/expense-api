@@ -5,7 +5,7 @@ import { whenNotEmpty } from '@/core/utils/whenNotEmpty.util';
 import { FindManyBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.query';
 
 import type { IRelationLoaderService } from '@/core/interfaces/relations/relationLoaderService.interface';
-import type { ITargetBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
+import type { ITargetBillConsumer } from '@/modules/consumer/domain/types/billConsumer.type';
 
 interface IInput {
     billIds: string[];

@@ -2,7 +2,7 @@ import type { ICreateManyRepository } from '@/core/interfaces/repositories/creat
 import type { IDeleteManyByRefIdAndTargetIdsRepository } from '@/core/interfaces/repositories/deleteManyByRefIdAndTargetIdsRepository.interface';
 import type { IFindManyByRefIdRepository } from '@/core/interfaces/repositories/findManyByRefIdRepository.interface';
 import type { IFindManyTargetsByRefIdsRepository } from '@/core/interfaces/repositories/findManyTargetsByRefIdsRepository.interface';
-import type { ITargetBillConsumer } from '@/modules/consumer/domain/interfaces/billConsumer.interface';
+import type { ITargetBillConsumer } from '@/modules/consumer/domain/types/billConsumer.type';
 import type {
     IInsertBillConsumer,
     ISelectBillConsumer,
