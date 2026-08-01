@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, count, desc, eq, inArray, max, min } from 'drizzle-orm';
+import { and, asc, between, count, desc, eq, inArray, max, min, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -16,6 +16,7 @@ import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billCo
 import type { IListQuery } from '@/core/types/listQuery.type';
 import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepository.interface';
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
+import type { IBillTimeline } from '@/modules/bill/domain/types/billTimeline.type';
 import type { IMostUsed } from '@/modules/bill/domain/types/mostUsed.type';
 
 @Injectable()
@@ -165,6 +166,26 @@ export class BillRepository implements IBillRepository {
                 .where(eq(bills.userId, userId))
                 .execute(),
             'Unable to find the period',
+        );
+    }
+
+    findTimelineByPurchasedAt(
+        userId: string,
+        start: string,
+        end: string,
+    ): Promise<IBillTimeline[]> {
+        const date = sql<string>`date(${bills.purchasedAt})`;
+        return toEntities(
+            this.drizzleRepository.db
+                .select({
+                    date,
+                    count: count(),
+                })
+                .from(bills)
+                .where(and(eq(bills.userId, userId), between(bills.purchasedAt, start, end)))
+                .groupBy(date)
+                .orderBy(asc(date))
+                .execute(),
         );
     }
 }
