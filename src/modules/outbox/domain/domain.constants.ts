@@ -1,4 +1,4 @@
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
+import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
 export const OUTBOX_EVENT_ROUTES: TOutboxEventRoute[] = [
     'bills.created',

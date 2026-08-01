@@ -4,8 +4,8 @@ import { CommandBus } from '@nestjs/cqrs';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 
-import type { TOutboxEventPayload } from '@/modules/outbox/domain/interfaces/outboxEventPayload.interface';
 import type { IOutboxEventPublisherService } from '@/modules/outbox/domain/interfaces/outboxEventPublisher.interface';
+import type { TOutboxEventPayload } from '@/modules/outbox/domain/types/outboxEventPayload.type';
 import type {
     IInsertOutboxEvent,
     ISelectOutboxEvent,

@@ -2,11 +2,11 @@ import { MessageHandler } from '@/core/message/messageHandler.decorator';
 
 import { CreateBillMessageElasticsearchProcessor } from './createBillMessageElasticsearch.processor';
 
-import type { IMessageBatch } from '@/core/message/messageBatch.interface';
+import type { IMessageBatch } from '@/core/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/message/messageHandler.interface';
 import type { IMessageProcessor } from '@/core/message/messageProcessor.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/interfaces/outboxEventRoute.interface';
+import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
 @MessageHandler()
 export class CreateBillMessageHandler implements IMessageHandler<ISelectBill> {
