@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 
-import type { IMessageBatch } from '@/core/message/messageBatch.interface';
+import type { IMessageBatch } from '@/core/message/messageBatch.type';
 import type { IMessageProcessor } from '@/core/message/messageProcessor.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { estypes } from '@elastic/elasticsearch';
