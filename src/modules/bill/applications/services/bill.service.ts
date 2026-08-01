@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { FindBillsPeriodByPurchasedAtQuery } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.query';
 import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
 import { MostUsedConsumersService } from '@/modules/bill/applications/services/relations/mostUsedConsumers.service';
 import { MostUsedLocationsService } from '@/modules/bill/applications/services/relations/mostUsedLocations.service';
@@ -16,6 +17,7 @@ import type { IId } from '@/core/types/id.type';
 import type { IListResult } from '@/core/types/listResult.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
+import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
 import type { IMostUsedConsumer } from '@/modules/bill/domain/types/mostUsedConsumer.type';
 import type { IMostUsedLocation } from '@/modules/bill/domain/types/mostUsedLocation.type';
 import type { IMostUsedReceiver } from '@/modules/bill/domain/types/mostUsedReceiver.type';
@@ -77,5 +79,13 @@ export class BillService {
 
     findMostUsedConsumers(userId: string, limit: number): Promise<IMostUsedConsumer[]> {
         return this.mostUsedConsumersService.execute({ userId, limit });
+    }
+
+    findPeriod(userId: string): Promise<IBillPeriod> {
+        return this.queryBus.execute<FindBillsPeriodByPurchasedAtQuery, IBillPeriod>(
+            new FindBillsPeriodByPurchasedAtQuery({
+                userId,
+            }),
+        );
     }
 }

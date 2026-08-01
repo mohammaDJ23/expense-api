@@ -7,3 +7,4 @@ export const SUCCESS_TOTAL_BILLS_MESSAGE = 'You have got the total bills';
 export const SUCCESS_FIND_MOST_LOCATIONS_MESSAGE = 'You have got the most used locations';
 export const SUCCESS_FIND_MOST_RECEIVERS_MESSAGE = 'You have got the most used receivers';
 export const SUCCESS_FIND_MOST_CONSUMERS_MESSAGE = 'You have got the most used consumers';
+export const SUCCESS_FIND_BILLS_PERIOD_MESSAGE = 'You have got the bills period';
