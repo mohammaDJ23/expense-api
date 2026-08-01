@@ -1,3 +1,27 @@
+## [4.2.5](https://github.com/mohammaDJ23/expense-api/compare/v4.2.4...v4.2.5) (2026-08-01)
+
+### 🐛 Bug Fixes
+
+- 780253 update the path of type ([f6c303d](https://github.com/mohammaDJ23/expense-api/commit/f6c303dd8a5c8a2f5cee6e7c7445ba05713aa878))
+
+### ♻️ Code Refactoring
+
+- 780253 move all the interfaces of authetication inside types folder ([04a06d5](https://github.com/mohammaDJ23/expense-api/commit/04a06d5d5afc58c8c9e0b54cf395b0b7b7bfdfb1))
+- 780253 move classConstructor to the types ([a18e419](https://github.com/mohammaDJ23/expense-api/commit/a18e419870aaf394826641282e50b9bf9cd16a35))
+- 780253 move constatnts to core ([b9a0105](https://github.com/mohammaDJ23/expense-api/commit/b9a0105cfccc5680c4b38762f097e258160fd392))
+- 780253 move out all types to the related folder ([ddfa640](https://github.com/mohammaDJ23/expense-api/commit/ddfa640e1c54c9d98424bb42c79ad377fe80c3e5))
+- 780253 move out the outbox types to the related folder ([4448e61](https://github.com/mohammaDJ23/expense-api/commit/4448e616de9280d803890c5619bf543265b197cd))
+- 780253 move out the related types of search ([a193919](https://github.com/mohammaDJ23/expense-api/commit/a193919f7d6024949c348af97b7598fabba30b54))
+- 780253 move out the type to the related folder ([b1ac727](https://github.com/mohammaDJ23/expense-api/commit/b1ac7278ec7c33283a2becbc7ab735cf6081d248))
+- 780253 move out the type to the related folder ([f5347c1](https://github.com/mohammaDJ23/expense-api/commit/f5347c1b1f1aa8bfbeab5f040c2c208259020355))
+- 780253 move utils to core ([76a27b7](https://github.com/mohammaDJ23/expense-api/commit/76a27b7b2d5a8cb4a3a9eb77e3d166e7015a99c2))
+- 780253 rename currentuser tpye ([0aa2ad6](https://github.com/mohammaDJ23/expense-api/commit/0aa2ad6f6a7625b1a68587f2703a8c4e720f86c2))
+- 780253 rename interfaces to types ([0d6accb](https://github.com/mohammaDJ23/expense-api/commit/0d6accb3e55996e985066457bde7612ce12cb696))
+- 780253 rename the httpResponse type ([25362fb](https://github.com/mohammaDJ23/expense-api/commit/25362fbd6e56112a06c41ceb0aa12e07fa22a65a))
+- 780253 rename the types ([55d63af](https://github.com/mohammaDJ23/expense-api/commit/55d63af868dfcfbd6915ea7ecc0407e8928cd19d))
+- 780253 splite the relation interfaces into the related folder ([53434ab](https://github.com/mohammaDJ23/expense-api/commit/53434ab84034092cc8a8f3f7d118f8c9841e8a83))
+- 780253 splite the types and interfaces ([eed34a9](https://github.com/mohammaDJ23/expense-api/commit/eed34a9477a60fb8d392d12612c258fa56e77723))
+
 ## [4.2.4](https://github.com/mohammaDJ23/expense-api/compare/v4.2.3...v4.2.4) (2026-07-31)
 
 ### 🔧 Chores
