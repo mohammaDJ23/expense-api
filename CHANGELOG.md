@@ -1,3 +1,20 @@
+## [4.2.6](https://github.com/mohammaDJ23/expense-api/compare/v4.2.5...v4.2.6) (2026-08-02)
+
+### 🐛 Bug Fixes
+
+- 449530 update the end date ([1d75531](https://github.com/mohammaDJ23/expense-api/commit/1d75531f004d7e0b1ad99d998875d26def4a6656))
+
+### ♻️ Code Refactoring
+
+- 449530 move the features of core into features folder ([128d9ff](https://github.com/mohammaDJ23/expense-api/commit/128d9ff5d98e9fe6011e262d91f2132a95f743fc))
+
+### 🔧 Chores
+
+- 449530 add the api of the bills period ([513d1b5](https://github.com/mohammaDJ23/expense-api/commit/513d1b53efebf3e718a10d5d3668ba253585c4fa))
+- 449530 add the bills timeline api ([478d48d](https://github.com/mohammaDJ23/expense-api/commit/478d48dddf3c6bb460825f674045da6153520840))
+- 449530 add the client timezone for better date formatting ([0c75b18](https://github.com/mohammaDJ23/expense-api/commit/0c75b18a8ed77170a6e3e5cad7190b82f8ce94b0))
+- 449530 update a package ([a9def0c](https://github.com/mohammaDJ23/expense-api/commit/a9def0c6f67268bf07a44953a02386fad7805b1b))
+
 ## [4.2.5](https://github.com/mohammaDJ23/expense-api/compare/v4.2.4...v4.2.5) (2026-08-01)
 
 ### 🐛 Bug Fixes
