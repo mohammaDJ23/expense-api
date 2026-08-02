@@ -16,7 +16,7 @@ import { TotalResponseDto } from '@/core/dtos/total.response.dto';
 import { CurrentUser } from '@/core/features/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
-import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
+import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
 import { CreateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/createReceiver.request.dto';
 import { DeleteReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/deleteReceiver.request.dto';

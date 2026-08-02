@@ -3,7 +3,7 @@ import { Controller, Get, HttpStatus, Query, UseGuards } from '@nestjs/common';
 import { CurrentUser } from '@/core/features/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
-import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
+import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { SearchService } from '@/modules/search/applications/services/search.service';
 import { SearchRequestDto } from '@/modules/search/interfaces/dtos/search.request.dto';
 import { SearchResponseDto } from '@/modules/search/interfaces/dtos/search.response.dto';

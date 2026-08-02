@@ -16,7 +16,7 @@ import { TotalResponseDto } from '@/core/dtos/total.response.dto';
 import { CurrentUser } from '@/core/features/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
-import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
+import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { LocationService } from '@/modules/location/applications/services/location.service';
 import { CreateLocationRequestDto } from '@/modules/location/interfaces/dtos/createLocation.request.dto';
 import { DeleteLocationRequestDto } from '@/modules/location/interfaces/dtos/deleteLocation.request.dto';
