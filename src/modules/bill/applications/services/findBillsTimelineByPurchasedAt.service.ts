@@ -50,7 +50,7 @@ export class FindBillsTimelineByPurchasedAtService implements IService<IInput, I
             const endInputDate = new Date(input.end);
             const endPeriodDate = new Date(period.end);
             if (endInputDate > endPeriodDate) {
-                input.start = period.end;
+                input.end = period.end;
             }
         }
 
