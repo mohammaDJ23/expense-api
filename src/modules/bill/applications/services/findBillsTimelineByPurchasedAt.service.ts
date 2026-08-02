@@ -12,6 +12,7 @@ interface IInput {
     userId: string;
     start: string | null;
     end: string | null;
+    clientTimezone: string;
 }
 
 @Injectable()
@@ -58,6 +59,7 @@ export class FindBillsTimelineByPurchasedAtService implements IService<IInput, I
                 userId: input.userId,
                 start: input.start,
                 end: input.end,
+                clientTimezone: input.clientTimezone,
             }),
         );
     }

@@ -20,6 +20,7 @@ export class FindBillsTimelineByPurchasedAtHandler implements IQueryHandler<
                 query.props.userId,
                 query.props.start,
                 query.props.end,
+                query.props.clientTimezone,
             );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
