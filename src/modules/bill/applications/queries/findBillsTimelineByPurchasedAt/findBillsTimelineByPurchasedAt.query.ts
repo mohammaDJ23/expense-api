@@ -2,6 +2,7 @@ interface IProps {
     userId: string;
     start: string;
     end: string;
+    clientTimezone: string;
 }
 
 export class FindBillsTimelineByPurchasedAtQuery {

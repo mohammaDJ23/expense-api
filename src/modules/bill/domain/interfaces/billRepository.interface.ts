@@ -29,5 +29,10 @@ export interface IBillRepository
     findMostUsedReceivers(userId: string, limit: number): Promise<IMostUsed[]>;
     findMostUsedConsumers(userId: string, limit: number): Promise<IMostUsed[]>;
     findPeriodByPurchasedAt(userId: string): Promise<IBillPeriod>;
-    findTimelineByPurchasedAt(userId: string, start: string, end: string): Promise<IBillTimeline[]>;
+    findTimelineByPurchasedAt(
+        userId: string,
+        start: string,
+        end: string,
+        clientTimezone: string,
+    ): Promise<IBillTimeline[]>;
 }

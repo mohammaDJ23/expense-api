@@ -13,6 +13,7 @@ import {
 
 import { CurrentUser } from '@/core/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
+import { ClientTimezone } from '@/core/clientTimezone/clientTimezone.decorator';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { TotalResponseDto } from '@/core/dtos/total.response.dto';
 import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
@@ -153,8 +154,9 @@ export class BillController {
     findTimeline(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindBillsTimelineRequestDto,
+        @ClientTimezone() clientTimezone: string,
     ): Promise<IBillTimeline[]> {
-        return this.billService.findTimeline(user.id, query);
+        return this.billService.findTimeline(user.id, query, clientTimezone);
     }
 
     @Get(':id')

@@ -173,8 +173,10 @@ export class BillRepository implements IBillRepository {
         userId: string,
         start: string,
         end: string,
+        clientTimezone: string,
     ): Promise<IBillTimeline[]> {
-        const date = sql<string>`date(${bills.purchasedAt})`;
+        const timezone = sql.raw(`'${clientTimezone}'`);
+        const date = sql<string>`date(${bills.purchasedAt} AT TIME ZONE ${timezone})`;
         return toEntities(
             this.drizzleRepository.db
                 .select({

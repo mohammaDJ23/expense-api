@@ -93,11 +93,16 @@ export class BillService {
         );
     }
 
-    findTimeline(userId: string, query: FindBillsTimelineRequestDto): Promise<IBillTimeline[]> {
+    findTimeline(
+        userId: string,
+        query: FindBillsTimelineRequestDto,
+        clientTimezone: string,
+    ): Promise<IBillTimeline[]> {
         return this.findBillsTimelineByPurchasedAtService.execute({
             userId,
             start: query.start,
             end: query.end,
+            clientTimezone,
         });
     }
 }
