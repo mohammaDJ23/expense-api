@@ -2,7 +2,7 @@ import type { ExceptionNormalizerEntity } from '@/core/exceptions/normalizer/exc
 import type { HttpResponseEntity } from '@/core/features/responses/http/httpResponse.entity';
 import type { ArgumentsHost } from '@nestjs/common';
 
-export interface IGlobalHostStrategy {
+export interface IGlobalFilterHostStrategy {
     canHandle(host: ArgumentsHost): boolean;
     send(host: ArgumentsHost, response: HttpResponseEntity<ExceptionNormalizerEntity>): void;
 }
