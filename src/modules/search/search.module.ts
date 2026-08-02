@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { AuthenticationModule } from '@/core/authentication/authentication.module';
+import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { BillModule } from '@/modules/bill/bill.module';
 import { ConsumerModule } from '@/modules/consumer/consumer.module';

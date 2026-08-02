@@ -11,11 +11,11 @@ import {
     UseGuards,
 } from '@nestjs/common';
 
-import { CurrentUser } from '@/core/authentication/currentUser.decorator';
-import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { TotalResponseDto } from '@/core/dtos/total.response.dto';
-import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
+import { CurrentUser } from '@/core/features/authentication/currentUser.decorator';
+import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
+import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { LocationService } from '@/modules/location/applications/services/location.service';
 import { CreateLocationRequestDto } from '@/modules/location/interfaces/dtos/createLocation.request.dto';
@@ -35,7 +35,7 @@ import {
     SUCCESS_UPDATE_LOCATION_MESSAGE,
 } from './controllers.constants';
 
-import type { ICurrentUser } from '@/core/authentication/currentUser.type';
+import type { ICurrentUser } from '@/core/features/authentication/currentUser.type';
 import type { IId } from '@/core/types/id.type';
 import type { IListResult } from '@/core/types/listResult.type';
 import type { ITotal } from '@/core/types/total.type';

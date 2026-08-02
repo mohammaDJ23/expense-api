@@ -11,12 +11,12 @@ import {
     UseGuards,
 } from '@nestjs/common';
 
-import { CurrentUser } from '@/core/authentication/currentUser.decorator';
-import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
-import { ClientTimezone } from '@/core/clientTimezone/clientTimezone.decorator';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { TotalResponseDto } from '@/core/dtos/total.response.dto';
-import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
+import { CurrentUser } from '@/core/features/authentication/currentUser.decorator';
+import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
+import { ClientTimezone } from '@/core/features/clientTimezone/clientTimezone.decorator';
+import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
 import { BillResponseDto } from '@/modules/bill/interface/dtos/bill.response.dto';
@@ -48,7 +48,7 @@ import {
     SUCCESS_FIND_BILLS_TIMELINE_MESSAGE,
 } from './controllers.constants';
 
-import type { ICurrentUser } from '@/core/authentication/currentUser.type';
+import type { ICurrentUser } from '@/core/features/authentication/currentUser.type';
 import type { IId } from '@/core/types/id.type';
 import type { IListResult } from '@/core/types/listResult.type';
 import type { ITotal } from '@/core/types/total.type';

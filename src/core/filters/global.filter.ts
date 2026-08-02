@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 
 import { ExceptionNormalizerService } from '@/core/exceptions/normalizer/exceptionNormalizer.service';
-import { HttpResponseEntity } from '@/core/responses/http/httpResponse.entity';
+import { HttpResponseEntity } from '@/core/features/responses/http/httpResponse.entity';
 
 import { GlobalFallbackHostStrategy } from './globalFallbackHost.strategy';
 import { GlobalHttpHostStrategy } from './globalHttpHost.strategy';

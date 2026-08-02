@@ -1,10 +1,10 @@
-import { MessageHandler } from '@/core/message/messageHandler.decorator';
+import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
 
 import { CreateReceiverMessageElasticsearchProcessor } from './createReceiverMessageElasticsearch.processor';
 
-import type { IMessageBatch } from '@/core/message/messageBatch.type';
-import type { IMessageHandler } from '@/core/message/messageHandler.interface';
-import type { IMessageProcessor } from '@/core/message/messageProcessor.interface';
+import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
+import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
+import type { IMessageProcessor } from '@/core/features/message/messageProcessor.interface';
 import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
