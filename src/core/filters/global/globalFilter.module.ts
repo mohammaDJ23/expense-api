@@ -3,19 +3,19 @@ import { APP_FILTER } from '@nestjs/core';
 
 import { ExceptionNormalizerModule } from '@/core/exceptions/normalizer/exceptionNormalizer.module';
 
-import { GlobalFilter } from './global.filter';
-import { GlobalFallbackHostStrategy } from './globalFallbackHost.strategy';
-import { GlobalHttpHostStrategy } from './globalHttpHost.strategy';
+import { GlobalFilter } from './globalFilter';
+import { GlobalFilterFallbackHostStrategy } from './globalFilterFallbackHost.strategy';
+import { GlobalFilterHttpHostStrategy } from './globalFilterHttpHost.strategy';
 
 @Module({
     imports: [ExceptionNormalizerModule],
     providers: [
-        GlobalHttpHostStrategy,
-        GlobalFallbackHostStrategy,
+        GlobalFilterHttpHostStrategy,
+        GlobalFilterFallbackHostStrategy,
         {
             provide: APP_FILTER,
             useClass: GlobalFilter,
         },
     ],
 })
-export class FiltersModule {}
+export class GlobalFilterModule {}

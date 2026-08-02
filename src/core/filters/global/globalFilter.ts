@@ -8,21 +8,21 @@ import {
 import { ExceptionNormalizerService } from '@/core/exceptions/normalizer/exceptionNormalizer.service';
 import { HttpResponseEntity } from '@/core/features/responses/http/httpResponse.entity';
 
-import { GlobalFallbackHostStrategy } from './globalFallbackHost.strategy';
-import { GlobalHttpHostStrategy } from './globalHttpHost.strategy';
+import { GlobalFilterFallbackHostStrategy } from './globalFilterFallbackHost.strategy';
+import { GlobalFilterHttpHostStrategy } from './globalFilterHttpHost.strategy';
 
-import type { IGlobalHostStrategy } from './globalHostStrategy.interface';
+import type { IGlobalFilterHostStrategy } from './globalFilterHostStrategy.interface';
 
 @Catch()
 export class GlobalFilter implements ExceptionFilter {
     constructor(
-        private readonly globalHttpHostStrategy: GlobalHttpHostStrategy,
-        private readonly globalFallbackHostStrategy: GlobalFallbackHostStrategy,
+        private readonly globalFilterHttpHostStrategy: GlobalFilterHttpHostStrategy,
+        private readonly globalFilterFallbackHostStrategy: GlobalFilterFallbackHostStrategy,
         private readonly exceptionNormalizerService: ExceptionNormalizerService,
     ) {}
 
-    private get hostHandlers(): IGlobalHostStrategy[] {
-        return [this.globalHttpHostStrategy, this.globalFallbackHostStrategy];
+    private get hostHandlers(): IGlobalFilterHostStrategy[] {
+        return [this.globalFilterHttpHostStrategy, this.globalFilterFallbackHostStrategy];
     }
 
     catch(exception: unknown, host: ArgumentsHost): void {

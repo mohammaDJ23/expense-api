@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { ClientTimezoneModule } from '@/core/features/clientTimezone/clientTimezone.module';
-import { FiltersModule } from '@/core/filters/filters.module';
+import { GlobalFilterModule } from '@/core/filters/global/globalFilter.module';
 import { TransformResponseInterceptor } from '@/core/interceptors/transformResponse.interceptor';
 import { ApiVersioningService } from '@/core/services/apiVersioning.service';
 import { AppInstanceService } from '@/core/services/appInstance.service';
@@ -12,7 +12,7 @@ import { VersionService } from '@/core/services/version.service';
 @Module({
     imports: [
         ConfigModule.forRoot({ isGlobal: true, ignoreEnvFile: true }),
-        FiltersModule,
+        GlobalFilterModule,
         ClientTimezoneModule,
     ],
     providers: [
