@@ -1,8 +1,8 @@
 import { Controller, Get, HttpStatus, Query, UseGuards } from '@nestjs/common';
 
-import { CurrentUser } from '@/core/authentication/currentUser.decorator';
-import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
-import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
+import { CurrentUser } from '@/core/features/authentication/currentUser.decorator';
+import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
+import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { SearchService } from '@/modules/search/applications/services/search.service';
 import { SearchRequestDto } from '@/modules/search/interfaces/dtos/search.request.dto';
@@ -10,7 +10,7 @@ import { SearchResponseDto } from '@/modules/search/interfaces/dtos/search.respo
 
 import { SUCCESS_SEARCH_MESSAGE } from './controllers.constants';
 
-import type { ICurrentUser } from '@/core/authentication/currentUser.type';
+import type { ICurrentUser } from '@/core/features/authentication/currentUser.type';
 import type { ISearch } from '@/modules/search/domain/types/search.type';
 
 @Controller({ version: '1', path: 'api/search' })

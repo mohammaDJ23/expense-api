@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { AuthenticationModule as CoreAuthenticationModule } from '@/core/authentication/authentication.module';
+import { AuthenticationModule as CoreAuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';

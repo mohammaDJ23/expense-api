@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { AuthenticationModule } from '@/core/authentication/authentication.module';
+import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { OwnerGuard } from '@/core/guards/owner.guard';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateUserHandler } from '@/modules/user/applications/commands/createUser/createUser.handler';

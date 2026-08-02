@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Kafka } from 'kafkajs';
 
-import { MessageModule } from '@/core/message/message.module';
+import { MessageModule } from '@/core/features/message/message.module';
 
 import { KAFKA_PROVIDER } from './kafka.constants';
-import { KafkaBatchParserService } from './kafkaBatchPerser.service';
+import { KafkaBatchParserService } from './kafkaBatchParser.service';
 import { KafkaConsumerService } from './kafkaConsumer.service';
 
 @Module({

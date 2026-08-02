@@ -10,12 +10,12 @@ import {
     UseGuards,
 } from '@nestjs/common';
 
-import { CurrentUser } from '@/core/authentication/currentUser.decorator';
-import { JwtAuthGuard } from '@/core/authentication/jwtAuth.guard';
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { TotalResponseDto } from '@/core/dtos/total.response.dto';
+import { CurrentUser } from '@/core/features/authentication/currentUser.decorator';
+import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
+import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { OwnerGuard } from '@/core/guards/owner.guard';
-import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
 import { UserService } from '@/modules/user/applications/services/user.service';
 import { FindUserByIdRequestDto } from '@/modules/user/interfaces/dtos/findUserById.request.dto';
@@ -32,7 +32,7 @@ import {
     SUCCESS_TOTAL_USERS_MESSAGE,
 } from './controllers.constants';
 
-import type { ICurrentUser } from '@/core/authentication/currentUser.type';
+import type { ICurrentUser } from '@/core/features/authentication/currentUser.type';
 import type { IId } from '@/core/types/id.type';
 import type { IListResult } from '@/core/types/listResult.type';
 import type { ITotal } from '@/core/types/total.type';

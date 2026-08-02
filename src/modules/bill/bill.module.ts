@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { AuthenticationModule } from '@/core/authentication/authentication.module';
+import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';

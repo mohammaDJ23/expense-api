@@ -2,7 +2,7 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
-import { ClientTimezoneModule } from '@/core/clientTimezone/clientTimezone.module';
+import { ClientTimezoneModule } from '@/core/features/clientTimezone/clientTimezone.module';
 import { FiltersModule } from '@/core/filters/filters.module';
 import { TransformResponseInterceptor } from '@/core/interceptors/transformResponse.interceptor';
 import { ApiVersioningService } from '@/core/services/apiVersioning.service';

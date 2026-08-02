@@ -2,11 +2,11 @@ import { Inject, Injectable, type OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Kafka } from 'kafkajs';
 
-import { MessageRegistryService } from '@/core/message/messageRegistry.service';
+import { MessageRegistryService } from '@/core/features/message/messageRegistry.service';
 import { OUTBOX_EVENT_ROUTES } from '@/modules/outbox/domain/domain.constants';
 
 import { KAFKA_PROVIDER } from './kafka.constants';
-import { KafkaBatchParserService } from './kafkaBatchPerser.service';
+import { KafkaBatchParserService } from './kafkaBatchParser.service';
 
 import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 

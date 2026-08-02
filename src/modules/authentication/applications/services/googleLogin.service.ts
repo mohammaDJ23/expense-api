@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { AccessTokenService } from '@/core/authentication/accessToken.service';
+import { AccessTokenService } from '@/core/features/authentication/accessToken.service';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 
-import type { ICurrentUser } from '@/core/authentication/currentUser.type';
+import type { ICurrentUser } from '@/core/features/authentication/currentUser.type';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { Response } from 'express';

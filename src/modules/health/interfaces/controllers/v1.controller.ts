@@ -1,6 +1,6 @@
 import { Controller, Get, HttpStatus } from '@nestjs/common';
 
-import { HttpResponse } from '@/core/responses/http/httpResponse.decorator';
+import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { HealthService } from '@/modules/health/applications/services/health.service';
 
 import { SUCCESS_HEALTH_MESSAGE } from './controllers.constants';
