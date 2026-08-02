@@ -16,7 +16,7 @@ import { TotalResponseDto } from '@/core/dtos/total.response.dto';
 import { CurrentUser } from '@/core/features/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
-import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
+import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { ConsumerResponseDto } from '@/modules/consumer/interfaces/dtos/consumer.response.dto';
 import { CreateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/createConsumer.request.dto';

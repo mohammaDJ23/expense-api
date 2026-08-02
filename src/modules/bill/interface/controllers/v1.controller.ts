@@ -17,7 +17,7 @@ import { CurrentUser } from '@/core/features/authentication/currentUser.decorato
 import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
 import { ClientTimezone } from '@/core/features/clientTimezone/clientTimezone.decorator';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
-import { SerializerInterceptor } from '@/core/serializers/serializerInterceptor.decorator';
+import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
 import { BillResponseDto } from '@/modules/bill/interface/dtos/bill.response.dto';
 import { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
