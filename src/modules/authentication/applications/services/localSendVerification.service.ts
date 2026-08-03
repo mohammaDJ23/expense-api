@@ -59,9 +59,15 @@ export class LocalSendVerificationService implements IService<
             throw new ForbiddenException();
         }
 
+        const token = this.verificationTokenService.sign(user);
+
         try {
-            const token = this.verificationTokenService.sign(user);
             await this.verificationStorageService.set(user.email, token);
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
+        }
+
+        try {
             await this.verificationMailerService.execute({ user, token });
         } catch {
             try {
