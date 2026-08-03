@@ -1,3 +1,16 @@
+## [4.2.7](https://github.com/mohammaDJ23/expense-api/compare/v4.2.6...v4.2.7) (2026-08-03)
+
+### ♻️ Code Refactoring
+
+- 653435 move serializer folder into features ([8dceaaa](https://github.com/mohammaDJ23/expense-api/commit/8dceaaa76611d53b7cc66b0752c89537c9e2460e))
+- 653435 split the parts of storing and sending email ([45e9cf5](https://github.com/mohammaDJ23/expense-api/commit/45e9cf5f0c7ba4ea09ebd9d85c7aa6bfcf8acc0e))
+- 653435 update the global filters ([45cc61d](https://github.com/mohammaDJ23/expense-api/commit/45cc61d8dcfe4cc48ffdbb0a41d931d265969d1e))
+- 653435 use pipe for current user ([0ddd871](https://github.com/mohammaDJ23/expense-api/commit/0ddd87138c0262318d4883875a543312c548b778))
+
+### 🔧 Chores
+
+- 653435 add the interfaces of export module ([419b3c7](https://github.com/mohammaDJ23/expense-api/commit/419b3c7bc0e57a3b6b88615f6e06c17764a15b34))
+
 ## [4.2.6](https://github.com/mohammaDJ23/expense-api/compare/v4.2.5...v4.2.6) (2026-08-02)
 
 ### 🐛 Bug Fixes
