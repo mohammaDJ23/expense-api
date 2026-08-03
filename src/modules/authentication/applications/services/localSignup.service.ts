@@ -51,11 +51,21 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
             throw new ProcessFailedInternalServerErrorException();
         }
 
+        const token = this.verificationTokenService.sign(createdUser);
+
         try {
-            const token = this.verificationTokenService.sign(createdUser);
             await this.verificationStorageService.set(createdUser.email, token);
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
+        }
+
+        try {
             await this.verificationMailerService.execute({ user: createdUser, token });
         } catch {
+            try {
+                await this.verificationStorageService.delete(createdUser.email);
+            } catch {}
+
             throw new ServiceUnavailableException(
                 'Your email has been saved but we could not send you the verification link',
             );

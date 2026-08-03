@@ -59,9 +59,15 @@ export class LocalForgotPasswordService implements IService<
             throw new ForbiddenException();
         }
 
+        const token = this.passwordTokenService.sign(user);
+
         try {
-            const token = this.passwordTokenService.sign(user);
             await this.passwordStorageService.set(user.email, token);
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
+        }
+
+        try {
             await this.passwordMailerService.execute({ user, token });
         } catch {
             try {
