@@ -5,6 +5,7 @@ import { BillsExportJob } from '@/modules/export/applications/services/billsExpo
 import { BillsExportService } from '@/modules/export/applications/services/billsExport.service';
 import { BillsExportDataLoaderService } from '@/modules/export/applications/services/billsExportDataLoader.service';
 import { BillsExportGeneratorService } from '@/modules/export/applications/services/billsExportGenerator.service';
+import { BillsExportMailerService } from '@/modules/export/applications/services/billsExportMailer.service';
 
 @Module({
     imports: [BillModule],
@@ -13,6 +14,7 @@ import { BillsExportGeneratorService } from '@/modules/export/applications/servi
         BillsExportGeneratorService,
         BillsExportService,
         BillsExportJob,
+        BillsExportMailerService,
     ],
 })
 export class ExportModule {}
