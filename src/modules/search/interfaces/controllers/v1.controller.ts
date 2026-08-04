@@ -8,7 +8,7 @@ import { SearchService } from '@/modules/search/applications/services/search.ser
 import { SearchRequestDto } from '@/modules/search/interfaces/dtos/search.request.dto';
 import { SearchResponseDto } from '@/modules/search/interfaces/dtos/search.response.dto';
 
-import { SUCCESS_SEARCH_MESSAGE } from './controllers.constants';
+import { SUCCESS_SEARCH_MESSAGE } from './v1.constants';
 
 import type { ICurrentUser } from '@/core/features/authentication/currentUser.type';
 import type { ISearch } from '@/modules/search/domain/types/search.type';

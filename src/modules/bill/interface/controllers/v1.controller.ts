@@ -46,7 +46,7 @@ import {
     SUCCESS_TOTAL_BILLS_MESSAGE,
     SUCCESS_UPDATE_BILL_MESSAGE,
     SUCCESS_FIND_BILLS_TIMELINE_MESSAGE,
-} from './controllers.constants';
+} from './v1.constants';
 
 import type { ICurrentUser } from '@/core/features/authentication/currentUser.type';
 import type { IId } from '@/core/types/id.type';

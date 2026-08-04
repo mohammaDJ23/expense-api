@@ -21,7 +21,7 @@ import {
     SUCCESS_LOGIN_MESSAGE,
     SUCCESS_FORGOT_PASSWORD_MESSAGE,
     SUCCESS_RESET_PASSWORD_MESSAGE,
-} from './controllers.constants';
+} from './v1.constants';
 
 import type { ICurrentUser } from '@/core/features/authentication/currentUser.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';

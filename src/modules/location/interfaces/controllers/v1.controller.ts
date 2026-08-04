@@ -33,7 +33,7 @@ import {
     SUCCESS_FIND_LOCATIONS_MESSAGE,
     SUCCESS_TOTAL_LOCATIONS_MESSAGE,
     SUCCESS_UPDATE_LOCATION_MESSAGE,
-} from './controllers.constants';
+} from './v1.constants';
 
 import type { ICurrentUser } from '@/core/features/authentication/currentUser.type';
 import type { IId } from '@/core/types/id.type';
