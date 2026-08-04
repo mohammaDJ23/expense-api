@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import pLimit from 'p-limit';
 
 import { FindManyUsersQuery } from '@/modules/user/applications/queries/findManyUsers/findManyUsers.query';
 
@@ -9,6 +10,8 @@ import { BillsExportMailerService } from './billsExportMailer.service';
 
 import type { IJob } from '@/core/interfaces/job.interface';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+
+const limit = pLimit(5);
 
 @Injectable()
 export class BillsExportJob implements IJob {
@@ -25,16 +28,17 @@ export class BillsExportJob implements IJob {
         );
 
         await Promise.allSettled(
-            users.map(async (user) => {
-                const buffer = await this.billsExportService.execute({
-                    userId: user.id,
-                });
-
-                await this.billsExportMailerService.execute({
-                    email: user.email,
-                    buffer,
-                });
-            }),
+            users.map((user) =>
+                limit(async () => {
+                    const buffer = await this.billsExportService.execute({
+                        userId: user.id,
+                    });
+                    await this.billsExportMailerService.execute({
+                        email: user.email,
+                        buffer,
+                    });
+                }),
+            ),
         );
     }
 }
