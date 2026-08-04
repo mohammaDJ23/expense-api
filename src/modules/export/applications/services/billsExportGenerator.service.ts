@@ -21,7 +21,14 @@ export class BillsExportGeneratorService implements IExportGenerator<IBill[], Ex
             width: 30,
         }));
 
-        sheet.addRows(rows);
+        sheet.addRows(
+            rows.map((row) => ({
+                ...row,
+                location: row.location.name,
+                receiver: row.receiver.name,
+                consumers: row.consumers.map((consumer) => consumer.name).join(', '),
+            })),
+        );
 
         try {
             return await workbook.xlsx.writeBuffer();
