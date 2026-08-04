@@ -11,7 +11,7 @@ interface IInput {
 }
 
 @Injectable()
-export class BillsExportOrchestratorService implements IService<IInput, ExcelJS.Buffer> {
+export class BillsExportService implements IService<IInput, ExcelJS.Buffer> {
     constructor(
         private readonly billsExportDataLoader: BillsExportDataLoaderService,
         private readonly billsExportGeneratorService: BillsExportGeneratorService,
