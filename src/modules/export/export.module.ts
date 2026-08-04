@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { BillModule } from '@/modules/bill/bill.module';
 import { BillsExportJob } from '@/modules/export/applications/services/billsExport.job';
 import { BillsExportService } from '@/modules/export/applications/services/billsExport.service';
@@ -8,7 +9,7 @@ import { BillsExportGeneratorService } from '@/modules/export/applications/servi
 import { BillsExportMailerService } from '@/modules/export/applications/services/billsExportMailer.service';
 
 @Module({
-    imports: [BillModule],
+    imports: [BillModule, CqrsModule],
     providers: [
         BillsExportDataLoaderService,
         BillsExportGeneratorService,
