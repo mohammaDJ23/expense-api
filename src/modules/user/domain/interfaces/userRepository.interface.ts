@@ -4,6 +4,7 @@ import type { IExistsByIdRepository } from '@/core/interfaces/repositories/exist
 import type { IFindByIdOrNullRepository } from '@/core/interfaces/repositories/findByIdOrNullRepository.interface';
 import type { IFindByIdOrThrowRepository } from '@/core/interfaces/repositories/findByIdOrThrowRepository.interface';
 import type { IFindListRepository } from '@/core/interfaces/repositories/findListRepository.interface';
+import type { IFindManyRepository } from '@/core/interfaces/repositories/findManyRepository.interface';
 import type { IFindTotalRepository } from '@/core/interfaces/repositories/findTotalRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type { IListQuery } from '@/core/types/listQuery.type';
@@ -18,7 +19,8 @@ export interface IUserRepository
         IFindListRepository<IListQuery, ISelectUser>,
         IDeleteByIdRepository<ISelectUser>,
         IExistsByIdRepository,
-        IFindTotalRepository {
+        IFindTotalRepository,
+        IFindManyRepository<ISelectUser> {
     deleteManyNotVerified(): Promise<ISelectUser[]>;
     existsByEmail(email: string): Promise<boolean>;
     findByEmailOrNull(email: string): Promise<ISelectUser | null>;
