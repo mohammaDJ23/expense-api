@@ -120,6 +120,6 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         FindManyBillsByUserIdService,
     ],
     controllers: [BillController],
-    exports: [BillSearchService, BillSearchAggregateService],
+    exports: [BillSearchService, BillSearchAggregateService, FindManyBillsByUserIdService],
 })
 export class BillModule {}
