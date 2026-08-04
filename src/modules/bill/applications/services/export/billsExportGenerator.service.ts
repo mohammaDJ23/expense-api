@@ -5,8 +5,8 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 
 import { BILL_EXPORT_KEYS } from './billsExportGenerator.constant';
 
+import type { IExportGenerator } from '@/core/interfaces/export/exportGenerator.interface';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
-import type { IExportGenerator } from '@/modules/export/domain/interfaces/exportGenerator.interface';
 
 @Injectable()
 export class BillsExportGeneratorService implements IExportGenerator<IBill[], Buffer> {

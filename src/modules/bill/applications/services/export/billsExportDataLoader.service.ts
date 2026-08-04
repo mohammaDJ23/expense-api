@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 
 import { FindManyBillsByUserIdService } from '@/modules/bill/applications/services/findManyBillsByUserId.service';
 
+import type { IExportDataLoader } from '@/core/interfaces/export/exportDataLoader.interface';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
-import type { IExportDataLoader } from '@/modules/export/domain/interfaces/exportDataLoader.interface';
 
 interface IInput {
     userId: string;
