@@ -21,7 +21,7 @@ export class BillsExportJob implements IJob {
         private readonly billsExportMailerService: BillsExportMailerService,
     ) {}
 
-    @Cron(CronExpression.EVERY_MINUTE)
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     async run(): Promise<void> {
         const users = await this.queryBus.execute<FindManyUsersQuery, ISelectUser[]>(
             new FindManyUsersQuery(),
