@@ -190,4 +190,15 @@ export class BillRepository implements IBillRepository {
                 .execute(),
         );
     }
+
+    findManyByUserId(userId: string): Promise<ISelectBill[]> {
+        return toEntities(
+            this.drizzleRepository.db
+                .select()
+                .from(bills)
+                .where(eq(bills.userId, userId))
+                .orderBy(desc(bills.createdAt))
+                .execute(),
+        );
+    }
 }

@@ -4,6 +4,7 @@ import type { IExistsByUserIdAndIdRepository } from '@/core/interfaces/repositor
 import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrThrowRepository.interface';
 import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories/findListByUserIdRepository.interface';
 import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
+import type { IFindManyByUserIdRepository } from '@/core/interfaces/repositories/findManyByUserIdRepository.interface';
 import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type { IListQuery } from '@/core/types/listQuery.type';
@@ -24,7 +25,8 @@ export interface IBillRepository
         >,
         IExistsByUserIdAndIdRepository,
         IFindManyByUserIdAndIdsRepository<ISelectBill>,
-        IFindTotalByUserIdRepository {
+        IFindTotalByUserIdRepository,
+        IFindManyByUserIdRepository<ISelectBill> {
     findMostUsedLocations(userId: string, limit: number): Promise<IMostUsed[]>;
     findMostUsedReceivers(userId: string, limit: number): Promise<IMostUsed[]>;
     findMostUsedConsumers(userId: string, limit: number): Promise<IMostUsed[]>;
