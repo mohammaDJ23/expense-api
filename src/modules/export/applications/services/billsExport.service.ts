@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import ExcelJS from 'exceljs';
 
 import { BillsExportDataLoaderService } from './billsExportDataLoader.service';
 import { BillsExportGeneratorService } from './billsExportGenerator.service';
@@ -11,13 +10,13 @@ interface IInput {
 }
 
 @Injectable()
-export class BillsExportService implements IService<IInput, ExcelJS.Buffer> {
+export class BillsExportService implements IService<IInput, Buffer> {
     constructor(
         private readonly billsExportDataLoader: BillsExportDataLoaderService,
         private readonly billsExportGeneratorService: BillsExportGeneratorService,
     ) {}
 
-    async execute(input: IInput): Promise<ExcelJS.Buffer> {
+    async execute(input: IInput): Promise<Buffer> {
         const bills = await this.billsExportDataLoader.load({
             userId: input.userId,
         });

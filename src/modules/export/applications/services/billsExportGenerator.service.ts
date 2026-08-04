@@ -9,8 +9,8 @@ import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { IExportGenerator } from '@/modules/export/domain/interfaces/exportGenerator.interface';
 
 @Injectable()
-export class BillsExportGeneratorService implements IExportGenerator<IBill[], ExcelJS.Buffer> {
-    async generate(rows: IBill[]): Promise<ExcelJS.Buffer> {
+export class BillsExportGeneratorService implements IExportGenerator<IBill[], Buffer> {
+    async generate(rows: IBill[]): Promise<Buffer> {
         const workbook = new ExcelJS.Workbook();
 
         const sheet = workbook.addWorksheet('Bills');
@@ -31,7 +31,9 @@ export class BillsExportGeneratorService implements IExportGenerator<IBill[], Ex
         );
 
         try {
-            return await workbook.xlsx.writeBuffer();
+            const buffer = await workbook.xlsx.writeBuffer();
+
+            return Buffer.from(buffer);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
