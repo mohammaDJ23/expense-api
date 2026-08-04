@@ -3,7 +3,7 @@ import ExcelJS from 'exceljs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 
-import { BILL_EXPORT_KEYS } from './services.constant';
+import { BILL_EXPORT_KEYS } from './billsExportGenerator.constant';
 
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { IExportGenerator } from '@/modules/export/domain/interfaces/exportGenerator.interface';
