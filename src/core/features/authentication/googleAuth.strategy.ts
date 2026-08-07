@@ -11,7 +11,7 @@ import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-import type { ICurrentUser } from './currentUser.type';
+import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
