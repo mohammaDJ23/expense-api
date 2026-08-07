@@ -1,6 +1,10 @@
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 
+import { EXCEL_FILE_CONTENT_TYPE } from '@/core/features/excelFile/excelFile.constants';
+
+import { BILL_EXPORT_FILE_NAME } from './billsExportGenerator.constant';
+
 import type { IService } from '@/core/interfaces/service.interface';
 
 interface IInput {
@@ -25,10 +29,9 @@ export class BillsExportMailerService implements IService<IInput, void> {
                 `,
                 attachments: [
                     {
-                        filename: 'bills.xlsx',
+                        filename: BILL_EXPORT_FILE_NAME,
                         content: Buffer.from(input.buffer),
-                        contentType:
-                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        contentType: EXCEL_FILE_CONTENT_TYPE,
                     },
                 ],
             });

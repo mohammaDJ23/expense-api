@@ -3,7 +3,7 @@ import ExcelJS from 'exceljs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 
-import { BILL_EXPORT_KEYS } from './billsExportGenerator.constant';
+import { BILL_EXPORT_KEYS, BILL_SHEET_NAME } from './billsExportGenerator.constant';
 
 import type { IExportGenerator } from '@/core/interfaces/export/exportGenerator.interface';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
@@ -13,7 +13,7 @@ export class BillsExportGeneratorService implements IExportGenerator<IBill[], Bu
     async generate(rows: IBill[]): Promise<Buffer> {
         const workbook = new ExcelJS.Workbook();
 
-        const sheet = workbook.addWorksheet('Bills');
+        const sheet = workbook.addWorksheet(BILL_SHEET_NAME);
 
         sheet.columns = BILL_EXPORT_KEYS.map((key) => ({
             header: this.toHeader(key),

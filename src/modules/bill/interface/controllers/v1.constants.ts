@@ -9,3 +9,4 @@ export const SUCCESS_FIND_MOST_RECEIVERS_MESSAGE = 'You have got the most used r
 export const SUCCESS_FIND_MOST_CONSUMERS_MESSAGE = 'You have got the most used consumers';
 export const SUCCESS_FIND_BILLS_PERIOD_MESSAGE = 'You have got the bills period';
 export const SUCCESS_FIND_BILLS_TIMELINE_MESSAGE = 'You have got the bills timeline';
+export const SUCCESS_BILL_EXPORT_MESSAGE = 'You have received the bill report';
