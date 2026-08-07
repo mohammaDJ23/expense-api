@@ -11,7 +11,7 @@ import { accessTokenExtractor } from './accessToken.extractor';
 import { AccessTokenService } from './accessToken.service';
 
 import type { IAccessTokenPayload } from './accessTokenPayload.type';
-import type { ICurrentUser } from './currentUser.type';
+import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()

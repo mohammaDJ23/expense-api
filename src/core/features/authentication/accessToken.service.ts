@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 
 import type { IAccessTokenPayload } from './accessTokenPayload.type';
-import type { ICurrentUser } from './currentUser.type';
+import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { Response } from 'express';
 
 @Injectable()
