@@ -13,6 +13,7 @@ import { map } from 'rxjs/operators';
 import {
     HTTP_RESPONSE_MESSAGE_METADATA_KEY,
     HTTP_RESPONSE_STATUS_METADATA_KEY,
+    SKIP_TRANSFORM_RESPONSE_METADATA_KEY,
 } from '@/core/features/responses/http/httpResponse.constants';
 import { HttpResponseEntity } from '@/core/features/responses/http/httpResponse.entity';
 
@@ -24,6 +25,16 @@ export class TransformResponseInterceptor<T> implements NestInterceptor<T, HttpR
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<HttpResponseEntity<T>> {
         const handler = context.getHandler();
+
+        const skipTransformResponse = this.reflector.get<boolean | undefined>(
+            SKIP_TRANSFORM_RESPONSE_METADATA_KEY,
+            handler,
+        );
+
+        if (skipTransformResponse) {
+            return next.handle();
+        }
+
         const controller = context.getClass();
 
         const message = this.reflector.get<string | undefined, string>(

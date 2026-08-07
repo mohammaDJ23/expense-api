@@ -8,6 +8,7 @@ import {
     Post,
     Put,
     Query,
+    StreamableFile,
     UseGuards,
 } from '@nestjs/common';
 
@@ -16,9 +17,12 @@ import { TotalResponseDto } from '@/core/dtos/total.response.dto';
 import { CurrentUser } from '@/core/features/authentication/currentUser.decorator';
 import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
 import { ClientTimezone } from '@/core/features/clientTimezone/clientTimezone.decorator';
+import { ExcelFile } from '@/core/features/excelFile/excelFile.decorator';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
+import { SkipTransformResponse } from '@/core/features/responses/http/skipTransformResponse.decorator';
 import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
+import { BILL_EXPORT_FILE_NAME } from '@/modules/bill/applications/services/export/billsExportGenerator.constant';
 import { BillResponseDto } from '@/modules/bill/interface/dtos/bill.response.dto';
 import { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import { DeleteBillRequestDto } from '@/modules/bill/interface/dtos/deleteBill.request.dto';
@@ -46,6 +50,7 @@ import {
     SUCCESS_TOTAL_BILLS_MESSAGE,
     SUCCESS_UPDATE_BILL_MESSAGE,
     SUCCESS_FIND_BILLS_TIMELINE_MESSAGE,
+    SUCCESS_BILL_EXPORT_MESSAGE,
 } from './v1.constants';
 
 import type { ICurrentUser } from '@/core/features/authentication/currentUser.type';
@@ -157,6 +162,15 @@ export class BillController {
         @ClientTimezone() clientTimezone: string,
     ): Promise<IBillTimeline[]> {
         return this.billService.findTimeline(user.id, query, clientTimezone);
+    }
+
+    @Get('export')
+    @UseGuards(JwtAuthGuard)
+    @SkipTransformResponse()
+    @ExcelFile(BILL_EXPORT_FILE_NAME)
+    @HttpResponse(SUCCESS_BILL_EXPORT_MESSAGE, HttpStatus.OK)
+    export(@CurrentUser() user: ICurrentUser): Promise<StreamableFile> {
+        return this.billService.export(user.id);
     }
 
     @Get(':id')

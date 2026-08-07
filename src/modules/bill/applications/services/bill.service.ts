@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, StreamableFile } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { FindBillsPeriodByPurchasedAtQuery } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.query';
 import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
+import { BillsExportService } from '@/modules/bill/applications/services/export/billsExport.service';
 import { MostUsedConsumersService } from '@/modules/bill/applications/services/relations/mostUsedConsumers.service';
 import { MostUsedLocationsService } from '@/modules/bill/applications/services/relations/mostUsedLocations.service';
 import { MostUsedReceiversService } from '@/modules/bill/applications/services/relations/mostUsedReceivers.service';
@@ -41,6 +42,7 @@ export class BillService {
         private readonly mostUsedReceiversService: MostUsedReceiversService,
         private readonly mostUsedConsumersService: MostUsedConsumersService,
         private readonly findBillsTimelineByPurchasedAtService: FindBillsTimelineByPurchasedAtService,
+        private readonly billExportService: BillsExportService,
     ) {}
 
     create(userId: string, body: CreateBillRequestDto): Promise<IId> {
@@ -104,5 +106,11 @@ export class BillService {
             end: query.end,
             clientTimezone,
         });
+    }
+
+    export(userId: string): Promise<StreamableFile> {
+        return this.billExportService
+            .execute({ userId })
+            .then((buffer) => new StreamableFile(buffer));
     }
 }
