@@ -1,7 +1,7 @@
 import { Injectable, type ArgumentsHost } from '@nestjs/common';
 
 import type { IGlobalFilterHostStrategy } from './globalFilterHostStrategy.interface';
-import type { ExceptionNormalizerEntity } from '@/core/exceptions/normalizer/exceptionNormalizer.entity';
+import type { ExceptionNormalizerEntity } from '@/core/features/exceptionNormalizer/exceptionNormalizer.entity';
 import type { HttpResponseEntity } from '@/core/features/responses/http/httpResponse.entity';
 
 @Injectable()
