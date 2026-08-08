@@ -5,7 +5,7 @@ import {
     InternalServerErrorException,
 } from '@nestjs/common';
 
-import { ExceptionNormalizerService } from '@/core/exceptions/normalizer/exceptionNormalizer.service';
+import { ExceptionNormalizerService } from '@/core/features/exceptionNormalizer/exceptionNormalizer.service';
 import { HttpResponseEntity } from '@/core/features/responses/http/httpResponse.entity';
 
 import { GlobalFilterFallbackHostStrategy } from './globalFilterFallbackHost.strategy';
