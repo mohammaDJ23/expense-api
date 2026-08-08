@@ -1,3 +1,35 @@
+## [4.2.8](https://github.com/mohammaDJ23/expense-api/compare/v4.2.7...v4.2.8) (2026-08-08)
+
+### ♻️ Code Refactoring
+
+- 775606 move out accessToken logic into related folder ([e5e5527](https://github.com/mohammaDJ23/expense-api/commit/e5e5527e4afde7936c048c673c879f72ba26080e))
+- 775606 move out the guard to authorization folder ([5b8ff29](https://github.com/mohammaDJ23/expense-api/commit/5b8ff29cbc5a28bbdc5864a8f1478970e3e890df))
+
+### 🔧 Chores
+
+- 553939 add a query to find all bills by user id ([6fd12b9](https://github.com/mohammaDJ23/expense-api/commit/6fd12b9693acd80c668da491ddaab234225397de))
+- 553939 add the bill excel generator ([5ad5802](https://github.com/mohammaDJ23/expense-api/commit/5ad58022dff03e017bc3c0e440e215c5259f5355))
+- 553939 add the bill export job ([681af97](https://github.com/mohammaDJ23/expense-api/commit/681af97fb5f3dc9a5330e30291499e1de45fdc18))
+- 553939 add the bills export orchestrator service ([9995d86](https://github.com/mohammaDJ23/expense-api/commit/9995d8621b0ec4879598eb7b3ae17163612f35ad))
+- 553939 add the data loader service ([20e21a2](https://github.com/mohammaDJ23/expense-api/commit/20e21a2b8643ce595164a91a7be7088d74c9d146))
+- 553939 add the exceljs package ([733f682](https://github.com/mohammaDJ23/expense-api/commit/733f682dc7dbe54ed36fa157348dca37e635cc23))
+- 553939 add the find many users query ([d77e7e1](https://github.com/mohammaDJ23/expense-api/commit/d77e7e163e8ff12780a60f7d772bc51c718a4bb7))
+- 553939 add the mailer service of bills export ([d5162a3](https://github.com/mohammaDJ23/expense-api/commit/d5162a30c3964a7118974d670f72f292eb49919e))
+- 553939 add the service related to load all bills based on the user id ([6411df8](https://github.com/mohammaDJ23/expense-api/commit/6411df8b6fe67be151482c9228c758823a6b2405))
+- 553939 export the related service of bill and create the module of export ([8c2557f](https://github.com/mohammaDJ23/expense-api/commit/8c2557f1e547c29a380fca17d1060692812ea709))
+- 553939 get the users and generate excel for each of them the make a report as an email ([84a17d4](https://github.com/mohammaDJ23/expense-api/commit/84a17d43e7b35f1c206dd472737bff6ce9d33d08))
+- 553939 move out current user to the related folder ([0698f4b](https://github.com/mohammaDJ23/expense-api/commit/0698f4b08fa928a947ab0ecfebb71ccde0443acc))
+- 553939 move out exception normalizer to features ([f437381](https://github.com/mohammaDJ23/expense-api/commit/f4373816e31edbf7d20304fd65fadf784d88552a))
+- 553939 move the export to the bill module ([11b4598](https://github.com/mohammaDJ23/expense-api/commit/11b4598f4dc8dd67da07ac2949bec3aac5b849fe))
+- 553939 move the transform response interceptor to responses feature ([0ac86ad](https://github.com/mohammaDJ23/expense-api/commit/0ac86ada62aeeda7a5d1ac29472593be8005e2a1))
+- 553939 rename billsExport service ([dc314ab](https://github.com/mohammaDJ23/expense-api/commit/dc314abe0cd36a88390689815843ffa932b874a6))
+- 553939 send the excel file of bills report to client ([e2b401f](https://github.com/mohammaDJ23/expense-api/commit/e2b401f771886154accce4030f484437698cb668))
+- 553939 update constant file ([f005897](https://github.com/mohammaDJ23/expense-api/commit/f005897290ab9bbe8c70d7490fc50927c311d1d5))
+- 553939 update the name of constants files ([77d07d2](https://github.com/mohammaDJ23/expense-api/commit/77d07d2fb8160d10200d178c4d52bc4c78b1a2c4))
+- 553939 update the package ([b0fcf48](https://github.com/mohammaDJ23/expense-api/commit/b0fcf48981768dea0c1e09609b91a5a2f8c9efd3))
+- 553939 update the time of cron job ([d6819b8](https://github.com/mohammaDJ23/expense-api/commit/d6819b810d89b4dac2882d9805448c7b26ffc42f))
+- 553939 use p-limit ([6a3ebb8](https://github.com/mohammaDJ23/expense-api/commit/6a3ebb86ecc11d7304e54664424f743548218d42))
+
 ## [4.2.7](https://github.com/mohammaDJ23/expense-api/compare/v4.2.6...v4.2.7) (2026-08-03)
 
 ### ♻️ Code Refactoring
