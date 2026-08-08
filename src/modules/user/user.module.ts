@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
-import { OwnerGuard } from '@/core/guards/owner.guard';
+import { AuthorizationModule } from '@/core/features/authorization/authorization.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { CreateUserHandler } from '@/modules/user/applications/commands/createUser/createUser.handler';
 import { DeleteManyNotVerifiedUsersHandler } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.handler';
@@ -25,7 +25,7 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
 import { UserController } from '@/modules/user/interfaces/controllers/v1.controller';
 
 @Module({
-    imports: [CqrsModule, AuthenticationModule],
+    imports: [CqrsModule, AuthenticationModule, AuthorizationModule],
     controllers: [UserController],
     providers: [
         UserService,
@@ -44,7 +44,6 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         FindUserByIdOrThrowHandler,
         FindManyUsersHandler,
         FindUserListHandler,
-        OwnerGuard,
         UserExistenceValidatorService,
         UserUniqueEmailValidatorService,
         FindUserListService,
