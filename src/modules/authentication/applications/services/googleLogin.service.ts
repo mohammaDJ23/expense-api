@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { AccessTokenService } from '@/core/features/authentication/accessToken.service';
+import { AccessTokenService } from '@/core/features/accessToken/accessToken.service';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 

@@ -4,13 +4,12 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+import { accessTokenExtractor } from '@/core/features/accessToken/accessToken.extractor';
+import { AccessTokenService } from '@/core/features/accessToken/accessToken.service';
 import { readSecret } from '@/core/utils/readSecret.util';
 import { FindUserByIdOrNullQuery } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.query';
 
-import { accessTokenExtractor } from './accessToken.extractor';
-import { AccessTokenService } from './accessToken.service';
-
-import type { IAccessTokenPayload } from './accessTokenPayload.type';
+import type { IAccessTokenPayload } from '@/core/features/accessToken/accessTokenPayload.type';
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
