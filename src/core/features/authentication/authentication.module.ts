@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
+import { AccessTokenService } from '@/core/features/accessToken/accessToken.service';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 
-import { AccessTokenService } from './accessToken.service';
 import { GoogleAuthGuard } from './googleAuth.guard';
 import { GoogleAuthStrategy } from './googleAuth.strategy';
 import { JwtAuthGuard } from './jwtAuth.guard';
