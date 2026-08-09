@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, asc, between, count, desc, eq, inArray, max, min, sql } from 'drizzle-orm';
+import { and, asc, between, count, desc, eq, inArray, lt, max, min, or, sql } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -13,7 +13,7 @@ import {
 } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
-import type { IListQuery } from '@/core/types/listQuery.type';
+import type { ICursor } from '@/core/utils/cursor/cursor.type';
 import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepository.interface';
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
 import type { IBillTimeline } from '@/modules/bill/domain/types/billTimeline.type';
@@ -64,15 +64,31 @@ export class BillRepository implements IBillRepository {
         );
     }
 
-    findListByUserId(userId: string, options: IListQuery): Promise<ISelectBill[]> {
+    findListByUserId(
+        userId: string,
+        limit: number,
+        cursor: ICursor | null,
+    ): Promise<ISelectBill[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()
                 .from(bills)
-                .where(eq(bills.userId, userId))
-                .orderBy(desc(bills.createdAt))
-                .limit(options.limit)
-                .offset(options.offset)
+                .where(
+                    and(
+                        eq(bills.userId, userId),
+                        cursor
+                            ? or(
+                                  lt(bills.createdAt, cursor.createdAt),
+                                  and(
+                                      eq(bills.createdAt, cursor.createdAt),
+                                      lt(bills.id, cursor.id),
+                                  ),
+                              )
+                            : undefined,
+                    ),
+                )
+                .orderBy(desc(bills.createdAt), desc(bills.id))
+                .limit(limit + 1)
                 .execute(),
         );
     }

@@ -7,7 +7,6 @@ import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/reposi
 import type { IFindManyByUserIdRepository } from '@/core/interfaces/repositories/findManyByUserIdRepository.interface';
 import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
-import type { IListQuery } from '@/core/types/listQuery.type';
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
 import type { IBillTimeline } from '@/modules/bill/domain/types/billTimeline.type';
 import type { IMostUsed } from '@/modules/bill/domain/types/mostUsed.type';
@@ -17,7 +16,7 @@ export interface IBillRepository
     extends
         ICreateRepository<IInsertBill, ISelectBill>,
         IDeleteByUserIdAndIdRepository<ISelectBill>,
-        IFindListByUserIdRepository<IListQuery, ISelectBill>,
+        IFindListByUserIdRepository<ISelectBill>,
         IFindByUserIdAndIdOrThrowRepository<ISelectBill>,
         IUpdateRepository<
             Partial<ISelectBill> & Required<Pick<ISelectBill, 'id' | 'userId'>>,
