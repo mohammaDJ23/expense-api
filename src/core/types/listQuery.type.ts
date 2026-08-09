@@ -1,4 +1,4 @@
 export interface IListQuery {
-    offset: number;
+    cursor: string | null;
     limit: number;
 }
