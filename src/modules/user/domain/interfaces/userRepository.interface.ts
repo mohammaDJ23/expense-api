@@ -7,7 +7,6 @@ import type { IFindListRepository } from '@/core/interfaces/repositories/findLis
 import type { IFindManyRepository } from '@/core/interfaces/repositories/findManyRepository.interface';
 import type { IFindTotalRepository } from '@/core/interfaces/repositories/findTotalRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
-import type { IListQuery } from '@/core/types/listQuery.type';
 import type { IInsertUser, ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 export interface IUserRepository
@@ -16,7 +15,7 @@ export interface IUserRepository
         IUpdateRepository<Partial<ISelectUser> & Required<Pick<ISelectUser, 'id'>>, ISelectUser>,
         IFindByIdOrNullRepository<ISelectUser>,
         IFindByIdOrThrowRepository<ISelectUser>,
-        IFindListRepository<IListQuery, ISelectUser>,
+        IFindListRepository<ISelectUser>,
         IDeleteByIdRepository<ISelectUser>,
         IExistsByIdRepository,
         IFindTotalRepository,

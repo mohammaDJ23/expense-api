@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { desc, eq, isNull } from 'drizzle-orm';
+import { and, desc, eq, isNull, lt, or } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -13,7 +13,7 @@ import {
     type ISelectUser,
 } from '@/modules/user/infrastructure/schemas/user.schema';
 
-import type { IListQuery } from '@/core/types/listQuery.type';
+import type { ICursor } from '@/core/utils/cursor/cursor.type';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
 
 @Injectable()
@@ -75,14 +75,21 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    findList(options: IListQuery): Promise<ISelectUser[]> {
+    findList(limit: number, cursor: ICursor | null): Promise<ISelectUser[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()
                 .from(users)
-                .orderBy(desc(users.createdAt))
-                .limit(options.limit)
-                .offset(options.offset)
+                .where(
+                    cursor
+                        ? or(
+                              lt(users.createdAt, cursor.createdAt),
+                              and(eq(users.createdAt, cursor.createdAt), lt(users.id, cursor.id)),
+                          )
+                        : undefined,
+                )
+                .orderBy(desc(users.createdAt), desc(users.id))
+                .limit(limit + 1)
                 .execute(),
         );
     }

@@ -1,5 +1,7 @@
+import type { ICursor } from '@/core/utils/cursor/cursor.type';
+
 interface IProps {
-    offset: number;
+    cursor: ICursor | null;
     limit: number;
 }
 
