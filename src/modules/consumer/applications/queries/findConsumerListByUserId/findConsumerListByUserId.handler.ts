@@ -16,10 +16,11 @@ export class FindConsumerListByUserIdHandler implements IQueryHandler<
 
     async execute(query: FindConsumerListByUserIdQuery): Promise<ISelectConsumer[]> {
         try {
-            return await this.consumerRepository.findListByUserId(query.props.userId, {
-                offset: query.props.offset,
-                limit: query.props.limit,
-            });
+            return await this.consumerRepository.findListByUserId(
+                query.props.userId,
+                query.props.limit,
+                query.props.cursor,
+            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { createCursorPagination } from '@/core/utils/cursor/createCursorPagination.util';
+import { parseCursor } from '@/core/utils/cursor/parseCursor.util';
 import { FindConsumerListByUserIdQuery } from '@/modules/consumer/applications/queries/findConsumerListByUserId/findConsumerListByUserId.query';
 import { FindTotalConsumersByUserIdQuery } from '@/modules/consumer/applications/queries/findTotalConsumersByUserId/findTotalConsumersByUserId.query';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IListResult } from '@/core/types/listResult.type';
+import type { ICursor } from '@/core/utils/cursor/cursor.type';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { FindConsumerListRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerList.request.dto';
 
@@ -26,7 +30,7 @@ export class FindConsumerListByUserIdService implements IService<
             this.queryBus.execute<FindConsumerListByUserIdQuery, ISelectConsumer[]>(
                 new FindConsumerListByUserIdQuery({
                     userId: input.userId,
-                    offset: input.query.offset,
+                    cursor: this.parseCursor(input.query.cursor),
                     limit: input.query.limit,
                 }),
             ),
@@ -36,9 +40,20 @@ export class FindConsumerListByUserIdService implements IService<
                 }),
             ),
         ]);
+
+        const cursorPagination = createCursorPagination(consumers, input.query.limit);
+
         return {
-            items: consumers,
+            ...cursorPagination,
             total,
         };
+    }
+
+    parseCursor(cursor: string | null): ICursor | null {
+        try {
+            return parseCursor(cursor);
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
+        }
     }
 }

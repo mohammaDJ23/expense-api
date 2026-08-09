@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, eq, inArray, desc, ne } from 'drizzle-orm';
+import { and, eq, inArray, desc, ne, or, lt } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -13,7 +13,7 @@ import {
     type ISelectConsumer,
 } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
-import type { IListQuery } from '@/core/types/listQuery.type';
+import type { ICursor } from '@/core/utils/cursor/cursor.type';
 import type { IConsumerRepository } from '@/modules/consumer/domain/interfaces/consumerRepository.interface';
 
 @Injectable()
@@ -93,15 +93,31 @@ export class ConsumerRepository implements IConsumerRepository {
         );
     }
 
-    findListByUserId(userId: string, options: IListQuery): Promise<ISelectConsumer[]> {
+    findListByUserId(
+        userId: string,
+        limit: number,
+        cursor: ICursor | null,
+    ): Promise<ISelectConsumer[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()
                 .from(consumers)
-                .where(eq(consumers.userId, userId))
-                .orderBy(desc(consumers.createdAt))
-                .limit(options.limit)
-                .offset(options.offset)
+                .where(
+                    and(
+                        eq(consumers.userId, userId),
+                        cursor
+                            ? or(
+                                  lt(consumers.createdAt, cursor.createdAt),
+                                  and(
+                                      eq(consumers.createdAt, cursor.createdAt),
+                                      lt(consumers.id, cursor.id),
+                                  ),
+                              )
+                            : undefined,
+                    ),
+                )
+                .orderBy(desc(consumers.createdAt), desc(consumers.id))
+                .limit(limit + 1)
                 .execute(),
         );
     }
