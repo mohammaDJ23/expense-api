@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, desc, eq, inArray, ne } from 'drizzle-orm';
+import { and, desc, eq, inArray, lt, ne, or } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -13,7 +13,7 @@ import {
     type ISelectLocation,
 } from '@/modules/location/infrastructure/schemas/location.schema';
 
-import type { IListQuery } from '@/core/types/listQuery.type';
+import type { ICursor } from '@/core/utils/cursor/cursor.type';
 import type { ILocationRepository } from '@/modules/location/domain/interfaces/locationRepository.interface';
 
 @Injectable()
@@ -94,15 +94,31 @@ export class LocationRepository implements ILocationRepository {
         );
     }
 
-    findListByUserId(userId: string, options: IListQuery): Promise<ISelectLocation[]> {
+    findListByUserId(
+        userId: string,
+        limit: number,
+        cursor: ICursor | null,
+    ): Promise<ISelectLocation[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()
                 .from(locations)
-                .where(eq(locations.userId, userId))
-                .orderBy(desc(locations.createdAt))
-                .limit(options.limit)
-                .offset(options.offset)
+                .where(
+                    and(
+                        eq(locations.userId, userId),
+                        cursor
+                            ? or(
+                                  lt(locations.createdAt, cursor.createdAt),
+                                  and(
+                                      eq(locations.createdAt, cursor.createdAt),
+                                      lt(locations.id, cursor.id),
+                                  ),
+                              )
+                            : undefined,
+                    ),
+                )
+                .orderBy(desc(locations.createdAt), desc(locations.id))
+                .limit(limit + 1)
                 .execute(),
         );
     }

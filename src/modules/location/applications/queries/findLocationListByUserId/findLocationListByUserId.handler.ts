@@ -16,10 +16,11 @@ export class FindLocationListByUserIdHandler implements IQueryHandler<
 
     async execute(query: FindLocationListByUserIdQuery): Promise<ISelectLocation[]> {
         try {
-            return await this.locationRepository.findListByUserId(query.props.userId, {
-                offset: query.props.offset,
-                limit: query.props.limit,
-            });
+            return await this.locationRepository.findListByUserId(
+                query.props.userId,
+                query.props.limit,
+                query.props.cursor,
+            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

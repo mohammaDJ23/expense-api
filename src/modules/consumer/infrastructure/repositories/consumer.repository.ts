@@ -89,6 +89,7 @@ export class ConsumerRepository implements IConsumerRepository {
                 .select()
                 .from(consumers)
                 .where(and(eq(consumers.userId, userId), inArray(consumers.id, ids)))
+                .orderBy(desc(consumers.createdAt))
                 .execute(),
         );
     }

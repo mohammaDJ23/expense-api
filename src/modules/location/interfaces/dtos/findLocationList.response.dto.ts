@@ -9,4 +9,10 @@ export class FindLocationListResponseDto {
 
     @Expose()
     total: number;
+
+    @Expose()
+    hasNextPage: boolean;
+
+    @Expose()
+    nextCursor: string | null;
 }

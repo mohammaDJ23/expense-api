@@ -10,7 +10,6 @@ import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories
 import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
 import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
-import type { IListQuery } from '@/core/types/listQuery.type';
 import type {
     IInsertLocation,
     ISelectLocation,
@@ -24,7 +23,7 @@ export interface ILocationRepository
         IFindByUserIdAndIdOrNullRepository<ISelectLocation>,
         IFindByUserIdAndIdOrThrowRepository<ISelectLocation>,
         IFindManyByUserIdAndIdsRepository<ISelectLocation>,
-        IFindListByUserIdRepository<IListQuery, ISelectLocation>,
+        IFindListByUserIdRepository<ISelectLocation>,
         IFindByUserIdAndNameOrNullRepository<ISelectLocation>,
         IExistsByUserIdAndIdRepository,
         IExistsByUserIdAndExcludingIdAndNameRepository,
