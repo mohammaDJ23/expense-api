@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, desc, eq, inArray, ne } from 'drizzle-orm';
+import { and, desc, eq, inArray, lt, ne, or } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -13,7 +13,7 @@ import {
     type ISelectReceiver,
 } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
-import type { IListQuery } from '@/core/types/listQuery.type';
+import type { ICursor } from '@/core/utils/cursor/cursor.type';
 import type { IReceiverRepository } from '@/modules/receiver/domain/interfaces/receiverRepository.interface';
 
 @Injectable()
@@ -94,15 +94,31 @@ export class ReceiverRepository implements IReceiverRepository {
         );
     }
 
-    findListByUserId(userId: string, options: IListQuery): Promise<ISelectReceiver[]> {
+    findListByUserId(
+        userId: string,
+        limit: number,
+        cursor: ICursor | null,
+    ): Promise<ISelectReceiver[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()
                 .from(receivers)
-                .where(eq(receivers.userId, userId))
-                .orderBy(desc(receivers.createdAt))
-                .limit(options.limit)
-                .offset(options.offset)
+                .where(
+                    and(
+                        eq(receivers.userId, userId),
+                        cursor
+                            ? or(
+                                  lt(receivers.createdAt, cursor.createdAt),
+                                  and(
+                                      eq(receivers.createdAt, cursor.createdAt),
+                                      lt(receivers.id, cursor.id),
+                                  ),
+                              )
+                            : undefined,
+                    ),
+                )
+                .orderBy(desc(receivers.createdAt), desc(receivers.id))
+                .limit(limit + 1)
                 .execute(),
         );
     }
