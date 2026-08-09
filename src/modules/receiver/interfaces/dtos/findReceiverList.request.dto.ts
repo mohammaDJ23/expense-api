@@ -12,13 +12,6 @@ export class FindReceiverListRequestDto {
     limit: number = MAX_LIST_LIMIT;
 
     @IsOptional()
-    @Type(() => Number)
-    @IsInt()
-    @Min(0)
-    offset = 0;
-
-    @IsOptional()
-    @Type(() => String)
     @IsString()
-    q = '';
+    cursor: string | null = null;
 }
