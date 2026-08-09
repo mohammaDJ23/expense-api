@@ -13,7 +13,7 @@ export class FindUserListHandler implements IQueryHandler<FindUserListQuery, ISe
 
     async execute(query: FindUserListQuery): Promise<ISelectUser[]> {
         try {
-            return await this.userRepository.findList(query.props);
+            return await this.userRepository.findList(query.props.limit, query.props.cursor);
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
