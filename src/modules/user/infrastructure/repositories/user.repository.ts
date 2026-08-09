@@ -105,10 +105,4 @@ export class UserRepository implements IUserRepository {
     findTotal(): Promise<number> {
         return toCount(this.drizzleRepository.db.$count(users));
     }
-
-    findMany(): Promise<ISelectUser[]> {
-        return toEntities(
-            this.drizzleRepository.db.select().from(users).orderBy(desc(users.createdAt)).execute(),
-        );
-    }
 }
