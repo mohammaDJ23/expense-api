@@ -9,7 +9,6 @@ import { DeleteUserHandler } from '@/modules/user/applications/commands/deleteUs
 import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUser/updateUser.handler';
 import { ExistsUserByEmailHandler } from '@/modules/user/applications/queries/existsUserByEmail/existsUserByEmail.handler';
 import { ExistsUserByIdHandler } from '@/modules/user/applications/queries/existsUserById/existsUserById.handler';
-import { FindManyUsersHandler } from '@/modules/user/applications/queries/findManyUsers/findManyUsers.handler';
 import { FindTotalUsersHandler } from '@/modules/user/applications/queries/findTotalUsers/findTotalUsers.handler';
 import { FindUserByEmailOrNullHandler } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.handler';
 import { FindUserByIdOrNullHandler } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.handler';
@@ -42,7 +41,6 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         FindUserByEmailOrNullHandler,
         FindUserByIdOrNullHandler,
         FindUserByIdOrThrowHandler,
-        FindManyUsersHandler,
         FindUserListHandler,
         UserExistenceValidatorService,
         UserUniqueEmailValidatorService,

@@ -17,7 +17,6 @@ import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications
 import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.handler';
 import { FindBillsPeriodByPurchasedAtHandler } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.handler';
 import { FindBillsTimelineByPurchasedAtHandler } from '@/modules/bill/applications/queries/findBillsTimelineByPurchasedAt/findBillsTimelineByPurchasedAt.handler';
-import { FindManyBillsByUserIdHandler } from '@/modules/bill/applications/queries/findManyBillsByUserId/findManyBillsByUserId.handler';
 import { FindManyBillsByUserIdAndIdsHandler } from '@/modules/bill/applications/queries/findManyBillsByUserIdAndIds/findManyBillsByUserIdAndIds.handler';
 import { FindMostUsedConsumersHandler } from '@/modules/bill/applications/queries/findMostUsedConsumers/findMostUsedConsumers.handler';
 import { FindMostUsedLocationsHandler } from '@/modules/bill/applications/queries/findMostUsedLocations/findMostUsedLocations.handler';
@@ -34,7 +33,6 @@ import { BillsExportMailerService } from '@/modules/bill/applications/services/e
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
 import { FindBillsTimelineByPurchasedAtService } from '@/modules/bill/applications/services/findBillsTimelineByPurchasedAt.service';
-import { FindManyBillsByUserIdService } from '@/modules/bill/applications/services/findManyBillsByUserId.service';
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
 import { BillConsumerTargetsRelationLoaderService } from '@/modules/bill/applications/services/relations/billConsumerTargetsRelationLoader.service';
 import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
@@ -93,7 +91,6 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         FindMostUsedConsumersHandler,
         FindBillsPeriodByPurchasedAtHandler,
         FindBillsTimelineByPurchasedAtHandler,
-        FindManyBillsByUserIdHandler,
         CreateBillMessageElasticsearchProcessor,
         UpdateBillMessageHandler,
         UpdateBillMessageElasticsearchProcessor,
@@ -122,7 +119,6 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         MostUsedLocationsService,
         MostUsedConsumersService,
         FindBillsTimelineByPurchasedAtService,
-        FindManyBillsByUserIdService,
         BillsExportDataLoaderService,
         BillsExportGeneratorService,
         BillsExportService,

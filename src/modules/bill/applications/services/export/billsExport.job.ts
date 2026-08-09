@@ -3,8 +3,6 @@ import { QueryBus } from '@nestjs/cqrs';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import pLimit from 'p-limit';
 
-import { FindManyUsersQuery } from '@/modules/user/applications/queries/findManyUsers/findManyUsers.query';
-
 import { BillsExportService } from './billsExport.service';
 import { BillsExportMailerService } from './billsExportMailer.service';
 
