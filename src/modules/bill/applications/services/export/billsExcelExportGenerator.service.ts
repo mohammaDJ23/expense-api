@@ -5,15 +5,15 @@ import ExcelJS from 'exceljs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 
-import { BILL_EXPORT_KEYS, BILL_SHEET_NAME } from './billsExportGenerator.constants';
+import { BILL_EXPORT_KEYS, BILL_SHEET_NAME } from './billsExport.constants';
 
-import type { IExportGenerator } from '@/core/interfaces/export/exportGenerator.interface';
-import type { IExportContext } from '@/core/types/exportContext.type';
+import type { IExcelExportContext } from '@/core/features/export/excelExportContext.type';
+import type { IExcelExportGenerator } from '@/core/features/export/excelExportGenerator.interface';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 
 @Injectable()
-export class BillsExportGeneratorService implements IExportGenerator<IBill> {
-    initialize(): IExportContext {
+export class BillsExcelExportGeneratorService implements IExcelExportGenerator<IBill> {
+    initialize(): IExcelExportContext {
         const stream = new PassThrough();
 
         const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
@@ -37,7 +37,7 @@ export class BillsExportGeneratorService implements IExportGenerator<IBill> {
         };
     }
 
-    addRows(context: IExportContext, rows: IBill[]): void {
+    addRows(context: IExcelExportContext, rows: IBill[]): void {
         for (const row of rows) {
             const excelRow = context.sheet.addRow({
                 ...row,
@@ -50,7 +50,7 @@ export class BillsExportGeneratorService implements IExportGenerator<IBill> {
         }
     }
 
-    async generate(context: IExportContext): Promise<void> {
+    async generate(context: IExcelExportContext): Promise<void> {
         try {
             await context.workbook.commit();
         } catch {

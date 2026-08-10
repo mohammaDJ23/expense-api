@@ -3,10 +3,12 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import pLimit from 'p-limit';
 
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
+import { EXCEL_FILE_CONTENT_TYPE } from '@/core/features/excelFile/excelFile.constants';
 import { cursorIterator } from '@/core/utils/cursor/cursorIterator.util';
 import { FindUserListService } from '@/modules/user/applications/services/findUserList.service';
 
-import { BillsExportService } from './billsExport.service';
+import { BillsExcelExportService } from './billsExcelExport.service';
+import { BILL_EXPORT_FILE_NAME } from './billsExport.constants';
 import { BillsExportMailerService } from './billsExportMailer.service';
 
 import type { IJob } from '@/core/interfaces/job.interface';
@@ -18,7 +20,7 @@ export class BillsExportJob implements IJob {
     private readonly concurrency = pLimit(3);
 
     constructor(
-        private readonly billsExportService: BillsExportService,
+        private readonly billsExcelExportService: BillsExcelExportService,
         private readonly billsExportMailerService: BillsExportMailerService,
         private readonly findUserListService: FindUserListService,
     ) {}
@@ -41,13 +43,19 @@ export class BillsExportJob implements IJob {
 
     private async processExport(user: ISelectUser): Promise<void> {
         await this.concurrency(async () => {
-            const stream = this.billsExportService.execute({
+            const stream = this.billsExcelExportService.execute({
                 userId: user.id,
             });
 
             await this.billsExportMailerService.execute({
                 email: user.email,
-                stream,
+                attachments: [
+                    {
+                        filename: BILL_EXPORT_FILE_NAME,
+                        content: stream,
+                        contentType: EXCEL_FILE_CONTENT_TYPE,
+                    },
+                ],
             });
         });
     }
