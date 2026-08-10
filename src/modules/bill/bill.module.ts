@@ -25,10 +25,10 @@ import { FindTotalBillsByUserIdHandler } from '@/modules/bill/applications/queri
 import { BillService } from '@/modules/bill/applications/services/bill.service';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
 import { DeleteBillService } from '@/modules/bill/applications/services/deleteBill.service';
+import { BillsExcelExportService } from '@/modules/bill/applications/services/export/billsExcelExport.service';
+import { BillsExcelExportGeneratorService } from '@/modules/bill/applications/services/export/billsExcelExportGenerator.service';
 import { BillsExportJob } from '@/modules/bill/applications/services/export/billsExport.job';
-import { BillsExportService } from '@/modules/bill/applications/services/export/billsExport.service';
 import { BillsExportDataLoaderService } from '@/modules/bill/applications/services/export/billsExportDataLoader.service';
-import { BillsExportGeneratorService } from '@/modules/bill/applications/services/export/billsExportGenerator.service';
 import { BillsExportMailerService } from '@/modules/bill/applications/services/export/billsExportMailer.service';
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
@@ -122,8 +122,8 @@ import { UserModule } from '@/modules/user/user.module';
         MostUsedConsumersService,
         FindBillsTimelineByPurchasedAtService,
         BillsExportDataLoaderService,
-        BillsExportGeneratorService,
-        BillsExportService,
+        BillsExcelExportGeneratorService,
+        BillsExcelExportService,
         BillsExportJob,
         BillsExportMailerService,
     ],

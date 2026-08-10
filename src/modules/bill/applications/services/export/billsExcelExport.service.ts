@@ -3,11 +3,11 @@ import { Injectable } from '@nestjs/common';
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { cursorIterator } from '@/core/utils/cursor/cursorIterator.util';
 
+import { BillsExcelExportGeneratorService } from './billsExcelExportGenerator.service';
 import { BillsExportDataLoaderService } from './billsExportDataLoader.service';
-import { BillsExportGeneratorService } from './billsExportGenerator.service';
 
+import type { IExcelExportContext } from '@/core/features/export/excelExportContext.type';
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IExportContext } from '@/core/types/exportContext.type';
 import type { IListResult } from '@/core/types/listResult.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { PassThrough } from 'node:stream';
@@ -17,30 +17,30 @@ interface IInput {
 }
 
 @Injectable()
-export class BillsExportService implements IService<IInput, PassThrough> {
+export class BillsExcelExportService implements IService<IInput, PassThrough> {
     constructor(
         private readonly billsExportDataLoader: BillsExportDataLoaderService,
-        private readonly billsExportGeneratorService: BillsExportGeneratorService,
+        private readonly billsExcelExportGeneratorService: BillsExcelExportGeneratorService,
     ) {}
 
     execute(input: IInput): PassThrough {
-        const context = this.billsExportGeneratorService.initialize();
+        const context = this.billsExcelExportGeneratorService.initialize();
 
         // Because of streaming the excel file, it does not need to be wait
-        this.processExport(context, input);
+        this.write(context, input);
 
         return context.stream;
     }
 
-    private async processExport(context: IExportContext, input: IInput): Promise<void> {
+    private async write(context: IExcelExportContext, input: IInput): Promise<void> {
         try {
             for await (const bills of cursorIterator((cursor) =>
                 this.cursorIterator(input.userId, cursor),
             )) {
-                this.billsExportGeneratorService.addRows(context, bills);
+                this.billsExcelExportGeneratorService.addRows(context, bills);
             }
 
-            await this.billsExportGeneratorService.generate(context);
+            await this.billsExcelExportGeneratorService.generate(context);
         } catch {
             context.stream.destroy(new Error('Export failed'));
         }
