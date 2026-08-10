@@ -46,6 +46,6 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         UserUniqueEmailValidatorService,
         FindUserListService,
     ],
-    exports: [UserUniqueEmailValidatorService],
+    exports: [UserUniqueEmailValidatorService, FindUserListService],
 })
 export class UserModule {}
