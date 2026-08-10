@@ -1,4 +1,4 @@
-import type { IListResult } from '@/core/types/listResult.type';
+import type { IListResult } from '@/core/types/list/listResult.type';
 
 export async function* cursorIterator<T>(
     fetchPage: (cursor: string | null) => Promise<IListResult<T>>,

@@ -10,7 +10,7 @@ import { FindConsumerListByUserIdService } from './findConsumerListByUserId.serv
 import { UpdateConsumerService } from './updateConsumer.service';
 
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/listResult.type';
+import type { IListResult } from '@/core/types/list/listResult.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { FindConsumerListRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerList.request.dto';

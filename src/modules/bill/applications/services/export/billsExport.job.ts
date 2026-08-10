@@ -12,7 +12,7 @@ import { BILL_EXPORT_FILE_NAME } from './billsExport.constants';
 import { BillsExportMailerService } from './billsExportMailer.service';
 
 import type { IJob } from '@/core/interfaces/job.interface';
-import type { IListResult } from '@/core/types/listResult.type';
+import type { IListResult } from '@/core/types/list/listResult.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()

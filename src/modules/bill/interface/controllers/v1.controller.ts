@@ -55,7 +55,7 @@ import {
 
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/listResult.type';
+import type { IListResult } from '@/core/types/list/listResult.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
