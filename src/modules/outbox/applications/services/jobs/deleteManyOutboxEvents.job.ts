@@ -5,15 +5,15 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { DeleteManyOutboxEventsByDateCommand } from '@/modules/outbox/applications/commands/deleteManyOutboxEventsByDate/deleteManyOutboxEventsByDate.command';
 
-import type { IService } from '@/core/interfaces/service.interface';
+import type { IJob } from '@/core/interfaces/job.interface';
 import type { ISelectOutboxEvent } from '@/modules/outbox/infrastructure/schemas/outboxEvent.schema';
 
 @Injectable()
-export class DeleteManyOutboxEventsService implements IService<void, void> {
+export class DeleteManyOutboxEventsJob implements IJob {
     constructor(private readonly commandBus: CommandBus) {}
 
     @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-    async execute(): Promise<void> {
+    async run(): Promise<void> {
         const cutoff = new Date();
         cutoff.setDate(cutoff.getDate() - 7);
 

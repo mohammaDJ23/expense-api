@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { QueryBus } from '@nestjs/cqrs';
 
-import { DeleteManyNotVerifiedUsersCommand } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.command';
 import { FindTotalUsersQuery } from '@/modules/user/applications/queries/findTotalUsers/findTotalUsers.query';
 import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 
@@ -21,7 +19,6 @@ import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/update
 export class UserService {
     constructor(
         private readonly queryBus: QueryBus,
-        private readonly commandBus: CommandBus,
         private readonly updateUserService: UpdateUserService,
         private readonly deleteUserService: DeleteUserService,
         private readonly findUserListService: FindUserListService,
@@ -49,12 +46,5 @@ export class UserService {
         return this.queryBus
             .execute<FindTotalUsersQuery, number>(new FindTotalUsersQuery())
             .then((total) => ({ total }));
-    }
-
-    @Cron(CronExpression.EVERY_WEEK)
-    protected async deleteManyNotVerifiedUsers(): Promise<void> {
-        await this.commandBus.execute<DeleteManyNotVerifiedUsersCommand, ISelectUser[]>(
-            new DeleteManyNotVerifiedUsersCommand(),
-        );
     }
 }

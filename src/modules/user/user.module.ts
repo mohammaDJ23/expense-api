@@ -16,6 +16,7 @@ import { FindUserByIdOrThrowHandler } from '@/modules/user/applications/queries/
 import { FindUserListHandler } from '@/modules/user/applications/queries/findUserList/findUserList.handler';
 import { DeleteUserService } from '@/modules/user/applications/services/deleteUser.service';
 import { FindUserListService } from '@/modules/user/applications/services/findUserList.service';
+import { DeleteManyNotVerifiedUsersJob } from '@/modules/user/applications/services/jobs/deleteManyNotVerifiedUsers.job';
 import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { UserService } from '@/modules/user/applications/services/user.service';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
@@ -45,6 +46,7 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         UserExistenceValidatorService,
         UserUniqueEmailValidatorService,
         FindUserListService,
+        DeleteManyNotVerifiedUsersJob,
     ],
     exports: [UserUniqueEmailValidatorService, FindUserListService],
 })
