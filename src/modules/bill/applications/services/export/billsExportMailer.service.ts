@@ -3,7 +3,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 
 import { EXCEL_FILE_CONTENT_TYPE } from '@/core/features/excelFile/excelFile.constants';
 
-import { BILL_EXPORT_FILE_NAME } from './billsExportGenerator.constant';
+import { BILL_EXPORT_FILE_NAME } from './billsExportGenerator.constants';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { PassThrough } from 'node:stream';
