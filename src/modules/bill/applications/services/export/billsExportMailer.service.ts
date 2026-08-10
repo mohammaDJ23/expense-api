@@ -6,10 +6,11 @@ import { EXCEL_FILE_CONTENT_TYPE } from '@/core/features/excelFile/excelFile.con
 import { BILL_EXPORT_FILE_NAME } from './billsExportGenerator.constant';
 
 import type { IService } from '@/core/interfaces/service.interface';
+import type { PassThrough } from 'node:stream';
 
 interface IInput {
     email: string;
-    buffer: Buffer;
+    stream: PassThrough;
 }
 
 @Injectable()
@@ -30,7 +31,7 @@ export class BillsExportMailerService implements IService<IInput, void> {
                 attachments: [
                     {
                         filename: BILL_EXPORT_FILE_NAME,
-                        content: Buffer.from(input.buffer),
+                        content: input.stream,
                         contentType: EXCEL_FILE_CONTENT_TYPE,
                     },
                 ],

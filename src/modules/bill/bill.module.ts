@@ -60,6 +60,7 @@ import { ConsumerModule } from '@/modules/consumer/consumer.module';
 import { LocationModule } from '@/modules/location/location.module';
 import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { ReceiverModule } from '@/modules/receiver/receiver.module';
+import { UserModule } from '@/modules/user/user.module';
 
 @Module({
     imports: [
@@ -70,6 +71,7 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
         ConsumerModule,
         ReceiverModule,
         OutboxModule,
+        UserModule,
     ],
     providers: [
         BillService,

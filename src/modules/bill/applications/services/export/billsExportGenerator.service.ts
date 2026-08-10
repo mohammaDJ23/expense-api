@@ -1,3 +1,5 @@
+import { PassThrough } from 'stream';
+
 import { Injectable } from '@nestjs/common';
 import ExcelJS from 'exceljs';
 
@@ -6,12 +8,19 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 import { BILL_EXPORT_KEYS, BILL_SHEET_NAME } from './billsExportGenerator.constant';
 
 import type { IExportGenerator } from '@/core/interfaces/export/exportGenerator.interface';
+import type { IExportContext } from '@/core/types/exportContext.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 
 @Injectable()
-export class BillsExportGeneratorService implements IExportGenerator<IBill[], Buffer> {
-    async generate(rows: IBill[]): Promise<Buffer> {
-        const workbook = new ExcelJS.Workbook();
+export class BillsExportGeneratorService implements IExportGenerator<IBill> {
+    initialize(): IExportContext {
+        const stream = new PassThrough();
+
+        const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
+            stream,
+            useStyles: true,
+            useSharedStrings: true,
+        });
 
         const sheet = workbook.addWorksheet(BILL_SHEET_NAME);
 
@@ -21,19 +30,29 @@ export class BillsExportGeneratorService implements IExportGenerator<IBill[], Bu
             width: 30,
         }));
 
-        sheet.addRows(
-            rows.map((row) => ({
+        return {
+            stream,
+            workbook,
+            sheet,
+        };
+    }
+
+    addRows(context: IExportContext, rows: IBill[]): void {
+        for (const row of rows) {
+            const excelRow = context.sheet.addRow({
                 ...row,
                 location: row.location.name,
                 receiver: row.receiver.name,
                 consumers: row.consumers.map((consumer) => consumer.name).join(', '),
-            })),
-        );
+            });
 
+            excelRow.commit();
+        }
+    }
+
+    async generate(context: IExportContext): Promise<void> {
         try {
-            const buffer = await workbook.xlsx.writeBuffer();
-
-            return Buffer.from(buffer);
+            await context.workbook.commit();
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }
