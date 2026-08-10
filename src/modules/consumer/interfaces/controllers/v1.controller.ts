@@ -37,7 +37,7 @@ import {
 
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/listResult.type';
+import type { IListResult } from '@/core/types/list/listResult.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 

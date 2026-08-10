@@ -10,7 +10,7 @@ import { FindReceiverListByUserIdService } from './findReceiverListByUserId.serv
 import { UpdateReceiverService } from './updateReceiver.service';
 
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/listResult.type';
+import type { IListResult } from '@/core/types/list/listResult.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';

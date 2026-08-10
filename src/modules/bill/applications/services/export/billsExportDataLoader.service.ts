@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
 
 import type { IExportDataLoader } from '@/core/features/export/exportDataLoader.interface';
-import type { IListResult } from '@/core/types/listResult.type';
+import type { IListResult } from '@/core/types/list/listResult.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 

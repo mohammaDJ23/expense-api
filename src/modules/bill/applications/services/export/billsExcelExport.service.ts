@@ -8,7 +8,7 @@ import { BillsExportDataLoaderService } from './billsExportDataLoader.service';
 
 import type { IExcelExportContext } from '@/core/features/export/excelExportContext.type';
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IListResult } from '@/core/types/listResult.type';
+import type { IListResult } from '@/core/types/list/listResult.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { PassThrough } from 'node:stream';
 

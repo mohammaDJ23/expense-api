@@ -9,7 +9,7 @@ import { FindLocationListByUserIdService } from '@/modules/location/applications
 import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
 
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/listResult.type';
+import type { IListResult } from '@/core/types/list/listResult.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { FindLocationListRequestDto } from '@/modules/location/interfaces/dtos/findLocationList.request.dto';
