@@ -5,7 +5,7 @@ import ExcelJS from 'exceljs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 
-import { BILL_EXPORT_KEYS, BILL_SHEET_NAME } from './billsExportGenerator.constant';
+import { BILL_EXPORT_KEYS, BILL_SHEET_NAME } from './billsExportGenerator.constants';
 
 import type { IExportGenerator } from '@/core/interfaces/export/exportGenerator.interface';
 import type { IExportContext } from '@/core/types/exportContext.type';

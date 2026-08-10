@@ -22,7 +22,7 @@ import { HttpResponse } from '@/core/features/responses/http/httpResponse.decora
 import { SkipTransformResponse } from '@/core/features/responses/http/skipTransformResponse.decorator';
 import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
-import { BILL_EXPORT_FILE_NAME } from '@/modules/bill/applications/services/export/billsExportGenerator.constant';
+import { BILL_EXPORT_FILE_NAME } from '@/modules/bill/applications/services/export/billsExportGenerator.constants';
 import { BillResponseDto } from '@/modules/bill/interface/dtos/bill.response.dto';
 import { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import { DeleteBillRequestDto } from '@/modules/bill/interface/dtos/deleteBill.request.dto';
