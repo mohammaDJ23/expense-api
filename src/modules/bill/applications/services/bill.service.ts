@@ -108,9 +108,11 @@ export class BillService {
         });
     }
 
-    export(userId: string): Promise<StreamableFile> {
-        return this.billExportService
-            .execute({ userId })
-            .then((buffer) => new StreamableFile(buffer));
+    export(userId: string): StreamableFile {
+        return new StreamableFile(
+            this.billExportService.execute({
+                userId,
+            }),
+        );
     }
 }

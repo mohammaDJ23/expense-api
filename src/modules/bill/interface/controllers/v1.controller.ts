@@ -169,7 +169,7 @@ export class BillController {
     @SkipTransformResponse()
     @ExcelFile(BILL_EXPORT_FILE_NAME)
     @HttpResponse(SUCCESS_BILL_EXPORT_MESSAGE, HttpStatus.OK)
-    export(@CurrentUser() user: ICurrentUser): Promise<StreamableFile> {
+    export(@CurrentUser() user: ICurrentUser): StreamableFile {
         return this.billService.export(user.id);
     }
 
