@@ -3,7 +3,7 @@ import { encodeCursor } from './encodeCursor.util';
 import type { ICursor } from './cursor.type';
 import type { ICursorPagination } from './cursorPagination.type';
 
-export function createCursorPagination<T extends ICursor>(
+export function cursorPagination<T extends ICursor>(
     items: T[],
     limit: number,
 ): ICursorPagination<T> {

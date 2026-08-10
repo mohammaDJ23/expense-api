@@ -13,7 +13,7 @@ import {
     type ISelectUser,
 } from '@/modules/user/infrastructure/schemas/user.schema';
 
-import type { ICursor } from '@/core/utils/cursor/cursor.type';
+import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
 
 @Injectable()

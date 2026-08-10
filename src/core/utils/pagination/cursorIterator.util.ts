@@ -3,10 +3,10 @@ import type { IListResult } from '@/core/types/listResult.type';
 export async function* cursorIterator<T>(
     fetchPage: (cursor: string | null) => Promise<IListResult<T>>,
 ): AsyncGenerator<T[], void, void> {
-    let cursor: string | null = null;
+    let nextCursor: string | null = null;
 
     while (true) {
-        const result = await fetchPage(cursor);
+        const result = await fetchPage(nextCursor);
 
         yield result.items;
 
@@ -14,6 +14,6 @@ export async function* cursorIterator<T>(
             break;
         }
 
-        cursor = result.nextCursor;
+        nextCursor = result.nextCursor;
     }
 }

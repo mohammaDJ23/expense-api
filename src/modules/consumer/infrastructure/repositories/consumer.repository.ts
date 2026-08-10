@@ -13,7 +13,7 @@ import {
     type ISelectConsumer,
 } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
-import type { ICursor } from '@/core/utils/cursor/cursor.type';
+import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { IConsumerRepository } from '@/modules/consumer/domain/interfaces/consumerRepository.interface';
 
 @Injectable()

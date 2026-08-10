@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
-import { cursorIterator } from '@/core/utils/cursor/cursorIterator.util';
+import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
 
 import { BillsExcelExportGeneratorService } from './billsExcelExportGenerator.service';
 import { BillsExportDataLoaderService } from './billsExportDataLoader.service';

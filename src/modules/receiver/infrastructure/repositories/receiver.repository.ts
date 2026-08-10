@@ -13,7 +13,7 @@ import {
     type ISelectReceiver,
 } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
-import type { ICursor } from '@/core/utils/cursor/cursor.type';
+import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { IReceiverRepository } from '@/modules/receiver/domain/interfaces/receiverRepository.interface';
 
 @Injectable()
