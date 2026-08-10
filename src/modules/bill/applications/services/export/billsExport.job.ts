@@ -4,7 +4,7 @@ import pLimit from 'p-limit';
 
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { EXCEL_FILE_CONTENT_TYPE } from '@/core/features/excelFile/excelFile.constants';
-import { cursorIterator } from '@/core/utils/cursor/cursorIterator.util';
+import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
 import { FindUserListService } from '@/modules/user/applications/services/findUserList.service';
 
 import { BillsExcelExportService } from './billsExcelExport.service';
