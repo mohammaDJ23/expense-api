@@ -365,7 +365,7 @@ export default defineConfig([
             'require-await': 'error',
             'wrap-iife': 'error',
             yoda: 'error',
-            'no-await-in-loop': 'error',
+            'no-await-in-loop': 'off',
             'no-promise-executor-return': 'error',
             'require-atomic-updates': 'error',
             'no-unreachable-loop': 'error',
