@@ -7,6 +7,7 @@ import { BillsExcelExportService } from '@/modules/bill/applications/services/ex
 import { MostUsedConsumersService } from '@/modules/bill/applications/services/relations/mostUsedConsumers.service';
 import { MostUsedLocationsService } from '@/modules/bill/applications/services/relations/mostUsedLocations.service';
 import { MostUsedReceiversService } from '@/modules/bill/applications/services/relations/mostUsedReceivers.service';
+import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 
 import { CreateBillService } from './createBill.service';
 import { DeleteBillService } from './deleteBill.service';
@@ -28,6 +29,7 @@ import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createB
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 import type { FindBillsTimelineRequestDto } from '@/modules/bill/interface/dtos/findBillsTimeline.request.dto';
 import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
+import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class BillService {
@@ -108,11 +110,11 @@ export class BillService {
         });
     }
 
-    exportExcel(userId: string): StreamableFile {
-        return new StreamableFile(
-            this.billsExcelExportService.execute({
-                userId,
-            }),
-        );
+    exportExcel(userId: string): Promise<StreamableFile> {
+        return this.queryBus
+            .execute<FindUserByIdOrThrowQuery, ISelectUser>(
+                new FindUserByIdOrThrowQuery({ id: userId }),
+            )
+            .then((user) => new StreamableFile(this.billsExcelExportService.execute({ user })));
     }
 }
