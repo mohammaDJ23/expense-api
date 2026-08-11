@@ -3,7 +3,7 @@ import { QueryBus } from '@nestjs/cqrs';
 
 import { FindBillsPeriodByPurchasedAtQuery } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.query';
 import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
-import { BillsExcelExportService } from '@/modules/bill/applications/services/export/billsExcelExport.service';
+import { BillsExcelExportService } from '@/modules/bill/applications/services/export/excel/billsExcelExport.service';
 import { MostUsedConsumersService } from '@/modules/bill/applications/services/relations/mostUsedConsumers.service';
 import { MostUsedLocationsService } from '@/modules/bill/applications/services/relations/mostUsedLocations.service';
 import { MostUsedReceiversService } from '@/modules/bill/applications/services/relations/mostUsedReceivers.service';

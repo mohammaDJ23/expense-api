@@ -4,21 +4,21 @@ import { Injectable } from '@nestjs/common';
 import ExcelJS from 'exceljs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { ExcelExportMetadataSheets } from '@/core/features/export/excelExportMetadata.sheets';
+import { ExcelMetadataSheets } from '@/core/features/export/excel/excelMetadata.sheets';
 import { toHeader } from '@/core/utils/toHeader.util';
 
-import { BILL_EXPORT_KEYS, BILLS_SHEET_NAME } from './billsExport.constants';
+import { BILL_EXPORT_KEYS, BILLS_SHEET_NAME } from './billsExcelExport.constants';
 
-import type { IExcelExportContext } from '@/core/features/export/excelExportContext.type';
-import type { IExcelExportGenerator } from '@/core/features/export/excelExportGenerator.interface';
+import type { IExcelContext } from '@/core/features/export/excel/excelContext.type';
+import type { IExcelGenerator } from '@/core/features/export/excel/excelGenerator.interface';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
-export class BillsExcelExportGeneratorService implements IExcelExportGenerator<IBill> {
-    constructor(private readonly excelExportMetadataSheets: ExcelExportMetadataSheets) {}
+export class BillsExcelExportGeneratorService implements IExcelGenerator<IBill> {
+    constructor(private readonly excelMetadataSheets: ExcelMetadataSheets) {}
 
-    initialize(): IExcelExportContext {
+    initialize(): IExcelContext {
         const stream = new PassThrough();
         const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
             stream,
@@ -32,8 +32,8 @@ export class BillsExcelExportGeneratorService implements IExcelExportGenerator<I
         };
     }
 
-    createUserMetadataSheet(user: ISelectUser, workbook: ExcelJS.stream.xlsx.WorkbookWriter): void {
-        this.excelExportMetadataSheets.createUserMetadataSheet(user, workbook);
+    createMetadataSheets(user: ISelectUser, workbook: ExcelJS.stream.xlsx.WorkbookWriter): void {
+        this.excelMetadataSheets.createUserMetadataSheet(user, workbook);
     }
 
     createSheet(workbook: ExcelJS.stream.xlsx.WorkbookWriter): ExcelJS.Worksheet {
@@ -41,7 +41,7 @@ export class BillsExcelExportGeneratorService implements IExcelExportGenerator<I
         sheet.columns = BILL_EXPORT_KEYS.map((key) => ({
             header: toHeader(key),
             key,
-            width: 30,
+            width: 40,
         }));
         return sheet;
     }
