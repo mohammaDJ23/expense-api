@@ -1,3 +1,38 @@
+## [4.2.9](https://github.com/mohammaDJ23/expense-api/compare/v4.2.8...v4.2.9) (2026-08-11)
+
+### ♻️ Code Refactoring
+
+- 816381 localize the excel export logics ([abef1ba](https://github.com/mohammaDJ23/expense-api/commit/abef1bab7df929ff7037530af5c3ae70159e2d82))
+- 816381 move export to features ([b5c935c](https://github.com/mohammaDJ23/expense-api/commit/b5c935c709811a9c5ae88a624f1090b482e26aab))
+- 816381 move list types to the related folder ([22bf3e6](https://github.com/mohammaDJ23/expense-api/commit/22bf3e6ebd73758d6022f1975dd55b0d1d17da35))
+- 816381 move out all excel exports inside excel file ([83d6b07](https://github.com/mohammaDJ23/expense-api/commit/83d6b07d8af51f5ebca9486054f30fa950b66ab0))
+- 816381 move out all write logics ([de41000](https://github.com/mohammaDJ23/expense-api/commit/de410000efd20a5ebe1b101053cfd6990c0f083f))
+- 816381 move the jobs into related folder ([63950fc](https://github.com/mohammaDJ23/expense-api/commit/63950fce1e3a561b79301c535fffdbd7d4284e2d))
+- 816381 remove the dangerous queries ([bae6c82](https://github.com/mohammaDJ23/expense-api/commit/bae6c820fb50b960e2c07f21468f350f5081a10b))
+- 816381 rename constant to constants ([4de91f8](https://github.com/mohammaDJ23/expense-api/commit/4de91f88ad0a6fbc4a78ab98c8458a9fb77abaa3))
+- 816381 rename cursor to pagination ([7a51656](https://github.com/mohammaDJ23/expense-api/commit/7a516564695c8d5fc3e63ccda664282436919991))
+- 816381 rename the serivces of export ([255f87d](https://github.com/mohammaDJ23/expense-api/commit/255f87d16dee8cc1fec7c9ba821572c5c986f773))
+- 816381 update the methods of generator of export ([e7c71df](https://github.com/mohammaDJ23/expense-api/commit/e7c71df3b9b5df44b0ddf4cdcc360c917e61279b))
+- 816381 use the cursor and pagination for creating bills export ([19248b9](https://github.com/mohammaDJ23/expense-api/commit/19248b970a8b30f8c5a23491850b626a7f90ed15))
+
+### 🔧 Chores
+
+- 816381 add cursorIterator ([2aa5347](https://github.com/mohammaDJ23/expense-api/commit/2aa53471c3da2885a9743daf2eff7c7e6ec797c7))
+- 816381 add IExportContext ([c620338](https://github.com/mohammaDJ23/expense-api/commit/c62033817e83523a4339581fa37aadb4b6f6c061))
+- 816381 add IStream ([ed88971](https://github.com/mohammaDJ23/expense-api/commit/ed88971cd92b8b31cee029dc5743f5d8eadbcbf1))
+- 816381 add the related cursor logic ([f62253e](https://github.com/mohammaDJ23/expense-api/commit/f62253e44567c1e21044899da7e9692976fa47bc))
+- 816381 add the user metadata sheet ([cb31291](https://github.com/mohammaDJ23/expense-api/commit/cb3129183b39e86919561bb3bdd27b18a6b968c0))
+- 816381 add toHeader ([4fd5572](https://github.com/mohammaDJ23/expense-api/commit/4fd5572c44578f04a0651c254824b4b279f10493))
+- 816381 convert the default limit and offset list logic to cursor ([652f701](https://github.com/mohammaDJ23/expense-api/commit/652f70163c53167d0fb6e5e982ed81849d2275e1))
+- 816381 convert the default limit and offset list logic to cursor ([227b0dd](https://github.com/mohammaDJ23/expense-api/commit/227b0ddfe4dd872c081c0458f49459a22a4e07c6))
+- 816381 convert the default limit and offset list logic to cursor ([9d98530](https://github.com/mohammaDJ23/expense-api/commit/9d985300b0b282ebf101291689cf291d6275743d))
+- 816381 convert the default limit and offset list logic to cursor ([4261e79](https://github.com/mohammaDJ23/expense-api/commit/4261e79bd170c60716fd50e5519b0234f8a079e3))
+- 816381 convert the default limit and offset list logic to cursor ([2457f06](https://github.com/mohammaDJ23/expense-api/commit/2457f0619352be604c6ebb48372d2810e765aaef))
+- 816381 define the utility of export for the naming ([b931f62](https://github.com/mohammaDJ23/expense-api/commit/b931f62a9ae9837ff4c95ecbd5bcf0999a15fcf7))
+- 816381 export FindUserListService ([6644962](https://github.com/mohammaDJ23/expense-api/commit/6644962a85aedffdd080b986c5455a206ba5ed7f))
+- 816381 ignore no-await-in-loop ([7bcb581](https://github.com/mohammaDJ23/expense-api/commit/7bcb58121ba17f480096adb090398d75e9f6174b))
+- 816381 update the excel generator logic ([9cecca2](https://github.com/mohammaDJ23/expense-api/commit/9cecca2a997aee0c7879f244b8fd54d2fe5bc9a6))
+
 ## [4.2.8](https://github.com/mohammaDJ23/expense-api/compare/v4.2.7...v4.2.8) (2026-08-08)
 
 ### ♻️ Code Refactoring
