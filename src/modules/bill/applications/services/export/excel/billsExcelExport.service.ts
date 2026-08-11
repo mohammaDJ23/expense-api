@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import ExcelJS from 'exceljs';
 
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
@@ -25,25 +24,21 @@ export class BillsExcelExportService implements IService<IInput, PassThrough> {
     execute(input: IInput): PassThrough {
         const context = this.billsExcelExportGeneratorService.initialize();
 
-        this.billsExcelExportGeneratorService.createMetadataSheets(input.user, context.workbook);
-
-        const sheet = this.billsExcelExportGeneratorService.createSheet(context.workbook);
-
         // Because of streaming the excel file, it does not need to be wait
-        this.write(input.user.id, context, sheet);
+        this.write(input.user, context);
 
         return context.stream;
     }
 
-    private async write(
-        userId: string,
-        context: IExcelContext,
-        sheet: ExcelJS.Worksheet,
-    ): Promise<void> {
+    private async write(user: ISelectUser, context: IExcelContext): Promise<void> {
         try {
+            this.billsExcelExportGeneratorService.createMetadataSheets(user, context.workbook);
+
+            const sheet = this.billsExcelExportGeneratorService.createSheet(context.workbook);
+
             for await (const bills of cursorIterator((cursor) =>
                 this.billsExportDataLoader.load({
-                    userId,
+                    userId: user.id,
                     query: {
                         limit: MAX_LIST_LIMIT,
                         cursor,
