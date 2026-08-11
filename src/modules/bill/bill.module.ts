@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
-import { ExportModule } from '@/core/features/export/export.module';
+import { ExcelModule } from '@/core/features/export/excel/excel.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
@@ -26,11 +26,11 @@ import { FindTotalBillsByUserIdHandler } from '@/modules/bill/applications/queri
 import { BillService } from '@/modules/bill/applications/services/bill.service';
 import { CreateBillService } from '@/modules/bill/applications/services/createBill.service';
 import { DeleteBillService } from '@/modules/bill/applications/services/deleteBill.service';
-import { BillsExcelExportService } from '@/modules/bill/applications/services/export/billsExcelExport.service';
-import { BillsExcelExportGeneratorService } from '@/modules/bill/applications/services/export/billsExcelExportGenerator.service';
 import { BillsExportJob } from '@/modules/bill/applications/services/export/billsExport.job';
 import { BillsExportDataLoaderService } from '@/modules/bill/applications/services/export/billsExportDataLoader.service';
 import { BillsExportMailerService } from '@/modules/bill/applications/services/export/billsExportMailer.service';
+import { BillsExcelExportService } from '@/modules/bill/applications/services/export/excel/billsExcelExport.service';
+import { BillsExcelExportGeneratorService } from '@/modules/bill/applications/services/export/excel/billsExcelExportGenerator.service';
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
 import { FindBillsTimelineByPurchasedAtService } from '@/modules/bill/applications/services/findBillsTimelineByPurchasedAt.service';
@@ -73,7 +73,7 @@ import { UserModule } from '@/modules/user/user.module';
         ReceiverModule,
         OutboxModule,
         UserModule,
-        ExportModule,
+        ExcelModule,
     ],
     providers: [
         BillService,

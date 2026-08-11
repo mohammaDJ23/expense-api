@@ -10,6 +10,7 @@ import {
     Query,
     StreamableFile,
     UseGuards,
+    UseInterceptors,
 } from '@nestjs/common';
 
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
@@ -17,12 +18,13 @@ import { TotalResponseDto } from '@/core/dtos/total.response.dto';
 import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
 import { ClientTimezone } from '@/core/features/clientTimezone/clientTimezone.decorator';
 import { CurrentUser } from '@/core/features/currentUser/currentUser.decorator';
-import { ExcelFile } from '@/core/features/excelFile/excelFile.decorator';
+import { ExcelFileInterceptor } from '@/core/features/export/excel/excelFile.interceptor';
+import { ExcelFilename } from '@/core/features/export/excel/excelFilename.decorator';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { SkipTransformResponse } from '@/core/features/responses/http/skipTransformResponse.decorator';
 import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { BillService } from '@/modules/bill/applications/services/bill.service';
-import { BILL_EXCEL_EXPORT_FILE_NAME } from '@/modules/bill/applications/services/export/billsExport.constants';
+import { getBillsExcelFilename } from '@/modules/bill/applications/services/export/excel/billsExcelExport.utils';
 import { BillResponseDto } from '@/modules/bill/interface/dtos/bill.response.dto';
 import { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import { DeleteBillRequestDto } from '@/modules/bill/interface/dtos/deleteBill.request.dto';
@@ -166,8 +168,9 @@ export class BillController {
 
     @Get('export/excel')
     @UseGuards(JwtAuthGuard)
+    @UseInterceptors(ExcelFileInterceptor)
+    @ExcelFilename(getBillsExcelFilename)
     @SkipTransformResponse()
-    @ExcelFile(BILL_EXCEL_EXPORT_FILE_NAME)
     @HttpResponse(SUCCESS_BILL_EXPORT_MESSAGE, HttpStatus.OK)
     exportExcel(@CurrentUser() user: ICurrentUser): Promise<StreamableFile> {
         return this.billService.exportExcel(user.id);
