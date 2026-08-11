@@ -8,7 +8,7 @@ import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
 import { FindUserListService } from '@/modules/user/applications/services/findUserList.service';
 
 import { BillsExcelExportService } from './billsExcelExport.service';
-import { BILL_EXCEL_EXPORT_FILE_NAME } from './billsExport.constants';
+import { getBillsExcelFilename } from './billsExport.utils';
 import { BillsExportMailerService } from './billsExportMailer.service';
 
 import type { IJob } from '@/core/interfaces/job.interface';
@@ -49,7 +49,7 @@ export class BillsExportJob implements IJob {
                 email: user.email,
                 attachments: [
                     {
-                        filename: BILL_EXCEL_EXPORT_FILE_NAME,
+                        filename: getBillsExcelFilename(),
                         content: stream,
                         contentType: EXCEL_FILE_CONTENT_TYPE,
                     },
