@@ -8,7 +8,7 @@ import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
 import { FindUserListService } from '@/modules/user/applications/services/findUserList.service';
 
 import { BillsExcelExportService } from './billsExcelExport.service';
-import { BILL_EXPORT_FILE_NAME } from './billsExport.constants';
+import { BILL_EXCEL_EXPORT_FILE_NAME } from './billsExport.constants';
 import { BillsExportMailerService } from './billsExportMailer.service';
 
 import type { IJob } from '@/core/interfaces/job.interface';
@@ -43,15 +43,13 @@ export class BillsExportJob implements IJob {
 
     private async processExport(user: ISelectUser): Promise<void> {
         await this.concurrency(async () => {
-            const stream = this.billsExcelExportService.execute({
-                userId: user.id,
-            });
+            const stream = this.billsExcelExportService.execute({ user });
 
             await this.billsExportMailerService.execute({
                 email: user.email,
                 attachments: [
                     {
-                        filename: BILL_EXPORT_FILE_NAME,
+                        filename: BILL_EXCEL_EXPORT_FILE_NAME,
                         content: stream,
                         contentType: EXCEL_FILE_CONTENT_TYPE,
                     },
