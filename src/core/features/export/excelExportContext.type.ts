@@ -1,7 +1,6 @@
-import type { IExportContext } from './exportContext.type';
+import type { IStream } from '@/core/types/stream.type';
 import type ExcelJS from 'exceljs';
 
-export interface IExcelExportContext extends IExportContext {
+export interface IExcelExportContext extends IStream {
     workbook: ExcelJS.stream.xlsx.WorkbookWriter;
-    sheet: ExcelJS.Worksheet;
 }
