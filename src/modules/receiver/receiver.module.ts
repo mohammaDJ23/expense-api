@@ -29,6 +29,7 @@ import { ReceiverService } from '@/modules/receiver/applications/services/receiv
 import { ReceiverSearchService } from '@/modules/receiver/applications/services/search/receiverSearch.service';
 import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/search/receiverSearchAggregate.service';
 import { ReceiverSearchIndexRegisterService } from '@/modules/receiver/applications/services/search/receiverSearchIndexRegister.service';
+import { ReceiverSearchSyncService } from '@/modules/receiver/applications/services/search/receiverSearchSync.service';
 import { UpdateReceiverService } from '@/modules/receiver/applications/services/updateReceiver.service';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 import { ReceiverNameAvailableValidatorService } from '@/modules/receiver/applications/services/validators/receiverNameAvailableValidator.service';
@@ -74,11 +75,13 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ReceiverExistenceValidatorService,
         ReceiverUniqueNameValidatorService,
         ReceiverNameAvailableValidatorService,
+        ReceiverSearchSyncService,
     ],
     exports: [
         ReceiverSearchService,
         ReceiverSearchAggregateService,
         ReceiverExistenceValidatorService,
+        ReceiverSearchSyncService,
     ],
 })
 export class ReceiverModule {}
