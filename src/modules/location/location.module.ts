@@ -27,6 +27,7 @@ import { LocationService } from '@/modules/location/applications/services/locati
 import { LocationSearchService } from '@/modules/location/applications/services/search/locationSearch.service';
 import { LocationSearchAggregateService } from '@/modules/location/applications/services/search/locationSearchAggregate.service';
 import { LocationSearchIndexRegisterService } from '@/modules/location/applications/services/search/locationSearchIndexRegister.service';
+import { LocationSearchSyncService } from '@/modules/location/applications/services/search/locationSearchSync.service';
 import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { LocationNameAvailableValidatorService } from '@/modules/location/applications/services/validators/locationNameAvailableValidator.service';
@@ -74,11 +75,13 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         LocationExistenceValidatorService,
         LocationUniqueNameValidatorService,
         LocationNameAvailableValidatorService,
+        LocationSearchSyncService,
     ],
     exports: [
         LocationSearchService,
         LocationSearchAggregateService,
         LocationExistenceValidatorService,
+        LocationSearchSyncService,
     ],
 })
 export class LocationModule {}
