@@ -39,6 +39,16 @@ export class ElasticSearchService {
         }
     }
 
+    async refresh(index: string): Promise<void> {
+        try {
+            await this.client.indices.refresh({
+                index,
+            });
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    }
+
     search<T>(searchRequest: estypes.SearchRequest): Promise<estypes.SearchResponse<T>> {
         return this.client.search<T>(searchRequest);
     }

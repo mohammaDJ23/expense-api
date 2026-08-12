@@ -49,6 +49,7 @@ import { ReceiversRelationLoaderService } from '@/modules/bill/applications/serv
 import { BillSearchService } from '@/modules/bill/applications/services/search/billSearch.service';
 import { BillSearchAggregateService } from '@/modules/bill/applications/services/search/billSearchAggregate.service';
 import { BillSearchIndexRegisterService } from '@/modules/bill/applications/services/search/billSearchIndexRegister.service';
+import { BillSearchSyncService } from '@/modules/bill/applications/services/search/billSearchSync.service';
 import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/createBillsConsumersSynchronization.service';
 import { DeleteBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/deleteBillsConsumersSynchronization.service';
 import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
@@ -128,8 +129,9 @@ import { UserModule } from '@/modules/user/user.module';
         BillsExcelExportService,
         BillsExportJob,
         BillsExportMailerService,
+        BillSearchSyncService,
     ],
     controllers: [BillController],
-    exports: [BillSearchService, BillSearchAggregateService],
+    exports: [BillSearchService, BillSearchAggregateService, BillSearchSyncService],
 })
 export class BillModule {}
