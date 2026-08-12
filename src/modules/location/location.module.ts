@@ -34,6 +34,7 @@ import { LocationNameAvailableValidatorService } from '@/modules/location/applic
 import { LocationUniqueNameValidatorService } from '@/modules/location/applications/services/validators/locationUniqueNameValidator.service';
 import { LocationElasticsearchIndex } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.index';
 import { LocationElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.query';
+import { LocationElasticsearchDeleteQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearchDelete.query';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import { LocationController } from '@/modules/location/interfaces/controllers/v1.controller';
 import { OutboxModule } from '@/modules/outbox/outbox.module';
@@ -69,6 +70,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         LocationRepository,
         LocationElasticsearchIndex,
         LocationElasticsearchQuery,
+        LocationElasticsearchDeleteQuery,
         LocationSearchService,
         LocationSearchAggregateService,
         LocationSearchIndexRegisterService,
