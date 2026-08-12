@@ -11,7 +11,10 @@ interface IInput {
 }
 
 @Injectable()
-export class LocationElasticsearchQuery implements IElasticsearchQuery<IInput> {
+export class LocationElasticsearchQuery implements IElasticsearchQuery<
+    IInput,
+    estypes.SearchRequest
+> {
     index: TOutboxEventAggregateType = 'locations';
 
     buildQuery(input: IInput): estypes.SearchRequest {
