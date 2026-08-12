@@ -11,7 +11,7 @@ interface IInput {
 }
 
 @Injectable()
-export class BillElasticsearchQuery implements IElasticsearchQuery<IInput> {
+export class BillElasticsearchQuery implements IElasticsearchQuery<IInput, estypes.SearchRequest> {
     index: TOutboxEventAggregateType = 'bills';
 
     buildQuery(input: IInput): estypes.SearchRequest {

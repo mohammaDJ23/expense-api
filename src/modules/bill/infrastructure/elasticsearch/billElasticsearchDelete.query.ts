@@ -9,10 +9,13 @@ interface IInput {
 }
 
 @Injectable()
-export class BillElasticsearchDeleteQuery implements IElasticsearchQuery<IInput> {
+export class BillElasticsearchDeleteQuery implements IElasticsearchQuery<
+    IInput,
+    estypes.DeleteByQueryRequest
+> {
     index: TOutboxEventAggregateType = 'bills';
 
-    buildQuery(input: IInput): estypes.SearchRequest {
+    buildQuery(input: IInput): estypes.DeleteByQueryRequest {
         return {
             index: this.index,
             query: {

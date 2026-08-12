@@ -39,6 +39,14 @@ export class ElasticSearchService {
         }
     }
 
+    async deleteByQuery(query: estypes.DeleteByQueryRequest): Promise<void> {
+        try {
+            await this.client.deleteByQuery(query);
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    }
+
     async refresh(index: string): Promise<void> {
         try {
             await this.client.indices.refresh({
