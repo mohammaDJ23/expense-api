@@ -1,3 +1,16 @@
+## [4.3.0](https://github.com/mohammaDJ23/expense-api/compare/v4.2.9...v4.3.0) (2026-08-12)
+
+### ✨ Features
+
+- 865711 add the search sync api ([763ea4d](https://github.com/mohammaDJ23/expense-api/commit/763ea4dc10c117d4375ace94b7ea454df628eb18))
+
+### 🔧 Chores
+
+- 865711 add the search sync for bill ([dc8befd](https://github.com/mohammaDJ23/expense-api/commit/dc8befdabe7c15d74c3723432b140904e2c59ac0))
+- 865711 add the search sync for consumer ([eabfd59](https://github.com/mohammaDJ23/expense-api/commit/eabfd59a44071792e712f06489a21f4413ef1fa7))
+- 865711 add the search sync for location ([c13d261](https://github.com/mohammaDJ23/expense-api/commit/c13d2612c169da87a05f1769e0588788006cf016))
+- 865711 add the search sync for receiver ([d66e858](https://github.com/mohammaDJ23/expense-api/commit/d66e8586819f4d8bda0e1d19e43e4d73c43e8d5a))
+
 ## [4.2.9](https://github.com/mohammaDJ23/expense-api/compare/v4.2.8...v4.2.9) (2026-08-11)
 
 ### ♻️ Code Refactoring
