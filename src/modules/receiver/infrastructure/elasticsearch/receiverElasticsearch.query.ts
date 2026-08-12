@@ -11,7 +11,10 @@ interface IInput {
 }
 
 @Injectable()
-export class ReceiverElasticsearchQuery implements IElasticsearchQuery<IInput> {
+export class ReceiverElasticsearchQuery implements IElasticsearchQuery<
+    IInput,
+    estypes.SearchRequest
+> {
     index: TOutboxEventAggregateType = 'receivers';
 
     buildQuery(input: IInput): estypes.SearchRequest {
