@@ -17,7 +17,7 @@ export class LocationSearchService implements IElasticsearchSearch {
     async search(userId: string, query: string, size: number): Promise<string[]> {
         try {
             const response = await this.elasticsearchService.search<ISelectLocation>(
-                this.locationElasticsearchQuery.buildQuery(userId, query, size),
+                this.locationElasticsearchQuery.buildQuery({ userId, query, size }),
             );
 
             const locationDocs = this.elasticsearchService.extractDocs(response);

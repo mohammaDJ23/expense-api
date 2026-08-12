@@ -17,7 +17,7 @@ export class ReceiverSearchService implements IElasticsearchSearch {
     async search(userId: string, query: string, size: number): Promise<string[]> {
         try {
             const response = await this.elasticsearchService.search<ISelectReceiver>(
-                this.receiverElasticsearchQuery.buildQuery(userId, query, size),
+                this.receiverElasticsearchQuery.buildQuery({ userId, query, size }),
             );
 
             const receiverDocs = this.elasticsearchService.extractDocs(response);

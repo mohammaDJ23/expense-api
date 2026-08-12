@@ -17,7 +17,7 @@ export class ConsumerSearchService implements IElasticsearchSearch {
     async search(userId: string, query: string, size: number): Promise<string[]> {
         try {
             const response = await this.elasticsearchService.search<ISelectConsumer>(
-                this.consumerElasticsearchQuery.buildQuery(userId, query, size),
+                this.consumerElasticsearchQuery.buildQuery({ userId, query, size }),
             );
 
             const consumerDocs = this.elasticsearchService.extractDocs(response);

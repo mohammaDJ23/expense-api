@@ -17,7 +17,7 @@ export class BillSearchService implements IElasticsearchSearch {
     async search(userId: string, query: string, size: number): Promise<string[]> {
         try {
             const response = await this.elasticsearchService.search<ISelectBill>(
-                this.billElasticsearchQuery.buildQuery(userId, query, size),
+                this.billElasticsearchQuery.buildQuery({ userId, query, size }),
             );
 
             const billDocs = this.elasticsearchService.extractDocs(response);
