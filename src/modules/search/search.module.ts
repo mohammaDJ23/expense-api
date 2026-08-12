@@ -10,6 +10,8 @@ import { ReceiverModule } from '@/modules/receiver/receiver.module';
 import { SearchService } from '@/modules/search/applications/services/search.service';
 import { SearchAggregateOrchestratorService } from '@/modules/search/applications/services/searchAggregateOrchestrator.service';
 import { SearchOrchestratorService } from '@/modules/search/applications/services/searchOrchestrator.service';
+import { SearchQueryService } from '@/modules/search/applications/services/searchQuery.service';
+import { SearchSyncService } from '@/modules/search/applications/services/searchSync.service';
 import { SearchController } from '@/modules/search/interfaces/controllers/v1.controller';
 
 @Module({
@@ -22,7 +24,13 @@ import { SearchController } from '@/modules/search/interfaces/controllers/v1.con
         ConsumerModule,
         LocationModule,
     ],
-    providers: [SearchService, SearchAggregateOrchestratorService, SearchOrchestratorService],
+    providers: [
+        SearchService,
+        SearchQueryService,
+        SearchAggregateOrchestratorService,
+        SearchOrchestratorService,
+        SearchSyncService,
+    ],
     controllers: [SearchController],
 })
 export class SearchModule {}

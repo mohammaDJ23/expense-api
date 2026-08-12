@@ -1,33 +1,23 @@
 import { Injectable } from '@nestjs/common';
 
-import { SearchAggregateOrchestratorService } from './searchAggregateOrchestrator.service';
-import { SearchOrchestratorService } from './searchOrchestrator.service';
+import { SearchQueryService } from './searchQuery.service';
+import { SearchSyncService } from './searchSync.service';
 
-import type { IService } from '@/core/interfaces/service.interface';
 import type { ISearch } from '@/modules/search/domain/types/search.type';
 import type { SearchRequestDto } from '@/modules/search/interfaces/dtos/search.request.dto';
 
-interface IInput {
-    userId: string;
-    query: SearchRequestDto;
-}
-
 @Injectable()
-export class SearchService implements IService<IInput, ISearch> {
+export class SearchService {
     constructor(
-        private readonly searchOrchestratorService: SearchOrchestratorService,
-        private readonly searchAggregateOrchestratorService: SearchAggregateOrchestratorService,
+        private readonly searchQueryService: SearchQueryService,
+        private readonly searchSyncService: SearchSyncService,
     ) {}
 
-    async execute(input: IInput): Promise<ISearch> {
-        const searchOrchestrators = await this.searchOrchestratorService.execute({
-            userId: input.userId,
-            query: input.query.q,
-            size: input.query.limit,
-        });
-        return this.searchAggregateOrchestratorService.execute({
-            userId: input.userId,
-            searchOrchestrators,
-        });
+    searchQuery(userId: string, query: SearchRequestDto): Promise<ISearch> {
+        return this.searchQueryService.execute({ userId, query });
+    }
+
+    searchSync(userId: string): Promise<boolean> {
+        return this.searchSyncService.execute({ userId });
     }
 }
