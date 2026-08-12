@@ -9,10 +9,13 @@ interface IInput {
 }
 
 @Injectable()
-export class LocationElasticsearchDeleteQuery implements IElasticsearchQuery<IInput> {
+export class LocationElasticsearchDeleteQuery implements IElasticsearchQuery<
+    IInput,
+    estypes.DeleteByQueryRequest
+> {
     index: TOutboxEventAggregateType = 'locations';
 
-    buildQuery(input: IInput): estypes.SearchRequest {
+    buildQuery(input: IInput): estypes.DeleteByQueryRequest {
         return {
             index: this.index,
             query: {
