@@ -56,6 +56,7 @@ import { UpdateBillService } from '@/modules/bill/applications/services/updateBi
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
 import { BillElasticsearchIndex } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.index';
 import { BillElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.query';
+import { BillElasticsearchDeleteQuery } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearchDelete.query';
 import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.repository';
 import { BillController } from '@/modules/bill/interface/controllers/v1.controller';
 import { ConsumerModule } from '@/modules/consumer/consumer.module';
@@ -107,6 +108,7 @@ import { UserModule } from '@/modules/user/user.module';
         BillRepository,
         BillElasticsearchIndex,
         BillElasticsearchQuery,
+        BillElasticsearchDeleteQuery,
         BillSearchService,
         BillSearchAggregateService,
         BillSearchIndexRegisterService,

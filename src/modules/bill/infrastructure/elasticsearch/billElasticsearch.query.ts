@@ -4,20 +4,26 @@ import type { IElasticsearchQuery } from '@/infrastructure/elasticsearch/elastic
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
 import type { estypes } from '@elastic/elasticsearch';
 
+interface IInput {
+    userId: string;
+    query: string;
+    size: number;
+}
+
 @Injectable()
-export class BillElasticsearchQuery implements IElasticsearchQuery {
+export class BillElasticsearchQuery implements IElasticsearchQuery<IInput> {
     index: TOutboxEventAggregateType = 'bills';
 
-    buildQuery(userId: string, query: string, size: number): estypes.SearchRequest {
+    buildQuery(input: IInput): estypes.SearchRequest {
         return {
-            size,
+            size: input.size,
             index: this.index,
             query: {
                 bool: {
                     filter: [
                         {
                             term: {
-                                userId,
+                                userId: input.userId,
                             },
                         },
                     ],
@@ -29,7 +35,7 @@ export class BillElasticsearchQuery implements IElasticsearchQuery {
                                     {
                                         term: {
                                             amount: {
-                                                value: query,
+                                                value: input.query,
                                                 boost: 5,
                                             },
                                         },
@@ -37,7 +43,7 @@ export class BillElasticsearchQuery implements IElasticsearchQuery {
                                     {
                                         match: {
                                             description: {
-                                                query,
+                                                query: input.query,
                                                 fuzziness: 'AUTO',
                                                 boost: 5,
                                             },
@@ -46,7 +52,7 @@ export class BillElasticsearchQuery implements IElasticsearchQuery {
                                     {
                                         match: {
                                             'description.partial': {
-                                                query,
+                                                query: input.query,
                                                 boost: 3,
                                             },
                                         },
@@ -54,7 +60,7 @@ export class BillElasticsearchQuery implements IElasticsearchQuery {
                                     {
                                         match: {
                                             'receiver.name': {
-                                                query,
+                                                query: input.query,
                                                 fuzziness: 'AUTO',
                                                 boost: 4,
                                             },
@@ -63,7 +69,7 @@ export class BillElasticsearchQuery implements IElasticsearchQuery {
                                     {
                                         match: {
                                             'receiver.name.partial': {
-                                                query,
+                                                query: input.query,
                                                 boost: 2,
                                             },
                                         },
@@ -71,7 +77,7 @@ export class BillElasticsearchQuery implements IElasticsearchQuery {
                                     {
                                         match: {
                                             'location.name': {
-                                                query,
+                                                query: input.query,
                                                 fuzziness: 'AUTO',
                                                 boost: 4,
                                             },
@@ -80,7 +86,7 @@ export class BillElasticsearchQuery implements IElasticsearchQuery {
                                     {
                                         match: {
                                             'location.name.partial': {
-                                                query,
+                                                query: input.query,
                                                 boost: 2,
                                             },
                                         },
@@ -95,7 +101,7 @@ export class BillElasticsearchQuery implements IElasticsearchQuery {
                                                         {
                                                             match: {
                                                                 'consumers.name': {
-                                                                    query,
+                                                                    query: input.query,
                                                                     fuzziness: 'AUTO',
                                                                     boost: 4,
                                                                 },
@@ -104,7 +110,7 @@ export class BillElasticsearchQuery implements IElasticsearchQuery {
                                                         {
                                                             match: {
                                                                 'consumers.name.partial': {
-                                                                    query,
+                                                                    query: input.query,
                                                                     boost: 2,
                                                                 },
                                                             },
