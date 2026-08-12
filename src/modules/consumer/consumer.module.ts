@@ -33,6 +33,7 @@ import { FindConsumerListByUserIdService } from '@/modules/consumer/applications
 import { ConsumerSearchService } from '@/modules/consumer/applications/services/search/consumerSearch.service';
 import { ConsumerSearchAggregateService } from '@/modules/consumer/applications/services/search/consumerSearchAggregate.service';
 import { ConsumerSearchIndexRegisterService } from '@/modules/consumer/applications/services/search/consumerSearchIndexRegister.service';
+import { ConsumerSearchSyncService } from '@/modules/consumer/applications/services/search/consumerSearchSync.service';
 import { UpdateConsumerService } from '@/modules/consumer/applications/services/updateConsumer.service';
 import { ConsumerExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumerExistenceValidator.service';
 import { ConsumerNameAvailableValidatorService } from '@/modules/consumer/applications/services/validators/consumerNameAvailableValidator.service';
@@ -88,11 +89,13 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ConsumersExistenceValidatorService,
         ConsumerUniqueNameValidatorService,
         ConsumerNameAvailableValidatorService,
+        ConsumerSearchSyncService,
     ],
     exports: [
         ConsumerSearchService,
         ConsumerSearchAggregateService,
         ConsumersExistenceValidatorService,
+        ConsumerSearchSyncService,
     ],
 })
 export class ConsumerModule {}
