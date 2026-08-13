@@ -12,6 +12,8 @@ import { CreateConsumerMessageHandler } from '@/modules/consumer/applications/me
 import { CreateConsumerMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/createConsumer/createConsumerMessageElasticsearch.processor';
 import { DeleteConsumerMessageHandler } from '@/modules/consumer/applications/messages/deleteConsumer/deleteConsumerMessage.handler';
 import { DeleteConsumerMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/deleteConsumer/deleteConsumerMessageElasticsearch.processor';
+import { DeleteUserMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/deleteUser/deletedUserMessageElasticsearch.processor';
+import { DeleteUserMessageHandler } from '@/modules/consumer/applications/messages/deleteUser/deleteUserMessage.handler';
 import { UpdateConsumerMessageHandler } from '@/modules/consumer/applications/messages/updateConsumer/updateConsumerMessage.handler';
 import { UpdateConsumerMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/updateConsumer/updateConsumerMessageElasticsearch.processor';
 import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
@@ -79,6 +81,8 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         UpdateConsumerMessageElasticsearchProcessor,
         DeleteConsumerMessageHandler,
         DeleteConsumerMessageElasticsearchProcessor,
+        DeleteUserMessageHandler,
+        DeleteUserMessageElasticsearchProcessor,
         ConsumerRepository,
         BillConsumerRepository,
         ConsumerElasticsearchIndex,
