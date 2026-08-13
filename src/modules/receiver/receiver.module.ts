@@ -11,6 +11,8 @@ import { CreateReceiverMessageHandler } from '@/modules/receiver/applications/me
 import { CreateReceiverMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/createReceiver/createReceiverMessageElasticsearch.processor';
 import { DeleteReceiverMessageHandler } from '@/modules/receiver/applications/messages/deleteReceiver/deleteReceiverMessage.handler';
 import { DeleteReceiverMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/deleteReceiver/deleteReceiverMessageElasticsearch.processor';
+import { DeleteUserMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/deleteUser/deletedUserMessageElasticsearch.processor';
+import { DeleteUserMessageHandler } from '@/modules/receiver/applications/messages/deleteUser/deleteUserMessage.handler';
 import { UpdateReceiverMessageHandler } from '@/modules/receiver/applications/messages/updateReceiver/updateReceiverMessage.handler';
 import { UpdateReceiverMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/updateReceiver/updateReceiverMessageElasticsearch.processor';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
@@ -63,6 +65,8 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         UpdateReceiverMessageElasticsearchProcessor,
         DeleteReceiverMessageHandler,
         DeleteReceiverMessageElasticsearchProcessor,
+        DeleteUserMessageHandler,
+        DeleteUserMessageElasticsearchProcessor,
         ReceiverService,
         CreateReceiverService,
         UpdateReceiverService,
