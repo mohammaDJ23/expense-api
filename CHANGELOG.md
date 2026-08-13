@@ -1,3 +1,18 @@
+## [4.3.1](https://github.com/mohammaDJ23/expense-api/compare/v4.3.0...v4.3.1) (2026-08-13)
+
+### 🔧 Chores
+
+- 865711 add the delete ES docs for bills ([802c8d3](https://github.com/mohammaDJ23/expense-api/commit/802c8d32d09a931fe6c5bfd4b8c21ef6161b578f))
+- 865711 add the delete ES docs for consumers ([4106285](https://github.com/mohammaDJ23/expense-api/commit/4106285efbf646abb2f43d59fbb1159ace919046))
+- 865711 add the delete ES docs for locations ([153201b](https://github.com/mohammaDJ23/expense-api/commit/153201b50533345d485a1e40aa8fd8403c62c93c))
+- 865711 add the delete ES docs for receivers ([ef9b270](https://github.com/mohammaDJ23/expense-api/commit/ef9b27025f267f18ac11e38875caf43bc1885342))
+- 865711 add the delete query of ES for bill ([1d3593f](https://github.com/mohammaDJ23/expense-api/commit/1d3593fdfff167e282009ac3b2175ef3003f43d2))
+- 865711 add the delete query of ES for consumer ([f55ca9d](https://github.com/mohammaDJ23/expense-api/commit/f55ca9db5a5ff6a3c2fe673349f0d60d4ff5fef2))
+- 865711 add the delete query of ES for location ([3b822af](https://github.com/mohammaDJ23/expense-api/commit/3b822aff332840e6b0a72b17ec8db68ae8170f96))
+- 865711 add the delete query of ES for receiver ([557f811](https://github.com/mohammaDJ23/expense-api/commit/557f8110d5f2342714643c2d818b690366ae0bc2))
+- 865711 pass object ([5de45ca](https://github.com/mohammaDJ23/expense-api/commit/5de45ca2f9c797df47513f0ea6cfa3c7dfdad7aa))
+- 865711 update the elastic search query interface ([603dd24](https://github.com/mohammaDJ23/expense-api/commit/603dd2456025ae3b36053ec5f87c4504ae50ee1e))
+
 ## [4.3.0](https://github.com/mohammaDJ23/expense-api/compare/v4.2.9...v4.3.0) (2026-08-12)
 
 ### ✨ Features
