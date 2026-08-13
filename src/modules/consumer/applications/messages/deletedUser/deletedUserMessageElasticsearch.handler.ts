@@ -1,15 +1,17 @@
-import { Injectable } from '@nestjs/common';
 import pLimit from 'p-limit';
 
+import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { ConsumerElasticsearchDeleteQuery } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearchDelete.query';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
-import type { IMessageProcessor } from '@/core/features/message/messageProcessor.interface';
+import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
+import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
-@Injectable()
-export class DeleteUserMessageElasticsearchProcessor implements IMessageProcessor<ISelectUser> {
+@MessageHandler()
+export class DeletedUserMessageElasticsearchHandler implements IMessageHandler<ISelectUser> {
+    route: TOutboxEventRoute = 'users.deleted';
     private readonly concurrency = pLimit(2);
 
     constructor(
@@ -17,7 +19,7 @@ export class DeleteUserMessageElasticsearchProcessor implements IMessageProcesso
         private readonly consumerElasticsearchDeleteQuery: ConsumerElasticsearchDeleteQuery,
     ) {}
 
-    async process(batch: IMessageBatch<ISelectUser>[]): Promise<void> {
+    async execute(batch: IMessageBatch<ISelectUser>[]): Promise<void> {
         await Promise.all(
             batch.map((item) =>
                 this.concurrency(() =>

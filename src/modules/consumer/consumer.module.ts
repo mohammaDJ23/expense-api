@@ -8,14 +8,10 @@ import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications
 import { DeleteConsumerHandler } from '@/modules/consumer/applications/commands/deleteConsumer/deleteConsumer.handler';
 import { DeleteManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.handler';
 import { UpdateConsumerHandler } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.handler';
-import { CreateConsumerMessageHandler } from '@/modules/consumer/applications/messages/createConsumer/createConsumerMessage.handler';
-import { CreateConsumerMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/createConsumer/createConsumerMessageElasticsearch.processor';
-import { DeleteConsumerMessageHandler } from '@/modules/consumer/applications/messages/deleteConsumer/deleteConsumerMessage.handler';
-import { DeleteConsumerMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/deleteConsumer/deleteConsumerMessageElasticsearch.processor';
-import { DeleteUserMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/deleteUser/deletedUserMessageElasticsearch.processor';
-import { DeleteUserMessageHandler } from '@/modules/consumer/applications/messages/deleteUser/deleteUserMessage.handler';
-import { UpdateConsumerMessageHandler } from '@/modules/consumer/applications/messages/updateConsumer/updateConsumerMessage.handler';
-import { UpdateConsumerMessageElasticsearchProcessor } from '@/modules/consumer/applications/messages/updateConsumer/updateConsumerMessageElasticsearch.processor';
+import { CreatedConsumerMessageElasticsearchHandler } from '@/modules/consumer/applications/messages/createdConsumer/createdConsumerMessageElasticsearch.handler';
+import { DeletedConsumerMessageElasticsearchHandler } from '@/modules/consumer/applications/messages/deletedConsumer/deletedConsumerMessageElasticsearch.handler';
+import { DeletedUserMessageElasticsearchHandler } from '@/modules/consumer/applications/messages/deletedUser/deletedUserMessageElasticsearch.handler';
+import { UpdatedConsumerMessageElasticsearchHandler } from '@/modules/consumer/applications/messages/updatedConsumer/updatedConsumerMessageElasticsearch.handler';
 import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
 import { ExistsConsumerByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.handler';
 import { ExistsConsumerByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndIds/existsConsumerByUserIdAndIds.handler';
@@ -75,14 +71,10 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         FindManyBillConsumerTargetsByRefIdsHandler,
         ExistsConsumerByUserIdAndExcludingIdAndNameHandler,
         FindManyBillsConsumersByRefIdHandler,
-        CreateConsumerMessageHandler,
-        CreateConsumerMessageElasticsearchProcessor,
-        UpdateConsumerMessageHandler,
-        UpdateConsumerMessageElasticsearchProcessor,
-        DeleteConsumerMessageHandler,
-        DeleteConsumerMessageElasticsearchProcessor,
-        DeleteUserMessageHandler,
-        DeleteUserMessageElasticsearchProcessor,
+        CreatedConsumerMessageElasticsearchHandler,
+        UpdatedConsumerMessageElasticsearchHandler,
+        DeletedConsumerMessageElasticsearchHandler,
+        DeletedUserMessageElasticsearchHandler,
         ConsumerRepository,
         BillConsumerRepository,
         ConsumerElasticsearchIndex,
