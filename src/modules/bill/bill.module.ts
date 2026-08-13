@@ -7,14 +7,10 @@ import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearc
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
 import { DeleteBillHandler } from '@/modules/bill/applications/commands/deleteBill/deleteBill.handler';
 import { UpdateBillHandler } from '@/modules/bill/applications/commands/updateBill/updateBill.handler';
-import { CreateBillMessageHandler } from '@/modules/bill/applications/messages/createBill/createBillMessage.handler';
-import { CreateBillMessageElasticsearchProcessor } from '@/modules/bill/applications/messages/createBill/createBillMessageElasticsearch.processor';
-import { DeleteBillMessageHandler } from '@/modules/bill/applications/messages/deleteBill/deleteBillMessage.handler';
-import { DeleteBillMessageElasticsearchProcessor } from '@/modules/bill/applications/messages/deleteBill/deleteBillMessageElasticsearch.processor';
-import { DeleteUserMessageElasticsearchProcessor } from '@/modules/bill/applications/messages/deleteUser/deletedUserMessageElasticsearch.processor';
-import { DeleteUserMessageHandler } from '@/modules/bill/applications/messages/deleteUser/deleteUserMessage.handler';
-import { UpdateBillMessageHandler } from '@/modules/bill/applications/messages/updateBill/updateBillMessage.handler';
-import { UpdateBillMessageElasticsearchProcessor } from '@/modules/bill/applications/messages/updateBill/updateBillMessageElasticsearch.processor';
+import { CreatedBillMessageElasticsearchHandler } from '@/modules/bill/applications/messages/createdBill/createdBillMessageElasticsearch.handler';
+import { DeletedBillMessageElasticsearchHandler } from '@/modules/bill/applications/messages/deletedBill/deletedBillMessageElasticsearch.handler';
+import { DeletedUserMessageElasticsearchHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserMessageElasticsearch.handler';
+import { UpdatedBillMessageElasticsearchHandler } from '@/modules/bill/applications/messages/updatedBill/updatedBillMessageElasticsearch.handler';
 import { ExistsBillByUserIdAndIdHandler } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.handler';
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
 import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.handler';
@@ -91,7 +87,6 @@ import { UserModule } from '@/modules/user/user.module';
         FindBillByUserIdAndIdOrThrowHandler,
         FindBillListByUserIdHandler,
         ExistsBillByUserIdAndIdHandler,
-        CreateBillMessageHandler,
         FindManyBillsByUserIdAndIdsHandler,
         FindTotalBillsByUserIdHandler,
         FindMostUsedLocationsHandler,
@@ -99,13 +94,10 @@ import { UserModule } from '@/modules/user/user.module';
         FindMostUsedConsumersHandler,
         FindBillsPeriodByPurchasedAtHandler,
         FindBillsTimelineByPurchasedAtHandler,
-        CreateBillMessageElasticsearchProcessor,
-        UpdateBillMessageHandler,
-        UpdateBillMessageElasticsearchProcessor,
-        DeleteBillMessageHandler,
-        DeleteBillMessageElasticsearchProcessor,
-        DeleteUserMessageHandler,
-        DeleteUserMessageElasticsearchProcessor,
+        CreatedBillMessageElasticsearchHandler,
+        UpdatedBillMessageElasticsearchHandler,
+        DeletedBillMessageElasticsearchHandler,
+        DeletedUserMessageElasticsearchHandler,
         CreateBillHandler,
         UpdateBillHandler,
         DeleteBillHandler,
