@@ -13,4 +13,7 @@ export const OUTBOX_EVENT_ROUTES: TOutboxEventRoute[] = [
     'receivers.created',
     'receivers.deleted',
     'receivers.updated',
+    'users.created',
+    'users.deleted',
+    'users.updated',
 ];
