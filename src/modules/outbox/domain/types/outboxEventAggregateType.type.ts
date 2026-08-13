@@ -1,1 +1,1 @@
-export type TOutboxEventAggregateType = 'bills' | 'receivers' | 'locations' | 'consumers';
+export type TOutboxEventAggregateType = 'bills' | 'receivers' | 'locations' | 'consumers' | 'users';
