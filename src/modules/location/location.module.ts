@@ -9,6 +9,8 @@ import { CreateLocationMessageHandler } from '@/modules/location/applications/me
 import { CreateLocationMessageElasticsearchProcessor } from '@/modules/location/applications/messages/createLocation/createLocationMessageElasticsearch.processor';
 import { DeleteLocationMessageHandler } from '@/modules/location/applications/messages/deleteLocation/deleteLocationMessage.handler';
 import { DeleteLocationMessageElasticsearchProcessor } from '@/modules/location/applications/messages/deleteLocation/deleteLocationMessageElasticsearch.processor';
+import { DeleteUserMessageElasticsearchProcessor } from '@/modules/location/applications/messages/deleteUser/deletedUserMessageElasticsearch.processor';
+import { DeleteUserMessageHandler } from '@/modules/location/applications/messages/deleteUser/deleteUserMessage.handler';
 import { UpdateLocationMessageHandler } from '@/modules/location/applications/messages/updateLocation/updateLocationMessage.handler';
 import { UpdateLocationMessageElasticsearchProcessor } from '@/modules/location/applications/messages/updateLocation/updateLocationMessageElasticsearch.processor';
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
@@ -66,6 +68,8 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         UpdateLocationMessageElasticsearchProcessor,
         DeleteLocationMessageHandler,
         DeleteLocationMessageElasticsearchProcessor,
+        DeleteUserMessageHandler,
+        DeleteUserMessageElasticsearchProcessor,
         CreateLocationHandler,
         LocationRepository,
         LocationElasticsearchIndex,
