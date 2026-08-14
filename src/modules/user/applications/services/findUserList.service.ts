@@ -4,7 +4,6 @@ import { QueryBus } from '@nestjs/cqrs';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { cursorPagination } from '@/core/utils/pagination/cursorPagination.util';
 import { parseCursor } from '@/core/utils/pagination/parseCursor.util';
-import { FindTotalUsersQuery } from '@/modules/user/applications/queries/findTotalUsers/findTotalUsers.query';
 import { FindUserListQuery } from '@/modules/user/applications/queries/findUserList/findUserList.query';
 
 import type { IService } from '@/core/interfaces/service.interface';
@@ -22,22 +21,14 @@ export class FindUserListService implements IService<IInput, IListResult<ISelect
     constructor(private readonly queryBus: QueryBus) {}
 
     async execute(input: IInput): Promise<IListResult<ISelectUser>> {
-        const [users, total] = await Promise.all([
-            this.queryBus.execute<FindUserListQuery, ISelectUser[]>(
-                new FindUserListQuery({
-                    cursor: this.parseCursor(input.query.cursor),
-                    limit: input.query.limit,
-                }),
-            ),
-            this.queryBus.execute<FindTotalUsersQuery, number>(new FindTotalUsersQuery()),
-        ]);
+        const users = await this.queryBus.execute<FindUserListQuery, ISelectUser[]>(
+            new FindUserListQuery({
+                cursor: this.parseCursor(input.query.cursor),
+                limit: input.query.limit,
+            }),
+        );
 
-        const pagination = cursorPagination(users, input.query.limit);
-
-        return {
-            ...pagination,
-            total,
-        };
+        return cursorPagination(users, input.query.limit);
     }
 
     parseCursor(cursor: string | null): ICursor | null {
