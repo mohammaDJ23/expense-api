@@ -57,11 +57,16 @@ export class KafkaConsumerService implements OnModuleInit {
             );
             await consumer.run({
                 eachBatch: async (eachBatch) => {
-                    const handlers = this.messageRegistryService.get(
-                        eachBatch.batch.topic as TOutboxEventRoute,
-                    );
-                    const parsedBatch = this.kafkaBatchParserService.execute(eachBatch.batch);
-                    await Promise.all(handlers.map((handler) => handler.execute(parsedBatch)));
+                    try {
+                        const handlers = this.messageRegistryService.get(
+                            eachBatch.batch.topic as TOutboxEventRoute,
+                        );
+                        const parsedBatch = this.kafkaBatchParserService.execute(eachBatch.batch);
+
+                        await Promise.all(handlers.map((handler) => handler.execute(parsedBatch)));
+                    } catch (error) {
+                        throw new InternalServerErrorException(error);
+                    }
                 },
             });
         } catch (error) {
