@@ -1,3 +1,19 @@
+## [4.3.3](https://github.com/mohammaDJ23/expense-api/compare/v4.3.2...v4.3.3) (2026-08-14)
+
+### 🔧 Chores
+
+- 173201 add FindBillListAndTotalByUserIdService ([d8d942c](https://github.com/mohammaDJ23/expense-api/commit/d8d942c9cc84838fdf4e707f94873eaed4939321))
+- 173201 add FindConsumerListAndTotalByUserIdService ([9953d83](https://github.com/mohammaDJ23/expense-api/commit/9953d833815c80c83dbe7f0ae4da6edac02092ac))
+- 173201 add FindLocationListAndTotalByUserIdService ([7ff1644](https://github.com/mohammaDJ23/expense-api/commit/7ff1644b8c85dbf8533b0cc59ace9fc7f8f57e0a))
+- 173201 add FindReceiverListAndTotalByUserIdService ([e7455ec](https://github.com/mohammaDJ23/expense-api/commit/e7455ecdaf97b0ec36c4ac17e068d319ac2b8918))
+- 173201 add FindUserListAndTotalService ([a1ed13b](https://github.com/mohammaDJ23/expense-api/commit/a1ed13bd24d57f5496b448ca5ca3e4ddcf9de90e))
+- 173201 add IListResultWithTotal ([20c6cc0](https://github.com/mohammaDJ23/expense-api/commit/20c6cc09996936b33ae481077e753b6c69c3ba15))
+- 173201 use FindConsumerListAndTotalByUserIdService ([f438b87](https://github.com/mohammaDJ23/expense-api/commit/f438b87bbbd94e25bf9df733fde22a4c7313f168))
+- 173201 use FindLocationListAndTotalByUserIdService ([1924682](https://github.com/mohammaDJ23/expense-api/commit/19246822ca61387ec77b0f8e0ef290132d6b6535))
+- 173201 use FindReceiverListAndTotalByUserIdService ([1d3b8c3](https://github.com/mohammaDJ23/expense-api/commit/1d3b8c3abbd6123ac7ace30ca47b7cb56959c669))
+- 173201 use FindUserListAndTotalService ([1c1bfe2](https://github.com/mohammaDJ23/expense-api/commit/1c1bfe2fef29e8b71cb44769218122cb34f0a559))
+- 173201 use FindUserListAndTotalService ([0d828cb](https://github.com/mohammaDJ23/expense-api/commit/0d828cb5d326afff80075f3873169d0d89704c60))
+
 ## [4.3.2](https://github.com/mohammaDJ23/expense-api/compare/v4.3.1...v4.3.2) (2026-08-14)
 
 ### ♻️ Code Refactoring
