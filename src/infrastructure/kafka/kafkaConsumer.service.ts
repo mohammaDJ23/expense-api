@@ -1,4 +1,9 @@
-import { Inject, Injectable, type OnModuleInit } from '@nestjs/common';
+import {
+    Inject,
+    Injectable,
+    InternalServerErrorException,
+    type OnModuleInit,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Kafka } from 'kafkajs';
 
@@ -59,8 +64,8 @@ export class KafkaConsumerService implements OnModuleInit {
                     await Promise.all(handlers.map((handler) => handler.execute(parsedBatch)));
                 },
             });
-        } catch {
-            throw new Error('Kafka initialization failed');
+        } catch (error) {
+            throw new InternalServerErrorException(error);
         }
     }
 }
