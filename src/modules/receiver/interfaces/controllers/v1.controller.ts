@@ -37,7 +37,7 @@ import {
 
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/list/listResult.type';
+import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
@@ -85,7 +85,7 @@ export class ReceiverController {
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindReceiverListRequestDto,
-    ): Promise<IListResult<ISelectReceiver>> {
+    ): Promise<IListResultWithTotal<ISelectReceiver>> {
         return this.receiverService.findListByUserId(user.id, query);
     }
 
