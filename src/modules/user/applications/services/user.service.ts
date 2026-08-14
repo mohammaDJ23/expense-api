@@ -5,11 +5,11 @@ import { FindTotalUsersQuery } from '@/modules/user/applications/queries/findTot
 import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 
 import { DeleteUserService } from './deleteUser.service';
-import { FindUserListService } from './findUserList.service';
+import { FindUserListAndTotalService } from './findUserListAndTotal.service';
 import { UpdateUserService } from './updateUser.service';
 
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/list/listResult.type';
+import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { FindUserListRequestDto } from '@/modules/user/interfaces/dtos/findUserList.request.dto';
@@ -21,7 +21,7 @@ export class UserService {
         private readonly queryBus: QueryBus,
         private readonly updateUserService: UpdateUserService,
         private readonly deleteUserService: DeleteUserService,
-        private readonly findUserListService: FindUserListService,
+        private readonly findUserListAndTotalService: FindUserListAndTotalService,
     ) {}
 
     update(userId: string, body: UpdateUserRequestDto): Promise<IId> {
@@ -32,8 +32,8 @@ export class UserService {
         return this.deleteUserService.execute({ userId });
     }
 
-    findList(query: FindUserListRequestDto): Promise<IListResult<ISelectUser>> {
-        return this.findUserListService.execute({ query });
+    findList(query: FindUserListRequestDto): Promise<IListResultWithTotal<ISelectUser>> {
+        return this.findUserListAndTotalService.execute({ query });
     }
 
     findById(userId: string): Promise<ISelectUser> {

@@ -34,7 +34,7 @@ import {
 
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/list/listResult.type';
+import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
@@ -62,7 +62,7 @@ export class UserController {
     @UseGuards(JwtAuthGuard, OwnerGuard)
     @SerializerInterceptor(FindUserListResponseDto)
     @HttpResponse(SUCCESS_FIND_USERS_MESSAGE, HttpStatus.OK)
-    findList(@Query() query: FindUserListRequestDto): Promise<IListResult<ISelectUser>> {
+    findList(@Query() query: FindUserListRequestDto): Promise<IListResultWithTotal<ISelectUser>> {
         return this.userService.findList(query);
     }
 
