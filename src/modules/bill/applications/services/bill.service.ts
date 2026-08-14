@@ -12,12 +12,12 @@ import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/fi
 import { CreateBillService } from './createBill.service';
 import { DeleteBillService } from './deleteBill.service';
 import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
-import { FindBillListByUserIdService } from './findBillListByUserId.service';
+import { FindBillListAndTotalByUserIdService } from './findBillListAndTotalByUserId.service';
 import { FindBillsTimelineByPurchasedAtService } from './findBillsTimelineByPurchasedAt.service';
 import { UpdateBillService } from './updateBill.service';
 
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/list/listResult.type';
+import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
@@ -39,7 +39,7 @@ export class BillService {
         private readonly updateBillService: UpdateBillService,
         private readonly deleteBillService: DeleteBillService,
         private readonly findBillByUserIdAndIdOrThrowService: FindBillByUserIdAndIdOrThrowService,
-        private readonly findBillListByUserIdService: FindBillListByUserIdService,
+        private readonly findBillListAndTotalByUserIdService: FindBillListAndTotalByUserIdService,
         private readonly mostUsedLocationsService: MostUsedLocationsService,
         private readonly mostUsedReceiversService: MostUsedReceiversService,
         private readonly mostUsedConsumersService: MostUsedConsumersService,
@@ -59,8 +59,11 @@ export class BillService {
         return this.deleteBillService.execute({ userId, billId });
     }
 
-    findListByUserId(userId: string, query: FindBillListRequestDto): Promise<IListResult<IBill>> {
-        return this.findBillListByUserIdService.execute({ userId, query });
+    findListByUserId(
+        userId: string,
+        query: FindBillListRequestDto,
+    ): Promise<IListResultWithTotal<IBill>> {
+        return this.findBillListAndTotalByUserIdService.execute({ userId, query });
     }
 
     findByUserIdAndId(userId: string, billId: string): Promise<IBill> {
