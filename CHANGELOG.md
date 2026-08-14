@@ -1,3 +1,11 @@
+## [4.3.4](https://github.com/mohammaDJ23/expense-api/compare/v4.3.3...v4.3.4) (2026-08-14)
+
+### ♻️ Code Refactoring
+
+- 704595 rename the entrypoint filename ([b926390](https://github.com/mohammaDJ23/expense-api/commit/b9263909ddf9dd9dca9a40676790b9564137bbec))
+- 704595 update the path of the scripts ([4e621b4](https://github.com/mohammaDJ23/expense-api/commit/4e621b46f90f45a3eeea3f570e9704c6d880b712))
+- 883676 update the scripts path ([a650800](https://github.com/mohammaDJ23/expense-api/commit/a6508000b1c22b05ef708d1ba65fb42d523c9aa8))
+
 ## [4.3.3](https://github.com/mohammaDJ23/expense-api/compare/v4.3.2...v4.3.3) (2026-08-14)
 
 ### 🔧 Chores
