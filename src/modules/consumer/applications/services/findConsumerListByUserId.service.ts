@@ -5,7 +5,6 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 import { cursorPagination } from '@/core/utils/pagination/cursorPagination.util';
 import { parseCursor } from '@/core/utils/pagination/parseCursor.util';
 import { FindConsumerListByUserIdQuery } from '@/modules/consumer/applications/queries/findConsumerListByUserId/findConsumerListByUserId.query';
-import { FindTotalConsumersByUserIdQuery } from '@/modules/consumer/applications/queries/findTotalConsumersByUserId/findTotalConsumersByUserId.query';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IListResult } from '@/core/types/list/listResult.type';
@@ -26,27 +25,18 @@ export class FindConsumerListByUserIdService implements IService<
     constructor(private readonly queryBus: QueryBus) {}
 
     async execute(input: IInput): Promise<IListResult<ISelectConsumer>> {
-        const [consumers, total] = await Promise.all([
-            this.queryBus.execute<FindConsumerListByUserIdQuery, ISelectConsumer[]>(
-                new FindConsumerListByUserIdQuery({
-                    userId: input.userId,
-                    cursor: this.parseCursor(input.query.cursor),
-                    limit: input.query.limit,
-                }),
-            ),
-            this.queryBus.execute<FindTotalConsumersByUserIdQuery, number>(
-                new FindTotalConsumersByUserIdQuery({
-                    userId: input.userId,
-                }),
-            ),
-        ]);
+        const consumers = await this.queryBus.execute<
+            FindConsumerListByUserIdQuery,
+            ISelectConsumer[]
+        >(
+            new FindConsumerListByUserIdQuery({
+                userId: input.userId,
+                cursor: this.parseCursor(input.query.cursor),
+                limit: input.query.limit,
+            }),
+        );
 
-        const pagination = cursorPagination(consumers, input.query.limit);
-
-        return {
-            ...pagination,
-            total,
-        };
+        return cursorPagination(consumers, input.query.limit);
     }
 
     parseCursor(cursor: string | null): ICursor | null {
