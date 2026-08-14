@@ -37,7 +37,7 @@ import {
 
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/list/listResult.type';
+import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 
@@ -85,7 +85,7 @@ export class LocationController {
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindLocationListRequestDto,
-    ): Promise<IListResult<ISelectLocation>> {
+    ): Promise<IListResultWithTotal<ISelectLocation>> {
         return this.locationService.findListByUserId(user.id, query);
     }
 
