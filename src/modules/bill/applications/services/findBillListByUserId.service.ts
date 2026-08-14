@@ -5,7 +5,6 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 import { cursorPagination } from '@/core/utils/pagination/cursorPagination.util';
 import { parseCursor } from '@/core/utils/pagination/parseCursor.util';
 import { FindBillListByUserIdQuery } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.query';
-import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
 import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
@@ -28,34 +27,20 @@ export class FindBillListByUserIdService implements IService<IInput, IListResult
     ) {}
 
     async execute(input: IInput): Promise<IListResult<IBill>> {
-        const [bills, total] = await Promise.all([
-            this.queryBus.execute<FindBillListByUserIdQuery, ISelectBill[]>(
-                new FindBillListByUserIdQuery({
-                    userId: input.userId,
-                    cursor: this.parseCursor(input.query.cursor),
-                    limit: input.query.limit,
-                }),
-            ),
-            this.queryBus.execute<FindTotalBillsByUserIdQuery, number>(
-                new FindTotalBillsByUserIdQuery({
-                    userId: input.userId,
-                }),
-            ),
-        ]);
-
-        const pagination = cursorPagination(bills, input.query.limit);
+        const bills = await this.queryBus.execute<FindBillListByUserIdQuery, ISelectBill[]>(
+            new FindBillListByUserIdQuery({
+                userId: input.userId,
+                cursor: this.parseCursor(input.query.cursor),
+                limit: input.query.limit,
+            }),
+        );
 
         const assembledBills = await this.billsAssemblerService.assemble({
             userId: input.userId,
-            bills: pagination.items,
+            bills,
         });
 
-        return {
-            items: assembledBills,
-            total,
-            hasNextPage: pagination.hasNextPage,
-            nextCursor: pagination.nextCursor,
-        };
+        return cursorPagination(assembledBills, input.query.limit);
     }
 
     parseCursor(cursor: string | null): ICursor | null {

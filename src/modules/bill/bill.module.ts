@@ -30,6 +30,7 @@ import { BillsExportMailerService } from '@/modules/bill/applications/services/e
 import { BillsExcelExportService } from '@/modules/bill/applications/services/export/excel/billsExcelExport.service';
 import { BillsExcelExportGeneratorService } from '@/modules/bill/applications/services/export/excel/billsExcelExportGenerator.service';
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
+import { FindBillListAndTotalByUserIdService } from '@/modules/bill/applications/services/findBillListAndTotalByUserId.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
 import { FindBillsTimelineByPurchasedAtService } from '@/modules/bill/applications/services/findBillsTimelineByPurchasedAt.service';
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
@@ -84,6 +85,7 @@ import { UserModule } from '@/modules/user/user.module';
         BillsAssemblerService,
         FindBillByUserIdAndIdOrThrowService,
         FindBillListByUserIdService,
+        FindBillListAndTotalByUserIdService,
         FindBillByUserIdAndIdOrThrowHandler,
         FindBillListByUserIdHandler,
         ExistsBillByUserIdAndIdHandler,
