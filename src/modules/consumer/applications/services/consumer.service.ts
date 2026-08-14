@@ -6,11 +6,11 @@ import { FindTotalConsumersByUserIdQuery } from '@/modules/consumer/applications
 
 import { CreateConsumerService } from './createConsumer.service';
 import { DeleteConsumerService } from './deleteConsumer.service';
-import { FindConsumerListByUserIdService } from './findConsumerListByUserId.service';
+import { FindConsumerListAndTotalByUserIdService } from './findConsumerListAndTotalByUserId.service';
 import { UpdateConsumerService } from './updateConsumer.service';
 
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/list/listResult.type';
+import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { FindConsumerListRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerList.request.dto';
@@ -23,7 +23,7 @@ export class ConsumerService {
         private readonly createConsumerService: CreateConsumerService,
         private readonly updateConsumerService: UpdateConsumerService,
         private readonly deleteConsumerService: DeleteConsumerService,
-        private readonly findConsumerListByUserIdService: FindConsumerListByUserIdService,
+        private readonly findConsumerListAndTotalByUserIdService: FindConsumerListAndTotalByUserIdService,
     ) {}
 
     create(userId: string, name: string): Promise<IId> {
@@ -41,8 +41,8 @@ export class ConsumerService {
     findListByUserId(
         userId: string,
         query: FindConsumerListRequestDto,
-    ): Promise<IListResult<ISelectConsumer>> {
-        return this.findConsumerListByUserIdService.execute({ userId, query });
+    ): Promise<IListResultWithTotal<ISelectConsumer>> {
+        return this.findConsumerListAndTotalByUserIdService.execute({ userId, query });
     }
 
     findByUserIdAndId(userId: string, consumerId: string): Promise<ISelectConsumer> {
