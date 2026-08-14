@@ -5,14 +5,10 @@ import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearc
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
 import { DeleteLocationHandler } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.handler';
 import { UpdateLocationHandler } from '@/modules/location/applications/commands/updateLocation/updateLocation.handler';
-import { CreateLocationMessageHandler } from '@/modules/location/applications/messages/createLocation/createLocationMessage.handler';
-import { CreateLocationMessageElasticsearchProcessor } from '@/modules/location/applications/messages/createLocation/createLocationMessageElasticsearch.processor';
-import { DeleteLocationMessageHandler } from '@/modules/location/applications/messages/deleteLocation/deleteLocationMessage.handler';
-import { DeleteLocationMessageElasticsearchProcessor } from '@/modules/location/applications/messages/deleteLocation/deleteLocationMessageElasticsearch.processor';
-import { DeleteUserMessageElasticsearchProcessor } from '@/modules/location/applications/messages/deleteUser/deletedUserMessageElasticsearch.processor';
-import { DeleteUserMessageHandler } from '@/modules/location/applications/messages/deleteUser/deleteUserMessage.handler';
-import { UpdateLocationMessageHandler } from '@/modules/location/applications/messages/updateLocation/updateLocationMessage.handler';
-import { UpdateLocationMessageElasticsearchProcessor } from '@/modules/location/applications/messages/updateLocation/updateLocationMessageElasticsearch.processor';
+import { CreatedLocationMessageElasticsearchHandler } from '@/modules/location/applications/messages/createdLocation/createdLocationMessageElasticsearch.handler';
+import { DeletedLocationMessageElasticsearchHandler } from '@/modules/location/applications/messages/deletedLocation/deletedLocationMessageElasticsearch.handler';
+import { DeletedUserMessageElasticsearchHandler } from '@/modules/location/applications/messages/deletedUser/deletedUserMessageElasticsearch.handler';
+import { UpdatedLocationMessageElasticsearchHandler } from '@/modules/location/applications/messages/updatedLocation/updatedLocationMessageElasticsearch.handler';
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
 import { ExistsLocationByUserIdAndIdHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.handler';
 import { ExistsLocationByUserIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndName/existsLocationByUserIdAndName.handler';
@@ -62,14 +58,10 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ExistsLocationByUserIdAndIdHandler,
         ExistsLocationByUserIdAndExcludingIdAndNameHandler,
         ExistsLocationByUserIdAndNameHandler,
-        CreateLocationMessageHandler,
-        CreateLocationMessageElasticsearchProcessor,
-        UpdateLocationMessageHandler,
-        UpdateLocationMessageElasticsearchProcessor,
-        DeleteLocationMessageHandler,
-        DeleteLocationMessageElasticsearchProcessor,
-        DeleteUserMessageHandler,
-        DeleteUserMessageElasticsearchProcessor,
+        CreatedLocationMessageElasticsearchHandler,
+        UpdatedLocationMessageElasticsearchHandler,
+        DeletedLocationMessageElasticsearchHandler,
+        DeletedUserMessageElasticsearchHandler,
         CreateLocationHandler,
         LocationRepository,
         LocationElasticsearchIndex,
