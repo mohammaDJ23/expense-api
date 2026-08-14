@@ -3,13 +3,14 @@ import { QueryBus } from '@nestjs/cqrs';
 
 import { FindLocationByUserIdAndIdOrThrowQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.query';
 import { FindTotalLocationsByUserIdQuery } from '@/modules/location/applications/queries/findTotalLocationsByUserId/findTotalLocationsByUserId.query';
-import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
-import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
-import { FindLocationListByUserIdService } from '@/modules/location/applications/services/findLocationListByUserId.service';
-import { UpdateLocationService } from '@/modules/location/applications/services/updateLocation.service';
+
+import { CreateLocationService } from './createLocation.service';
+import { DeleteLocationService } from './deleteLocation.service';
+import { FindLocationListAndTotalByUserIdService } from './findLocationListAndTotalByUserId.service';
+import { UpdateLocationService } from './updateLocation.service';
 
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/list/listResult.type';
+import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { FindLocationListRequestDto } from '@/modules/location/interfaces/dtos/findLocationList.request.dto';
@@ -22,7 +23,7 @@ export class LocationService {
         private readonly createLocationService: CreateLocationService,
         private readonly updateLocationService: UpdateLocationService,
         private readonly deleteLocationService: DeleteLocationService,
-        private readonly findLocationListByUserIdService: FindLocationListByUserIdService,
+        private readonly findLocationListAndTotalByUserIdService: FindLocationListAndTotalByUserIdService,
     ) {}
 
     create(userId: string, name: string): Promise<IId> {
@@ -40,8 +41,8 @@ export class LocationService {
     findListByUserId(
         userId: string,
         query: FindLocationListRequestDto,
-    ): Promise<IListResult<ISelectLocation>> {
-        return this.findLocationListByUserIdService.execute({ userId, query });
+    ): Promise<IListResultWithTotal<ISelectLocation>> {
+        return this.findLocationListAndTotalByUserIdService.execute({ userId, query });
     }
 
     findByUserIdAndId(userId: string, locationId: string): Promise<ISelectLocation> {
