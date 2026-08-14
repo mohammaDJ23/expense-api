@@ -37,7 +37,7 @@ import {
 
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/list/listResult.type';
+import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
@@ -85,7 +85,7 @@ export class ConsumerController {
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindConsumerListRequestDto,
-    ): Promise<IListResult<ISelectConsumer>> {
+    ): Promise<IListResultWithTotal<ISelectConsumer>> {
         return this.consumerService.findListByUserId(user.id, query);
     }
 
