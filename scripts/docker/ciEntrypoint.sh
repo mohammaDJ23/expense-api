@@ -6,6 +6,6 @@ PIPELINE="ci"
 ENVIRONMENT="production"
 COMPOSE_FILE="docker-compose.ci.yml"
 
-source ./script/docker/createImageName.sh
-source ./script/docker/setImageNameOutput.sh
-source ./script/docker/entrypoint.sh
+source ./scripts/docker/createImageName.sh
+source ./scripts/docker/setImageNameOutput.sh
+source ./scripts/docker/entrypoint.sh
