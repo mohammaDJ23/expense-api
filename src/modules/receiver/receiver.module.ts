@@ -7,14 +7,10 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { CreateReceiverHandler } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.handler';
 import { DeleteReceiverHandler } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.handler';
 import { UpdateReceiverHandler } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.handler';
-import { CreateReceiverMessageHandler } from '@/modules/receiver/applications/messages/createReceiver/createReceiverMessage.handler';
-import { CreateReceiverMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/createReceiver/createReceiverMessageElasticsearch.processor';
-import { DeleteReceiverMessageHandler } from '@/modules/receiver/applications/messages/deleteReceiver/deleteReceiverMessage.handler';
-import { DeleteReceiverMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/deleteReceiver/deleteReceiverMessageElasticsearch.processor';
-import { DeleteUserMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/deleteUser/deletedUserMessageElasticsearch.processor';
-import { DeleteUserMessageHandler } from '@/modules/receiver/applications/messages/deleteUser/deleteUserMessage.handler';
-import { UpdateReceiverMessageHandler } from '@/modules/receiver/applications/messages/updateReceiver/updateReceiverMessage.handler';
-import { UpdateReceiverMessageElasticsearchProcessor } from '@/modules/receiver/applications/messages/updateReceiver/updateReceiverMessageElasticsearch.processor';
+import { CreatedReceiverMessageElasticsearchHandler } from '@/modules/receiver/applications/messages/createdReceiver/createdReceiverMessageElasticsearch.handler';
+import { DeletedReceiverMessageElasticsearchHandler } from '@/modules/receiver/applications/messages/deletedReceiver/deletedReceiverMessageElasticearch.handler';
+import { DeletedUserMessageElasticsearchHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserMessageElasticsearch.handler';
+import { UpdatedReceiverMessageElasticsearchHandler } from '@/modules/receiver/applications/messages/updatedReceiver/updatedReceiverMessageElasticsearch.handler';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
 import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.handler';
 import { ExistsReceiverByUserIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndName/existsReceiverByUserIdAndName.handler';
@@ -59,14 +55,10 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ExistsReceiverByUserIdAndIdHandler,
         ExistsReceiverByUserIdAndExcludingIdAndNameHandler,
         ExistsReceiverByUserIdAndNameHandler,
-        CreateReceiverMessageElasticsearchProcessor,
-        CreateReceiverMessageHandler,
-        UpdateReceiverMessageHandler,
-        UpdateReceiverMessageElasticsearchProcessor,
-        DeleteReceiverMessageHandler,
-        DeleteReceiverMessageElasticsearchProcessor,
-        DeleteUserMessageHandler,
-        DeleteUserMessageElasticsearchProcessor,
+        CreatedReceiverMessageElasticsearchHandler,
+        UpdatedReceiverMessageElasticsearchHandler,
+        DeletedReceiverMessageElasticsearchHandler,
+        DeletedUserMessageElasticsearchHandler,
         ReceiverService,
         CreateReceiverService,
         UpdateReceiverService,
