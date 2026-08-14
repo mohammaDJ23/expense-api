@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ./scripts/common/logs.sh
+source ./scripts/logs.sh
 
 BRANCH="${BRANCH:-}"
 CONFIG_FILE="${CONFIG_FILE:-.branch.namerc.json}"

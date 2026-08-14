@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ./scripts/common/logs.sh
+source ./scripts/logs.sh
 
 detect_commit_sh() {
     log_info "Getting commit_sha..." >&2

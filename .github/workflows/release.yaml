@@ -64,13 +64,13 @@ jobs:
 
             - name: Create a New version
               id: get-version
-              run: pnpm run create:version:ci
+              run: pnpm run create:version
               env:
                   GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_PAT_TOKEN }}
 
             - name: Detect commit_sha
               id: get-commit-sha
-              run: pnpm run detect:commitsha:ci
+              run: pnpm run detect:commitsha
 
     run-test-push:
         needs: create-version

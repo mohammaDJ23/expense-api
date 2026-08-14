@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ./scripts/common/logs.sh
+source ./scripts/logs.sh
 
 ID_FILE=".git/branch-ids.json"
 

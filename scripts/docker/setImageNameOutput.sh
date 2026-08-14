@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ./scripts/common/logs.sh
+source ./scripts/logs.sh
 
 if [[ -n "${GITHUB_OUTPUT:-}" && -n "${IMAGE_NAME:-}" ]]; then
     echo "image_name=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"

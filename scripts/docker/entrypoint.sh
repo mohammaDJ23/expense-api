@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-source ./scripts/common/logs.sh
-source ./scripts/common/docker/vars.sh
-source ./scripts/common/docker/validations.sh
-source ./scripts/common/docker/runner.sh
-source ./scripts/common/docker/pipelines.sh
+source ./scripts/logs.sh
+source ./scripts/docker/vars.sh
+source ./scripts/docker/validations.sh
+source ./scripts/docker/runner.sh
+source ./scripts/docker/pipelines.sh
 
 run_step() {
     local step="$1"
