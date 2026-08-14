@@ -5,7 +5,6 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 import { cursorPagination } from '@/core/utils/pagination/cursorPagination.util';
 import { parseCursor } from '@/core/utils/pagination/parseCursor.util';
 import { FindLocationListByUserIdQuery } from '@/modules/location/applications/queries/findLocationListByUserId/findLocationListByUserId.query';
-import { FindTotalLocationsByUserIdQuery } from '@/modules/location/applications/queries/findTotalLocationsByUserId/findTotalLocationsByUserId.query';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IListResult } from '@/core/types/list/listResult.type';
@@ -26,27 +25,18 @@ export class FindLocationListByUserIdService implements IService<
     constructor(private readonly queryBus: QueryBus) {}
 
     async execute(input: IInput): Promise<IListResult<ISelectLocation>> {
-        const [locations, total] = await Promise.all([
-            this.queryBus.execute<FindLocationListByUserIdQuery, ISelectLocation[]>(
-                new FindLocationListByUserIdQuery({
-                    userId: input.userId,
-                    cursor: this.parseCursor(input.query.cursor),
-                    limit: input.query.limit,
-                }),
-            ),
-            this.queryBus.execute<FindTotalLocationsByUserIdQuery, number>(
-                new FindTotalLocationsByUserIdQuery({
-                    userId: input.userId,
-                }),
-            ),
-        ]);
+        const locations = await this.queryBus.execute<
+            FindLocationListByUserIdQuery,
+            ISelectLocation[]
+        >(
+            new FindLocationListByUserIdQuery({
+                userId: input.userId,
+                cursor: this.parseCursor(input.query.cursor),
+                limit: input.query.limit,
+            }),
+        );
 
-        const pagination = cursorPagination(locations, input.query.limit);
-
-        return {
-            ...pagination,
-            total,
-        };
+        return cursorPagination(locations, input.query.limit);
     }
 
     parseCursor(cursor: string | null): ICursor | null {

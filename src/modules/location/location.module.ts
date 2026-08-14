@@ -20,6 +20,7 @@ import { FindManyLocationsByUserIdAndIdsHandler } from '@/modules/location/appli
 import { FindTotalLocationsByUserIdHandler } from '@/modules/location/applications/queries/findTotalLocationsByUserId/findTotalLocationsByUserId.handler';
 import { CreateLocationService } from '@/modules/location/applications/services/createLocation.service';
 import { DeleteLocationService } from '@/modules/location/applications/services/deleteLocation.service';
+import { FindLocationListAndTotalByUserIdService } from '@/modules/location/applications/services/findLocationListAndTotalByUserId.service';
 import { FindLocationListByUserIdService } from '@/modules/location/applications/services/findLocationListByUserId.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
 import { LocationSearchService } from '@/modules/location/applications/services/search/locationSearch.service';
@@ -51,6 +52,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         FindLocationByUserIdAndIdOrNullHandler,
         FindLocationByUserIdAndIdOrThrowHandler,
         FindLocationByUserIdAndNameOrNullHandler,
+        FindLocationListAndTotalByUserIdService,
         FindLocationListByUserIdHandler,
         FindManyLocationsByUserIdAndIdsHandler,
         FindTotalLocationsByUserIdHandler,
