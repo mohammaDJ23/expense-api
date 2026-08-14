@@ -57,7 +57,7 @@ import {
 
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
 import type { IId } from '@/core/types/id.type';
-import type { IListResult } from '@/core/types/list/listResult.type';
+import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal.type';
 import type { ITotal } from '@/core/types/total.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
@@ -101,7 +101,7 @@ export class BillController {
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindBillListRequestDto,
-    ): Promise<IListResult<IBill>> {
+    ): Promise<IListResultWithTotal<IBill>> {
         return this.billService.findListByUserId(user.id, query);
     }
 
