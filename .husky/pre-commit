@@ -3,11 +3,11 @@
 set -euo pipefail
 
 source ./.husky/husky.sh
-source ./scripts/common/logs.sh
+source ./scripts/logs.sh
 
 log_info "🚀 Running pre-commit checks..."
 
-pnpm run validate:branch:name
+pnpm run validate:branch:name:development
 
 pnpm run lint:staged
 

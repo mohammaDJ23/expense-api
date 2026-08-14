@@ -2,10 +2,10 @@
 
 set -euo pipefail
 
-source ./scripts/common/logs.sh
+source ./scripts/logs.sh
 
 create_image_name() {
-    local APP_NAME=$(source ./scripts/common/appName.sh)
+    local APP_NAME=$(source ./scripts/appName.sh)
 
     log_info "Create the image name..." >&2
 

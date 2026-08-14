@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ./scripts/common/logs.sh
+source ./scripts/logs.sh
 
 COMMIT_MSG_FILE="${1:-}"
 CONFIG_FILE="${CONFIG_FILE:-commitlint.config.js}"

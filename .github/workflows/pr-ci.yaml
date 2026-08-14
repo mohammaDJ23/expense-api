@@ -39,7 +39,7 @@ jobs:
 
             - name: Detect the branch name
               id: detect-branch-name
-              run: pnpm run detect:branch:name:ci
+              run: pnpm run detect:branch:name
 
             - name: Validate the branch name (non-master only)
               if: github.ref != 'refs/heads/master'

@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ./scripts/common/logs.sh
+source ./scripts/logs.sh
 
 detect_branch() {
     local detected_branch=""

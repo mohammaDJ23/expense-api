@@ -7,5 +7,5 @@ ENVIRONMENT="development"
 DOCKER_USERNAME="${DOCKER_USERNAME:-docker-username}"
 COMPOSE_FILE="docker-compose.development.yml"
 
-source ./scripts/common/docker/createImageName.sh
-source ./scripts/common/docker/entrypoint.sh
+source ./scripts/docker/createImageName.sh
+source ./scripts/docker/entrypoint.sh

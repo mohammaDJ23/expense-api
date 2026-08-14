@@ -6,5 +6,5 @@ PIPELINE="production"
 ENVIRONMENT="production"
 COMPOSE_FILE="docker-compose.production.yml"
 
-source ./scripts/common/docker/createImageName.sh
-source ./scripts/common/docker/entrypoint.sh
+source ./scripts/docker/createImageName.sh
+source ./scripts/docker/entrypoint.sh

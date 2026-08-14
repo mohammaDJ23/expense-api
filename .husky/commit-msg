@@ -3,7 +3,7 @@
 set -euo pipefail
 
 source ./.husky/husky.sh
-source ./scripts/common/logs.sh
+source ./scripts/logs.sh
 
 log_info "🚀 Running commit-msg checks..."
 
