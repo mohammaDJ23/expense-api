@@ -1,3 +1,27 @@
+## [4.3.2](https://github.com/mohammaDJ23/expense-api/compare/v4.3.1...v4.3.2) (2026-08-14)
+
+### ♻️ Code Refactoring
+
+- 244939 import ES as a service ([38ea037](https://github.com/mohammaDJ23/expense-api/commit/38ea037846ca93a9f123a1a1c4144e0afad9328e))
+- 244939 import ES as a service ([0221608](https://github.com/mohammaDJ23/expense-api/commit/02216086d10932f71440d0faa2008063f6e4145d))
+- 244939 update the message handlers of bill module ([89555d7](https://github.com/mohammaDJ23/expense-api/commit/89555d731f870b636ecce47ae33d54babe08552b))
+- 244939 update the message handlers of consumer module ([33c0799](https://github.com/mohammaDJ23/expense-api/commit/33c079964b081ade05ae46a0b50625ea95c621d7))
+- 244939 update the message handlers of location module ([51aa85a](https://github.com/mohammaDJ23/expense-api/commit/51aa85a20d6f566f44b66ed82f759ca56b9c9e1f))
+- 244939 update the message handlers of receiver module ([3092ee3](https://github.com/mohammaDJ23/expense-api/commit/3092ee302d413900e4dc72d160876f5a2d9215da))
+
+### 🔧 Chores
+
+- 244939 add the deleted user event to bill for ES to remove docs ([17d330e](https://github.com/mohammaDJ23/expense-api/commit/17d330e0a9affc07fa780e7cd85094c3fa93db01))
+- 244939 add the deleted user event to consumers for ES to remove docs ([066728f](https://github.com/mohammaDJ23/expense-api/commit/066728f8b001b51d443da8cea97cb5beaac16e11))
+- 244939 add the deleted user event to locations for ES to remove docs ([ad9ed2c](https://github.com/mohammaDJ23/expense-api/commit/ad9ed2c89bea60a57700ca3f12711430d8661caa))
+- 244939 add the deleted user event to receivers for ES to remove docs ([6080834](https://github.com/mohammaDJ23/expense-api/commit/6080834111e7792d6477efd175e86d0b88770a53))
+- 244939 add the outbox module to the user ([af77bc8](https://github.com/mohammaDJ23/expense-api/commit/af77bc813d46e025687e284258f4a43ced885cda))
+- 244939 add the outbox publisher to the delete user service ([9284cb4](https://github.com/mohammaDJ23/expense-api/commit/9284cb4ea27a3e763a42f81507c58f56e7bebe78))
+- 244939 add the users topics ([b0a4bf3](https://github.com/mohammaDJ23/expense-api/commit/b0a4bf3d42559625bdc691c64c00012f0cce11bd))
+- 244939 add users to TOutboxEventAggregateType ([047aeba](https://github.com/mohammaDJ23/expense-api/commit/047aebacf23349f4b522aef2925b3a9438eb47ea))
+- 244939 use InternalServerErrorException ([38e5eb4](https://github.com/mohammaDJ23/expense-api/commit/38e5eb4b06092ff987c736d89c11ed840b96a2a1))
+- 244939 use InternalServerErrorException ([33fb7ae](https://github.com/mohammaDJ23/expense-api/commit/33fb7aeffcb0168d5c3339728ead18cda6d00f93))
+
 ## [4.3.1](https://github.com/mohammaDJ23/expense-api/compare/v4.3.0...v4.3.1) (2026-08-13)
 
 ### 🔧 Chores
