@@ -5,7 +5,6 @@ import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/pro
 import { cursorPagination } from '@/core/utils/pagination/cursorPagination.util';
 import { parseCursor } from '@/core/utils/pagination/parseCursor.util';
 import { FindReceiverListByUserIdQuery } from '@/modules/receiver/applications/queries/findReceiverListByUserId/findReceiverListByUserId.query';
-import { FindTotalReceiversByUserIdQuery } from '@/modules/receiver/applications/queries/findTotalReceiversByUserId/findTotalReceiversByUserId.query';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IListResult } from '@/core/types/list/listResult.type';
@@ -26,27 +25,18 @@ export class FindReceiverListByUserIdService implements IService<
     constructor(private readonly queryBus: QueryBus) {}
 
     async execute(input: IInput): Promise<IListResult<ISelectReceiver>> {
-        const [receivers, total] = await Promise.all([
-            this.queryBus.execute<FindReceiverListByUserIdQuery, ISelectReceiver[]>(
-                new FindReceiverListByUserIdQuery({
-                    userId: input.userId,
-                    cursor: this.parseCursor(input.query.cursor),
-                    limit: input.query.limit,
-                }),
-            ),
-            this.queryBus.execute<FindTotalReceiversByUserIdQuery, number>(
-                new FindTotalReceiversByUserIdQuery({
-                    userId: input.userId,
-                }),
-            ),
-        ]);
+        const receivers = await this.queryBus.execute<
+            FindReceiverListByUserIdQuery,
+            ISelectReceiver[]
+        >(
+            new FindReceiverListByUserIdQuery({
+                userId: input.userId,
+                cursor: this.parseCursor(input.query.cursor),
+                limit: input.query.limit,
+            }),
+        );
 
-        const pagination = cursorPagination(receivers, input.query.limit);
-
-        return {
-            ...pagination,
-            total,
-        };
+        return cursorPagination(receivers, input.query.limit);
     }
 
     parseCursor(cursor: string | null): ICursor | null {

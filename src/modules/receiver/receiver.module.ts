@@ -22,6 +22,7 @@ import { FindReceiverListByUserIdHandler } from '@/modules/receiver/applications
 import { FindTotalReceiversByUserIdHandler } from '@/modules/receiver/applications/queries/findTotalReceiversByUserId/findTotalReceiversByUserId.handler';
 import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
 import { DeleteReceiverService } from '@/modules/receiver/applications/services/deleteReceiver.service';
+import { FindReceiverListAndTotalByUserIdService } from '@/modules/receiver/applications/services/findReceiverListAndTotalByUserId.service';
 import { FindReceiverListByUserIdService } from '@/modules/receiver/applications/services/findReceiverListByUserId.service';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
 import { ReceiverSearchService } from '@/modules/receiver/applications/services/search/receiverSearch.service';
@@ -48,6 +49,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         FindManyReceiversByUserIdAndIdsHandler,
         FindReceiverByUserIdAndIdOrNullHandler,
         FindReceiverByUserIdAndIdOrThrowHandler,
+        FindReceiverListAndTotalByUserIdService,
         FindReceiverByUserIdAndNameOrNullHandler,
         FindReceiverListByUserIdHandler,
         FindTotalReceiversByUserIdHandler,
