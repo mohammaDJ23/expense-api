@@ -1,0 +1,19 @@
+import { Module } from '@nestjs/common';
+
+import { CacheService } from './cache.service';
+import { CacheInvalidatorService } from './cacheInvalidator.service';
+import { CacheKeyService } from './cacheKey.service';
+import { CacheQueryHasherService } from './cacheQueryHasher.service';
+import { CacheQueryPipeline } from './cacheQueryPipeline.service';
+
+@Module({
+    providers: [
+        CacheQueryHasherService,
+        CacheKeyService,
+        CacheService,
+        CacheInvalidatorService,
+        CacheQueryPipeline,
+        CacheQueryHasherService,
+    ],
+})
+export class CacheModule {}
