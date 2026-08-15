@@ -6,7 +6,7 @@ import { CacheKeyService } from './cacheKey.service';
 import { CacheQueryHasherService } from './cacheQueryHasher.service';
 
 import type { CacheNamespace } from './cacheNamespace.enum';
-import type { TQuery } from './query.type';
+import type { TQuery } from '@/infrastructure/cqrs/query.type';
 
 @Injectable()
 export class CacheService {

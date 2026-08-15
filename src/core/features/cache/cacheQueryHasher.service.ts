@@ -2,8 +2,8 @@ import { createHash } from 'node:crypto';
 
 import { Injectable } from '@nestjs/common';
 
-import type { TQuery } from './query.type';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { TQuery } from '@/infrastructure/cqrs/query.type';
 
 @Injectable()
 export class CacheQueryHasherService implements IService<TQuery, string> {
