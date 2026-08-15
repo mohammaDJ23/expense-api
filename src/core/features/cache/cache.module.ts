@@ -4,7 +4,7 @@ import { CacheService } from './cache.service';
 import { CacheInvalidatorService } from './cacheInvalidator.service';
 import { CacheKeyService } from './cacheKey.service';
 import { CacheQueryHasherService } from './cacheQueryHasher.service';
-import { CacheQueryPipeline } from './cacheQueryPipeline.service';
+import { CacheQueryPipelineService } from './cacheQueryPipeline.service';
 
 @Module({
     providers: [
@@ -12,7 +12,7 @@ import { CacheQueryPipeline } from './cacheQueryPipeline.service';
         CacheKeyService,
         CacheService,
         CacheInvalidatorService,
-        CacheQueryPipeline,
+        CacheQueryPipelineService,
         CacheQueryHasherService,
     ],
 })

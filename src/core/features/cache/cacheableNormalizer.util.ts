@@ -1,7 +1,7 @@
 import { DEFAULT_CACHE_SCOPE, DEFAULT_CACHE_TTL } from './cache.constants';
 
 import type { ICacheable, INormalizedCacheable } from './cacheable.type';
-import type { TQuery } from './query.type';
+import type { TQuery } from '@/infrastructure/cqrs/query.type';
 
 export function cacheableNormalizer<T = TQuery>(options: ICacheable<T>): INormalizedCacheable<T> {
     return {
