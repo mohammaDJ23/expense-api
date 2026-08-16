@@ -3,7 +3,7 @@ import type { TQuery } from '@/infrastructure/cqrs/query.type';
 
 export interface ICacheable<T = TQuery> {
     namespace: CacheNamespace;
-    scope?(query: T): string;
+    scope?: (query: T) => string;
     ttl?: number;
 }
 
