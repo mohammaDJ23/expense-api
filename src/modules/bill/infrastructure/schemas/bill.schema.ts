@@ -30,9 +30,11 @@ export const bills = pgTable(
             .references(() => locations.id, { onDelete: 'restrict' }),
     },
     (table) => [
-        index('idx_bills_user_id_created_at').on(table.userId, table.createdAt),
+        index('idx_bills_user_id_created_at_id').on(table.userId, table.createdAt, table.id),
+        index('idx_bills_user_id_id').on(table.userId, table.id),
         index('idx_bills_user_id_location_id').on(table.userId, table.locationId),
         index('idx_bills_user_id_receiver_id').on(table.userId, table.receiverId),
+        index('idx_bills_user_id_purchased_at').on(table.userId, table.purchasedAt),
     ],
 );
 
