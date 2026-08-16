@@ -21,7 +21,8 @@ export const receivers = pgTable(
     },
     (table) => [
         uniqueIndex('uq_receivers_user_id_name').on(table.userId, table.name),
-        index('idx_receivers_user_id_created_at').on(table.userId, table.createdAt),
+        index('idx_receivers_user_id_id').on(table.userId, table.id),
+        index('idx_receivers_user_id_created_at_id').on(table.userId, table.createdAt, table.id),
     ],
 );
 
