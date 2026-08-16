@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
+import { CacheQueryPipelineService } from '@/core/features/cache/cacheQueryPipeline.service';
+
 import type { IQueryPipeline } from './queryPipeline.interface';
-import type { CacheQueryPipelineService } from '@/core/features/cache/cacheQueryPipeline.service';
 import type { TQuery } from '@/infrastructure/cqrs/query.type';
 
 @Injectable()
