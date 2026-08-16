@@ -15,5 +15,6 @@ import { CacheQueryPipelineService } from './cacheQueryPipeline.service';
         CacheQueryPipelineService,
         CacheQueryHasherService,
     ],
+    exports: [CacheQueryPipelineService],
 })
 export class CacheModule {}

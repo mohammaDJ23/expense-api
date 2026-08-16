@@ -30,7 +30,7 @@ export class CacheQueryPipelineService implements IQueryPipeline {
         try {
             const cached = await this.cacheService.get(cacheable.namespace, scopeId, query);
             if (cached !== null) {
-                return cached;
+                return JSON.parse(cached);
             }
         } catch {
             throw new InternalServerErrorException('Unable to retrieve data from the cache');
