@@ -21,7 +21,8 @@ export const locations = pgTable(
     },
     (table) => [
         uniqueIndex('uq_locations_user_id_name').on(table.userId, table.name),
-        index('idx_locations_user_id_created_at').on(table.userId, table.createdAt),
+        index('idx_locations_user_id_id').on(table.userId, table.id),
+        index('idx_locations_user_id_created_at_id').on(table.userId, table.createdAt, table.id),
     ],
 );
 
