@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindLocationByUserIdAndIdOrThrowQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.query';
 
 import type { IRelationLoaderService } from '@/core/interfaces/relations/relationLoaderService.interface';
@@ -17,10 +17,10 @@ export class LocationRelationLoaderService implements IRelationLoaderService<
     IInput,
     ISelectLocation
 > {
-    constructor(private readonly queryBus: QueryBus) {}
+    constructor(private readonly queryDispatcher: QueryDispatcher) {}
 
     load(input: IInput): Promise<ISelectLocation> {
-        return this.queryBus.execute<FindLocationByUserIdAndIdOrThrowQuery, ISelectLocation>(
+        return this.queryDispatcher.execute<FindLocationByUserIdAndIdOrThrowQuery, ISelectLocation>(
             new FindLocationByUserIdAndIdOrThrowQuery({
                 userId: input.userId,
                 id: input.bill.locationId,
