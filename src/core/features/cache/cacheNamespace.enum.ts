@@ -4,4 +4,5 @@ export enum CacheNamespace {
     CONSUMER = 'consumer',
     LOCATION = 'location',
     USER = 'user',
+    BILL_CONSUMER = 'bill_consumer',
 }

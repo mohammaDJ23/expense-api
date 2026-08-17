@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { whenNotEmpty } from '@/core/utils/whenNotEmpty.util';
 import { FindManyBillConsumerTargetsByRefIdsQuery } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.query';
 
@@ -9,6 +9,7 @@ import type { ITargetBillConsumer } from '@/modules/consumer/domain/types/billCo
 
 interface IInput {
     billIds: string[];
+    userId: string;
 }
 
 @Injectable()
@@ -16,13 +17,17 @@ export class BillConsumerTargetsRelationLoaderService implements IRelationLoader
     IInput,
     ITargetBillConsumer[]
 > {
-    constructor(private readonly queryBus: QueryBus) {}
+    constructor(private readonly queryDispatcher: QueryDispatcher) {}
 
     load(input: IInput): Promise<ITargetBillConsumer[]> {
         return whenNotEmpty(input.billIds, (billIds) =>
-            this.queryBus.execute<FindManyBillConsumerTargetsByRefIdsQuery, ITargetBillConsumer[]>(
+            this.queryDispatcher.execute<
+                FindManyBillConsumerTargetsByRefIdsQuery,
+                ITargetBillConsumer[]
+            >(
                 new FindManyBillConsumerTargetsByRefIdsQuery({
                     billIds,
+                    userId: input.userId,
                 }),
             ),
         );
