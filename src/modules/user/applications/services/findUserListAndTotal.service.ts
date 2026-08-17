@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindTotalUsersQuery } from '@/modules/user/applications/queries/findTotalUsers/findTotalUsers.query';
 
 import { FindUserListService } from './findUserList.service';
@@ -20,14 +20,14 @@ export class FindUserListAndTotalService implements IService<
     IListResultWithTotal<ISelectUser>
 > {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly findUserListService: FindUserListService,
     ) {}
 
     async execute(input: IInput): Promise<IListResultWithTotal<ISelectUser>> {
         const [userList, total] = await Promise.all([
             this.findUserListService.execute(input),
-            this.queryBus.execute<FindTotalUsersQuery, number>(new FindTotalUsersQuery()),
+            this.queryDispatcher.execute<FindTotalUsersQuery, number>(new FindTotalUsersQuery()),
         ]);
 
         return {
