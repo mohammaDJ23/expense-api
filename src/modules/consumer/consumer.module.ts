@@ -16,9 +16,7 @@ import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/co
 import { ExistsConsumerByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.handler';
 import { ExistsConsumerByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndIds/existsConsumerByUserIdAndIds.handler';
 import { ExistsConsumerByUserIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndName/existsConsumerByUserIdAndName.handler';
-import { FindConsumerByUserIdAndIdOrNullHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndIdOrNull/findConsumerByUserIdAndIdOrNull.handler';
 import { FindConsumerByUserIdAndIdOrThrowHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndIdOrThrow/findConsumerByUserIdAndIdOrThrow.handler';
-import { FindConsumerByUserIdAndNameOrNullHandler } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndNameOrNull/findConsumerByUserIdAndNameOrNull.handler';
 import { FindConsumerListByUserIdHandler } from '@/modules/consumer/applications/queries/findConsumerListByUserId/findConsumerListByUserId.handler';
 import { FindManyBillConsumerTargetsByRefIdsHandler } from '@/modules/consumer/applications/queries/findManyBillConsumerTargetsByRefIds/findManyBillConsumerTargetsByRefIds.handler';
 import { FindManyBillsConsumersByRefIdHandler } from '@/modules/consumer/applications/queries/findManyBillsConsumersByRefId/findManyBillsConsumersByRefId.handler';
@@ -53,7 +51,6 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         CreateConsumerService,
         DeleteConsumerService,
         UpdateConsumerService,
-        FindConsumerByUserIdAndIdOrNullHandler,
         FindConsumerByUserIdAndIdOrThrowHandler,
         FindConsumerListByUserIdHandler,
         FindManyConsumersByUserIdAndIdsHandler,
@@ -62,7 +59,6 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ExistsConsumerByUserIdAndNameHandler,
         DeleteConsumerHandler,
         UpdateConsumerHandler,
-        FindConsumerByUserIdAndNameOrNullHandler,
         FindTotalConsumersByUserIdHandler,
         FindConsumerListAndTotalByUserIdService,
         FindConsumerListByUserIdService,
