@@ -4,10 +4,10 @@ import {
     Injectable,
     ServiceUnavailableException,
 } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
@@ -25,7 +25,7 @@ export class LocalForgotPasswordService implements IService<
     boolean
 > {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly passwordMailerService: PasswordMailerService,
         private readonly passwordTokenService: PasswordTokenService,
         private readonly passwordStorageService: PasswordStorageService,
@@ -41,7 +41,10 @@ export class LocalForgotPasswordService implements IService<
             throw new ProcessFailedInternalServerErrorException();
         }
 
-        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+        const user = await this.queryDispatcher.execute<
+            FindUserByEmailOrNullQuery,
+            ISelectUser | null
+        >(
             new FindUserByEmailOrNullQuery({
                 email: input.email,
             }),

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AccessTokenService } from '@/core/features/accessToken/accessToken.service';
+import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 
@@ -10,7 +11,7 @@ import { JwtAuthGuard } from './jwtAuth.guard';
 import { JwtAuthStrategy } from './jwtAuth.strategy';
 
 @Module({
-    imports: [CqrsModule, JwtModule],
+    imports: [CqrsModule, JwtModule, QueryDispatcherModule],
     providers: [
         GoogleAuthGuard,
         GoogleAuthStrategy,

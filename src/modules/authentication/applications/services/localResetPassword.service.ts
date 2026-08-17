@@ -4,9 +4,10 @@ import {
     Injectable,
     InternalServerErrorException,
 } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { ResetPasswordMailerService } from '@/modules/authentication/applications/services/resetPasswordMailer.service';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
@@ -25,7 +26,7 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 @Injectable()
 export class LocalResetPasswordService implements IService<LocalResetPasswordRequestDto, boolean> {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly commandBus: CommandBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly passwordTokenService: PasswordTokenService,
@@ -51,9 +52,10 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
             }
         }
 
-        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
-            new FindUserByEmailOrNullQuery({ email: payload.email }),
-        );
+        const user = await this.queryDispatcher.execute<
+            FindUserByEmailOrNullQuery,
+            ISelectUser | null
+        >(new FindUserByEmailOrNullQuery({ email: payload.email }));
 
         if (!user) {
             throw new BadRequestException();

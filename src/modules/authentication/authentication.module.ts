@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthenticationModule as CoreAuthenticationModule } from '@/core/features/authentication/authentication.module';
+import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
@@ -24,7 +25,7 @@ import { AuthenticationController } from '@/modules/authentication/interface/con
 import { UserModule } from '@/modules/user/user.module';
 
 @Module({
-    imports: [CqrsModule, JwtModule, UserModule, CoreAuthenticationModule],
+    imports: [CqrsModule, JwtModule, UserModule, CoreAuthenticationModule, QueryDispatcherModule],
     controllers: [AuthenticationController],
     providers: [
         AuthenticationService,

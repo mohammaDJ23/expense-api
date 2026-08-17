@@ -1,9 +1,10 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { AccessTokenService } from '@/core/features/accessToken/accessToken.service';
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
@@ -24,14 +25,17 @@ interface IInput {
 @Injectable()
 export class LocalLoginService implements IService<IInput, ISelectUser> {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly commandBus: CommandBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly accessTokenService: AccessTokenService,
     ) {}
 
     async execute(input: IInput): Promise<ISelectUser> {
-        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+        const user = await this.queryDispatcher.execute<
+            FindUserByEmailOrNullQuery,
+            ISelectUser | null
+        >(
             new FindUserByEmailOrNullQuery({
                 email: input.body.email,
             }),

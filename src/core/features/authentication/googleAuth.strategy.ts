@@ -1,9 +1,10 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { Strategy, type Profile } from 'passport-google-oauth20';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { readSecret } from '@/core/utils/readSecret.util';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
@@ -17,7 +18,7 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly commandBus: CommandBus,
     ) {
         const env = new Env();
@@ -36,7 +37,10 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
             throw new UnauthorizedException();
         }
 
-        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
+        const user = await this.queryDispatcher.execute<
+            FindUserByEmailOrNullQuery,
+            ISelectUser | null
+        >(
             new FindUserByEmailOrNullQuery({
                 email: email.value,
             }),

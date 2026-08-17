@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { AuthorizationModule } from '@/core/features/authorization/authorization.module';
+import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { CreateUserHandler } from '@/modules/user/applications/commands/createUser/createUser.handler';
@@ -27,7 +28,13 @@ import { UserRepository } from '@/modules/user/infrastructure/repositories/user.
 import { UserController } from '@/modules/user/interfaces/controllers/v1.controller';
 
 @Module({
-    imports: [CqrsModule, AuthenticationModule, AuthorizationModule, OutboxModule],
+    imports: [
+        CqrsModule,
+        AuthenticationModule,
+        AuthorizationModule,
+        OutboxModule,
+        QueryDispatcherModule,
+    ],
     controllers: [UserController],
     providers: [
         UserService,
