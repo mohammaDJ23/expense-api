@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindTotalUsersQuery } from '@/modules/user/applications/queries/findTotalUsers/findTotalUsers.query';
 import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 
@@ -19,6 +20,7 @@ import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/update
 export class UserService {
     constructor(
         private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly updateUserService: UpdateUserService,
         private readonly deleteUserService: DeleteUserService,
         private readonly findUserListAndTotalService: FindUserListAndTotalService,
@@ -43,7 +45,7 @@ export class UserService {
     }
 
     findTotal(): Promise<ITotal> {
-        return this.queryBus
+        return this.queryDispatcher
             .execute<FindTotalUsersQuery, number>(new FindTotalUsersQuery())
             .then((total) => ({ total }));
     }
