@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
+import { CacheModule } from '@/core/features/cache/cache.module';
 import { ExcelModule } from '@/core/features/export/excel/excel.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
@@ -8,9 +9,14 @@ import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearc
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
 import { DeleteBillHandler } from '@/modules/bill/applications/commands/deleteBill/deleteBill.handler';
 import { UpdateBillHandler } from '@/modules/bill/applications/commands/updateBill/updateBill.handler';
+import { BillMessageCacheInvalidatorProcessor } from '@/modules/bill/applications/messages/billMessageCacheInvalidator.processor';
+import { CreatedBillMessageCacheInvalidatorHandler } from '@/modules/bill/applications/messages/createdBill/createdBillMessageCacheInvalidator.handler';
 import { CreatedBillMessageElasticsearchHandler } from '@/modules/bill/applications/messages/createdBill/createdBillMessageElasticsearch.handler';
+import { DeletedBillMessageCacheInvalidatorHandler } from '@/modules/bill/applications/messages/deletedBill/deletedBillMessageCacheInvalidator.handler';
 import { DeletedBillMessageElasticsearchHandler } from '@/modules/bill/applications/messages/deletedBill/deletedBillMessageElasticsearch.handler';
+import { DeletedUserMessageCacheInvalidatorHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserMessageCacheInvalidator.handler';
 import { DeletedUserMessageElasticsearchHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserMessageElasticsearch.handler';
+import { UpdatedBillMessageCacheInvalidatorHandler } from '@/modules/bill/applications/messages/updatedBill/updatedBillMessageCacheInvalidator.handler';
 import { UpdatedBillMessageElasticsearchHandler } from '@/modules/bill/applications/messages/updatedBill/updatedBillMessageElasticsearch.handler';
 import { ExistsBillByUserIdAndIdHandler } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.handler';
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
@@ -77,6 +83,7 @@ import { UserModule } from '@/modules/user/user.module';
         UserModule,
         ExcelModule,
         QueryDispatcherModule,
+        CacheModule,
     ],
     providers: [
         BillService,
@@ -132,6 +139,11 @@ import { UserModule } from '@/modules/user/user.module';
         BillsExportJob,
         BillsExportMailerService,
         BillSearchSyncService,
+        CreatedBillMessageCacheInvalidatorHandler,
+        DeletedBillMessageCacheInvalidatorHandler,
+        DeletedUserMessageCacheInvalidatorHandler,
+        UpdatedBillMessageCacheInvalidatorHandler,
+        BillMessageCacheInvalidatorProcessor,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService, BillSearchSyncService],
