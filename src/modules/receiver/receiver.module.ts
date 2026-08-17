@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
+import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { OutboxModule } from '@/modules/outbox/outbox.module';
@@ -40,7 +41,13 @@ import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositori
 import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1.controller';
 
 @Module({
-    imports: [CqrsModule, AuthenticationModule, ElasticsearchModule, OutboxModule],
+    imports: [
+        CqrsModule,
+        AuthenticationModule,
+        ElasticsearchModule,
+        OutboxModule,
+        QueryDispatcherModule,
+    ],
     controllers: [ReceiverController],
     providers: [
         CreateReceiverHandler,
