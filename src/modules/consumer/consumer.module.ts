@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
+import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { CreateConsumerHandler } from '@/modules/consumer/applications/commands/createConsumer/createConsumer.handler';
@@ -45,7 +46,13 @@ import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1
 import { OutboxModule } from '@/modules/outbox/outbox.module';
 
 @Module({
-    imports: [CqrsModule, AuthenticationModule, ElasticsearchModule, OutboxModule],
+    imports: [
+        CqrsModule,
+        AuthenticationModule,
+        ElasticsearchModule,
+        OutboxModule,
+        QueryDispatcherModule,
+    ],
     controllers: [ConsumerController],
     providers: [
         CreateConsumerService,
