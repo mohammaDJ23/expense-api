@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindReceiverByUserIdAndIdOrThrowQuery } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.query';
 
 import type { IRelationLoaderService } from '@/core/interfaces/relations/relationLoaderService.interface';
@@ -17,10 +17,10 @@ export class ReceiverRelationLoaderService implements IRelationLoaderService<
     IInput,
     ISelectReceiver
 > {
-    constructor(private readonly queryBus: QueryBus) {}
+    constructor(private readonly queryDispatcher: QueryDispatcher) {}
 
     load(input: IInput): Promise<ISelectReceiver> {
-        return this.queryBus.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
+        return this.queryDispatcher.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
             new FindReceiverByUserIdAndIdOrThrowQuery({
                 userId: input.userId,
                 id: input.bill.receiverId,
