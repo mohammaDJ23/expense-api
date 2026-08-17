@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindBillByUserIdAndIdOrThrowQuery } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.query';
 import { BillAssemblerService } from '@/modules/bill/applications/services/relations/billAssembler.service';
 
@@ -16,17 +16,23 @@ interface IInput {
 @Injectable()
 export class FindBillByUserIdAndIdOrThrowService implements IService<IInput, IBill> {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly billAssemblerService: BillAssemblerService,
     ) {}
 
     async execute(input: IInput): Promise<IBill> {
-        const bill = await this.queryBus.execute<FindBillByUserIdAndIdOrThrowQuery, ISelectBill>(
+        const bill = await this.queryDispatcher.execute<
+            FindBillByUserIdAndIdOrThrowQuery,
+            ISelectBill
+        >(
             new FindBillByUserIdAndIdOrThrowQuery({
                 userId: input.userId,
                 id: input.billId,
             }),
         );
-        return this.billAssemblerService.assemble({ userId: input.userId, bill });
+        return this.billAssemblerService.assemble({
+            userId: input.userId,
+            bill,
+        });
     }
 }

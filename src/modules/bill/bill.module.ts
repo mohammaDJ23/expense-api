@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { ExcelModule } from '@/core/features/export/excel/excel.module';
+import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
@@ -75,6 +76,7 @@ import { UserModule } from '@/modules/user/user.module';
         OutboxModule,
         UserModule,
         ExcelModule,
+        QueryDispatcherModule,
     ],
     providers: [
         BillService,
