@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindReceiverByUserIdAndIdOrThrowQuery } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.query';
 import { FindTotalReceiversByUserIdQuery } from '@/modules/receiver/applications/queries/findTotalReceiversByUserId/findTotalReceiversByUserId.query';
 
@@ -20,6 +21,7 @@ import type { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dto
 export class ReceiverService {
     constructor(
         private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly createReceiverService: CreateReceiverService,
         private readonly updateReceiverService: UpdateReceiverService,
         private readonly deleteReceiverService: DeleteReceiverService,
@@ -46,7 +48,7 @@ export class ReceiverService {
     }
 
     findByUserIdAndId(userId: string, receiverId: string): Promise<ISelectReceiver> {
-        return this.queryBus.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
+        return this.queryDispatcher.execute<FindReceiverByUserIdAndIdOrThrowQuery, ISelectReceiver>(
             new FindReceiverByUserIdAndIdOrThrowQuery({ userId, id: receiverId }),
         );
     }
