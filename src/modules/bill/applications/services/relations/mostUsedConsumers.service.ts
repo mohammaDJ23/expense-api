@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindMostUsedConsumersQuery } from '@/modules/bill/applications/queries/findMostUsedConsumers/findMostUsedConsumers.query';
 
 import { ConsumersRelationLoaderService } from './consumersRelationLoader.service';
@@ -17,12 +17,15 @@ interface IProps {
 @Injectable()
 export class MostUsedConsumersService implements IService<IProps, IMostUsedConsumer[]> {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly consumersRelationLoaderService: ConsumersRelationLoaderService,
     ) {}
 
     async execute(input: IProps): Promise<IMostUsedConsumer[]> {
-        const mostUsed = await this.queryBus.execute<FindMostUsedConsumersQuery, IMostUsed[]>(
+        const mostUsed = await this.queryDispatcher.execute<
+            FindMostUsedConsumersQuery,
+            IMostUsed[]
+        >(
             new FindMostUsedConsumersQuery({
                 userId: input.userId,
                 limit: input.limit,
