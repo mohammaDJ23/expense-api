@@ -4,7 +4,6 @@ import { and, desc, eq, inArray, lt, ne, or } from 'drizzle-orm';
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
-import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
 import { toExistsByCount } from '@/infrastructure/database/drizzle/transformers/toExistsByCount.transformer';
 import {
@@ -49,16 +48,6 @@ export class ReceiverRepository implements IReceiverRepository {
                 .returning()
                 .execute(),
             'Unable to delete',
-        );
-    }
-
-    findByUserIdAndNameOrNull(userId: string, name: string): Promise<ISelectReceiver | null> {
-        return toEntityOrNull(
-            this.drizzleRepository.db
-                .select()
-                .from(receivers)
-                .where(and(eq(receivers.userId, userId), eq(receivers.name, name)))
-                .execute(),
         );
     }
 

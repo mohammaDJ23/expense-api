@@ -4,7 +4,6 @@ import type { IExistsByUserIdAndExcludingIdAndNameRepository } from '@/core/inte
 import type { IExistsByUserIdAndIdRepository } from '@/core/interfaces/repositories/existsByUserIdAndIdRepository.interface';
 import type { IExistsByUserIdAndNameRepository } from '@/core/interfaces/repositories/existsByUserIdAndNameRepository.interface';
 import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrThrowRepository.interface';
-import type { IFindByUserIdAndNameOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndNameOrNullRepository.interface';
 import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories/findListByUserIdRepository.interface';
 import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
 import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
@@ -22,7 +21,6 @@ export interface IReceiverRepository
         IFindByUserIdAndIdOrThrowRepository<ISelectReceiver>,
         IFindManyByUserIdAndIdsRepository<ISelectReceiver>,
         IFindListByUserIdRepository<ISelectReceiver>,
-        IFindByUserIdAndNameOrNullRepository<ISelectReceiver>,
         IExistsByUserIdAndIdRepository,
         IExistsByUserIdAndExcludingIdAndNameRepository,
         IExistsByUserIdAndNameRepository,
