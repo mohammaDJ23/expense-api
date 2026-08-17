@@ -3,7 +3,6 @@ import type { IDeleteByUserIdAndIdRepository } from '@/core/interfaces/repositor
 import type { IExistsByUserIdAndExcludingIdAndNameRepository } from '@/core/interfaces/repositories/existsByUserIdAndExcludingIdAndNameRepository.interface';
 import type { IExistsByUserIdAndIdRepository } from '@/core/interfaces/repositories/existsByUserIdAndIdRepository.interface';
 import type { IExistsByUserIdAndNameRepository } from '@/core/interfaces/repositories/existsByUserIdAndNameRepository.interface';
-import type { IFindByUserIdAndIdOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrNullRepository.interface';
 import type { IFindByUserIdAndIdOrThrowRepository } from '@/core/interfaces/repositories/findByUserIdAndIdOrThrowRepository.interface';
 import type { IFindByUserIdAndNameOrNullRepository } from '@/core/interfaces/repositories/findByUserIdAndNameOrNullRepository.interface';
 import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories/findListByUserIdRepository.interface';
@@ -20,7 +19,6 @@ export interface IReceiverRepository
         ICreateRepository<IInsertReceiver, ISelectReceiver>,
         IUpdateRepository<IInsertReceiver & Required<Pick<IInsertReceiver, 'id'>>, ISelectReceiver>,
         IDeleteByUserIdAndIdRepository<ISelectReceiver>,
-        IFindByUserIdAndIdOrNullRepository<ISelectReceiver>,
         IFindByUserIdAndIdOrThrowRepository<ISelectReceiver>,
         IFindManyByUserIdAndIdsRepository<ISelectReceiver>,
         IFindListByUserIdRepository<ISelectReceiver>,

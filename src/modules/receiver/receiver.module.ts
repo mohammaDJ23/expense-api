@@ -16,7 +16,6 @@ import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/re
 import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.handler';
 import { ExistsReceiverByUserIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndName/existsReceiverByUserIdAndName.handler';
 import { FindManyReceiversByUserIdAndIdsHandler } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.handler';
-import { FindReceiverByUserIdAndIdOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrNull/findReceiverByUserIdAndIdOrNull.handler';
 import { FindReceiverByUserIdAndIdOrThrowHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.handler';
 import { FindReceiverByUserIdAndNameOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndNameOrNull/findReceiverByUserIdAndNameOrNull.handler';
 import { FindReceiverListByUserIdHandler } from '@/modules/receiver/applications/queries/findReceiverListByUserId/findReceiverListByUserId.handler';
@@ -54,7 +53,6 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         DeleteReceiverHandler,
         UpdateReceiverHandler,
         FindManyReceiversByUserIdAndIdsHandler,
-        FindReceiverByUserIdAndIdOrNullHandler,
         FindReceiverByUserIdAndIdOrThrowHandler,
         FindReceiverListAndTotalByUserIdService,
         FindReceiverByUserIdAndNameOrNullHandler,

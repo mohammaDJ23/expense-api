@@ -73,16 +73,6 @@ export class ReceiverRepository implements IReceiverRepository {
         );
     }
 
-    findByUserIdAndIdOrNull(userId: string, id: string): Promise<ISelectReceiver | null> {
-        return toEntityOrNull(
-            this.drizzleRepository.db
-                .select()
-                .from(receivers)
-                .where(and(eq(receivers.userId, userId), eq(receivers.id, id)))
-                .execute(),
-        );
-    }
-
     findManyByUserIdAndIds(userId: string, ids: string[]): Promise<ISelectReceiver[]> {
         return toEntities(
             this.drizzleRepository.db
