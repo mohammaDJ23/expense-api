@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
@@ -12,9 +13,7 @@ import { UpdatedLocationMessageElasticsearchHandler } from '@/modules/location/a
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
 import { ExistsLocationByUserIdAndIdHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.handler';
 import { ExistsLocationByUserIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndName/existsLocationByUserIdAndName.handler';
-import { FindLocationByUserIdAndIdOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrNull/findLocationByUserIdAndIdOrNull.handler';
 import { FindLocationByUserIdAndIdOrThrowHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.handler';
-import { FindLocationByUserIdAndNameOrNullHandler } from '@/modules/location/applications/queries/findLocationByUserIdAndNameOrNull/findLocationByUserIdAndNameOrNull.handler';
 import { FindLocationListByUserIdHandler } from '@/modules/location/applications/queries/findLocationListByUserId/findLocationListByUserId.handler';
 import { FindManyLocationsByUserIdAndIdsHandler } from '@/modules/location/applications/queries/findManyLocationsByUserIdAndIds/findManyLocationsByUserIdAndIds.handler';
 import { FindTotalLocationsByUserIdHandler } from '@/modules/location/applications/queries/findTotalLocationsByUserId/findTotalLocationsByUserId.handler';
@@ -39,7 +38,7 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
 import { OutboxModule } from '@/modules/outbox/outbox.module';
 
 @Module({
-    imports: [CqrsModule, ElasticsearchModule, OutboxModule],
+    imports: [CqrsModule, ElasticsearchModule, OutboxModule, QueryDispatcherModule],
     controllers: [LocationController],
     providers: [
         LocationService,
@@ -49,9 +48,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         CreateLocationHandler,
         UpdateLocationHandler,
         DeleteLocationHandler,
-        FindLocationByUserIdAndIdOrNullHandler,
         FindLocationByUserIdAndIdOrThrowHandler,
-        FindLocationByUserIdAndNameOrNullHandler,
         FindLocationListAndTotalByUserIdService,
         FindLocationListByUserIdHandler,
         FindManyLocationsByUserIdAndIdsHandler,
