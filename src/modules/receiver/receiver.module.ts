@@ -17,7 +17,6 @@ import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applicati
 import { ExistsReceiverByUserIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndName/existsReceiverByUserIdAndName.handler';
 import { FindManyReceiversByUserIdAndIdsHandler } from '@/modules/receiver/applications/queries/findManyReceiversByUserIdAndIds/findManyReceiversByUserIdAndIds.handler';
 import { FindReceiverByUserIdAndIdOrThrowHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.handler';
-import { FindReceiverByUserIdAndNameOrNullHandler } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndNameOrNull/findReceiverByUserIdAndNameOrNull.handler';
 import { FindReceiverListByUserIdHandler } from '@/modules/receiver/applications/queries/findReceiverListByUserId/findReceiverListByUserId.handler';
 import { FindTotalReceiversByUserIdHandler } from '@/modules/receiver/applications/queries/findTotalReceiversByUserId/findTotalReceiversByUserId.handler';
 import { CreateReceiverService } from '@/modules/receiver/applications/services/createReceiver.service';
@@ -55,7 +54,6 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         FindManyReceiversByUserIdAndIdsHandler,
         FindReceiverByUserIdAndIdOrThrowHandler,
         FindReceiverListAndTotalByUserIdService,
-        FindReceiverByUserIdAndNameOrNullHandler,
         FindReceiverListByUserIdHandler,
         FindTotalReceiversByUserIdHandler,
         FindReceiverListByUserIdService,
