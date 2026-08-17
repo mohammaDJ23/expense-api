@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindMostUsedReceiversQuery } from '@/modules/bill/applications/queries/findMostUsedReceivers/findMostUsedReceivers.query';
 
 import { ReceiversRelationLoaderService } from './receiversRelationLoader.service';
@@ -17,12 +17,15 @@ interface IProps {
 @Injectable()
 export class MostUsedReceiversService implements IService<IProps, IMostUsedReceiver[]> {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly receiversRelationLoaderService: ReceiversRelationLoaderService,
     ) {}
 
     async execute(input: IProps): Promise<IMostUsedReceiver[]> {
-        const mostUsed = await this.queryBus.execute<FindMostUsedReceiversQuery, IMostUsed[]>(
+        const mostUsed = await this.queryDispatcher.execute<
+            FindMostUsedReceiversQuery,
+            IMostUsed[]
+        >(
             new FindMostUsedReceiversQuery({
                 userId: input.userId,
                 limit: input.limit,
