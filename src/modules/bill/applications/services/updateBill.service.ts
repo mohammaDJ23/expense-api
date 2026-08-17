@@ -66,6 +66,7 @@ export class UpdateBillService implements IService<IInput, IId> {
             {
                 const billsConsumers = await this.billsConsumersRelationLoaderService.load({
                     billId: input.body.id,
+                    userId: input.userId,
                 });
 
                 existenceConsumerIds = billsConsumers.map(
