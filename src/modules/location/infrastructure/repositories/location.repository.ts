@@ -4,7 +4,6 @@ import { and, desc, eq, inArray, lt, ne, or } from 'drizzle-orm';
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
-import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
 import { toExistsByCount } from '@/infrastructure/database/drizzle/transformers/toExistsByCount.transformer';
 import {
@@ -52,16 +51,6 @@ export class LocationRepository implements ILocationRepository {
         );
     }
 
-    findByUserIdAndNameOrNull(userId: string, name: string): Promise<ISelectLocation | null> {
-        return toEntityOrNull(
-            this.drizzleRepository.db
-                .select()
-                .from(locations)
-                .where(and(eq(locations.userId, userId), eq(locations.name, name)))
-                .execute(),
-        );
-    }
-
     findByUserIdAndIdOrThrow(userId: string, id: string): Promise<ISelectLocation> {
         return toEntityOrThrow(
             this.drizzleRepository.db
@@ -70,16 +59,6 @@ export class LocationRepository implements ILocationRepository {
                 .where(and(eq(locations.userId, userId), eq(locations.id, id)))
                 .execute(),
             'Unable to find',
-        );
-    }
-
-    findByUserIdAndIdOrNull(userId: string, id: string): Promise<ISelectLocation | null> {
-        return toEntityOrNull(
-            this.drizzleRepository.db
-                .select()
-                .from(locations)
-                .where(and(eq(locations.userId, userId), eq(locations.id, id)))
-                .execute(),
         );
     }
 
