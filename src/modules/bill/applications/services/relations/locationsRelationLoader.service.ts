@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { whenNotEmpty } from '@/core/utils/whenNotEmpty.util';
 import { FindManyLocationsByUserIdAndIdsQuery } from '@/modules/location/applications/queries/findManyLocationsByUserIdAndIds/findManyLocationsByUserIdAndIds.query';
 
@@ -17,11 +17,11 @@ export class LocationsRelationLoaderService implements IRelationLoaderService<
     IInput,
     ISelectLocation[]
 > {
-    constructor(private readonly queryBus: QueryBus) {}
+    constructor(private readonly queryDispatcher: QueryDispatcher) {}
 
     load(input: IInput): Promise<ISelectLocation[]> {
         return whenNotEmpty(input.locationIds, (locationIds) =>
-            this.queryBus.execute<FindManyLocationsByUserIdAndIdsQuery, ISelectLocation[]>(
+            this.queryDispatcher.execute<FindManyLocationsByUserIdAndIdsQuery, ISelectLocation[]>(
                 new FindManyLocationsByUserIdAndIdsQuery({
                     userId: input.userId,
                     ids: locationIds,
