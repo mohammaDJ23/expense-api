@@ -5,7 +5,7 @@ interface IProps {
     email: string;
 }
 
-@Cacheable({
+@Cacheable<FindUserByEmailOrNullQuery>({
     namespace: CacheNamespace.USER,
 })
 export class FindUserByEmailOrNullQuery {

@@ -8,7 +8,7 @@ interface IProps {
     limit: number;
 }
 
-@Cacheable({
+@Cacheable<FindUserListQuery>({
     namespace: CacheNamespace.USER,
 })
 export class FindUserListQuery {
