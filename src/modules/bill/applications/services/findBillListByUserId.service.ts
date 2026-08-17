@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { cursorPagination } from '@/core/utils/pagination/cursorPagination.util';
 import { parseCursor } from '@/core/utils/pagination/parseCursor.util';
 import { FindBillListByUserIdQuery } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.query';
@@ -22,12 +22,12 @@ interface IInput {
 @Injectable()
 export class FindBillListByUserIdService implements IService<IInput, IListResult<IBill>> {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly billsAssemblerService: BillsAssemblerService,
     ) {}
 
     async execute(input: IInput): Promise<IListResult<IBill>> {
-        const bills = await this.queryBus.execute<FindBillListByUserIdQuery, ISelectBill[]>(
+        const bills = await this.queryDispatcher.execute<FindBillListByUserIdQuery, ISelectBill[]>(
             new FindBillListByUserIdQuery({
                 userId: input.userId,
                 cursor: this.parseCursor(input.query.cursor),
