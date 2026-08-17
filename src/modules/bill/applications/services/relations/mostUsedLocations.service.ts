@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindMostUsedLocationsQuery } from '@/modules/bill/applications/queries/findMostUsedLocations/findMostUsedLocations.query';
 
 import { LocationsRelationLoaderService } from './locationsRelationLoader.service';
@@ -17,12 +17,15 @@ interface IProps {
 @Injectable()
 export class MostUsedLocationsService implements IService<IProps, IMostUsedLocation[]> {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly locationsRelationLoaderService: LocationsRelationLoaderService,
     ) {}
 
     async execute(input: IProps): Promise<IMostUsedLocation[]> {
-        const mostUsed = await this.queryBus.execute<FindMostUsedLocationsQuery, IMostUsed[]>(
+        const mostUsed = await this.queryDispatcher.execute<
+            FindMostUsedLocationsQuery,
+            IMostUsed[]
+        >(
             new FindMostUsedLocationsQuery({
                 userId: input.userId,
                 limit: input.limit,
