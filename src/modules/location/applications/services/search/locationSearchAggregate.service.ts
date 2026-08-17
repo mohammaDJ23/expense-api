@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { whenNotEmpty } from '@/core/utils/whenNotEmpty.util';
 import { FindManyLocationsByUserIdAndIdsQuery } from '@/modules/location/applications/queries/findManyLocationsByUserIdAndIds/findManyLocationsByUserIdAndIds.query';
 
@@ -9,11 +9,11 @@ import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/
 
 @Injectable()
 export class LocationSearchAggregateService implements IElasticsearchSearchAggregate<ISelectLocation> {
-    constructor(private readonly queryBus: QueryBus) {}
+    constructor(private readonly queryDispatcher: QueryDispatcher) {}
 
     aggregate(userId: string, ids: string[]): Promise<ISelectLocation[]> {
         return whenNotEmpty(ids, (ids) =>
-            this.queryBus.execute<FindManyLocationsByUserIdAndIdsQuery, ISelectLocation[]>(
+            this.queryDispatcher.execute<FindManyLocationsByUserIdAndIdsQuery, ISelectLocation[]>(
                 new FindManyLocationsByUserIdAndIdsQuery({
                     userId,
                     ids,
