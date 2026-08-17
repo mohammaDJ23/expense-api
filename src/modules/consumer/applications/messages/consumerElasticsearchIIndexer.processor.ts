@@ -13,8 +13,8 @@ export class ConsumerElasticsearchIIndexerProcessor implements IProcessor<
 > {
     constructor(private readonly elasticsearchService: ElasticSearchService) {}
 
-    async process(batch: IMessageBatch<ISelectConsumer>[]): Promise<void> {
-        const operations = batch.flatMap<estypes.BulkOperationContainer | ISelectConsumer>(
+    async process(input: IMessageBatch<ISelectConsumer>[]): Promise<void> {
+        const operations = input.flatMap<estypes.BulkOperationContainer | ISelectConsumer>(
             (item) => [
                 {
                     index: {
