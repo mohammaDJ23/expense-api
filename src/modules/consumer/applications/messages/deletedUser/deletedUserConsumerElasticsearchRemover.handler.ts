@@ -10,7 +10,7 @@ import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEven
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @MessageHandler()
-export class DeletedUserMessageElasticsearchHandler implements IMessageHandler<ISelectUser> {
+export class DeletedUserConsumerElasticsearchRemoverHandler implements IMessageHandler<ISelectUser> {
     route: TOutboxEventRoute = 'users.deleted';
     private readonly concurrency = pLimit(2);
 

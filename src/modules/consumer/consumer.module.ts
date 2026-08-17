@@ -9,10 +9,11 @@ import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications
 import { DeleteConsumerHandler } from '@/modules/consumer/applications/commands/deleteConsumer/deleteConsumer.handler';
 import { DeleteManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.handler';
 import { UpdateConsumerHandler } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.handler';
-import { CreatedConsumerMessageElasticsearchHandler } from '@/modules/consumer/applications/messages/createdConsumer/createdConsumerMessageElasticsearch.handler';
-import { DeletedConsumerMessageElasticsearchHandler } from '@/modules/consumer/applications/messages/deletedConsumer/deletedConsumerMessageElasticsearch.handler';
-import { DeletedUserMessageElasticsearchHandler } from '@/modules/consumer/applications/messages/deletedUser/deletedUserMessageElasticsearch.handler';
-import { UpdatedConsumerMessageElasticsearchHandler } from '@/modules/consumer/applications/messages/updatedConsumer/updatedConsumerMessageElasticsearch.handler';
+import { ConsumerElasticsearchIIndexerProcessor } from '@/modules/consumer/applications/messages/consumerElasticsearchIIndexer.processor';
+import { CreatedConsumerElasticsearchIndexerHandler } from '@/modules/consumer/applications/messages/createdConsumer/createdConsumerElasticsearchIndexer.handler';
+import { DeletedConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/deletedConsumer/deletedConsumerElasticsearchRemover.handler';
+import { DeletedUserConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/deletedUser/deletedUserConsumerElasticsearchRemover.handler';
+import { UpdatedConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/updatedConsumer/updatedConsumerElasticsearchRemover.handler';
 import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
 import { ExistsConsumerByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.handler';
 import { ExistsConsumerByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndIds/existsConsumerByUserIdAndIds.handler';
@@ -76,10 +77,10 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         FindManyBillConsumerTargetsByRefIdsHandler,
         ExistsConsumerByUserIdAndExcludingIdAndNameHandler,
         FindManyBillsConsumersByRefIdHandler,
-        CreatedConsumerMessageElasticsearchHandler,
-        UpdatedConsumerMessageElasticsearchHandler,
-        DeletedConsumerMessageElasticsearchHandler,
-        DeletedUserMessageElasticsearchHandler,
+        CreatedConsumerElasticsearchIndexerHandler,
+        UpdatedConsumerElasticsearchRemoverHandler,
+        DeletedConsumerElasticsearchRemoverHandler,
+        DeletedUserConsumerElasticsearchRemoverHandler,
         ConsumerRepository,
         BillConsumerRepository,
         ConsumerElasticsearchIndex,
@@ -93,6 +94,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ConsumerUniqueNameValidatorService,
         ConsumerNameAvailableValidatorService,
         ConsumerSearchSyncService,
+        ConsumerElasticsearchIIndexerProcessor,
     ],
     exports: [
         ConsumerSearchService,
