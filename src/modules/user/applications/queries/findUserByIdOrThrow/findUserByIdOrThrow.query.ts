@@ -5,7 +5,7 @@ interface IProps {
     id: string;
 }
 
-@Cacheable({
+@Cacheable<FindUserByIdOrThrowQuery>({
     namespace: CacheNamespace.USER,
 })
 export class FindUserByIdOrThrowQuery {
