@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { whenNotEmpty } from '@/core/utils/whenNotEmpty.util';
 import { FindManyConsumersByUserIdAndIdsQuery } from '@/modules/consumer/applications/queries/findManyConsumersByUserIdAndIds/findManyConsumersByUserIdAndIds.query';
 
@@ -17,11 +17,11 @@ export class ConsumersRelationLoaderService implements IRelationLoaderService<
     IInput,
     ISelectConsumer[]
 > {
-    constructor(private readonly queryBus: QueryBus) {}
+    constructor(private readonly queryDispatcher: QueryDispatcher) {}
 
     load(input: IInput): Promise<ISelectConsumer[]> {
         return whenNotEmpty(input.consumerIds, (consumerIds) =>
-            this.queryBus.execute<FindManyConsumersByUserIdAndIdsQuery, ISelectConsumer[]>(
+            this.queryDispatcher.execute<FindManyConsumersByUserIdAndIdsQuery, ISelectConsumer[]>(
                 new FindManyConsumersByUserIdAndIdsQuery({
                     userId: input.userId,
                     ids: consumerIds,
