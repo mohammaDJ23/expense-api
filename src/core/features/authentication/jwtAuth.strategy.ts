@@ -1,11 +1,11 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { accessTokenExtractor } from '@/core/features/accessToken/accessToken.extractor';
 import { AccessTokenService } from '@/core/features/accessToken/accessToken.service';
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { readSecret } from '@/core/utils/readSecret.util';
 import { FindUserByIdOrNullQuery } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.query';
 
@@ -16,7 +16,7 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 @Injectable()
 export class JwtAuthStrategy extends PassportStrategy(Strategy) {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly accessTokenService: AccessTokenService,
     ) {
         const env = new Env();
@@ -30,7 +30,10 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
     async validate(payload: IAccessTokenPayload): Promise<ICurrentUser> {
         const verifiedPayload = this.accessTokenService.verify(payload);
 
-        const user = await this.queryBus.execute<FindUserByIdOrNullQuery, ISelectUser | null>(
+        const user = await this.queryDispatcher.execute<
+            FindUserByIdOrNullQuery,
+            ISelectUser | null
+        >(
             new FindUserByIdOrNullQuery({
                 id: verifiedPayload.id,
             }),
