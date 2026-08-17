@@ -8,21 +8,18 @@ import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEven
 import type { estypes } from '@elastic/elasticsearch';
 
 @MessageHandler()
-export class CreatedBillMessageElasticsearchHandler implements IMessageHandler<ISelectBill> {
-    route: TOutboxEventRoute = 'bills.created';
+export class DeletedBillElasticsearchRemoverHandler implements IMessageHandler<ISelectBill> {
+    route: TOutboxEventRoute = 'bills.deleted';
 
     constructor(private readonly elasticsearchService: ElasticSearchService) {}
 
     async execute(batch: IMessageBatch<ISelectBill>[]): Promise<void> {
-        const operations = batch.flatMap<estypes.BulkOperationContainer | ISelectBill>((item) => [
-            {
-                index: {
-                    _index: item.aggregateType,
-                    _id: item.aggregateId,
-                },
+        const operations = batch.map<estypes.BulkOperationContainer>((item) => ({
+            delete: {
+                _index: item.aggregateType,
+                _id: item.aggregateId,
             },
-            item.payload,
-        ]);
+        }));
 
         await this.elasticsearchService.bulk({ operations });
     }
