@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindLocationByUserIdAndIdOrThrowQuery } from '@/modules/location/applications/queries/findLocationByUserIdAndIdOrThrow/findLocationByUserIdAndIdOrThrow.query';
@@ -20,7 +19,6 @@ import type { UpdateLocationRequestDto } from '@/modules/location/interfaces/dto
 @Injectable()
 export class LocationService {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly queryDispatcher: QueryDispatcher,
         private readonly createLocationService: CreateLocationService,
         private readonly updateLocationService: UpdateLocationService,
@@ -54,7 +52,7 @@ export class LocationService {
     }
 
     findTotal(userId: string): Promise<ITotal> {
-        return this.queryBus
+        return this.queryDispatcher
             .execute<FindTotalLocationsByUserIdQuery, number>(
                 new FindTotalLocationsByUserIdQuery({
                     userId,

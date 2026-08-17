@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindTotalLocationsByUserIdQuery } from '@/modules/location/applications/queries/findTotalLocationsByUserId/findTotalLocationsByUserId.query';
 
 import { FindLocationListByUserIdService } from './findLocationListByUserId.service';
@@ -21,14 +21,14 @@ export class FindLocationListAndTotalByUserIdService implements IService<
     IListResultWithTotal<ISelectLocation>
 > {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly findLocationListByUserIdService: FindLocationListByUserIdService,
     ) {}
 
     async execute(input: IInput): Promise<IListResultWithTotal<ISelectLocation>> {
         const [locationList, total] = await Promise.all([
             this.findLocationListByUserIdService.execute(input),
-            this.queryBus.execute<FindTotalLocationsByUserIdQuery, number>(
+            this.queryDispatcher.execute<FindTotalLocationsByUserIdQuery, number>(
                 new FindTotalLocationsByUserIdQuery({
                     userId: input.userId,
                 }),
