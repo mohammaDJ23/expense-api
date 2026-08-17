@@ -1,5 +1,4 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindBillsPeriodByPurchasedAtQuery } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.query';
@@ -35,7 +34,6 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 @Injectable()
 export class BillService {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly queryDispatcher: QueryDispatcher,
         private readonly createBillService: CreateBillService,
         private readonly updateBillService: UpdateBillService,
@@ -73,7 +71,7 @@ export class BillService {
     }
 
     findTotal(userId: string): Promise<ITotal> {
-        return this.queryBus
+        return this.queryDispatcher
             .execute<FindTotalBillsByUserIdQuery, number>(
                 new FindTotalBillsByUserIdQuery({
                     userId,

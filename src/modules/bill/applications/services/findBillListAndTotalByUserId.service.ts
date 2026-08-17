@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
 
 import { FindBillListByUserIdService } from './findBillListByUserId.service';
@@ -21,14 +21,14 @@ export class FindBillListAndTotalByUserIdService implements IService<
     IListResultWithTotal<IBill>
 > {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly findBillListByUserIdService: FindBillListByUserIdService,
     ) {}
 
     async execute(input: IInput): Promise<IListResultWithTotal<IBill>> {
         const [billList, total] = await Promise.all([
             this.findBillListByUserIdService.execute(input),
-            this.queryBus.execute<FindTotalBillsByUserIdQuery, number>(
+            this.queryDispatcher.execute<FindTotalBillsByUserIdQuery, number>(
                 new FindTotalBillsByUserIdQuery({
                     userId: input.userId,
                 }),
