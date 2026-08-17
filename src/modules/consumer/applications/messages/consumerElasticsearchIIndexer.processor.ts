@@ -7,7 +7,7 @@ import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/
 import type { estypes } from '@elastic/elasticsearch';
 
 @MessageHandler()
-export class ConsumerElasticsearchIIndexerProcessor implements IProcessor<
+export class ConsumerElasticsearchIndexerProcessor implements IProcessor<
     IMessageBatch<ISelectConsumer>[],
     void
 > {

@@ -1,5 +1,5 @@
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
-import { ConsumerElasticsearchIIndexerProcessor } from '@/modules/consumer/applications/messages/consumerElasticsearchIIndexer.processor';
+import { ConsumerElasticsearchIndexerProcessor } from '@/modules/consumer/applications/messages/consumerElasticsearchIIndexer.processor';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
@@ -11,10 +11,10 @@ export class UpdatedConsumerElasticsearchRemoverHandler implements IMessageHandl
     route: TOutboxEventRoute = 'consumers.updated';
 
     constructor(
-        private readonly consumerElasticsearchIIndexerProcessor: ConsumerElasticsearchIIndexerProcessor,
+        private readonly consumerElasticsearchIndexerProcessor: ConsumerElasticsearchIndexerProcessor,
     ) {}
 
     async execute(batch: IMessageBatch<ISelectConsumer>[]): Promise<void> {
-        await this.consumerElasticsearchIIndexerProcessor.process(batch);
+        await this.consumerElasticsearchIndexerProcessor.process(batch);
     }
 }

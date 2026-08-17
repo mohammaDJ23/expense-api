@@ -11,7 +11,7 @@ import { DeleteConsumerHandler } from '@/modules/consumer/applications/commands/
 import { DeleteManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.handler';
 import { UpdateConsumerHandler } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.handler';
 import { ConsumerCacheInvalidatorProcessor } from '@/modules/consumer/applications/messages/consumerCacheInvalidator.processor';
-import { ConsumerElasticsearchIIndexerProcessor } from '@/modules/consumer/applications/messages/consumerElasticsearchIIndexer.processor';
+import { ConsumerElasticsearchIndexerProcessor } from '@/modules/consumer/applications/messages/consumerElasticsearchIIndexer.processor';
 import { CreatedConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/createdConsumer/createdConsumerCacheInvalidator.handler';
 import { CreatedConsumerElasticsearchIndexerHandler } from '@/modules/consumer/applications/messages/createdConsumer/createdConsumerElasticsearchIndexer.handler';
 import { DeletedConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/deletedConsumer/deletedConsumerCacheInvalidator.handler';
@@ -101,7 +101,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ConsumerUniqueNameValidatorService,
         ConsumerNameAvailableValidatorService,
         ConsumerSearchSyncService,
-        ConsumerElasticsearchIIndexerProcessor,
+        ConsumerElasticsearchIndexerProcessor,
         CreatedConsumerCacheInvalidatorHandler,
         DeletedConsumerCacheInvalidatorHandler,
         DeletedUserConsumerCacheInvalidatorHandler,
