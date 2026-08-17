@@ -1,6 +1,7 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindBillsPeriodByPurchasedAtQuery } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.query';
 import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
 import { BillsExcelExportService } from '@/modules/bill/applications/services/export/excel/billsExcelExport.service';
@@ -35,6 +36,7 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 export class BillService {
     constructor(
         private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly createBillService: CreateBillService,
         private readonly updateBillService: UpdateBillService,
         private readonly deleteBillService: DeleteBillService,
@@ -114,7 +116,7 @@ export class BillService {
     }
 
     exportExcel(userId: string): Promise<StreamableFile> {
-        return this.queryBus
+        return this.queryDispatcher
             .execute<FindUserByIdOrThrowQuery, ISelectUser>(
                 new FindUserByIdOrThrowQuery({ id: userId }),
             )
