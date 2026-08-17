@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindReceiverByUserIdAndIdOrThrowQuery } from '@/modules/receiver/applications/queries/findReceiverByUserIdAndIdOrThrow/findReceiverByUserIdAndIdOrThrow.query';
@@ -20,7 +19,6 @@ import type { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dto
 @Injectable()
 export class ReceiverService {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly queryDispatcher: QueryDispatcher,
         private readonly createReceiverService: CreateReceiverService,
         private readonly updateReceiverService: UpdateReceiverService,
@@ -54,7 +52,7 @@ export class ReceiverService {
     }
 
     findTotal(userId: string): Promise<ITotal> {
-        return this.queryBus
+        return this.queryDispatcher
             .execute<FindTotalReceiversByUserIdQuery, number>(
                 new FindTotalReceiversByUserIdQuery({
                     userId,
