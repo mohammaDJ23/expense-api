@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindBillsPeriodByPurchasedAtQuery } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.query';
 import { FindBillsTimelineByPurchasedAtQuery } from '@/modules/bill/applications/queries/findBillsTimelineByPurchasedAt/findBillsTimelineByPurchasedAt.query';
 
@@ -17,10 +18,16 @@ interface IInput {
 
 @Injectable()
 export class FindBillsTimelineByPurchasedAtService implements IService<IInput, IBillTimeline[]> {
-    constructor(private readonly queryBus: QueryBus) {}
+    constructor(
+        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
+    ) {}
 
     async execute(input: IInput): Promise<IBillTimeline[]> {
-        const period = await this.queryBus.execute<FindBillsPeriodByPurchasedAtQuery, IBillPeriod>(
+        const period = await this.queryDispatcher.execute<
+            FindBillsPeriodByPurchasedAtQuery,
+            IBillPeriod
+        >(
             new FindBillsPeriodByPurchasedAtQuery({
                 userId: input.userId,
             }),
