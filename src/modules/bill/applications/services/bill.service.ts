@@ -95,7 +95,7 @@ export class BillService {
     }
 
     findPeriod(userId: string): Promise<IBillPeriod> {
-        return this.queryBus.execute<FindBillsPeriodByPurchasedAtQuery, IBillPeriod>(
+        return this.queryDispatcher.execute<FindBillsPeriodByPurchasedAtQuery, IBillPeriod>(
             new FindBillsPeriodByPurchasedAtQuery({
                 userId,
             }),
