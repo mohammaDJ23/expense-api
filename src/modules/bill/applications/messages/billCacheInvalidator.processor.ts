@@ -11,7 +11,7 @@ interface IInput {
 }
 
 @Injectable()
-export class BillMessageCacheInvalidatorProcessor implements IProcessor<IInput, void> {
+export class BillCacheInvalidatorProcessor implements IProcessor<IInput, void> {
     private readonly concurrency = pLimit(2);
 
     constructor(private readonly cacheInvalidatorService: CacheInvalidatorService) {}
