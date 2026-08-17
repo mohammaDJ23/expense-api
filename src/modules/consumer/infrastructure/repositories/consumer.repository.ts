@@ -4,7 +4,6 @@ import { and, eq, inArray, desc, ne, or, lt } from 'drizzle-orm';
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
 import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
-import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
 import { toExistsByCount } from '@/infrastructure/database/drizzle/transformers/toExistsByCount.transformer';
 import {
@@ -52,16 +51,6 @@ export class ConsumerRepository implements IConsumerRepository {
         );
     }
 
-    findByUserIdAndNameOrNull(userId: string, name: string): Promise<ISelectConsumer | null> {
-        return toEntityOrNull(
-            this.drizzleRepository.db
-                .select()
-                .from(consumers)
-                .where(and(eq(consumers.userId, userId), eq(consumers.name, name)))
-                .execute(),
-        );
-    }
-
     findByUserIdAndIdOrThrow(userId: string, id: string): Promise<ISelectConsumer> {
         return toEntityOrThrow(
             this.drizzleRepository.db
@@ -70,16 +59,6 @@ export class ConsumerRepository implements IConsumerRepository {
                 .where(and(eq(consumers.userId, userId), eq(consumers.id, id)))
                 .execute(),
             'Unable to find',
-        );
-    }
-
-    findByUserIdAndIdOrNull(userId: string, id: string): Promise<ISelectConsumer | null> {
-        return toEntityOrNull(
-            this.drizzleRepository.db
-                .select()
-                .from(consumers)
-                .where(and(eq(consumers.userId, userId), eq(consumers.id, id)))
-                .execute(),
         );
     }
 
