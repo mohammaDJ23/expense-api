@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
+import { CacheModule } from '@/core/features/cache/cache.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
@@ -9,10 +10,15 @@ import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications
 import { DeleteConsumerHandler } from '@/modules/consumer/applications/commands/deleteConsumer/deleteConsumer.handler';
 import { DeleteManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.handler';
 import { UpdateConsumerHandler } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.handler';
+import { ConsumerCacheInvalidatorProcessor } from '@/modules/consumer/applications/messages/consumerCacheInvalidator.processor';
 import { ConsumerElasticsearchIIndexerProcessor } from '@/modules/consumer/applications/messages/consumerElasticsearchIIndexer.processor';
+import { CreatedConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/createdConsumer/createdConsumerCacheInvalidator.handler';
 import { CreatedConsumerElasticsearchIndexerHandler } from '@/modules/consumer/applications/messages/createdConsumer/createdConsumerElasticsearchIndexer.handler';
+import { DeletedConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/deletedConsumer/deletedConsumerCacheInvalidator.handler';
 import { DeletedConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/deletedConsumer/deletedConsumerElasticsearchRemover.handler';
+import { DeletedUserConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/deletedUser/deletedUserConsumerCacheInvalidator.handler';
 import { DeletedUserConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/deletedUser/deletedUserConsumerElasticsearchRemover.handler';
+import { UpdatedConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/updatedConsumer/updatedConsumerCacheInvalidator.handler';
 import { UpdatedConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/updatedConsumer/updatedConsumerElasticsearchRemover.handler';
 import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
 import { ExistsConsumerByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.handler';
@@ -53,6 +59,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ElasticsearchModule,
         OutboxModule,
         QueryDispatcherModule,
+        CacheModule,
     ],
     controllers: [ConsumerController],
     providers: [
@@ -95,6 +102,11 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ConsumerNameAvailableValidatorService,
         ConsumerSearchSyncService,
         ConsumerElasticsearchIIndexerProcessor,
+        CreatedConsumerCacheInvalidatorHandler,
+        DeletedConsumerCacheInvalidatorHandler,
+        DeletedUserConsumerCacheInvalidatorHandler,
+        UpdatedConsumerCacheInvalidatorHandler,
+        ConsumerCacheInvalidatorProcessor,
     ],
     exports: [
         ConsumerSearchService,
