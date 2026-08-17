@@ -4,9 +4,10 @@ import {
     Injectable,
     InternalServerErrorException,
 } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { VerifiedVerificationMailerService } from '@/modules/authentication/applications/services/verifiedVerificationMailer.service';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
@@ -27,7 +28,7 @@ export class LocalVerifyVerificationService implements IService<
     boolean
 > {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly commandBus: CommandBus,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
@@ -52,9 +53,10 @@ export class LocalVerifyVerificationService implements IService<
             }
         }
 
-        const user = await this.queryBus.execute<FindUserByEmailOrNullQuery, ISelectUser | null>(
-            new FindUserByEmailOrNullQuery({ email: payload.email }),
-        );
+        const user = await this.queryDispatcher.execute<
+            FindUserByEmailOrNullQuery,
+            ISelectUser | null
+        >(new FindUserByEmailOrNullQuery({ email: payload.email }));
 
         if (!user) {
             throw new BadRequestException();
