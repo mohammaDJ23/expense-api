@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindConsumerByUserIdAndIdOrThrowQuery } from '@/modules/consumer/applications/queries/findConsumerByUserIdAndIdOrThrow/findConsumerByUserIdAndIdOrThrow.query';
@@ -20,7 +19,6 @@ import type { UpdateConsumerRequestDto } from '@/modules/consumer/interfaces/dto
 @Injectable()
 export class ConsumerService {
     constructor(
-        private readonly queryBus: QueryBus,
         private readonly queryDispatcher: QueryDispatcher,
         private readonly createConsumerService: CreateConsumerService,
         private readonly updateConsumerService: UpdateConsumerService,
@@ -54,7 +52,7 @@ export class ConsumerService {
     }
 
     findTotal(userId: string): Promise<ITotal> {
-        return this.queryBus
+        return this.queryDispatcher
             .execute<FindTotalConsumersByUserIdQuery, number>(
                 new FindTotalConsumersByUserIdQuery({
                     userId,
