@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { whenNotEmpty } from '@/core/utils/whenNotEmpty.util';
 import { FindManyBillsByUserIdAndIdsQuery } from '@/modules/bill/applications/queries/findManyBillsByUserIdAndIds/findManyBillsByUserIdAndIds.query';
 import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
@@ -12,13 +12,13 @@ import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.sch
 @Injectable()
 export class BillSearchAggregateService implements IElasticsearchSearchAggregate<IBill> {
     constructor(
-        private readonly queryBus: QueryBus,
+        private readonly queryDispatcher: QueryDispatcher,
         private readonly billsAssemblerService: BillsAssemblerService,
     ) {}
 
     aggregate(userId: string, ids: string[]): Promise<IBill[]> {
         return whenNotEmpty(ids, async (ids) => {
-            const bills = await this.queryBus.execute<
+            const bills = await this.queryDispatcher.execute<
                 FindManyBillsByUserIdAndIdsQuery,
                 ISelectBill[]
             >(
@@ -27,7 +27,10 @@ export class BillSearchAggregateService implements IElasticsearchSearchAggregate
                     ids,
                 }),
             );
-            return this.billsAssemblerService.assemble({ userId, bills });
+            return this.billsAssemblerService.assemble({
+                userId,
+                bills,
+            });
         });
     }
 }
