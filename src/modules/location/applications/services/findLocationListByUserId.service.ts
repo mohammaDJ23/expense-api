@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { cursorPagination } from '@/core/utils/pagination/cursorPagination.util';
 import { parseCursor } from '@/core/utils/pagination/parseCursor.util';
 import { FindLocationListByUserIdQuery } from '@/modules/location/applications/queries/findLocationListByUserId/findLocationListByUserId.query';
@@ -22,10 +22,10 @@ export class FindLocationListByUserIdService implements IService<
     IInput,
     IListResult<ISelectLocation>
 > {
-    constructor(private readonly queryBus: QueryBus) {}
+    constructor(private readonly queryDispatcher: QueryDispatcher) {}
 
     async execute(input: IInput): Promise<IListResult<ISelectLocation>> {
-        const locations = await this.queryBus.execute<
+        const locations = await this.queryDispatcher.execute<
             FindLocationListByUserIdQuery,
             ISelectLocation[]
         >(
