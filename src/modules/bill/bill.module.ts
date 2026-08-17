@@ -9,14 +9,14 @@ import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearc
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
 import { DeleteBillHandler } from '@/modules/bill/applications/commands/deleteBill/deleteBill.handler';
 import { UpdateBillHandler } from '@/modules/bill/applications/commands/updateBill/updateBill.handler';
-import { BillMessageCacheInvalidatorProcessor } from '@/modules/bill/applications/messages/billMessageCacheInvalidator.processor';
-import { CreatedBillMessageCacheInvalidatorHandler } from '@/modules/bill/applications/messages/createdBill/createdBillMessageCacheInvalidator.handler';
+import { BillCacheInvalidatorProcessor } from '@/modules/bill/applications/messages/billCacheInvalidator.processor';
+import { CreatedBillCacheInvalidatorHandler } from '@/modules/bill/applications/messages/createdBill/createdBillCacheInvalidator.handler';
 import { CreatedBillMessageElasticsearchHandler } from '@/modules/bill/applications/messages/createdBill/createdBillMessageElasticsearch.handler';
-import { DeletedBillMessageCacheInvalidatorHandler } from '@/modules/bill/applications/messages/deletedBill/deletedBillMessageCacheInvalidator.handler';
+import { DeletedBillCacheInvalidatorHandler } from '@/modules/bill/applications/messages/deletedBill/deletedBillCacheInvalidator.handler';
 import { DeletedBillMessageElasticsearchHandler } from '@/modules/bill/applications/messages/deletedBill/deletedBillMessageElasticsearch.handler';
-import { DeletedUserMessageCacheInvalidatorHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserMessageCacheInvalidator.handler';
+import { DeletedUserBillCacheInvalidatorHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserBillCacheInvalidator.handler';
 import { DeletedUserMessageElasticsearchHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserMessageElasticsearch.handler';
-import { UpdatedBillMessageCacheInvalidatorHandler } from '@/modules/bill/applications/messages/updatedBill/updatedBillMessageCacheInvalidator.handler';
+import { UpdatedBillCacheInvalidatorHandler } from '@/modules/bill/applications/messages/updatedBill/updatedBillCacheInvalidator.handler';
 import { UpdatedBillMessageElasticsearchHandler } from '@/modules/bill/applications/messages/updatedBill/updatedBillMessageElasticsearch.handler';
 import { ExistsBillByUserIdAndIdHandler } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.handler';
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
@@ -139,11 +139,11 @@ import { UserModule } from '@/modules/user/user.module';
         BillsExportJob,
         BillsExportMailerService,
         BillSearchSyncService,
-        CreatedBillMessageCacheInvalidatorHandler,
-        DeletedBillMessageCacheInvalidatorHandler,
-        DeletedUserMessageCacheInvalidatorHandler,
-        UpdatedBillMessageCacheInvalidatorHandler,
-        BillMessageCacheInvalidatorProcessor,
+        CreatedBillCacheInvalidatorHandler,
+        DeletedBillCacheInvalidatorHandler,
+        DeletedUserBillCacheInvalidatorHandler,
+        UpdatedBillCacheInvalidatorHandler,
+        BillCacheInvalidatorProcessor,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService, BillSearchSyncService],

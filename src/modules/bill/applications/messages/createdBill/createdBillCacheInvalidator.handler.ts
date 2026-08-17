@@ -1,5 +1,5 @@
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
-import { BillMessageCacheInvalidatorProcessor } from '@/modules/bill/applications/messages/billMessageCacheInvalidator.processor';
+import { BillCacheInvalidatorProcessor } from '@/modules/bill/applications/messages/billCacheInvalidator.processor';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
@@ -7,15 +7,13 @@ import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.sch
 import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
 @MessageHandler()
-export class UpdatedBillMessageCacheInvalidatorHandler implements IMessageHandler<ISelectBill> {
-    route: TOutboxEventRoute = 'bills.updated';
+export class CreatedBillCacheInvalidatorHandler implements IMessageHandler<ISelectBill> {
+    route: TOutboxEventRoute = 'bills.created';
 
-    constructor(
-        private readonly billMessageCacheInvalidatorProcessor: BillMessageCacheInvalidatorProcessor,
-    ) {}
+    constructor(private readonly billCacheInvalidatorProcessor: BillCacheInvalidatorProcessor) {}
 
     async execute(batch: IMessageBatch<ISelectBill>[]): Promise<void> {
-        await this.billMessageCacheInvalidatorProcessor.process({
+        await this.billCacheInvalidatorProcessor.process({
             userIds: batch.map((item) => item.payload.userId),
         });
     }
