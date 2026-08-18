@@ -8,7 +8,7 @@ import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/
 import type { estypes } from '@elastic/elasticsearch';
 
 @MessageHandler()
-export class DeletedReceiverMessageElasticsearchHandler implements IMessageHandler<ISelectReceiver> {
+export class DeletedReceiverElasticsearchRemoverHandler implements IMessageHandler<ISelectReceiver> {
     route: TOutboxEventRoute = 'receivers.deleted';
 
     constructor(private readonly elasticsearchService: ElasticSearchService) {}
