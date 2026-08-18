@@ -8,7 +8,7 @@ import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEven
 import type { estypes } from '@elastic/elasticsearch';
 
 @MessageHandler()
-export class DeletedLocationMessageElasticsearchHandler implements IMessageHandler<ISelectLocation> {
+export class DeletedLocationElasticsearchRemoverHandler implements IMessageHandler<ISelectLocation> {
     route: TOutboxEventRoute = 'locations.deleted';
 
     constructor(private readonly elasticsearchService: ElasticSearchService) {}

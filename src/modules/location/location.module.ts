@@ -6,10 +6,11 @@ import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearc
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
 import { DeleteLocationHandler } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.handler';
 import { UpdateLocationHandler } from '@/modules/location/applications/commands/updateLocation/updateLocation.handler';
-import { CreatedLocationMessageElasticsearchHandler } from '@/modules/location/applications/messages/createdLocation/createdLocationMessageElasticsearch.handler';
-import { DeletedLocationMessageElasticsearchHandler } from '@/modules/location/applications/messages/deletedLocation/deletedLocationMessageElasticsearch.handler';
-import { DeletedUserMessageElasticsearchHandler } from '@/modules/location/applications/messages/deletedUser/deletedUserMessageElasticsearch.handler';
-import { UpdatedLocationMessageElasticsearchHandler } from '@/modules/location/applications/messages/updatedLocation/updatedLocationMessageElasticsearch.handler';
+import { CreatedLocationElasticsearchIndexerHandler } from '@/modules/location/applications/messages/createdLocation/createdLocationElasticsearchIndexer.handler';
+import { DeletedLocationElasticsearchRemoverHandler } from '@/modules/location/applications/messages/deletedLocation/deletedLocationElasticsearchRemover.handler';
+import { DeletedUserLocationElasticsearchRemoverHandler } from '@/modules/location/applications/messages/deletedUser/deletedUserLocationElasticsearchRemover.handler';
+import { LocationElasticsearchIndexerProcessor } from '@/modules/location/applications/messages/locationElasticsearchIndexer.processor';
+import { UpdatedLocationElasticsearchIndexerHandler } from '@/modules/location/applications/messages/updatedLocation/updatedLocationElasticsearchIndexer.handler';
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
 import { ExistsLocationByUserIdAndIdHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.handler';
 import { ExistsLocationByUserIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndName/existsLocationByUserIdAndName.handler';
@@ -57,10 +58,10 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ExistsLocationByUserIdAndIdHandler,
         ExistsLocationByUserIdAndExcludingIdAndNameHandler,
         ExistsLocationByUserIdAndNameHandler,
-        CreatedLocationMessageElasticsearchHandler,
-        UpdatedLocationMessageElasticsearchHandler,
-        DeletedLocationMessageElasticsearchHandler,
-        DeletedUserMessageElasticsearchHandler,
+        CreatedLocationElasticsearchIndexerHandler,
+        UpdatedLocationElasticsearchIndexerHandler,
+        DeletedLocationElasticsearchRemoverHandler,
+        DeletedUserLocationElasticsearchRemoverHandler,
         CreateLocationHandler,
         LocationRepository,
         LocationElasticsearchIndex,
@@ -73,6 +74,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         LocationUniqueNameValidatorService,
         LocationNameAvailableValidatorService,
         LocationSearchSyncService,
+        LocationElasticsearchIndexerProcessor,
     ],
     exports: [
         LocationSearchService,
