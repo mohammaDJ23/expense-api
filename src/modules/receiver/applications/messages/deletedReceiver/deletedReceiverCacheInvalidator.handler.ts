@@ -11,11 +11,11 @@ export class DeletedReceiverCacheInvalidatorHandler implements IMessageHandler<I
     route: TOutboxEventRoute = 'receivers.deleted';
 
     constructor(
-        private readonly ReceiverCacheInvalidatorProcessor: ReceiverCacheInvalidatorProcessor,
+        private readonly receiverCacheInvalidatorProcessor: ReceiverCacheInvalidatorProcessor,
     ) {}
 
     async execute(batch: IMessageBatch<ISelectReceiver>[]): Promise<void> {
-        await this.ReceiverCacheInvalidatorProcessor.process({
+        await this.receiverCacheInvalidatorProcessor.process({
             userIds: batch.map((item) => item.payload.userId),
         });
     }
