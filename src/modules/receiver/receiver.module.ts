@@ -8,10 +8,11 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { CreateReceiverHandler } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.handler';
 import { DeleteReceiverHandler } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.handler';
 import { UpdateReceiverHandler } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.handler';
-import { CreatedReceiverMessageElasticsearchHandler } from '@/modules/receiver/applications/messages/createdReceiver/createdReceiverMessageElasticsearch.handler';
-import { DeletedReceiverMessageElasticsearchHandler } from '@/modules/receiver/applications/messages/deletedReceiver/deletedReceiverMessageElasticearch.handler';
-import { DeletedUserMessageElasticsearchHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserMessageElasticsearch.handler';
-import { UpdatedReceiverMessageElasticsearchHandler } from '@/modules/receiver/applications/messages/updatedReceiver/updatedReceiverMessageElasticsearch.handler';
+import { CreatedReceiverElasticsearchIndexerHandler } from '@/modules/receiver/applications/messages/createdReceiver/createdReceiverElasticsearchIndexer.handler';
+import { DeletedReceiverElasticsearchRemoverHandler } from '@/modules/receiver/applications/messages/deletedReceiver/deletedReceiverElasticearchRemover.handler';
+import { DeletedUserReceiverElasticsearchRemoverHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserReceiverMessageElasticsearchRemover.handler';
+import { ReceiverElasticsearchIndexerProcessor } from '@/modules/receiver/applications/messages/receiverElasticsearchIndexer.processor';
+import { UpdatedReceiverElasticsearchIndexerHandler } from '@/modules/receiver/applications/messages/updatedReceiver/updatedReceiverElasticsearchIndexer.handler';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
 import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.handler';
 import { ExistsReceiverByUserIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndName/existsReceiverByUserIdAndName.handler';
@@ -60,10 +61,10 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ExistsReceiverByUserIdAndIdHandler,
         ExistsReceiverByUserIdAndExcludingIdAndNameHandler,
         ExistsReceiverByUserIdAndNameHandler,
-        CreatedReceiverMessageElasticsearchHandler,
-        UpdatedReceiverMessageElasticsearchHandler,
-        DeletedReceiverMessageElasticsearchHandler,
-        DeletedUserMessageElasticsearchHandler,
+        CreatedReceiverElasticsearchIndexerHandler,
+        DeletedReceiverElasticsearchRemoverHandler,
+        DeletedUserReceiverElasticsearchRemoverHandler,
+        UpdatedReceiverElasticsearchIndexerHandler,
         ReceiverService,
         CreateReceiverService,
         UpdateReceiverService,
@@ -79,6 +80,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ReceiverUniqueNameValidatorService,
         ReceiverNameAvailableValidatorService,
         ReceiverSearchSyncService,
+        ReceiverElasticsearchIndexerProcessor,
     ],
     exports: [
         ReceiverSearchService,
