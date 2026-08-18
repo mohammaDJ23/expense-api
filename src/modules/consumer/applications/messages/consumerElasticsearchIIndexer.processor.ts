@@ -1,4 +1,5 @@
-import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
+import { Injectable } from '@nestjs/common';
+
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
@@ -6,7 +7,7 @@ import type { IProcessor } from '@/core/interfaces/processor.interface';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { estypes } from '@elastic/elasticsearch';
 
-@MessageHandler()
+@Injectable()
 export class ConsumerElasticsearchIndexerProcessor implements IProcessor<
     IMessageBatch<ISelectConsumer>[],
     void
