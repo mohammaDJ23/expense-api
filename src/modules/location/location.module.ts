@@ -1,15 +1,21 @@
 import { Module } from '@nestjs/common';
 
+import { CacheModule } from '@/core/features/cache/cache.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
 import { DeleteLocationHandler } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.handler';
 import { UpdateLocationHandler } from '@/modules/location/applications/commands/updateLocation/updateLocation.handler';
+import { CreatedLocationCacheInvalidatorHandler } from '@/modules/location/applications/messages/createdLocation/createdLocationCacheInvalidator.handler';
 import { CreatedLocationElasticsearchIndexerHandler } from '@/modules/location/applications/messages/createdLocation/createdLocationElasticsearchIndexer.handler';
+import { DeletedLocationCacheInvalidatorHandler } from '@/modules/location/applications/messages/deletedLocation/deletedLocationCacheInvalidator.handler';
 import { DeletedLocationElasticsearchRemoverHandler } from '@/modules/location/applications/messages/deletedLocation/deletedLocationElasticsearchRemover.handler';
+import { DeletedUserLocationCacheInvalidatorHandler } from '@/modules/location/applications/messages/deletedUser/deletedUserLocationCacheInvalidator.handler';
 import { DeletedUserLocationElasticsearchRemoverHandler } from '@/modules/location/applications/messages/deletedUser/deletedUserLocationElasticsearchRemover.handler';
+import { LocationCacheInvalidatorProcessor } from '@/modules/location/applications/messages/locationCacheInvalidator.processor';
 import { LocationElasticsearchIndexerProcessor } from '@/modules/location/applications/messages/locationElasticsearchIndexer.processor';
+import { UpdatedLocationCacheInvalidatorHandler } from '@/modules/location/applications/messages/updatedLocation/updatedLocationCacheInvalidator.handler';
 import { UpdatedLocationElasticsearchIndexerHandler } from '@/modules/location/applications/messages/updatedLocation/updatedLocationElasticsearchIndexer.handler';
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
 import { ExistsLocationByUserIdAndIdHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.handler';
@@ -39,7 +45,7 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
 import { OutboxModule } from '@/modules/outbox/outbox.module';
 
 @Module({
-    imports: [CqrsModule, ElasticsearchModule, OutboxModule, QueryDispatcherModule],
+    imports: [CqrsModule, ElasticsearchModule, OutboxModule, QueryDispatcherModule, CacheModule],
     controllers: [LocationController],
     providers: [
         LocationService,
@@ -75,6 +81,11 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         LocationNameAvailableValidatorService,
         LocationSearchSyncService,
         LocationElasticsearchIndexerProcessor,
+        CreatedLocationCacheInvalidatorHandler,
+        DeletedLocationCacheInvalidatorHandler,
+        DeletedUserLocationCacheInvalidatorHandler,
+        UpdatedLocationCacheInvalidatorHandler,
+        LocationCacheInvalidatorProcessor,
     ],
     exports: [
         LocationSearchService,
