@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
+import { CacheModule } from '@/core/features/cache/cache.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
@@ -11,6 +12,7 @@ import { UpdateReceiverHandler } from '@/modules/receiver/applications/commands/
 import { CreatedReceiverElasticsearchIndexerHandler } from '@/modules/receiver/applications/messages/createdReceiver/createdReceiverElasticsearchIndexer.handler';
 import { DeletedReceiverElasticsearchRemoverHandler } from '@/modules/receiver/applications/messages/deletedReceiver/deletedReceiverElasticearchRemover.handler';
 import { DeletedUserReceiverElasticsearchRemoverHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserReceiverMessageElasticsearchRemover.handler';
+import { ReceiverCacheInvalidatorProcessor } from '@/modules/receiver/applications/messages/receiverCacheInvalidator.processor';
 import { ReceiverElasticsearchIndexerProcessor } from '@/modules/receiver/applications/messages/receiverElasticsearchIndexer.processor';
 import { UpdatedReceiverElasticsearchIndexerHandler } from '@/modules/receiver/applications/messages/updatedReceiver/updatedReceiverElasticsearchIndexer.handler';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
@@ -46,6 +48,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ElasticsearchModule,
         OutboxModule,
         QueryDispatcherModule,
+        CacheModule,
     ],
     controllers: [ReceiverController],
     providers: [
@@ -81,6 +84,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ReceiverNameAvailableValidatorService,
         ReceiverSearchSyncService,
         ReceiverElasticsearchIndexerProcessor,
+        ReceiverCacheInvalidatorProcessor,
     ],
     exports: [
         ReceiverSearchService,
