@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import pLimit from 'p-limit';
 
+import { DEFAULT_CACHE_SCOPE } from '@/core/features/cache/cache.constants';
 import { CacheInvalidatorService } from '@/core/features/cache/cacheInvalidator.service';
 import { CacheNamespace } from '@/core/features/cache/cacheNamespace.enum';
 
@@ -20,7 +21,10 @@ export class UserCacheInvalidatorProcessor implements IProcessor<IInput, void> {
         await Promise.all(
             input.userIds.map(() =>
                 this.concurrency(() =>
-                    this.cacheInvalidatorService.invalidateScope(CacheNamespace.USER),
+                    this.cacheInvalidatorService.invalidateScope(
+                        CacheNamespace.USER,
+                        DEFAULT_CACHE_SCOPE,
+                    ),
                 ),
             ),
         );

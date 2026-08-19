@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 
-import { CACHE_SCAN_CURSOR_COUNT, DEFAULT_CACHE_SCOPE } from './cache.constants';
+import { CACHE_SCAN_CURSOR_COUNT } from './cache.constants';
 import { CacheKeyService } from './cacheKey.service';
 import { CacheQueryHasherService } from './cacheQueryHasher.service';
 
@@ -37,10 +37,7 @@ export class CacheService {
         await redis.set(key, serializedValue, 'EX', ttl);
     }
 
-    async invalidateScope(
-        namespace: CacheNamespace,
-        scopeId: string = DEFAULT_CACHE_SCOPE,
-    ): Promise<void> {
+    async invalidateScope(namespace: CacheNamespace, scopeId: string): Promise<void> {
         const redis = this.getRedis();
         const pattern = this.cacheKeyService.createScopePattern(namespace, scopeId);
 
