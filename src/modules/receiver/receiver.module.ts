@@ -9,8 +9,11 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { CreateReceiverHandler } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.handler';
 import { DeleteReceiverHandler } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.handler';
 import { UpdateReceiverHandler } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.handler';
+import { CreatedReceiverCacheInvalidatorHandler } from '@/modules/receiver/applications/messages/createdReceiver/createdReceiverCacheInvalidator.handler';
 import { CreatedReceiverElasticsearchIndexerHandler } from '@/modules/receiver/applications/messages/createdReceiver/createdReceiverElasticsearchIndexer.handler';
+import { DeletedReceiverCacheInvalidatorHandler } from '@/modules/receiver/applications/messages/deletedReceiver/deletedReceiverCacheInvalidator.handler';
 import { DeletedReceiverElasticsearchRemoverHandler } from '@/modules/receiver/applications/messages/deletedReceiver/deletedReceiverElasticearchRemover.handler';
+import { DeletedUserReceiverCacheInvalidatorHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserReceiverCacheInvalidator.handler';
 import { DeletedUserReceiverElasticsearchRemoverHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserReceiverMessageElasticsearchRemover.handler';
 import { ReceiverCacheInvalidatorProcessor } from '@/modules/receiver/applications/messages/receiverCacheInvalidator.processor';
 import { ReceiverElasticsearchIndexerProcessor } from '@/modules/receiver/applications/messages/receiverElasticsearchIndexer.processor';
@@ -85,6 +88,10 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ReceiverSearchSyncService,
         ReceiverElasticsearchIndexerProcessor,
         ReceiverCacheInvalidatorProcessor,
+        CreatedReceiverCacheInvalidatorHandler,
+        DeletedReceiverCacheInvalidatorHandler,
+        DeletedUserReceiverCacheInvalidatorHandler,
+        DeletedReceiverCacheInvalidatorHandler,
     ],
     exports: [
         ReceiverSearchService,
