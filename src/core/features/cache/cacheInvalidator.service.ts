@@ -8,7 +8,7 @@ import type { CacheNamespace } from './cacheNamespace.enum';
 export class CacheInvalidatorService {
     constructor(private readonly cacheService: CacheService) {}
 
-    async invalidateScope(namespace: CacheNamespace, scopeId?: string): Promise<void> {
+    async invalidateScope(namespace: CacheNamespace, scopeId: string): Promise<void> {
         await this.cacheService.invalidateScope(namespace, scopeId);
     }
 }
