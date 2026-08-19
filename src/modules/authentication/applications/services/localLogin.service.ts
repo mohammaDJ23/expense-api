@@ -1,13 +1,12 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { AccessTokenService } from '@/core/features/accessToken/accessToken.service';
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
-import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
+import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { PasswordHasherService } from './passwordHasher.service';
@@ -26,9 +25,9 @@ interface IInput {
 export class LocalLoginService implements IService<IInput, ISelectUser> {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
-        private readonly commandBus: CommandBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly accessTokenService: AccessTokenService,
+        private readonly updateUserService: UpdateUserService,
     ) {}
 
     async execute(input: IInput): Promise<ISelectUser> {
@@ -73,12 +72,10 @@ export class LocalLoginService implements IService<IInput, ISelectUser> {
             this.accessTokenService.setCookie(input.response, token);
         }
 
-        return this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-            new UpdateUserCommand({
-                id: user.id,
-                updatedAt: getCurrentUTCTimestamp(),
-                lastLoginAt: getCurrentUTCTimestamp(),
-            }),
-        );
+        return this.updateUserService.execute({
+            id: user.id,
+            updatedAt: getCurrentUTCTimestamp(),
+            lastLoginAt: getCurrentUTCTimestamp(),
+        });
     }
 }

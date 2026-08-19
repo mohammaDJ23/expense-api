@@ -4,14 +4,13 @@ import {
     Injectable,
     InternalServerErrorException,
 } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { VerifiedVerificationMailerService } from '@/modules/authentication/applications/services/verifiedVerificationMailer.service';
-import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
+import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { VerificationStorageService } from './verificationStorage.service';
@@ -29,10 +28,10 @@ export class LocalVerifyVerificationService implements IService<
 > {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
-        private readonly commandBus: CommandBus,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
         private readonly verifiedVerificationMailerService: VerifiedVerificationMailerService,
+        private readonly updateUserService: UpdateUserService,
     ) {}
 
     async execute(input: LocalVerifyVerificationRequestDto): Promise<boolean> {
@@ -71,13 +70,11 @@ export class LocalVerifyVerificationService implements IService<
         }
 
         try {
-            await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-                new UpdateUserCommand({
-                    id: user.id,
-                    updatedAt: getCurrentUTCTimestamp(),
-                    verifiedAt: getCurrentUTCTimestamp(),
-                }),
-            );
+            await this.updateUserService.execute({
+                id: user.id,
+                updatedAt: getCurrentUTCTimestamp(),
+                verifiedAt: getCurrentUTCTimestamp(),
+            });
         } catch {
             throw new InternalServerErrorException('Could not verify your email, try again');
         }

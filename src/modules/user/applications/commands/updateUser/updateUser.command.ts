@@ -1,6 +1,6 @@
-import type { IInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TUpdateUser } from '@/modules/user/domain/types/updateUser.type';
 
-type TProps = Partial<IInsertUser> & Required<Pick<IInsertUser, 'updatedAt' | 'id'>>;
+type TProps = TUpdateUser;
 
 export class UpdateUserCommand {
     constructor(public readonly props: TProps) {}

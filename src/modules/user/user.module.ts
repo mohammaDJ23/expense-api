@@ -58,6 +58,6 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         FindUserListAndTotalService,
         DeleteManyNotVerifiedUsersJob,
     ],
-    exports: [UserUniqueEmailValidatorService, FindUserListService],
+    exports: [UserUniqueEmailValidatorService, FindUserListService, UpdateUserService],
 })
 export class UserModule {}

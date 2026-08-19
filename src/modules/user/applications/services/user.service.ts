@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
+import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { FindTotalUsersQuery } from '@/modules/user/applications/queries/findTotalUsers/findTotalUsers.query';
 import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 
@@ -25,7 +26,15 @@ export class UserService {
     ) {}
 
     update(userId: string, body: UpdateUserRequestDto): Promise<IId> {
-        return this.updateUserService.execute({ userId, body });
+        return this.updateUserService
+            .execute({
+                id: userId,
+                firstName: body.firstName,
+                lastName: body.lastName,
+                phone: body.phone,
+                updatedAt: getCurrentUTCTimestamp(),
+            })
+            .then((user) => ({ id: user.id }));
     }
 
     delete(userId: string): Promise<IId> {

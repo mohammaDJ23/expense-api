@@ -1,42 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
+import { Transactional } from '@nestjs-cls/transactional';
 
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { IId } from '@/core/types/id.type';
+import type { TUpdateUser } from '@/modules/user/domain/types/updateUser.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
-import type { UpdateUserRequestDto } from '@/modules/user/interfaces/dtos/updateUser.request.dto';
-
-interface IInput {
-    userId: string;
-    body: UpdateUserRequestDto;
-}
 
 @Injectable()
-export class UpdateUserService implements IService<IInput, IId> {
+export class UpdateUserService implements IService<TUpdateUser, ISelectUser> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly userExistenceValidatorService: UserExistenceValidatorService,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
-    async execute(input: IInput): Promise<IId> {
-        await this.userExistenceValidatorService.validate({ userId: input.userId });
+    @Transactional()
+    async execute(input: TUpdateUser): Promise<ISelectUser> {
+        await this.userExistenceValidatorService.validate({ userId: input.id });
 
         const updatedUser = await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-            new UpdateUserCommand({
-                id: input.userId,
-                firstName: input.body.firstName,
-                lastName: input.body.lastName,
-                phone: input.body.phone,
-                updatedAt: getCurrentUTCTimestamp(),
-            }),
+            new UpdateUserCommand(input),
         );
 
-        return {
-            id: updatedUser.id,
-        };
+        await this.outboxEventPublisherService.publish({
+            aggregateId: updatedUser.id,
+            aggregateType: 'users',
+            eventType: 'updated',
+            payload: updatedUser,
+            createdAt: getCurrentUTCTimestamp(),
+        });
+
+        return updatedUser;
     }
 }

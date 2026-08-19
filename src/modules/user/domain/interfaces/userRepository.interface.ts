@@ -6,12 +6,13 @@ import type { IFindByIdOrThrowRepository } from '@/core/interfaces/repositories/
 import type { IFindListRepository } from '@/core/interfaces/repositories/findListRepository.interface';
 import type { IFindTotalRepository } from '@/core/interfaces/repositories/findTotalRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
+import type { TUpdateUser } from '@/modules/user/domain/types/updateUser.type';
 import type { IInsertUser, ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 export interface IUserRepository
     extends
         ICreateRepository<IInsertUser, ISelectUser>,
-        IUpdateRepository<Partial<ISelectUser> & Required<Pick<ISelectUser, 'id'>>, ISelectUser>,
+        IUpdateRepository<TUpdateUser, ISelectUser>,
         IFindByIdOrNullRepository<ISelectUser>,
         IFindByIdOrThrowRepository<ISelectUser>,
         IFindListRepository<ISelectUser>,
