@@ -17,6 +17,7 @@ import { DeletedUserReceiverCacheInvalidatorHandler } from '@/modules/receiver/a
 import { DeletedUserReceiverElasticsearchRemoverHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserReceiverMessageElasticsearchRemover.handler';
 import { ReceiverCacheInvalidatorProcessor } from '@/modules/receiver/applications/messages/receiverCacheInvalidator.processor';
 import { ReceiverElasticsearchIndexerProcessor } from '@/modules/receiver/applications/messages/receiverElasticsearchIndexer.processor';
+import { UpdatedReceiverCacheInvalidatorHandler } from '@/modules/receiver/applications/messages/updatedReceiver/updatedReceiverCacheInvalidator.handler';
 import { UpdatedReceiverElasticsearchIndexerHandler } from '@/modules/receiver/applications/messages/updatedReceiver/updatedReceiverElasticsearchIndexer.handler';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
 import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.handler';
@@ -91,7 +92,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         CreatedReceiverCacheInvalidatorHandler,
         DeletedReceiverCacheInvalidatorHandler,
         DeletedUserReceiverCacheInvalidatorHandler,
-        DeletedReceiverCacheInvalidatorHandler,
+        UpdatedReceiverCacheInvalidatorHandler,
     ],
     exports: [
         ReceiverSearchService,
