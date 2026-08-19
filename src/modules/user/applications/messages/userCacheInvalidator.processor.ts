@@ -18,9 +18,9 @@ export class UserCacheInvalidatorProcessor implements IProcessor<IInput, void> {
 
     async process(input: IInput): Promise<void> {
         await Promise.all(
-            input.userIds.map((userId) =>
+            input.userIds.map(() =>
                 this.concurrency(() =>
-                    this.cacheInvalidatorService.invalidateScope(CacheNamespace.USER, userId),
+                    this.cacheInvalidatorService.invalidateScope(CacheNamespace.USER),
                 ),
             ),
         );
