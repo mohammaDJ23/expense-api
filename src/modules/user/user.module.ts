@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { AuthorizationModule } from '@/core/features/authorization/authorization.module';
+import { CacheModule } from '@/core/features/cache/cache.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { OutboxModule } from '@/modules/outbox/outbox.module';
@@ -9,6 +10,10 @@ import { CreateUserHandler } from '@/modules/user/applications/commands/createUs
 import { DeleteManyNotVerifiedUsersHandler } from '@/modules/user/applications/commands/deleteManyNotVerifiedUsers/deleteManyNotVerifiedUsers.handler';
 import { DeleteUserHandler } from '@/modules/user/applications/commands/deleteUser/deleteUser.handler';
 import { UpdateUserHandler } from '@/modules/user/applications/commands/updateUser/updateUser.handler';
+import { CreatedUserCacheInvalidatorHandler } from '@/modules/user/applications/messages/createdUser/createdUserCacheInvalidator.handler';
+import { DeletedUserCacheInvalidatorHandler } from '@/modules/user/applications/messages/deletedUser/deletedUserCacheInvalidator.handler';
+import { UpdatedUserCacheInvalidatorHandler } from '@/modules/user/applications/messages/updatedUser/updatedUserCacheInvalidator.handler';
+import { UserCacheInvalidatorProcessor } from '@/modules/user/applications/messages/userCacheInvalidator.processor';
 import { ExistsUserByEmailHandler } from '@/modules/user/applications/queries/existsUserByEmail/existsUserByEmail.handler';
 import { ExistsUserByIdHandler } from '@/modules/user/applications/queries/existsUserById/existsUserById.handler';
 import { FindTotalUsersHandler } from '@/modules/user/applications/queries/findTotalUsers/findTotalUsers.handler';
@@ -35,6 +40,7 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         AuthorizationModule,
         OutboxModule,
         QueryDispatcherModule,
+        CacheModule,
     ],
     controllers: [UserController],
     providers: [
@@ -59,6 +65,10 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         FindUserListService,
         FindUserListAndTotalService,
         DeleteManyNotVerifiedUsersJob,
+        CreatedUserCacheInvalidatorHandler,
+        DeletedUserCacheInvalidatorHandler,
+        UpdatedUserCacheInvalidatorHandler,
+        UserCacheInvalidatorProcessor,
     ],
     exports: [
         UserUniqueEmailValidatorService,
