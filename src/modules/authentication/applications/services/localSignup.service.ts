@@ -1,9 +1,8 @@
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
-import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
+import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { UserUniqueEmailValidatorService } from '@/modules/user/applications/services/validators/userUniqueEmailValidator.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
@@ -20,12 +19,12 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 @Injectable()
 export class LocalSignupService implements IService<LocalSignupRequestDto, boolean> {
     constructor(
-        private readonly commandBus: CommandBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationTokenService: VerificationTokenService,
         private readonly verificationStorageService: VerificationStorageService,
         private readonly userUniqueEmailValidationService: UserUniqueEmailValidatorService,
+        private readonly createUserService: CreateUserService,
     ) {}
 
     async execute(input: LocalSignupRequestDto): Promise<boolean> {
@@ -37,16 +36,14 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
         try {
             const hashedPassword = await this.passwordHasherService.hash(input.password);
 
-            createdUser = await this.commandBus.execute<CreateUserCommand, ISelectUser>(
-                new CreateUserCommand({
-                    email: input.email,
-                    hashedPassword,
-                    role: UserRoles.USER,
-                    authProvider: AuthProvider.LOCAL,
-                    createdAt: getCurrentUTCTimestamp(),
-                    updatedAt: getCurrentUTCTimestamp(),
-                }),
-            );
+            createdUser = await this.createUserService.execute({
+                email: input.email,
+                hashedPassword,
+                role: UserRoles.USER,
+                authProvider: AuthProvider.LOCAL,
+                createdAt: getCurrentUTCTimestamp(),
+                updatedAt: getCurrentUTCTimestamp(),
+            });
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

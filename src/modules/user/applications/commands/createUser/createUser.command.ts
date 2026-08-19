@@ -1,7 +1,6 @@
-import type { IInsertUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { TCreateUser } from '@/modules/user/domain/types/createUser.type';
 
-type TProps = Partial<IInsertUser> &
-    Required<Pick<IInsertUser, 'email' | 'role' | 'authProvider' | 'createdAt' | 'updatedAt'>>;
+type TProps = TCreateUser;
 
 export class CreateUserCommand {
     constructor(public readonly props: TProps) {}

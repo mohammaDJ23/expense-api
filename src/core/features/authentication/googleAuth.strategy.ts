@@ -1,5 +1,4 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { Strategy, type Profile } from 'passport-google-oauth20';
@@ -7,8 +6,8 @@ import { Strategy, type Profile } from 'passport-google-oauth20';
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { readSecret } from '@/core/utils/readSecret.util';
-import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
+import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
@@ -19,7 +18,7 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
-        private readonly commandBus: CommandBus,
+        private readonly createUserService: CreateUserService,
     ) {
         const env = new Env();
         super({
@@ -47,21 +46,19 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
         );
 
         if (!user) {
-            const createdUser = await this.commandBus.execute<CreateUserCommand, ISelectUser>(
-                new CreateUserCommand({
-                    firstName: profile.name?.givenName,
-                    lastName: profile.name?.familyName,
-                    googleId: profile.id,
-                    email: email.value,
-                    avatar: profile.photos?.[0]?.value,
-                    authProvider: AuthProvider.GOOGLE,
-                    role: UserRoles.USER,
-                    verifiedAt: getCurrentUTCTimestamp(),
-                    createdAt: getCurrentUTCTimestamp(),
-                    updatedAt: getCurrentUTCTimestamp(),
-                    lastLoginAt: getCurrentUTCTimestamp(),
-                }),
-            );
+            const createdUser = await this.createUserService.execute({
+                firstName: profile.name?.givenName,
+                lastName: profile.name?.familyName,
+                googleId: profile.id,
+                email: email.value,
+                avatar: profile.photos?.[0]?.value,
+                authProvider: AuthProvider.GOOGLE,
+                role: UserRoles.USER,
+                verifiedAt: getCurrentUTCTimestamp(),
+                createdAt: getCurrentUTCTimestamp(),
+                updatedAt: getCurrentUTCTimestamp(),
+                lastLoginAt: getCurrentUTCTimestamp(),
+            });
 
             return {
                 id: createdUser.id,
