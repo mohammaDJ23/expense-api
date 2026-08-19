@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { AuthorizationModule } from '@/core/features/authorization/authorization.module';
@@ -36,7 +36,7 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
 @Module({
     imports: [
         CqrsModule,
-        AuthenticationModule,
+        forwardRef(() => AuthenticationModule),
         AuthorizationModule,
         OutboxModule,
         QueryDispatcherModule,
