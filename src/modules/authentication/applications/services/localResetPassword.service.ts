@@ -4,14 +4,13 @@ import {
     Injectable,
     InternalServerErrorException,
 } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 
 import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { ResetPasswordMailerService } from '@/modules/authentication/applications/services/resetPasswordMailer.service';
-import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
+import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
 import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 
 import { PasswordHasherService } from './passwordHasher.service';
@@ -27,11 +26,11 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 export class LocalResetPasswordService implements IService<LocalResetPasswordRequestDto, boolean> {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
-        private readonly commandBus: CommandBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly passwordTokenService: PasswordTokenService,
         private readonly passwordStorageService: PasswordStorageService,
         private readonly resetPasswordMailerService: ResetPasswordMailerService,
+        private readonly updatedUserService: UpdateUserService,
     ) {}
 
     async execute(input: LocalResetPasswordRequestDto): Promise<boolean> {
@@ -72,13 +71,11 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
         try {
             const hashedPassword = await this.passwordHasherService.hash(input.newPassword);
 
-            await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-                new UpdateUserCommand({
-                    id: user.id,
-                    updatedAt: getCurrentUTCTimestamp(),
-                    hashedPassword,
-                }),
-            );
+            await this.updatedUserService.execute({
+                id: user.id,
+                updatedAt: getCurrentUTCTimestamp(),
+                hashedPassword,
+            });
         } catch {
             throw new InternalServerErrorException('Could not change your password, try again');
         }

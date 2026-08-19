@@ -15,6 +15,7 @@ import {
 
 import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
+import type { TUpdateUser } from '@/modules/user/domain/types/updateUser.type';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -27,7 +28,7 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    update(data: Partial<ISelectUser> & Required<Pick<ISelectUser, 'id'>>): Promise<ISelectUser> {
+    update(data: TUpdateUser): Promise<ISelectUser> {
         return toEntityOrThrow(
             this.drizzleRepository.db
                 .update(users)
