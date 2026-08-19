@@ -25,7 +25,7 @@ export class DeletedUserBillElasticsearchRemoverHandler implements IMessageHandl
                 this.concurrency(() =>
                     this.elasticsearchService.deleteByQuery(
                         this.billElasticsearchDeleteQuery.buildQuery({
-                            userId: item.aggregateId,
+                            userId: item.payload.id,
                         }),
                     ),
                 ),
