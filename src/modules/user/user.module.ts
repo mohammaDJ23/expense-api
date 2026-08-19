@@ -16,6 +16,7 @@ import { FindUserByEmailOrNullHandler } from '@/modules/user/applications/querie
 import { FindUserByIdOrNullHandler } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.handler';
 import { FindUserByIdOrThrowHandler } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.handler';
 import { FindUserListHandler } from '@/modules/user/applications/queries/findUserList/findUserList.handler';
+import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { DeleteUserService } from '@/modules/user/applications/services/deleteUser.service';
 import { FindUserListService } from '@/modules/user/applications/services/findUserList.service';
 import { FindUserListAndTotalService } from '@/modules/user/applications/services/findUserListAndTotal.service';
@@ -40,6 +41,7 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         UserService,
         DeleteUserService,
         UpdateUserService,
+        CreateUserService,
         UserRepository,
         CreateUserHandler,
         UpdateUserHandler,
@@ -58,6 +60,11 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         FindUserListAndTotalService,
         DeleteManyNotVerifiedUsersJob,
     ],
-    exports: [UserUniqueEmailValidatorService, FindUserListService, UpdateUserService],
+    exports: [
+        UserUniqueEmailValidatorService,
+        FindUserListService,
+        UpdateUserService,
+        CreateUserService,
+    ],
 })
 export class UserModule {}
