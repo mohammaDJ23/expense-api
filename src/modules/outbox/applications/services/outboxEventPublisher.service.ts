@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { CreateOutboxEventCommand } from '@/modules/outbox/applications/commands/createOutboxEvent/createOutboxEvent.command';
 
 import type { IOutboxEventPublisherService } from '@/modules/outbox/domain/interfaces/outboxEventPublisher.interface';
@@ -30,7 +29,7 @@ export class OutboxEventPublisherService implements IOutboxEventPublisherService
                 aggregateType: input.aggregateType,
                 eventType: input.eventType,
                 payload: input.payload,
-                createdAt: getCurrentUTCTimestamp(),
+                createdAt: input.createdAt,
             }),
         );
     }
