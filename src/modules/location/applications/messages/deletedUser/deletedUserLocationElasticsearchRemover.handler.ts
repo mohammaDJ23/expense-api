@@ -11,7 +11,7 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 
 @MessageHandler()
 export class DeletedUserLocationElasticsearchRemoverHandler implements IMessageHandler<ISelectUser> {
-    route: TOutboxEventRoute = 'users.deleted';
+    route: TOutboxEventRoute = 'user.deleted';
     private readonly concurrency = pLimit(2);
 
     constructor(

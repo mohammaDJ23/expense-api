@@ -8,7 +8,7 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 
 @MessageHandler()
 export class CreatedUserCacheInvalidatorHandler implements IMessageHandler<ISelectUser> {
-    route: TOutboxEventRoute = 'users.created';
+    route: TOutboxEventRoute = 'user.created';
 
     constructor(private readonly userCacheInvalidatorProcessor: UserCacheInvalidatorProcessor) {}
 

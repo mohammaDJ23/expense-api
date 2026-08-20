@@ -8,7 +8,7 @@ import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/
 
 @MessageHandler()
 export class UpdatedReceiverElasticsearchIndexerHandler implements IMessageHandler<ISelectReceiver> {
-    route: TOutboxEventRoute = 'receivers.updated';
+    route: TOutboxEventRoute = 'receiver.updated';
 
     constructor(
         private readonly receiverElasticsearchIndexerProcessor: ReceiverElasticsearchIndexerProcessor,

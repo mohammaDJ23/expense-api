@@ -5,6 +5,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { DeleteBillCommand } from '@/modules/bill/applications/commands/deleteBill/deleteBill.command';
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
+import { BillResource } from '@/modules/bill/bill.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
@@ -40,7 +41,7 @@ export class DeleteBillService implements IService<IInput, IId> {
 
         await this.outboxEventPublisherService.publish({
             aggregateId: deletedBill.id,
-            aggregateType: 'bills',
+            aggregateType: BillResource.BILL,
             eventType: 'deleted',
             payload: deletedBill,
             createdAt: getCurrentUTCTimestamp(),

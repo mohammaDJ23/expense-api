@@ -9,7 +9,7 @@ import type { estypes } from '@elastic/elasticsearch';
 
 @MessageHandler()
 export class DeletedBillElasticsearchRemoverHandler implements IMessageHandler<ISelectBill> {
-    route: TOutboxEventRoute = 'bills.deleted';
+    route: TOutboxEventRoute = 'bill.deleted';
 
     constructor(private readonly elasticsearchService: ElasticSearchService) {}
 

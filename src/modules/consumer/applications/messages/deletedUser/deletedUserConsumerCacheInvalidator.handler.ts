@@ -8,7 +8,7 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 
 @MessageHandler()
 export class DeletedUserConsumerCacheInvalidatorHandler implements IMessageHandler<ISelectUser> {
-    route: TOutboxEventRoute = 'users.deleted';
+    route: TOutboxEventRoute = 'user.deleted';
 
     constructor(
         private readonly consumerCacheInvalidatorProcessor: ConsumerCacheInvalidatorProcessor,

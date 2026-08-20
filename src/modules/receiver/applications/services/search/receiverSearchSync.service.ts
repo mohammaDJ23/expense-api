@@ -5,6 +5,7 @@ import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindReceiverListByUserIdService } from '@/modules/receiver/applications/services/findReceiverListByUserId.service';
 import { ReceiverElasticsearchDeleteQuery } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearchDelete.query';
+import { ReceiverResource } from '@/modules/receiver/receiver.enum';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
@@ -20,7 +21,7 @@ export class ReceiverSearchSyncService implements IElasticsearchSync {
     ) {}
 
     async sync(userId: string): Promise<void> {
-        const index: TOutboxEventAggregateType = 'receivers';
+        const index: TOutboxEventAggregateType = ReceiverResource.RECEIVER;
 
         await this.elasticsearchService.deleteByQuery(
             this.receiverElasticsearchDeleteQuery.buildQuery({

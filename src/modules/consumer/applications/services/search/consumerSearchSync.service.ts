@@ -4,6 +4,7 @@ import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindConsumerListByUserIdService } from '@/modules/consumer/applications/services/findConsumerListByUserId.service';
+import { ConsumerResource } from '@/modules/consumer/consumer.enum';
 import { ConsumerElasticsearchDeleteQuery } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearchDelete.query';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';
@@ -20,7 +21,7 @@ export class ConsumerSearchSyncService implements IElasticsearchSync {
     ) {}
 
     async sync(userId: string): Promise<void> {
-        const index: TOutboxEventAggregateType = 'consumers';
+        const index: TOutboxEventAggregateType = ConsumerResource.CONSUMER;
 
         await this.elasticsearchService.deleteByQuery(
             this.consumerElasticsearchDeleteQuery.buildQuery({

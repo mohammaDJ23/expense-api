@@ -8,7 +8,7 @@ import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEven
 
 @MessageHandler()
 export class UpdatedConsumerElasticsearchRemoverHandler implements IMessageHandler<ISelectConsumer> {
-    route: TOutboxEventRoute = 'consumers.updated';
+    route: TOutboxEventRoute = 'consumer.updated';
 
     constructor(
         private readonly consumerElasticsearchIndexerProcessor: ConsumerElasticsearchIndexerProcessor,

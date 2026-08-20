@@ -5,6 +5,7 @@ import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindLocationListByUserIdService } from '@/modules/location/applications/services//findLocationListByUserId.service';
 import { LocationElasticsearchDeleteQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearchDelete.query';
+import { LocationResource } from '@/modules/location/location.enum';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
@@ -20,7 +21,7 @@ export class LocationSearchSyncService implements IElasticsearchSync {
     ) {}
 
     async sync(userId: string): Promise<void> {
-        const index: TOutboxEventAggregateType = 'locations';
+        const index: TOutboxEventAggregateType = LocationResource.LOCATION;
 
         await this.elasticsearchService.deleteByQuery(
             this.locationElasticsearchDeleteQuery.buildQuery({

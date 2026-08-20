@@ -8,7 +8,7 @@ import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEven
 
 @MessageHandler()
 export class CreatedConsumerCacheInvalidatorHandler implements IMessageHandler<ISelectConsumer> {
-    route: TOutboxEventRoute = 'consumers.created';
+    route: TOutboxEventRoute = 'consumer.created';
 
     constructor(
         private readonly consumerCacheInvalidatorProcessor: ConsumerCacheInvalidatorProcessor,

@@ -5,6 +5,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { DeleteConsumerCommand } from '@/modules/consumer/applications/commands/deleteConsumer/deleteConsumer.command';
 import { ConsumerExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumerExistenceValidator.service';
+import { ConsumerResource } from '@/modules/consumer/consumer.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
@@ -43,7 +44,7 @@ export class DeleteConsumerService implements IService<IInput, IId> {
 
         await this.outboxEventPublisherService.publish({
             aggregateId: deletedConsumer.id,
-            aggregateType: 'consumers',
+            aggregateType: ConsumerResource.CONSUMER,
             eventType: 'deleted',
             payload: deletedConsumer,
             createdAt: getCurrentUTCTimestamp(),

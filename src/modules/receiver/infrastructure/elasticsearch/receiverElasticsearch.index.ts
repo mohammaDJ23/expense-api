@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { ElasticsearchAnalysisSettings } from '@/infrastructure/elasticsearch/elasticsearchAnalysis.settings';
+import { ReceiverResource } from '@/modules/receiver/receiver.enum';
 
 import type { IElasticsearchIndex } from '@/infrastructure/elasticsearch/elasticsearchIndex.interface';
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
@@ -8,7 +9,7 @@ import type { estypes } from '@elastic/elasticsearch';
 
 @Injectable()
 export class ReceiverElasticsearchIndex implements IElasticsearchIndex {
-    index: TOutboxEventAggregateType = 'receivers';
+    index: TOutboxEventAggregateType = ReceiverResource.RECEIVER;
 
     buildIndex(): estypes.IndicesCreateRequest {
         return {
