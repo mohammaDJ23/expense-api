@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import pLimit from 'p-limit';
 
 import { CacheInvalidatorService } from '@/core/features/cache/cacheInvalidator.service';
-import { CacheNamespace } from '@/core/features/cache/cacheNamespace.enum';
+import { LocationResource } from '@/modules/location/location.enum';
 
 import type { IProcessor } from '@/core/interfaces/processor.interface';
 
@@ -20,7 +20,7 @@ export class LocationCacheInvalidatorProcessor implements IProcessor<IInput, voi
         await Promise.all(
             input.userIds.map((userId) =>
                 this.concurrency(() =>
-                    this.cacheInvalidatorService.invalidateScope(CacheNamespace.LOCATION, userId),
+                    this.cacheInvalidatorService.invalidateScope(LocationResource.LOCATION, userId),
                 ),
             ),
         );

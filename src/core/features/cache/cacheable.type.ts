@@ -1,8 +1,8 @@
-import type { CacheNamespace } from './cacheNamespace.enum';
+import type { TCacheNamespace } from './cacheNamespace.type';
 import type { TQuery } from '@/infrastructure/cqrs/query.type';
 
 export interface ICacheable<T = TQuery> {
-    namespace: CacheNamespace;
+    namespace: TCacheNamespace;
     scope?: (query: T) => string;
     ttl?: number;
 }

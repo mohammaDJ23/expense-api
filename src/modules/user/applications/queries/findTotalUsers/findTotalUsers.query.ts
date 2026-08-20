@@ -1,8 +1,8 @@
 import { Cacheable } from '@/core/features/cache/cacheable.decorator';
-import { CacheNamespace } from '@/core/features/cache/cacheNamespace.enum';
+import { UserResource } from '@/modules/user/user.enum';
 
 @Cacheable<FindTotalUsersQuery>({
-    namespace: CacheNamespace.USER,
+    namespace: UserResource.USER,
 })
 export class FindTotalUsersQuery {
     constructor() {}

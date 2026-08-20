@@ -1,12 +1,12 @@
 import { Cacheable } from '@/core/features/cache/cacheable.decorator';
-import { CacheNamespace } from '@/core/features/cache/cacheNamespace.enum';
+import { ConsumerResource } from '@/modules/consumer/consumer.enum';
 
 interface IProps {
     userId: string;
 }
 
 @Cacheable<FindTotalConsumersByUserIdQuery>({
-    namespace: CacheNamespace.CONSUMER,
+    namespace: ConsumerResource.CONSUMER,
     scope(query) {
         return query.props.userId;
     },

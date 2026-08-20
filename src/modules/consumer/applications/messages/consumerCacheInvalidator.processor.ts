@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import pLimit from 'p-limit';
 
 import { CacheInvalidatorService } from '@/core/features/cache/cacheInvalidator.service';
-import { CacheNamespace } from '@/core/features/cache/cacheNamespace.enum';
+import { BillResource } from '@/modules/bill/bill.enum';
+import { ConsumerResource } from '@/modules/consumer/consumer.enum';
 
 import type { IProcessor } from '@/core/interfaces/processor.interface';
 
@@ -22,11 +23,11 @@ export class ConsumerCacheInvalidatorProcessor implements IProcessor<IInput, voi
                 this.concurrency(() =>
                     Promise.all([
                         this.cacheInvalidatorService.invalidateScope(
-                            CacheNamespace.CONSUMER,
+                            ConsumerResource.CONSUMER,
                             userId,
                         ),
                         this.cacheInvalidatorService.invalidateScope(
-                            CacheNamespace.BILL_CONSUMER,
+                            BillResource.BILL_CONSUMER,
                             userId,
                         ),
                     ]),
