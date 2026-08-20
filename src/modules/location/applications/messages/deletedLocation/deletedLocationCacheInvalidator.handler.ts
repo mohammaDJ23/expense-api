@@ -8,7 +8,7 @@ import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEven
 
 @MessageHandler()
 export class DeletedLocationCacheInvalidatorHandler implements IMessageHandler<ISelectLocation> {
-    route: TOutboxEventRoute = 'locations.deleted';
+    route: TOutboxEventRoute = 'location.deleted';
 
     constructor(
         private readonly locationCacheInvalidatorProcessor: LocationCacheInvalidatorProcessor,

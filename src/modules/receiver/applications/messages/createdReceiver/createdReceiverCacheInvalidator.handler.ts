@@ -8,7 +8,7 @@ import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/
 
 @MessageHandler()
 export class CreatedReceiverCacheInvalidatorHandler implements IMessageHandler<ISelectReceiver> {
-    route: TOutboxEventRoute = 'receivers.created';
+    route: TOutboxEventRoute = 'receiver.created';
 
     constructor(
         private readonly receiverCacheInvalidatorProcessor: ReceiverCacheInvalidatorProcessor,

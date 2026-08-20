@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { ElasticsearchAnalysisSettings } from '@/infrastructure/elasticsearch/elasticsearchAnalysis.settings';
+import { BillResource } from '@/modules/bill/bill.enum';
 
 import type { IElasticsearchIndex } from '@/infrastructure/elasticsearch/elasticsearchIndex.interface';
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
@@ -8,7 +9,7 @@ import type { estypes } from '@elastic/elasticsearch';
 
 @Injectable()
 export class BillElasticsearchIndex implements IElasticsearchIndex {
-    index: TOutboxEventAggregateType = 'bills';
+    index: TOutboxEventAggregateType = BillResource.BILL;
 
     buildIndex(): estypes.IndicesCreateRequest {
         return {

@@ -5,6 +5,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/createBillsConsumersSynchronization.service';
+import { BillResource } from '@/modules/bill/bill.enum';
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
@@ -77,7 +78,7 @@ export class CreateBillService implements IService<IInput, IId> {
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: bill.id,
-                aggregateType: 'bills',
+                aggregateType: BillResource.BILL,
                 eventType: 'created',
                 payload: bill,
                 createdAt: getCurrentUTCTimestamp(),

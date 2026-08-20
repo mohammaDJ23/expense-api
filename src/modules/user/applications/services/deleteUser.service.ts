@@ -6,6 +6,7 @@ import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { DeleteUserCommand } from '@/modules/user/applications/commands/deleteUser/deleteUser.command';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
+import { UserResource } from '@/modules/user/user.enum';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -35,7 +36,7 @@ export class DeleteUserService implements IService<IInput, IId> {
 
         await this.outboxEventPublisherService.publish({
             aggregateId: deletedUser.id,
-            aggregateType: 'users',
+            aggregateType: UserResource.USER,
             eventType: 'deleted',
             payload: deletedUser,
             createdAt: getCurrentUTCTimestamp(),

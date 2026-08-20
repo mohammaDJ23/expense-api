@@ -4,6 +4,7 @@ import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
+import { BillResource } from '@/modules/bill/bill.enum';
 import { BillElasticsearchDeleteQuery } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearchDelete.query';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';
@@ -20,7 +21,7 @@ export class BillSearchSyncService implements IElasticsearchSync {
     ) {}
 
     async sync(userId: string): Promise<void> {
-        const index: TOutboxEventAggregateType = 'bills';
+        const index: TOutboxEventAggregateType = BillResource.BILL;
 
         await this.elasticsearchService.deleteByQuery(
             this.billElasticsearchDeleteQuery.buildQuery({

@@ -8,7 +8,7 @@ import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEven
 
 @MessageHandler()
 export class CreatedLocationElasticsearchIndexerHandler implements IMessageHandler<ISelectLocation> {
-    route: TOutboxEventRoute = 'locations.created';
+    route: TOutboxEventRoute = 'location.created';
 
     constructor(
         private readonly locationElasticsearchIndexerProcessor: LocationElasticsearchIndexerProcessor,

@@ -8,7 +8,7 @@ import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEven
 
 @MessageHandler()
 export class CreatedBillElasticsearchIndexerHandler implements IMessageHandler<ISelectBill> {
-    route: TOutboxEventRoute = 'bills.created';
+    route: TOutboxEventRoute = 'bill.created';
 
     constructor(
         private readonly billElasticsearchIndexerProcessor: BillElasticsearchIndexerProcessor,
