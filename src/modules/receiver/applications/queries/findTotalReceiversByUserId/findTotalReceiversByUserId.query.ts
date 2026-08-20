@@ -1,12 +1,12 @@
 import { Cacheable } from '@/core/features/cache/cacheable.decorator';
-import { CacheNamespace } from '@/core/features/cache/cacheNamespace.enum';
+import { ReceiverResource } from '@/modules/receiver/receiver.enum';
 
 interface IProps {
     userId: string;
 }
 
 @Cacheable<FindTotalReceiversByUserIdQuery>({
-    namespace: CacheNamespace.RECEIVER,
+    namespace: ReceiverResource.RECEIVER,
     scope(query) {
         return query.props.userId;
     },

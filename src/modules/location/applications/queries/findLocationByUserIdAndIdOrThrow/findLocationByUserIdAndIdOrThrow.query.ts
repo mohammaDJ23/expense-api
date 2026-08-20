@@ -1,5 +1,5 @@
 import { Cacheable } from '@/core/features/cache/cacheable.decorator';
-import { CacheNamespace } from '@/core/features/cache/cacheNamespace.enum';
+import { LocationResource } from '@/modules/location/location.enum';
 
 interface IProps {
     userId: string;
@@ -7,7 +7,7 @@ interface IProps {
 }
 
 @Cacheable<FindLocationByUserIdAndIdOrThrowQuery>({
-    namespace: CacheNamespace.LOCATION,
+    namespace: LocationResource.LOCATION,
     scope(query) {
         return query.props.userId;
     },

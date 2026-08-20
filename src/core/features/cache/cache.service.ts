@@ -5,7 +5,7 @@ import { CACHE_SCAN_CURSOR_COUNT } from './cache.constants';
 import { CacheKeyService } from './cacheKey.service';
 import { CacheQueryHasherService } from './cacheQueryHasher.service';
 
-import type { CacheNamespace } from './cacheNamespace.enum';
+import type { TCacheNamespace } from './cacheNamespace.type';
 import type { TQuery } from '@/infrastructure/cqrs/query.type';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class CacheService {
         private readonly cacheKeyService: CacheKeyService,
     ) {}
 
-    get(namespace: CacheNamespace, scopeId: string, query: TQuery): Promise<string | null> {
+    get(namespace: TCacheNamespace, scopeId: string, query: TQuery): Promise<string | null> {
         const redis = this.getRedis();
         const key = this.createKey(namespace, scopeId, query);
 
@@ -24,7 +24,7 @@ export class CacheService {
     }
 
     async set<T>(
-        namespace: CacheNamespace,
+        namespace: TCacheNamespace,
         scopeId: string,
         query: TQuery,
         value: T,
@@ -37,7 +37,7 @@ export class CacheService {
         await redis.set(key, serializedValue, 'EX', ttl);
     }
 
-    async invalidateScope(namespace: CacheNamespace, scopeId: string): Promise<void> {
+    async invalidateScope(namespace: TCacheNamespace, scopeId: string): Promise<void> {
         const redis = this.getRedis();
         const pattern = this.cacheKeyService.createScopePattern(namespace, scopeId);
 
@@ -59,7 +59,7 @@ export class CacheService {
         } while (cursor !== '0');
     }
 
-    private createKey(namespace: CacheNamespace, scopeId: string, query: TQuery): string {
+    private createKey(namespace: TCacheNamespace, scopeId: string, query: TQuery): string {
         const hash = this.cacheQueryHasherService.execute(query);
 
         return this.cacheKeyService.create(namespace, scopeId, hash);

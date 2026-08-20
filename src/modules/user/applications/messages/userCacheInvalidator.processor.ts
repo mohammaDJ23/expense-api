@@ -3,7 +3,7 @@ import pLimit from 'p-limit';
 
 import { DEFAULT_CACHE_SCOPE } from '@/core/features/cache/cache.constants';
 import { CacheInvalidatorService } from '@/core/features/cache/cacheInvalidator.service';
-import { CacheNamespace } from '@/core/features/cache/cacheNamespace.enum';
+import { UserResource } from '@/modules/user/user.enum';
 
 import type { IProcessor } from '@/core/interfaces/processor.interface';
 
@@ -22,7 +22,7 @@ export class UserCacheInvalidatorProcessor implements IProcessor<IInput, void> {
             input.userIds.map(() =>
                 this.concurrency(() =>
                     this.cacheInvalidatorService.invalidateScope(
-                        CacheNamespace.USER,
+                        UserResource.USER,
                         DEFAULT_CACHE_SCOPE,
                     ),
                 ),

@@ -1,5 +1,5 @@
 import { Cacheable } from '@/core/features/cache/cacheable.decorator';
-import { CacheNamespace } from '@/core/features/cache/cacheNamespace.enum';
+import { BillResource } from '@/modules/bill/bill.enum';
 
 import type { ICursor } from '@/core/utils/pagination/cursor.type';
 
@@ -10,7 +10,7 @@ interface IProps {
 }
 
 @Cacheable<FindBillListByUserIdQuery>({
-    namespace: CacheNamespace.BILL,
+    namespace: BillResource.BILL,
     scope(query) {
         return query.props.userId;
     },

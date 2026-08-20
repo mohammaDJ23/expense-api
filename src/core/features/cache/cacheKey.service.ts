@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 
 import { CACHE_KEY_PREFIX } from './cache.constants';
 
-import type { CacheNamespace } from './cacheNamespace.enum';
+import type { TCacheNamespace } from './cacheNamespace.type';
 
 @Injectable()
 export class CacheKeyService {
-    create(namespace: CacheNamespace, scopeId: string, hash: string): string {
+    create(namespace: TCacheNamespace, scopeId: string, hash: string): string {
         return `${CACHE_KEY_PREFIX}:${namespace}:${scopeId}:${hash}`;
     }
 

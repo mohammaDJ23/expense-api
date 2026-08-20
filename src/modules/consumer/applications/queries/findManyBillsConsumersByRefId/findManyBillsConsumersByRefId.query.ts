@@ -1,5 +1,5 @@
 import { Cacheable } from '@/core/features/cache/cacheable.decorator';
-import { CacheNamespace } from '@/core/features/cache/cacheNamespace.enum';
+import { BillResource } from '@/modules/bill/bill.enum';
 
 interface IProps {
     billId: string;
@@ -7,7 +7,7 @@ interface IProps {
 }
 
 @Cacheable<FindManyBillsConsumersByRefIdQuery>({
-    namespace: CacheNamespace.BILL_CONSUMER,
+    namespace: BillResource.BILL_CONSUMER,
     scope(query) {
         return query.props.userId;
     },
