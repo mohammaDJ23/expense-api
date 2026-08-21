@@ -20,6 +20,7 @@ import { FindTotalUsersHandler } from '@/modules/user/applications/queries/findT
 import { FindUserByEmailOrNullHandler } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.handler';
 import { FindUserByIdOrNullHandler } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.handler';
 import { FindUserByIdOrThrowHandler } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.handler';
+import { FindUserIdListHandler } from '@/modules/user/applications/queries/findUserIdList/findUserIdList.handler';
 import { FindUserListHandler } from '@/modules/user/applications/queries/findUserList/findUserList.handler';
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { DeleteUserService } from '@/modules/user/applications/services/deleteUser.service';
@@ -69,6 +70,7 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         DeletedUserCacheInvalidatorHandler,
         UpdatedUserCacheInvalidatorHandler,
         UserCacheInvalidatorProcessor,
+        FindUserIdListHandler,
     ],
     exports: [
         UserUniqueEmailValidatorService,

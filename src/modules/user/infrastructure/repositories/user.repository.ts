@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, desc, eq, isNull, lt, or } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, isNull, lt, or } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -13,6 +13,7 @@ import {
     type ISelectUser,
 } from '@/modules/user/infrastructure/schemas/user.schema';
 
+import type { IId } from '@/core/types/id.type';
 import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
 import type { TUpdateUser } from '@/modules/user/domain/types/updateUser.type';
@@ -105,5 +106,17 @@ export class UserRepository implements IUserRepository {
 
     findTotal(): Promise<number> {
         return toCount(this.drizzleRepository.db.$count(users));
+    }
+
+    findIdList(limit: number, cursor: string | null): Promise<IId[]> {
+        return toEntities(
+            this.drizzleRepository.db
+                .select({ id: users.id })
+                .from(users)
+                .where(cursor ? gt(users.id, cursor) : undefined)
+                .orderBy(asc(users.id))
+                .limit(limit)
+                .execute(),
+        );
     }
 }
