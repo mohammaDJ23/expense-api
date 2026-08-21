@@ -115,7 +115,7 @@ export class UserRepository implements IUserRepository {
                 .from(users)
                 .where(cursor ? gt(users.id, cursor) : undefined)
                 .orderBy(asc(users.id))
-                .limit(limit)
+                .limit(limit + 1)
                 .execute(),
         );
     }
