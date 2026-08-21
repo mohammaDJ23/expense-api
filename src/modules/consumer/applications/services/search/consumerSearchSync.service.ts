@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
-import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
+import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindConsumerListByUserIdService } from '@/modules/consumer/applications/services/findConsumerListByUserId.service';
 import { ConsumerResource } from '@/modules/consumer/consumer.enum';
@@ -18,6 +18,7 @@ export class ConsumerSearchSyncService implements IElasticsearchSync {
         private readonly findConsumerListByUserIdService: FindConsumerListByUserIdService,
         private readonly elasticsearchService: ElasticSearchService,
         private readonly consumerElasticsearchDeleteQuery: ConsumerElasticsearchDeleteQuery,
+        private readonly cursorPaginationService: CursorPaginationService,
     ) {}
 
     async sync(userId: string): Promise<void> {
@@ -29,7 +30,7 @@ export class ConsumerSearchSyncService implements IElasticsearchSync {
             }),
         );
 
-        for await (const consumers of cursorIterator((cursor) =>
+        for await (const consumers of this.cursorPaginationService.cursorIterator((cursor) =>
             this.findConsumerListByUserIdService.execute({
                 userId,
                 query: {

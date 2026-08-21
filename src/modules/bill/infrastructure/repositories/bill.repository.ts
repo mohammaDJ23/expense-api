@@ -13,8 +13,8 @@ import {
 } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 
-import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { IBillRepository } from '@/modules/bill/domain/interfaces/billRepository.interface';
+import type { IBillListCursor } from '@/modules/bill/domain/types/billListCursor.type';
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
 import type { IBillTimeline } from '@/modules/bill/domain/types/billTimeline.type';
 import type { IMostUsed } from '@/modules/bill/domain/types/mostUsed.type';
@@ -67,7 +67,7 @@ export class BillRepository implements IBillRepository {
     findListByUserId(
         userId: string,
         limit: number,
-        cursor: ICursor | null,
+        cursor: IBillListCursor | null,
     ): Promise<ISelectBill[]> {
         return toEntities(
             this.drizzleRepository.db

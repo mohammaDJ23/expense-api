@@ -8,6 +8,7 @@ import type { IFindListByUserIdRepository } from '@/core/interfaces/repositories
 import type { IFindManyByUserIdAndIdsRepository } from '@/core/interfaces/repositories/findManyByUserIdAndIdsRepository.interface';
 import type { IFindTotalByUserIdRepository } from '@/core/interfaces/repositories/findTotalByUserIdRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
+import type { ILocationListCursor } from '@/modules/location/domain/types/locationListCursor.type';
 import type {
     IInsertLocation,
     ISelectLocation,
@@ -20,7 +21,7 @@ export interface ILocationRepository
         IDeleteByUserIdAndIdRepository<ISelectLocation>,
         IFindByUserIdAndIdOrThrowRepository<ISelectLocation>,
         IFindManyByUserIdAndIdsRepository<ISelectLocation>,
-        IFindListByUserIdRepository<ISelectLocation>,
+        IFindListByUserIdRepository<ISelectLocation, ILocationListCursor>,
         IExistsByUserIdAndIdRepository,
         IExistsByUserIdAndExcludingIdAndNameRepository,
         IExistsByUserIdAndNameRepository,

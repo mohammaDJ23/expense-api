@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { CacheModule } from '@/core/features/cache/cache.module';
 import { ExcelModule } from '@/core/features/export/excel/excel.module';
+import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
@@ -19,6 +20,7 @@ import { DeletedUserBillCacheInvalidatorHandler } from '@/modules/bill/applicati
 import { DeletedUserBillElasticsearchRemoverHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserBillElasticsearchRemover.handler';
 import { UpdatedBillCacheInvalidatorHandler } from '@/modules/bill/applications/messages/updatedBill/updatedBillCacheInvalidator.handler';
 import { UpdatedBillElasticsearchIndexerHandler } from '@/modules/bill/applications/messages/updatedBill/updatedBillElasticsearchIndexer.handler';
+import { BillListCursorPaginationDefinition } from '@/modules/bill/applications/pagination/cursor/billListCursorPagination.definition';
 import { ExistsBillByUserIdAndIdHandler } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.handler';
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
 import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.handler';
@@ -85,6 +87,7 @@ import { UserModule } from '@/modules/user/user.module';
         ExcelModule,
         QueryDispatcherModule,
         CacheModule,
+        CursorPaginationModule,
     ],
     providers: [
         BillService,
@@ -146,6 +149,7 @@ import { UserModule } from '@/modules/user/user.module';
         UpdatedBillCacheInvalidatorHandler,
         BillCacheInvalidatorProcessor,
         BillElasticsearchIndexerProcessor,
+        BillListCursorPaginationDefinition,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService, BillSearchSyncService],

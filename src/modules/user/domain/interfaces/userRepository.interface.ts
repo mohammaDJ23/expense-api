@@ -8,6 +8,8 @@ import type { IFindListRepository } from '@/core/interfaces/repositories/findLis
 import type { IFindTotalRepository } from '@/core/interfaces/repositories/findTotalRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type { TUpdateUser } from '@/modules/user/domain/types/updateUser.type';
+import type { IUserIdListCursor } from '@/modules/user/domain/types/userIdListCursor.type';
+import type { IUserListCursor } from '@/modules/user/domain/types/userListCursor.type';
 import type { IInsertUser, ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 export interface IUserRepository
@@ -16,11 +18,11 @@ export interface IUserRepository
         IUpdateRepository<TUpdateUser, ISelectUser>,
         IFindByIdOrNullRepository<ISelectUser>,
         IFindByIdOrThrowRepository<ISelectUser>,
-        IFindListRepository<ISelectUser>,
+        IFindListRepository<ISelectUser, IUserListCursor>,
         IDeleteByIdRepository<ISelectUser>,
         IExistsByIdRepository,
         IFindTotalRepository,
-        IFindIdListRepository {
+        IFindIdListRepository<IUserIdListCursor> {
     deleteManyNotVerified(): Promise<ISelectUser[]>;
     existsByEmail(email: string): Promise<boolean>;
     findByEmailOrNull(email: string): Promise<ISelectUser | null>;

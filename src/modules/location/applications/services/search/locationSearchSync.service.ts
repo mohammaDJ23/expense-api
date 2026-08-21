@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
-import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
+import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindLocationListByUserIdService } from '@/modules/location/applications/services//findLocationListByUserId.service';
 import { LocationElasticsearchDeleteQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearchDelete.query';
@@ -18,6 +18,7 @@ export class LocationSearchSyncService implements IElasticsearchSync {
         private readonly findLocationListByUserIdService: FindLocationListByUserIdService,
         private readonly elasticsearchService: ElasticSearchService,
         private readonly locationElasticsearchDeleteQuery: LocationElasticsearchDeleteQuery,
+        private readonly cursorPaginationService: CursorPaginationService,
     ) {}
 
     async sync(userId: string): Promise<void> {
@@ -29,7 +30,7 @@ export class LocationSearchSyncService implements IElasticsearchSync {
             }),
         );
 
-        for await (const locations of cursorIterator((cursor) =>
+        for await (const locations of this.cursorPaginationService.cursorIterator((cursor) =>
             this.findLocationListByUserIdService.execute({
                 userId,
                 query: {

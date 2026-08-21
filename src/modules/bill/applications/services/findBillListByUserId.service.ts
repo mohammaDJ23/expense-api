@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
-import { cursorPagination } from '@/core/utils/pagination/cursorPagination.util';
-import { parseCursor } from '@/core/utils/pagination/parseCursor.util';
+import { BillListCursorPaginationDefinition } from '@/modules/bill/applications/pagination/cursor/billListCursorPagination.definition';
 import { FindBillListByUserIdQuery } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.query';
 import { BillsAssemblerService } from '@/modules/bill/applications/services/relations/billsAssembler.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IListResult } from '@/core/types/list/listResult.type';
-import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
+import type { IBillListCursor } from '@/modules/bill/domain/types/billListCursor.type';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 
@@ -24,6 +24,8 @@ export class FindBillListByUserIdService implements IService<IInput, IListResult
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
         private readonly billsAssemblerService: BillsAssemblerService,
+        private readonly cursorPaginationService: CursorPaginationService,
+        private readonly billListCursorPaginationDefinition: BillListCursorPaginationDefinition,
     ) {}
 
     async execute(input: IInput): Promise<IListResult<IBill>> {
@@ -40,12 +42,19 @@ export class FindBillListByUserIdService implements IService<IInput, IListResult
             bills,
         });
 
-        return cursorPagination(assembledBills, input.query.limit);
+        return this.cursorPaginationService.paginate(
+            assembledBills,
+            input.query.limit,
+            this.billListCursorPaginationDefinition,
+        );
     }
 
-    parseCursor(cursor: string | null): ICursor | null {
+    private parseCursor(cursor: string | null): IBillListCursor | null {
         try {
-            return parseCursor(cursor);
+            return this.cursorPaginationService.decode(
+                cursor,
+                this.billListCursorPaginationDefinition,
+            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

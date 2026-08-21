@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
-import { cursorPagination } from '@/core/utils/pagination/cursorPagination.util';
-import { parseCursor } from '@/core/utils/pagination/parseCursor.util';
+import { ReceiverListCursorPaginationDefinition } from '@/modules/receiver/applications/pagination/cursor/receiverListCursorPagination.definition';
 import { FindReceiverListByUserIdQuery } from '@/modules/receiver/applications/queries/findReceiverListByUserId/findReceiverListByUserId.query';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IListResult } from '@/core/types/list/listResult.type';
-import type { ICursor } from '@/core/utils/pagination/cursor.type';
+import type { IReceiverListCursor } from '@/modules/receiver/domain/types/receiverListCursor.type';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';
 
@@ -22,7 +22,11 @@ export class FindReceiverListByUserIdService implements IService<
     IInput,
     IListResult<ISelectReceiver>
 > {
-    constructor(private readonly queryDispatcher: QueryDispatcher) {}
+    constructor(
+        private readonly queryDispatcher: QueryDispatcher,
+        private readonly cursorPaginationService: CursorPaginationService,
+        private readonly receiverListCursorPaginationDefinition: ReceiverListCursorPaginationDefinition,
+    ) {}
 
     async execute(input: IInput): Promise<IListResult<ISelectReceiver>> {
         const receivers = await this.queryDispatcher.execute<
@@ -36,12 +40,19 @@ export class FindReceiverListByUserIdService implements IService<
             }),
         );
 
-        return cursorPagination(receivers, input.query.limit);
+        return this.cursorPaginationService.paginate(
+            receivers,
+            input.query.limit,
+            this.receiverListCursorPaginationDefinition,
+        );
     }
 
-    parseCursor(cursor: string | null): ICursor | null {
+    private parseCursor(cursor: string | null): IReceiverListCursor | null {
         try {
-            return parseCursor(cursor);
+            return this.cursorPaginationService.decode(
+                cursor,
+                this.receiverListCursorPaginationDefinition,
+            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

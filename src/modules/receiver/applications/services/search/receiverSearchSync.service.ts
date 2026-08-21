@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
-import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
+import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindReceiverListByUserIdService } from '@/modules/receiver/applications/services/findReceiverListByUserId.service';
 import { ReceiverElasticsearchDeleteQuery } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearchDelete.query';
@@ -18,6 +18,7 @@ export class ReceiverSearchSyncService implements IElasticsearchSync {
         private readonly findReceiverListByUserIdService: FindReceiverListByUserIdService,
         private readonly elasticsearchService: ElasticSearchService,
         private readonly receiverElasticsearchDeleteQuery: ReceiverElasticsearchDeleteQuery,
+        private readonly cursorPaginationService: CursorPaginationService,
     ) {}
 
     async sync(userId: string): Promise<void> {
@@ -29,7 +30,7 @@ export class ReceiverSearchSyncService implements IElasticsearchSync {
             }),
         );
 
-        for await (const receivers of cursorIterator((cursor) =>
+        for await (const receivers of this.cursorPaginationService.cursorIterator((cursor) =>
             this.findReceiverListByUserIdService.execute({
                 userId,
                 query: {

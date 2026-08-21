@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { CacheModule } from '@/core/features/cache/cache.module';
+import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
@@ -20,6 +21,7 @@ import { DeletedUserConsumerCacheInvalidatorHandler } from '@/modules/consumer/a
 import { DeletedUserConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/deletedUser/deletedUserConsumerElasticsearchRemover.handler';
 import { UpdatedConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/updatedConsumer/updatedConsumerCacheInvalidator.handler';
 import { UpdatedConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/updatedConsumer/updatedConsumerElasticsearchRemover.handler';
+import { ConsumerListCursorPaginationDefinition } from '@/modules/consumer/applications/pagination/cursor/consumerListCursorPagination.definition';
 import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
 import { ExistsConsumerByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.handler';
 import { ExistsConsumerByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndIds/existsConsumerByUserIdAndIds.handler';
@@ -60,6 +62,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         OutboxModule,
         QueryDispatcherModule,
         CacheModule,
+        CursorPaginationModule,
     ],
     controllers: [ConsumerController],
     providers: [
@@ -107,6 +110,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         DeletedUserConsumerCacheInvalidatorHandler,
         UpdatedConsumerCacheInvalidatorHandler,
         ConsumerCacheInvalidatorProcessor,
+        ConsumerListCursorPaginationDefinition,
     ],
     exports: [
         ConsumerSearchService,

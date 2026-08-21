@@ -12,8 +12,8 @@ import {
     type ISelectReceiver,
 } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
-import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { IReceiverRepository } from '@/modules/receiver/domain/interfaces/receiverRepository.interface';
+import type { IReceiverListCursor } from '@/modules/receiver/domain/types/receiverListCursor.type';
 
 @Injectable()
 export class ReceiverRepository implements IReceiverRepository {
@@ -76,7 +76,7 @@ export class ReceiverRepository implements IReceiverRepository {
     findListByUserId(
         userId: string,
         limit: number,
-        cursor: ICursor | null,
+        cursor: IReceiverListCursor | null,
     ): Promise<ISelectReceiver[]> {
         return toEntities(
             this.drizzleRepository.db
