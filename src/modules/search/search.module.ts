@@ -12,6 +12,7 @@ import { SearchAggregateOrchestratorService } from '@/modules/search/application
 import { SearchOrchestratorService } from '@/modules/search/applications/services/searchOrchestrator.service';
 import { SearchQueryService } from '@/modules/search/applications/services/searchQuery.service';
 import { SearchSyncService } from '@/modules/search/applications/services/searchSync.service';
+import { FindUserIdListElasticsearchQuery } from '@/modules/search/infrastructure/elasticsearch/findUserIdListElasticsearch.query';
 import { SearchController } from '@/modules/search/interfaces/controllers/v1.controller';
 
 @Module({
@@ -30,6 +31,7 @@ import { SearchController } from '@/modules/search/interfaces/controllers/v1.con
         SearchAggregateOrchestratorService,
         SearchOrchestratorService,
         SearchSyncService,
+        FindUserIdListElasticsearchQuery,
     ],
     controllers: [SearchController],
 })
