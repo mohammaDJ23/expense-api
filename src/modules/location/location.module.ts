@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { CacheModule } from '@/core/features/cache/cache.module';
-import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
+import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
@@ -53,7 +53,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         OutboxModule,
         QueryDispatcherModule,
         CacheModule,
-        CursorPaginationService,
+        CursorPaginationModule,
     ],
     controllers: [LocationController],
     providers: [
