@@ -12,8 +12,8 @@ import {
     type ISelectLocation,
 } from '@/modules/location/infrastructure/schemas/location.schema';
 
-import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { ILocationRepository } from '@/modules/location/domain/interfaces/locationRepository.interface';
+import type { ILocationListCursor } from '@/modules/location/domain/types/locationListCursor.type';
 
 @Injectable()
 export class LocationRepository implements ILocationRepository {
@@ -76,7 +76,7 @@ export class LocationRepository implements ILocationRepository {
     findListByUserId(
         userId: string,
         limit: number,
-        cursor: ICursor | null,
+        cursor: ILocationListCursor | null,
     ): Promise<ISelectLocation[]> {
         return toEntities(
             this.drizzleRepository.db

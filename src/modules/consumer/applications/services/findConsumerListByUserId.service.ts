@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
-import { cursorPagination } from '@/core/utils/pagination/cursorPagination.util';
-import { parseCursor } from '@/core/utils/pagination/parseCursor.util';
+import { ConsumerListCursorPaginationDefinition } from '@/modules/consumer/applications/pagination/cursor/consumerListCursorPagination.definition';
 import { FindConsumerListByUserIdQuery } from '@/modules/consumer/applications/queries/findConsumerListByUserId/findConsumerListByUserId.query';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IListResult } from '@/core/types/list/listResult.type';
-import type { ICursor } from '@/core/utils/pagination/cursor.type';
+import type { IConsumerListCursor } from '@/modules/consumer/domain/types/consumerListCursor.type';
 import type { ISelectConsumer } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import type { FindConsumerListRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerList.request.dto';
 
@@ -22,7 +22,11 @@ export class FindConsumerListByUserIdService implements IService<
     IInput,
     IListResult<ISelectConsumer>
 > {
-    constructor(private readonly queryDispatcher: QueryDispatcher) {}
+    constructor(
+        private readonly queryDispatcher: QueryDispatcher,
+        private readonly cursorPaginationService: CursorPaginationService,
+        private readonly consumerListCursorPaginationDefinition: ConsumerListCursorPaginationDefinition,
+    ) {}
 
     async execute(input: IInput): Promise<IListResult<ISelectConsumer>> {
         const consumers = await this.queryDispatcher.execute<
@@ -36,12 +40,19 @@ export class FindConsumerListByUserIdService implements IService<
             }),
         );
 
-        return cursorPagination(consumers, input.query.limit);
+        return this.cursorPaginationService.paginate(
+            consumers,
+            input.query.limit,
+            this.consumerListCursorPaginationDefinition,
+        );
     }
 
-    parseCursor(cursor: string | null): ICursor | null {
+    private parseCursor(cursor: string | null): IConsumerListCursor | null {
         try {
-            return parseCursor(cursor);
+            return this.cursorPaginationService.decode(
+                cursor,
+                this.consumerListCursorPaginationDefinition,
+            );
         } catch {
             throw new ProcessFailedInternalServerErrorException();
         }

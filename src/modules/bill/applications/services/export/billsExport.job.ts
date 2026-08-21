@@ -4,7 +4,7 @@ import pLimit from 'p-limit';
 
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { EXCEL_FILE_CONTENT_TYPE } from '@/core/features/export/excel/excel.constants';
-import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
+import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { BillsExcelExportService } from '@/modules/bill/applications/services/export/excel/billsExcelExport.service';
 import { getBillsExcelFilename } from '@/modules/bill/applications/services/export/excel/billsExcelExport.utils';
 import { FindUserListService } from '@/modules/user/applications/services/findUserList.service';
@@ -22,11 +22,12 @@ export class BillsExportJob implements IJob {
         private readonly billsExcelExportService: BillsExcelExportService,
         private readonly billsExportMailerService: BillsExportMailerService,
         private readonly findUserListService: FindUserListService,
+        private readonly cursorPaginationService: CursorPaginationService,
     ) {}
 
     @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     async run(): Promise<void> {
-        for await (const users of cursorIterator((cursor) =>
+        for await (const users of this.cursorPaginationService.cursorIterator((cursor) =>
             this.findUserListService.execute({
                 query: {
                     limit: MAX_LIST_LIMIT,

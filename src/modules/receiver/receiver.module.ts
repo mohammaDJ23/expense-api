@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { CacheModule } from '@/core/features/cache/cache.module';
+import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
@@ -19,6 +20,7 @@ import { ReceiverCacheInvalidatorProcessor } from '@/modules/receiver/applicatio
 import { ReceiverElasticsearchIndexerProcessor } from '@/modules/receiver/applications/messages/receiverElasticsearchIndexer.processor';
 import { UpdatedReceiverCacheInvalidatorHandler } from '@/modules/receiver/applications/messages/updatedReceiver/updatedReceiverCacheInvalidator.handler';
 import { UpdatedReceiverElasticsearchIndexerHandler } from '@/modules/receiver/applications/messages/updatedReceiver/updatedReceiverElasticsearchIndexer.handler';
+import { ReceiverListCursorPaginationDefinition } from '@/modules/receiver/applications/pagination/cursor/receiverListCursorPagination.definition';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
 import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.handler';
 import { ExistsReceiverByUserIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndName/existsReceiverByUserIdAndName.handler';
@@ -53,6 +55,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         OutboxModule,
         QueryDispatcherModule,
         CacheModule,
+        CursorPaginationService,
     ],
     controllers: [ReceiverController],
     providers: [
@@ -93,6 +96,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         DeletedReceiverCacheInvalidatorHandler,
         DeletedUserReceiverCacheInvalidatorHandler,
         UpdatedReceiverCacheInvalidatorHandler,
+        ReceiverListCursorPaginationDefinition,
     ],
     exports: [
         ReceiverSearchService,

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { CacheModule } from '@/core/features/cache/cache.module';
+import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
@@ -17,6 +18,7 @@ import { LocationCacheInvalidatorProcessor } from '@/modules/location/applicatio
 import { LocationElasticsearchIndexerProcessor } from '@/modules/location/applications/messages/locationElasticsearchIndexer.processor';
 import { UpdatedLocationCacheInvalidatorHandler } from '@/modules/location/applications/messages/updatedLocation/updatedLocationCacheInvalidator.handler';
 import { UpdatedLocationElasticsearchIndexerHandler } from '@/modules/location/applications/messages/updatedLocation/updatedLocationElasticsearchIndexer.handler';
+import { LocationListCursorPaginationDefinition } from '@/modules/location/applications/pagination/cursor/locationListCursorPagination.definition';
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
 import { ExistsLocationByUserIdAndIdHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.handler';
 import { ExistsLocationByUserIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndName/existsLocationByUserIdAndName.handler';
@@ -45,7 +47,14 @@ import { LocationController } from '@/modules/location/interfaces/controllers/v1
 import { OutboxModule } from '@/modules/outbox/outbox.module';
 
 @Module({
-    imports: [CqrsModule, ElasticsearchModule, OutboxModule, QueryDispatcherModule, CacheModule],
+    imports: [
+        CqrsModule,
+        ElasticsearchModule,
+        OutboxModule,
+        QueryDispatcherModule,
+        CacheModule,
+        CursorPaginationService,
+    ],
     controllers: [LocationController],
     providers: [
         LocationService,
@@ -86,6 +95,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         DeletedUserLocationCacheInvalidatorHandler,
         UpdatedLocationCacheInvalidatorHandler,
         LocationCacheInvalidatorProcessor,
+        LocationListCursorPaginationDefinition,
     ],
     exports: [
         LocationSearchService,

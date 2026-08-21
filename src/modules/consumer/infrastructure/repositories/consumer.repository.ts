@@ -12,8 +12,8 @@ import {
     type ISelectConsumer,
 } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 
-import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { IConsumerRepository } from '@/modules/consumer/domain/interfaces/consumerRepository.interface';
+import type { IConsumerListCursor } from '@/modules/consumer/domain/types/consumerListCursor.type';
 
 @Injectable()
 export class ConsumerRepository implements IConsumerRepository {
@@ -76,7 +76,7 @@ export class ConsumerRepository implements IConsumerRepository {
     findListByUserId(
         userId: string,
         limit: number,
-        cursor: ICursor | null,
+        cursor: IConsumerListCursor | null,
     ): Promise<ISelectConsumer[]> {
         return toEntities(
             this.drizzleRepository.db

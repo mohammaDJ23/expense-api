@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
-import { cursorIterator } from '@/core/utils/pagination/cursorIterator.util';
+import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { BillsExportDataLoaderService } from '@/modules/bill/applications/services/export/billsExportDataLoader.service';
 import { BillsExcelExportGeneratorService } from '@/modules/bill/applications/services/export/excel/billsExcelExportGenerator.service';
 
@@ -19,6 +19,7 @@ export class BillsExcelExportService implements IService<IInput, PassThrough> {
     constructor(
         private readonly billsExportDataLoader: BillsExportDataLoaderService,
         private readonly billsExcelExportGeneratorService: BillsExcelExportGeneratorService,
+        private readonly cursorPaginationService: CursorPaginationService,
     ) {}
 
     execute(input: IInput): PassThrough {
@@ -36,7 +37,7 @@ export class BillsExcelExportService implements IService<IInput, PassThrough> {
 
             const sheet = this.billsExcelExportGeneratorService.createSheet(context.workbook);
 
-            for await (const bills of cursorIterator((cursor) =>
+            for await (const bills of this.cursorPaginationService.cursorIterator((cursor) =>
                 this.billsExportDataLoader.load({
                     userId: user.id,
                     query: {

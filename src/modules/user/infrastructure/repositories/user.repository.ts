@@ -14,9 +14,10 @@ import {
 } from '@/modules/user/infrastructure/schemas/user.schema';
 
 import type { IId } from '@/core/types/id.type';
-import type { ICursor } from '@/core/utils/pagination/cursor.type';
 import type { IUserRepository } from '@/modules/user/domain/interfaces/userRepository.interface';
 import type { TUpdateUser } from '@/modules/user/domain/types/updateUser.type';
+import type { IUserIdListCursor } from '@/modules/user/domain/types/userIdListCursor.type';
+import type { IUserListCursor } from '@/modules/user/domain/types/userListCursor.type';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -77,7 +78,7 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    findList(limit: number, cursor: ICursor | null): Promise<ISelectUser[]> {
+    findList(limit: number, cursor: IUserListCursor | null): Promise<ISelectUser[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select()
@@ -108,12 +109,12 @@ export class UserRepository implements IUserRepository {
         return toCount(this.drizzleRepository.db.$count(users));
     }
 
-    findIdList(limit: number, cursor: string | null): Promise<IId[]> {
+    findIdList(limit: number, cursor: IUserIdListCursor | null): Promise<IId[]> {
         return toEntities(
             this.drizzleRepository.db
                 .select({ id: users.id })
                 .from(users)
-                .where(cursor ? gt(users.id, cursor) : undefined)
+                .where(cursor ? gt(users.id, cursor.id) : undefined)
                 .orderBy(asc(users.id))
                 .limit(limit + 1)
                 .execute(),
