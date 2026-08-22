@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { LocationResource } from '@/modules/location/location.enum';
 
 import type { IElasticsearchQuery } from '@/infrastructure/elasticsearch/elasticsearchQuery.interface';
-import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
 import type { estypes } from '@elastic/elasticsearch';
 
 interface IInput {
@@ -17,12 +16,10 @@ export class LocationElasticsearchQuery implements IElasticsearchQuery<
     IInput,
     estypes.SearchRequest
 > {
-    index: TOutboxEventAggregateType = LocationResource.LOCATION;
-
     buildQuery(input: IInput): estypes.SearchRequest {
         return {
             size: input.size,
-            index: this.index,
+            index: LocationResource.LOCATION,
             query: {
                 bool: {
                     filter: [

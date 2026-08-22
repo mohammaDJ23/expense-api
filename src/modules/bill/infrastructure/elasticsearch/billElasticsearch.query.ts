@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { BillResource } from '@/modules/bill/bill.enum';
 
 import type { IElasticsearchQuery } from '@/infrastructure/elasticsearch/elasticsearchQuery.interface';
-import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
 import type { estypes } from '@elastic/elasticsearch';
 
 interface IInput {
@@ -14,12 +13,10 @@ interface IInput {
 
 @Injectable()
 export class BillElasticsearchQuery implements IElasticsearchQuery<IInput, estypes.SearchRequest> {
-    index: TOutboxEventAggregateType = BillResource.BILL;
-
     buildQuery(input: IInput): estypes.SearchRequest {
         return {
             size: input.size,
-            index: this.index,
+            index: BillResource.BILL,
             query: {
                 bool: {
                     filter: [

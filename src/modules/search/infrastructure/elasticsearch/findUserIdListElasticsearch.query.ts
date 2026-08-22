@@ -6,7 +6,6 @@ import { LocationResource } from '@/modules/location/location.enum';
 import { ReceiverResource } from '@/modules/receiver/receiver.enum';
 
 import type { IElasticsearchQuery } from '@/infrastructure/elasticsearch/elasticsearchQuery.interface';
-import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
 import type { estypes } from '@elastic/elasticsearch';
 
 interface IInput {
@@ -19,17 +18,15 @@ export class FindUserIdListElasticsearchQuery implements IElasticsearchQuery<
     IInput,
     estypes.SearchRequest
 > {
-    index: TOutboxEventAggregateType[] = [
-        BillResource.BILL,
-        ConsumerResource.CONSUMER,
-        LocationResource.LOCATION,
-        ReceiverResource.RECEIVER,
-    ];
-
     buildQuery(input: IInput): estypes.SearchRequest {
         return {
             size: 0,
-            index: this.index,
+            index: [
+                BillResource.BILL,
+                ConsumerResource.CONSUMER,
+                LocationResource.LOCATION,
+                ReceiverResource.RECEIVER,
+            ],
             aggs: {
                 userIds: {
                     composite: {
