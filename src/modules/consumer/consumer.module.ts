@@ -47,8 +47,8 @@ import { ConsumerNameAvailableValidatorService } from '@/modules/consumer/applic
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
 import { ConsumerUniqueNameValidatorService } from '@/modules/consumer/applications/services/validators/consumerUniqueNameValidator.service';
 import { ConsumerElasticsearchIndex } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearch.index';
-import { ConsumerElasticsearchQuery } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearch.query';
-import { ConsumerElasticsearchDeleteQuery } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearchDelete.query';
+import { DeleteConsumersElasticsearchQuery } from '@/modules/consumer/infrastructure/elasticsearch/deleteConsumersElasticsearch.query';
+import { FindConsumerListElasticsearchQuery } from '@/modules/consumer/infrastructure/elasticsearch/findConsumerListElasticsearch.query';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
 import { ConsumerRepository } from '@/modules/consumer/infrastructure/repositories/consumer.repository';
 import { ConsumerController } from '@/modules/consumer/interfaces/controllers/v1.controller';
@@ -94,8 +94,8 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ConsumerRepository,
         BillConsumerRepository,
         ConsumerElasticsearchIndex,
-        ConsumerElasticsearchQuery,
-        ConsumerElasticsearchDeleteQuery,
+        FindConsumerListElasticsearchQuery,
+        DeleteConsumersElasticsearchQuery,
         ConsumerSearchService,
         ConsumerSearchAggregateService,
         ConsumerSearchIndexRegisterService,

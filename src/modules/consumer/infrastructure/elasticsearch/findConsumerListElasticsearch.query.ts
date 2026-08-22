@@ -12,7 +12,7 @@ interface IInput {
 }
 
 @Injectable()
-export class ConsumerElasticsearchQuery implements IElasticsearchQuery<
+export class FindConsumerListElasticsearchQuery implements IElasticsearchQuery<
     IInput,
     estypes.SearchRequest
 > {
