@@ -11,7 +11,7 @@ interface IInput {
 }
 
 @Injectable()
-export class ReceiverElasticsearchQuery implements IElasticsearchQuery<
+export class FindReceiverListElasticsearchQuery implements IElasticsearchQuery<
     IInput,
     estypes.SearchRequest
 > {

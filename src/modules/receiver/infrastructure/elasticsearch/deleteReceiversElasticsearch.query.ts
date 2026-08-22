@@ -10,7 +10,7 @@ interface IInput {
 }
 
 @Injectable()
-export class ReceiverElasticsearchDeleteQuery implements IElasticsearchQuery<
+export class DeleteReceiversElasticsearchQuery implements IElasticsearchQuery<
     IInput,
     estypes.DeleteByQueryRequest
 > {

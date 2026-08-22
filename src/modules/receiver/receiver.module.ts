@@ -41,9 +41,9 @@ import { UpdateReceiverService } from '@/modules/receiver/applications/services/
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 import { ReceiverNameAvailableValidatorService } from '@/modules/receiver/applications/services/validators/receiverNameAvailableValidator.service';
 import { ReceiverUniqueNameValidatorService } from '@/modules/receiver/applications/services/validators/receiverUniqueNameValidator.service';
+import { DeleteReceiversElasticsearchQuery } from '@/modules/receiver/infrastructure/elasticsearch/deleteReceiversElasticsearch.query';
+import { FindReceiverListElasticsearchQuery } from '@/modules/receiver/infrastructure/elasticsearch/findReceiverListElasticsearch.query';
 import { ReceiverElasticsearchIndex } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.index';
-import { ReceiverElasticsearchQuery } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.query';
-import { ReceiverElasticsearchDeleteQuery } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearchDelete.query';
 import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
 import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1.controller';
 
@@ -81,8 +81,8 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         DeleteReceiverService,
         ReceiverRepository,
         ReceiverElasticsearchIndex,
-        ReceiverElasticsearchQuery,
-        ReceiverElasticsearchDeleteQuery,
+        FindReceiverListElasticsearchQuery,
+        DeleteReceiversElasticsearchQuery,
         ReceiverSearchService,
         ReceiverSearchAggregateService,
         ReceiverSearchIndexRegisterService,
