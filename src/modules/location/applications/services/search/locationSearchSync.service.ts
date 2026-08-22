@@ -4,7 +4,7 @@ import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindLocationListByUserIdService } from '@/modules/location/applications/services//findLocationListByUserId.service';
-import { LocationElasticsearchDeleteQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearchDelete.query';
+import { DeleteLocationsElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/deleteLocationsElasticsearch.query';
 import { LocationResource } from '@/modules/location/location.enum';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';
@@ -17,7 +17,7 @@ export class LocationSearchSyncService implements IElasticsearchSync {
     constructor(
         private readonly findLocationListByUserIdService: FindLocationListByUserIdService,
         private readonly elasticsearchService: ElasticSearchService,
-        private readonly locationElasticsearchDeleteQuery: LocationElasticsearchDeleteQuery,
+        private readonly deleteLocationsElasticsearchQuery: DeleteLocationsElasticsearchQuery,
         private readonly cursorPaginationService: CursorPaginationService,
     ) {}
 
@@ -25,7 +25,7 @@ export class LocationSearchSyncService implements IElasticsearchSync {
         const index: TOutboxEventAggregateType = LocationResource.LOCATION;
 
         await this.elasticsearchService.deleteByQuery(
-            this.locationElasticsearchDeleteQuery.buildQuery({
+            this.deleteLocationsElasticsearchQuery.buildQuery({
                 userId,
             }),
         );

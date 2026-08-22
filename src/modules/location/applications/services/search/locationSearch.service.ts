@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
-import { LocationElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.query';
+import { FindLocationListElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/findLocationListElasticsearch.query';
 
 import type { IElasticsearchSearch } from '@/infrastructure/elasticsearch/elasticsearchSearch.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
@@ -11,13 +11,17 @@ import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/
 export class LocationSearchService implements IElasticsearchSearch {
     constructor(
         private readonly elasticsearchService: ElasticSearchService,
-        private readonly locationElasticsearchQuery: LocationElasticsearchQuery,
+        private readonly findLocationListElasticsearchQuery: FindLocationListElasticsearchQuery,
     ) {}
 
     async search(userId: string, query: string, size: number): Promise<string[]> {
         try {
             const response = await this.elasticsearchService.search<ISelectLocation>(
-                this.locationElasticsearchQuery.buildQuery({ userId, query, size }),
+                this.findLocationListElasticsearchQuery.buildQuery({
+                    userId,
+                    query,
+                    size,
+                }),
             );
 
             const locationDocs = this.elasticsearchService.extractDocs(response);

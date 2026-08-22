@@ -12,7 +12,7 @@ interface IInput {
 }
 
 @Injectable()
-export class LocationElasticsearchQuery implements IElasticsearchQuery<
+export class FindLocationListElasticsearchQuery implements IElasticsearchQuery<
     IInput,
     estypes.SearchRequest
 > {

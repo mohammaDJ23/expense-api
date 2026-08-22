@@ -39,9 +39,9 @@ import { UpdateLocationService } from '@/modules/location/applications/services/
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { LocationNameAvailableValidatorService } from '@/modules/location/applications/services/validators/locationNameAvailableValidator.service';
 import { LocationUniqueNameValidatorService } from '@/modules/location/applications/services/validators/locationUniqueNameValidator.service';
+import { DeleteLocationsElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/deleteLocationsElasticsearch.query';
+import { FindLocationListElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/findLocationListElasticsearch.query';
 import { LocationElasticsearchIndex } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.index';
-import { LocationElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearch.query';
-import { LocationElasticsearchDeleteQuery } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearchDelete.query';
 import { LocationRepository } from '@/modules/location/infrastructure/repositories/location.repository';
 import { LocationController } from '@/modules/location/interfaces/controllers/v1.controller';
 import { OutboxModule } from '@/modules/outbox/outbox.module';
@@ -80,8 +80,8 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         CreateLocationHandler,
         LocationRepository,
         LocationElasticsearchIndex,
-        LocationElasticsearchQuery,
-        LocationElasticsearchDeleteQuery,
+        FindLocationListElasticsearchQuery,
+        DeleteLocationsElasticsearchQuery,
         LocationSearchService,
         LocationSearchAggregateService,
         LocationSearchIndexRegisterService,
