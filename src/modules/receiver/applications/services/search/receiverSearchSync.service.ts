@@ -4,7 +4,7 @@ import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindReceiverListByUserIdService } from '@/modules/receiver/applications/services/findReceiverListByUserId.service';
-import { ReceiverElasticsearchDeleteQuery } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearchDelete.query';
+import { DeleteReceiversElasticsearchQuery } from '@/modules/receiver/infrastructure/elasticsearch/deleteReceiversElasticsearch.query';
 import { ReceiverResource } from '@/modules/receiver/receiver.enum';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';
@@ -17,7 +17,7 @@ export class ReceiverSearchSyncService implements IElasticsearchSync {
     constructor(
         private readonly findReceiverListByUserIdService: FindReceiverListByUserIdService,
         private readonly elasticsearchService: ElasticSearchService,
-        private readonly receiverElasticsearchDeleteQuery: ReceiverElasticsearchDeleteQuery,
+        private readonly deleteReceiversElasticsearchQuery: DeleteReceiversElasticsearchQuery,
         private readonly cursorPaginationService: CursorPaginationService,
     ) {}
 
@@ -25,7 +25,7 @@ export class ReceiverSearchSyncService implements IElasticsearchSync {
         const index: TOutboxEventAggregateType = ReceiverResource.RECEIVER;
 
         await this.elasticsearchService.deleteByQuery(
-            this.receiverElasticsearchDeleteQuery.buildQuery({
+            this.deleteReceiversElasticsearchQuery.buildQuery({
                 userId,
             }),
         );
