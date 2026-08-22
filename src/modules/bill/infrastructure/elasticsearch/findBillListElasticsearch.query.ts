@@ -12,7 +12,10 @@ interface IInput {
 }
 
 @Injectable()
-export class BillElasticsearchQuery implements IElasticsearchQuery<IInput, estypes.SearchRequest> {
+export class FindBillListElasticsearchQuery implements IElasticsearchQuery<
+    IInput,
+    estypes.SearchRequest
+> {
     buildQuery(input: IInput): estypes.SearchRequest {
         return {
             size: input.size,
