@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
-import { BillElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.query';
+import { FindBillListElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/findBillListElasticsearch.query';
 
 import type { IElasticsearchSearch } from '@/infrastructure/elasticsearch/elasticsearchSearch.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
@@ -11,13 +11,17 @@ import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.sch
 export class BillSearchService implements IElasticsearchSearch {
     constructor(
         private readonly elasticsearchService: ElasticSearchService,
-        private readonly billElasticsearchQuery: BillElasticsearchQuery,
+        private readonly findBillListElasticsearchQuery: FindBillListElasticsearchQuery,
     ) {}
 
     async search(userId: string, query: string, size: number): Promise<string[]> {
         try {
             const response = await this.elasticsearchService.search<ISelectBill>(
-                this.billElasticsearchQuery.buildQuery({ userId, query, size }),
+                this.findBillListElasticsearchQuery.buildQuery({
+                    userId,
+                    query,
+                    size,
+                }),
             );
 
             const billDocs = this.elasticsearchService.extractDocs(response);

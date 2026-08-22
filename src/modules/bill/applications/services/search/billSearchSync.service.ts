@@ -5,7 +5,7 @@ import { CursorPaginationService } from '@/core/features/pagination/cursor/curso
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
 import { BillResource } from '@/modules/bill/bill.enum';
-import { BillElasticsearchDeleteQuery } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearchDelete.query';
+import { DeleteBillsElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/deleteBillsElasticsearch.query';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
@@ -17,7 +17,7 @@ export class BillSearchSyncService implements IElasticsearchSync {
     constructor(
         private readonly findBillListByUserIdService: FindBillListByUserIdService,
         private readonly elasticsearchService: ElasticSearchService,
-        private readonly billElasticsearchDeleteQuery: BillElasticsearchDeleteQuery,
+        private readonly deleteBillsElasticsearchQuery: DeleteBillsElasticsearchQuery,
         private readonly cursorPaginationService: CursorPaginationService,
     ) {}
 
@@ -25,7 +25,7 @@ export class BillSearchSyncService implements IElasticsearchSync {
         const index: TOutboxEventAggregateType = BillResource.BILL;
 
         await this.elasticsearchService.deleteByQuery(
-            this.billElasticsearchDeleteQuery.buildQuery({
+            this.deleteBillsElasticsearchQuery.buildQuery({
                 userId,
             }),
         );
