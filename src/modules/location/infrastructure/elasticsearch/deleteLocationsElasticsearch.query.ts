@@ -10,7 +10,7 @@ interface IInput {
 }
 
 @Injectable()
-export class LocationElasticsearchDeleteQuery implements IElasticsearchQuery<
+export class DeleteLocationsElasticsearchQuery implements IElasticsearchQuery<
     IInput,
     estypes.DeleteByQueryRequest
 > {
