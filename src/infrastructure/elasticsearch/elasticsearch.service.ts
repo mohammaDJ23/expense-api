@@ -57,8 +57,8 @@ export class ElasticSearchService {
         }
     }
 
-    search<T>(searchRequest: estypes.SearchRequest): Promise<estypes.SearchResponse<T>> {
-        return this.client.search<T>(searchRequest);
+    search<T, A>(searchRequest: estypes.SearchRequest): Promise<estypes.SearchResponse<T, A>> {
+        return this.client.search<T, A>(searchRequest);
     }
 
     createIndex(index: estypes.IndicesCreateRequest): Promise<estypes.IndicesCreateResponse> {
