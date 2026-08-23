@@ -4,16 +4,13 @@ import { ElasticsearchAnalysisSettings } from '@/infrastructure/elasticsearch/el
 import { BillResource } from '@/modules/bill/bill.enum';
 
 import type { IElasticsearchIndex } from '@/infrastructure/elasticsearch/elasticsearchIndex.interface';
-import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
 import type { estypes } from '@elastic/elasticsearch';
 
 @Injectable()
 export class BillElasticsearchIndex implements IElasticsearchIndex {
-    index: TOutboxEventAggregateType = BillResource.BILL;
-
     buildIndex(): estypes.IndicesCreateRequest {
         return {
-            index: this.index,
+            index: BillResource.BILL,
             settings: ElasticsearchAnalysisSettings.settings,
             mappings: {
                 properties: {

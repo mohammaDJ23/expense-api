@@ -4,16 +4,13 @@ import { ElasticsearchAnalysisSettings } from '@/infrastructure/elasticsearch/el
 import { ReceiverResource } from '@/modules/receiver/receiver.enum';
 
 import type { IElasticsearchIndex } from '@/infrastructure/elasticsearch/elasticsearchIndex.interface';
-import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
 import type { estypes } from '@elastic/elasticsearch';
 
 @Injectable()
 export class ReceiverElasticsearchIndex implements IElasticsearchIndex {
-    index: TOutboxEventAggregateType = ReceiverResource.RECEIVER;
-
     buildIndex(): estypes.IndicesCreateRequest {
         return {
-            index: this.index,
+            index: ReceiverResource.RECEIVER,
             settings: ElasticsearchAnalysisSettings.settings,
             mappings: {
                 properties: {
