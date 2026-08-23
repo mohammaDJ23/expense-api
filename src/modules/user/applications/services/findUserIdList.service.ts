@@ -17,14 +17,14 @@ interface IInput {
 }
 
 @Injectable()
-export class FindUserIdListService implements IService<IInput, IListResult<IId>> {
+export class FindUserIdListService implements IService<IInput, IListResult<string>> {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
         private readonly cursorPaginationService: CursorPaginationService,
         private readonly userIdListCursorPaginationDefinition: UserIdListCursorPaginationDefinition,
     ) {}
 
-    async execute(input: IInput): Promise<IListResult<IId>> {
+    async execute(input: IInput): Promise<IListResult<string>> {
         const userIds = await this.queryDispatcher.execute<FindUserIdListQuery, IId[]>(
             new FindUserIdListQuery({
                 cursor: this.parseCursor(input.query.cursor),
@@ -33,7 +33,7 @@ export class FindUserIdListService implements IService<IInput, IListResult<IId>>
         );
 
         return this.cursorPaginationService.paginate(
-            userIds,
+            userIds.map((userId) => userId.id),
             input.query.limit,
             this.userIdListCursorPaginationDefinition,
         );
