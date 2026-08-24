@@ -57,7 +57,9 @@ export class ElasticSearchService {
         }
     }
 
-    search<T, A>(searchRequest: estypes.SearchRequest): Promise<estypes.SearchResponse<T, A>> {
+    search<T, A = Record<string, estypes.AggregationsAggregate>>(
+        searchRequest: estypes.SearchRequest,
+    ): Promise<estypes.SearchResponse<T, A>> {
         return this.client.search<T, A>(searchRequest);
     }
 
@@ -67,7 +69,9 @@ export class ElasticSearchService {
         });
     }
 
-    extractDocs<T>(response: estypes.SearchResponse<T>): T[] {
+    extractDocs<T, A = Record<string, estypes.AggregationsAggregate>>(
+        response: estypes.SearchResponse<T, A>,
+    ): T[] {
         return response.hits.hits.flatMap((hit) => (hit._source ? [hit._source] : []));
     }
 }
