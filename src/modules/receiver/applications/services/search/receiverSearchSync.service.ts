@@ -30,7 +30,10 @@ export class ReceiverSearchSyncService implements IElasticsearchSync {
             }),
         );
 
-        for await (const receivers of this.cursorPaginationService.cursorIterator((cursor) =>
+        for await (const receivers of this.cursorPaginationService.cursorIterator<
+            ISelectReceiver,
+            string
+        >((cursor) =>
             this.findReceiverListByUserIdService.execute({
                 userId,
                 query: {

@@ -41,7 +41,7 @@ export class LocationService {
     findListByUserId(
         userId: string,
         query: FindLocationListRequestDto,
-    ): Promise<IListResultWithTotal<ISelectLocation>> {
+    ): Promise<IListResultWithTotal<ISelectLocation, string>> {
         return this.findLocationListAndTotalByUserIdService.execute({ userId, query });
     }
 

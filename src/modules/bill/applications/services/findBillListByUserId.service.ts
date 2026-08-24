@@ -20,7 +20,7 @@ interface IInput {
 }
 
 @Injectable()
-export class FindBillListByUserIdService implements IService<IInput, IListResult<IBill>> {
+export class FindBillListByUserIdService implements IService<IInput, IListResult<IBill, string>> {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
         private readonly billsAssemblerService: BillsAssemblerService,
@@ -28,7 +28,7 @@ export class FindBillListByUserIdService implements IService<IInput, IListResult
         private readonly billListCursorPaginationDefinition: BillListCursorPaginationDefinition,
     ) {}
 
-    async execute(input: IInput): Promise<IListResult<IBill>> {
+    async execute(input: IInput): Promise<IListResult<IBill, string>> {
         const bills = await this.queryDispatcher.execute<FindBillListByUserIdQuery, ISelectBill[]>(
             new FindBillListByUserIdQuery({
                 userId: input.userId,

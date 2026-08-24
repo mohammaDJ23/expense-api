@@ -20,7 +20,7 @@ interface IInput {
 @Injectable()
 export class FindReceiverListByUserIdService implements IService<
     IInput,
-    IListResult<ISelectReceiver>
+    IListResult<ISelectReceiver, string>
 > {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
@@ -28,7 +28,7 @@ export class FindReceiverListByUserIdService implements IService<
         private readonly receiverListCursorPaginationDefinition: ReceiverListCursorPaginationDefinition,
     ) {}
 
-    async execute(input: IInput): Promise<IListResult<ISelectReceiver>> {
+    async execute(input: IInput): Promise<IListResult<ISelectReceiver, string>> {
         const receivers = await this.queryDispatcher.execute<
             FindReceiverListByUserIdQuery,
             ISelectReceiver[]

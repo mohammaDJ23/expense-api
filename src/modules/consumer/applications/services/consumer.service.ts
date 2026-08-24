@@ -41,7 +41,7 @@ export class ConsumerService {
     findListByUserId(
         userId: string,
         query: FindConsumerListRequestDto,
-    ): Promise<IListResultWithTotal<ISelectConsumer>> {
+    ): Promise<IListResultWithTotal<ISelectConsumer, string>> {
         return this.findConsumerListAndTotalByUserIdService.execute({ userId, query });
     }
 

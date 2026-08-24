@@ -85,7 +85,7 @@ export class LocationController {
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindLocationListRequestDto,
-    ): Promise<IListResultWithTotal<ISelectLocation>> {
+    ): Promise<IListResultWithTotal<ISelectLocation, string>> {
         return this.locationService.findListByUserId(user.id, query);
     }
 

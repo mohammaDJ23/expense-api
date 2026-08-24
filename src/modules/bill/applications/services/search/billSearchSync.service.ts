@@ -30,14 +30,15 @@ export class BillSearchSyncService implements IElasticsearchSync {
             }),
         );
 
-        for await (const bills of this.cursorPaginationService.cursorIterator((cursor) =>
-            this.findBillListByUserIdService.execute({
-                userId,
-                query: {
-                    limit: MAX_LIST_LIMIT,
-                    cursor,
-                },
-            }),
+        for await (const bills of this.cursorPaginationService.cursorIterator<IBill, string>(
+            (cursor) =>
+                this.findBillListByUserIdService.execute({
+                    userId,
+                    query: {
+                        limit: MAX_LIST_LIMIT,
+                        cursor,
+                    },
+                }),
         )) {
             const operations = bills.flatMap<estypes.BulkOperationContainer | IBill>((bill) => [
                 {

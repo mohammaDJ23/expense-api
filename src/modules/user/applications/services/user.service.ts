@@ -41,7 +41,7 @@ export class UserService {
         return this.deleteUserService.execute({ userId });
     }
 
-    findList(query: FindUserListRequestDto): Promise<IListResultWithTotal<ISelectUser>> {
+    findList(query: FindUserListRequestDto): Promise<IListResultWithTotal<ISelectUser, string>> {
         return this.findUserListAndTotalService.execute({ query });
     }
 

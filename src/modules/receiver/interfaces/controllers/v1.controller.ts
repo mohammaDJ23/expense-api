@@ -85,7 +85,7 @@ export class ReceiverController {
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindReceiverListRequestDto,
-    ): Promise<IListResultWithTotal<ISelectReceiver>> {
+    ): Promise<IListResultWithTotal<ISelectReceiver, string>> {
         return this.receiverService.findListByUserId(user.id, query);
     }
 

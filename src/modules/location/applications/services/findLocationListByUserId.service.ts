@@ -20,7 +20,7 @@ interface IInput {
 @Injectable()
 export class FindLocationListByUserIdService implements IService<
     IInput,
-    IListResult<ISelectLocation>
+    IListResult<ISelectLocation, string>
 > {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
@@ -28,7 +28,7 @@ export class FindLocationListByUserIdService implements IService<
         private readonly locationListCursorPaginationDefinition: LocationListCursorPaginationDefinition,
     ) {}
 
-    async execute(input: IInput): Promise<IListResult<ISelectLocation>> {
+    async execute(input: IInput): Promise<IListResult<ISelectLocation, string>> {
         const locations = await this.queryDispatcher.execute<
             FindLocationListByUserIdQuery,
             ISelectLocation[]

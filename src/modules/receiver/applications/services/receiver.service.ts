@@ -41,7 +41,7 @@ export class ReceiverService {
     findListByUserId(
         userId: string,
         query: FindReceiverListRequestDto,
-    ): Promise<IListResultWithTotal<ISelectReceiver>> {
+    ): Promise<IListResultWithTotal<ISelectReceiver, string>> {
         return this.findReceiverListAndTotalByUserIdService.execute({ userId, query });
     }
 

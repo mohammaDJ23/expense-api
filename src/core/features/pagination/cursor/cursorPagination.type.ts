@@ -1,5 +1,5 @@
-export interface ICursorPagination<T> {
+export interface ICursorPagination<T, C> {
     items: T[];
     hasNextPage: boolean;
-    nextCursor: string | null;
+    nextCursor: C | null;
 }

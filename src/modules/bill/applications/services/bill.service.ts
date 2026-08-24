@@ -62,7 +62,7 @@ export class BillService {
     findListByUserId(
         userId: string,
         query: FindBillListRequestDto,
-    ): Promise<IListResultWithTotal<IBill>> {
+    ): Promise<IListResultWithTotal<IBill, string>> {
         return this.findBillListAndTotalByUserIdService.execute({ userId, query });
     }
 
