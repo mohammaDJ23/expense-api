@@ -7,6 +7,7 @@ import { BillModule } from '@/modules/bill/bill.module';
 import { ConsumerModule } from '@/modules/consumer/consumer.module';
 import { LocationModule } from '@/modules/location/location.module';
 import { ReceiverModule } from '@/modules/receiver/receiver.module';
+import { FindUserIdListElasticsearchService } from '@/modules/search/applications/services/findUserIdListElasticsearch.service';
 import { SearchService } from '@/modules/search/applications/services/search.service';
 import { SearchAggregateOrchestratorService } from '@/modules/search/applications/services/searchAggregateOrchestrator.service';
 import { SearchOrchestratorService } from '@/modules/search/applications/services/searchOrchestrator.service';
@@ -14,6 +15,7 @@ import { SearchQueryService } from '@/modules/search/applications/services/searc
 import { SearchSyncService } from '@/modules/search/applications/services/searchSync.service';
 import { FindUserIdListElasticsearchQuery } from '@/modules/search/infrastructure/elasticsearch/findUserIdListElasticsearch.query';
 import { SearchController } from '@/modules/search/interfaces/controllers/v1.controller';
+import { UserModule } from '@/modules/user/user.module';
 
 @Module({
     imports: [
@@ -24,6 +26,7 @@ import { SearchController } from '@/modules/search/interfaces/controllers/v1.con
         ReceiverModule,
         ConsumerModule,
         LocationModule,
+        UserModule,
     ],
     providers: [
         SearchService,
@@ -32,6 +35,7 @@ import { SearchController } from '@/modules/search/interfaces/controllers/v1.con
         SearchOrchestratorService,
         SearchSyncService,
         FindUserIdListElasticsearchQuery,
+        FindUserIdListElasticsearchService,
     ],
     controllers: [SearchController],
 })
