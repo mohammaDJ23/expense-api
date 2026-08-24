@@ -37,7 +37,7 @@ export class CursorPaginationService {
         items: T[],
         limit: number,
         definition: ICursorPaginationDefinition<T, C>,
-    ): ICursorPagination<T> {
+    ): ICursorPagination<T, string> {
         const hasNextPage = items.length > limit;
         const data = hasNextPage ? items.slice(0, limit) : items;
         const lastItem = data.at(-1);
@@ -51,10 +51,10 @@ export class CursorPaginationService {
         };
     }
 
-    async *cursorIterator<T>(
-        fetch: (cursor: string | null) => Promise<IListResult<T>>,
+    async *cursorIterator<T, C>(
+        fetch: (cursor: C | null) => Promise<IListResult<T, C>>,
     ): AsyncGenerator<T[], void, void> {
-        let cursor: string | null = null;
+        let cursor: C | null = null;
 
         while (true) {
             const page = await fetch(cursor);
@@ -69,8 +69,8 @@ export class CursorPaginationService {
         }
     }
 
-    async *cursorItemsIterator<T>(
-        fetch: (cursor: string | null) => Promise<IListResult<T>>,
+    async *cursorItemsIterator<T, C>(
+        fetch: (cursor: C | null) => Promise<IListResult<T, C>>,
     ): AsyncGenerator<T, void, void> {
         for await (const items of this.cursorIterator(fetch)) {
             yield* items;

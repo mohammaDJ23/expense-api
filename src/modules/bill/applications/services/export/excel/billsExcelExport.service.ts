@@ -7,6 +7,7 @@ import { BillsExcelExportGeneratorService } from '@/modules/bill/applications/se
 
 import type { IExcelContext } from '@/core/features/export/excel/excelContext.type';
 import type { IService } from '@/core/interfaces/service.interface';
+import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { PassThrough } from 'node:stream';
 
@@ -37,14 +38,15 @@ export class BillsExcelExportService implements IService<IInput, PassThrough> {
 
             const sheet = this.billsExcelExportGeneratorService.createSheet(context.workbook);
 
-            for await (const bills of this.cursorPaginationService.cursorIterator((cursor) =>
-                this.billsExportDataLoader.load({
-                    userId: user.id,
-                    query: {
-                        limit: MAX_LIST_LIMIT,
-                        cursor,
-                    },
-                }),
+            for await (const bills of this.cursorPaginationService.cursorIterator<IBill, string>(
+                (cursor) =>
+                    this.billsExportDataLoader.load({
+                        userId: user.id,
+                        query: {
+                            limit: MAX_LIST_LIMIT,
+                            cursor,
+                        },
+                    }),
             )) {
                 this.billsExcelExportGeneratorService.addRows(sheet, bills);
             }

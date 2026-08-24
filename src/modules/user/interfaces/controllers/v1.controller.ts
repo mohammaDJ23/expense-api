@@ -62,7 +62,9 @@ export class UserController {
     @UseGuards(JwtAuthGuard, OwnerGuard)
     @SerializerInterceptor(FindUserListResponseDto)
     @HttpResponse(SUCCESS_FIND_USERS_MESSAGE, HttpStatus.OK)
-    findList(@Query() query: FindUserListRequestDto): Promise<IListResultWithTotal<ISelectUser>> {
+    findList(
+        @Query() query: FindUserListRequestDto,
+    ): Promise<IListResultWithTotal<ISelectUser, string>> {
         return this.userService.findList(query);
     }
 

@@ -101,7 +101,7 @@ export class BillController {
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindBillListRequestDto,
-    ): Promise<IListResultWithTotal<IBill>> {
+    ): Promise<IListResultWithTotal<IBill, string>> {
         return this.billService.findListByUserId(user.id, query);
     }
 

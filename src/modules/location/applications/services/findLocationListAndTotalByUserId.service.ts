@@ -18,14 +18,14 @@ interface IInput {
 @Injectable()
 export class FindLocationListAndTotalByUserIdService implements IService<
     IInput,
-    IListResultWithTotal<ISelectLocation>
+    IListResultWithTotal<ISelectLocation, string>
 > {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
         private readonly findLocationListByUserIdService: FindLocationListByUserIdService,
     ) {}
 
-    async execute(input: IInput): Promise<IListResultWithTotal<ISelectLocation>> {
+    async execute(input: IInput): Promise<IListResultWithTotal<ISelectLocation, string>> {
         const [locationList, total] = await Promise.all([
             this.findLocationListByUserIdService.execute(input),
             this.queryDispatcher.execute<FindTotalLocationsByUserIdQuery, number>(

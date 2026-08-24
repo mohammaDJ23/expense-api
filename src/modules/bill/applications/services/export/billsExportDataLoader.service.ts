@@ -13,10 +13,13 @@ interface IInput {
 }
 
 @Injectable()
-export class BillsExportDataLoaderService implements IExportDataLoader<IInput, IListResult<IBill>> {
+export class BillsExportDataLoaderService implements IExportDataLoader<
+    IInput,
+    IListResult<IBill, string>
+> {
     constructor(private readonly findBillListByUserIdService: FindBillListByUserIdService) {}
 
-    load(input: IInput): Promise<IListResult<IBill>> {
+    load(input: IInput): Promise<IListResult<IBill, string>> {
         return this.findBillListByUserIdService.execute(input);
     }
 }

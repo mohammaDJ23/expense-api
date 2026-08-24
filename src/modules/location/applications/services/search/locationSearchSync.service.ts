@@ -30,7 +30,10 @@ export class LocationSearchSyncService implements IElasticsearchSync {
             }),
         );
 
-        for await (const locations of this.cursorPaginationService.cursorIterator((cursor) =>
+        for await (const locations of this.cursorPaginationService.cursorIterator<
+            ISelectLocation,
+            string
+        >((cursor) =>
             this.findLocationListByUserIdService.execute({
                 userId,
                 query: {

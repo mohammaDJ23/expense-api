@@ -20,7 +20,7 @@ interface IInput {
 @Injectable()
 export class FindConsumerListByUserIdService implements IService<
     IInput,
-    IListResult<ISelectConsumer>
+    IListResult<ISelectConsumer, string>
 > {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
@@ -28,7 +28,7 @@ export class FindConsumerListByUserIdService implements IService<
         private readonly consumerListCursorPaginationDefinition: ConsumerListCursorPaginationDefinition,
     ) {}
 
-    async execute(input: IInput): Promise<IListResult<ISelectConsumer>> {
+    async execute(input: IInput): Promise<IListResult<ISelectConsumer, string>> {
         const consumers = await this.queryDispatcher.execute<
             FindConsumerListByUserIdQuery,
             ISelectConsumer[]

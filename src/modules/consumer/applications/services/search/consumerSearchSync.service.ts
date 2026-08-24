@@ -30,7 +30,10 @@ export class ConsumerSearchSyncService implements IElasticsearchSync {
             }),
         );
 
-        for await (const consumers of this.cursorPaginationService.cursorIterator((cursor) =>
+        for await (const consumers of this.cursorPaginationService.cursorIterator<
+            ISelectConsumer,
+            string
+        >((cursor) =>
             this.findConsumerListByUserIdService.execute({
                 userId,
                 query: {

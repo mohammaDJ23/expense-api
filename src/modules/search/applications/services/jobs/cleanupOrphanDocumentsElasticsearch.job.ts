@@ -81,7 +81,7 @@ export class CleanupOrphanDocumentsElasticsearchJob implements IJob {
     }
 
     private async *dbUserIdsIterator(): AsyncGenerator<string, void, void> {
-        yield* this.cursorPaginationService.cursorItemsIterator<string>((cursor) =>
+        yield* this.cursorPaginationService.cursorItemsIterator<string, string>((cursor) =>
             this.findUserIdListService.execute({
                 query: {
                     limit: MAX_LIST_LIMIT,
@@ -92,23 +92,14 @@ export class CleanupOrphanDocumentsElasticsearchJob implements IJob {
     }
 
     private async *esUserIdsIterator(): AsyncGenerator<string, void, void> {
-        let after: estypes.AggregationsCompositeAggregateKey | null = null;
-
-        while (true) {
-            const response = await this.findUserIdListElasticsearchService.execute({
+        yield* this.cursorPaginationService.cursorItemsIterator<
+            string,
+            estypes.AggregationsCompositeAggregateKey
+        >((cursor) =>
+            this.findUserIdListElasticsearchService.execute({
                 size: MAX_LIST_LIMIT,
-                after,
-            });
-
-            for (const userId of response.userIds) {
-                yield userId;
-            }
-
-            if (!response.after) {
-                break;
-            }
-
-            after = response.after;
-        }
+                after: cursor,
+            }),
+        );
     }
 }

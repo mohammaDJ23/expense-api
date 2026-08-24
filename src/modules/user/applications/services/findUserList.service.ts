@@ -17,14 +17,14 @@ interface IInput {
 }
 
 @Injectable()
-export class FindUserListService implements IService<IInput, IListResult<ISelectUser>> {
+export class FindUserListService implements IService<IInput, IListResult<ISelectUser, string>> {
     constructor(
         private readonly queryDispatcher: QueryDispatcher,
         private readonly cursorPaginationService: CursorPaginationService,
         private readonly userListCursorPaginationDefinition: UserListCursorPaginationDefinition,
     ) {}
 
-    async execute(input: IInput): Promise<IListResult<ISelectUser>> {
+    async execute(input: IInput): Promise<IListResult<ISelectUser, string>> {
         const users = await this.queryDispatcher.execute<FindUserListQuery, ISelectUser[]>(
             new FindUserListQuery({
                 cursor: this.parseCursor(input.query.cursor),

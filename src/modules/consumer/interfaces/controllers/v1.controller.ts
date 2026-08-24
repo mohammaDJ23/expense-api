@@ -85,7 +85,7 @@ export class ConsumerController {
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindConsumerListRequestDto,
-    ): Promise<IListResultWithTotal<ISelectConsumer>> {
+    ): Promise<IListResultWithTotal<ISelectConsumer, string>> {
         return this.consumerService.findListByUserId(user.id, query);
     }
 

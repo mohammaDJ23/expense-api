@@ -27,13 +27,14 @@ export class BillsExportJob implements IJob {
 
     @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     async run(): Promise<void> {
-        for await (const users of this.cursorPaginationService.cursorIterator((cursor) =>
-            this.findUserListService.execute({
-                query: {
-                    limit: MAX_LIST_LIMIT,
-                    cursor,
-                },
-            }),
+        for await (const users of this.cursorPaginationService.cursorIterator<ISelectUser, string>(
+            (cursor) =>
+                this.findUserListService.execute({
+                    query: {
+                        limit: MAX_LIST_LIMIT,
+                        cursor,
+                    },
+                }),
         )) {
             await Promise.allSettled(users.map((user) => this.processExport(user)));
         }
