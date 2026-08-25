@@ -1,3 +1,31 @@
+## [4.3.6](https://github.com/mohammaDJ23/expense-api/compare/v4.3.5...v4.3.6) (2026-08-25)
+
+### ♻️ Code Refactoring
+
+- 289667 use a dynamic type for cursor ([56826d1](https://github.com/mohammaDJ23/expense-api/commit/56826d1b4395c3d21f168a5fca48351b4cea6489))
+
+### 🔧 Chores
+
+- 289667 add .snyk file ([f5bd33c](https://github.com/mohammaDJ23/expense-api/commit/f5bd33c9ebb4091d45d02fed012f6c82eb494917))
+- 289667 add CleanupOrphanDocumentsElasticsearchJob ([5a9ffb3](https://github.com/mohammaDJ23/expense-api/commit/5a9ffb326a00915282f6cc28ba89ca74d2c7c036))
+- 289667 add FindUserIdListElasticsearchQuery ([856ee9a](https://github.com/mohammaDJ23/expense-api/commit/856ee9ad90e403c3475579b4741ba0fbc678bde8))
+- 289667 add FindUserIdListElasticsearchService ([41a8f00](https://github.com/mohammaDJ23/expense-api/commit/41a8f00bf6c3dd9aed3a1d1ec94ceeb92026752a))
+- 289667 add FindUserIdListQuery ([aaa33b7](https://github.com/mohammaDJ23/expense-api/commit/aaa33b75a69f1b0b44df1b25be4f21ea8b76e853))
+- 289667 add forggoten 1 ([4d2da85](https://github.com/mohammaDJ23/expense-api/commit/4d2da8544cd2dfbdfe431c7904d1a87aef5310f5))
+- 289667 add the default type ([4656e1b](https://github.com/mohammaDJ23/expense-api/commit/4656e1b898934f81178b413e301ad184fc4f827d))
+- 289667 add the resource enums ([872a419](https://github.com/mohammaDJ23/expense-api/commit/872a41900554ea7ef56c5e42cf17a4c9be455e24))
+- 289667 import CursorPaginationModule ([7682bfc](https://github.com/mohammaDJ23/expense-api/commit/7682bfcdd9a79b0eeafaa245bbe57bf075d8831a))
+- 289667 localize the cursor logics and reuse inside the modules ([7b59efb](https://github.com/mohammaDJ23/expense-api/commit/7b59efbddbcd3b0e2d4c9ba15cf51d4686e72cfd))
+- 289667 register FindUserIdListElasticsearchService ([f617120](https://github.com/mohammaDJ23/expense-api/commit/f6171202321c5cbb0d795579fee139c76f4ae405))
+- 289667 remove index property ([379e516](https://github.com/mohammaDJ23/expense-api/commit/379e516381118dac1f06a89d3402c499ce486d27))
+- 289667 remove the indexes ([95eda4c](https://github.com/mohammaDJ23/expense-api/commit/95eda4cf06f3fc5c1151b74eee7893d6b6a1008b))
+- 289667 rename the bill elasticsearch queries ([ceff90d](https://github.com/mohammaDJ23/expense-api/commit/ceff90d3ed9b21f08de7691dab34d6ea95637e3f))
+- 289667 rename the consumer elasticsearch queries ([96205cc](https://github.com/mohammaDJ23/expense-api/commit/96205ccdbed34444c2edc87a80dbac21713892c1))
+- 289667 rename the location elasticsearch queries ([430b100](https://github.com/mohammaDJ23/expense-api/commit/430b1004130429dc09e089f0772f129eec5c4962))
+- 289667 rename the receiver elasticsearch queries ([1e1272d](https://github.com/mohammaDJ23/expense-api/commit/1e1272dc6cf9d0ac530b16b7529738f88ea738b7))
+- 289667 use resources for cachenamespaces ([f78004a](https://github.com/mohammaDJ23/expense-api/commit/f78004a5e8122eacf38d6009e6e68abdb6f5b91e))
+- 289667 use resources for search logics ([64fb57f](https://github.com/mohammaDJ23/expense-api/commit/64fb57fd1eb198c2ff933d12ed7c0d94072f8a2d))
+
 ## [4.3.5](https://github.com/mohammaDJ23/expense-api/compare/v4.3.4...v4.3.5) (2026-08-19)
 
 ### 🔧 Chores
