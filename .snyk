@@ -1,0 +1,15 @@
+ignore:
+    SNYK-JS-EXCELJS-19234025:
+        - '*':
+              reason: 'ExcelJS is used only for server-side XLSX generation. The application does not parse or load user-controlled XLSX files.'
+              expires: 2027-08-25
+
+    SNYK-JS-EXCELJS-19234019:
+        - '*':
+              reason: 'ExcelJS is used only for server-side XLSX generation. File names and output paths are controlled by the application and are not user-controlled.'
+              expires: 2027-08-25
+
+    SNYK-JS-EXCELJS-19234023:
+        - '*':
+              reason: 'ExcelJS is used only for server-side XLSX generation. The application does not parse or load user-controlled XLSX files.'
+              expires: 2027-08-25
