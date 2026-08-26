@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, timestamp, uuid, pgEnum, varchar, index } from 'drizzle-orm/pg-core';
 
+import { emailIdentities } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
 import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import { consumers } from '@/modules/consumer/infrastructure/schemas/consumer.schema';
 import { locations } from '@/modules/location/infrastructure/schemas/location.schema';
@@ -41,6 +42,7 @@ export const usersRelations = relations(users, ({ many }) => ({
     locations: many(locations),
     receivers: many(receivers),
     consumers: many(consumers),
+    emailIdentities: many(emailIdentities),
 }));
 
 type TSelectUser = typeof users.$inferSelect;
