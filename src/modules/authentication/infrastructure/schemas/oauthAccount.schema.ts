@@ -26,7 +26,7 @@ export const oauthAccounts = pgTable(
             .defaultNow(),
     },
     (table) => [
-        uniqueIndex('uq_oauth_accounts_provider_provider_id').on(table.provider, table.providerId),
+        uniqueIndex('uq_oauth_accounts_provider_id_provider').on(table.providerId, table.provider),
         uniqueIndex('uq_oauth_accounts_email_id_provider').on(table.emailId, table.provider),
     ],
 );
