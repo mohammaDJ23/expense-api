@@ -1,4 +1,5 @@
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
+import type { OauthProvider } from '@/modules/authentication/domain/enums/oauthProvider.enum';
 import type {
     IInsertOauthAccount,
     ISelectOauthAccount,
@@ -7,4 +8,9 @@ import type {
 export interface IOauthAccountRepository extends ICreateRepository<
     IInsertOauthAccount,
     ISelectOauthAccount
-> {}
+> {
+    findByProviderAndProviderIdOrNull(
+        provider: OauthProvider,
+        providerId: string,
+    ): Promise<ISelectOauthAccount | null>;
+}
