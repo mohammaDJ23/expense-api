@@ -7,4 +7,6 @@ import type {
 export interface ILocalAccountRepository extends ICreateRepository<
     IInsertLocalAccount,
     ISelectLocalAccount
-> {}
+> {
+    findByEmailIdOrThrow(emailId: string): Promise<ISelectLocalAccount>;
+}

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
@@ -18,6 +19,17 @@ export class LocalAccountRepository implements ILocalAccountRepository {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(localAccounts).values(data).returning().execute(),
             'Unable to create',
+        );
+    }
+
+    findByEmailIdOrThrow(emailId: string): Promise<ISelectLocalAccount> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .select()
+                .from(localAccounts)
+                .where(eq(localAccounts.emailId, emailId))
+                .execute(),
+            'Unable not find',
         );
     }
 }
