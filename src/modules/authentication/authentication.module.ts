@@ -5,6 +5,7 @@ import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDisp
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { CreateEmailIdentityHandler } from '@/modules/authentication/applications/commands/createEmailIdentity/createEmailIdentity.handler';
+import { CreateLocalAccountHandler } from '@/modules/authentication/applications/commands/createLocalAccount/createLocalAccount.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
 import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
@@ -23,6 +24,7 @@ import { VerificationStorageService } from '@/modules/authentication/application
 import { VerificationTokenService } from '@/modules/authentication/applications/services/verificationToken.service';
 import { VerifiedVerificationMailerService } from '@/modules/authentication/applications/services/verifiedVerificationMailer.service';
 import { EmailIdentityRepository } from '@/modules/authentication/infrastructure/repositories/emailIdentity.repository';
+import { LocalAccountRepository } from '@/modules/authentication/infrastructure/repositories/localAccount.repository';
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
 import { UserModule } from '@/modules/user/user.module';
 
@@ -49,6 +51,8 @@ import { UserModule } from '@/modules/user/user.module';
         PasswordHasherService,
         EmailIdentityRepository,
         CreateEmailIdentityHandler,
+        CreateLocalAccountHandler,
+        LocalAccountRepository,
     ],
 })
 export class AuthenticationModule {}
