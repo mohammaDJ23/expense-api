@@ -6,6 +6,7 @@ import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { CreateEmailIdentityHandler } from '@/modules/authentication/applications/commands/createEmailIdentity/createEmailIdentity.handler';
 import { CreateLocalAccountHandler } from '@/modules/authentication/applications/commands/createLocalAccount/createLocalAccount.handler';
+import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
 import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
@@ -25,6 +26,7 @@ import { VerificationTokenService } from '@/modules/authentication/applications/
 import { VerifiedVerificationMailerService } from '@/modules/authentication/applications/services/verifiedVerificationMailer.service';
 import { EmailIdentityRepository } from '@/modules/authentication/infrastructure/repositories/emailIdentity.repository';
 import { LocalAccountRepository } from '@/modules/authentication/infrastructure/repositories/localAccount.repository';
+import { OauthAccountRepository } from '@/modules/authentication/infrastructure/repositories/oauthAccount.repository';
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
 import { UserModule } from '@/modules/user/user.module';
 
@@ -53,6 +55,8 @@ import { UserModule } from '@/modules/user/user.module';
         CreateEmailIdentityHandler,
         CreateLocalAccountHandler,
         LocalAccountRepository,
+        CreateOauthAccountHandler,
+        OauthAccountRepository,
     ],
 })
 export class AuthenticationModule {}
