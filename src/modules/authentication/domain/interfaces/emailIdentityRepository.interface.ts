@@ -7,4 +7,6 @@ import type {
 export interface IEmailIdentityRepository extends ICreateRepository<
     IInsertEmailIdentity,
     ISelectEmailIdentity
-> {}
+> {
+    findByEmailOrNull(email: string): Promise<ISelectEmailIdentity | null>;
+}

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
+import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
 import {
     emailIdentities,
@@ -18,6 +20,16 @@ export class EmailIdentityRepository implements IEmailIdentityRepository {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(emailIdentities).values(data).returning().execute(),
             'Unable to create',
+        );
+    }
+
+    findByEmailOrNull(email: string): Promise<ISelectEmailIdentity | null> {
+        return toEntityOrNull(
+            this.drizzleRepository.db
+                .select()
+                .from(emailIdentities)
+                .where(eq(emailIdentities.email, email))
+                .execute(),
         );
     }
 }
