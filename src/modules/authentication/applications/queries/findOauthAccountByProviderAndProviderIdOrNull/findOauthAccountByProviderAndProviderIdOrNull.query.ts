@@ -5,6 +5,6 @@ interface IProps {
     providerId: string;
 }
 
-export class FindOauthAccountByProviderAndProviderIdQuery {
+export class FindOauthAccountByProviderAndProviderIdOrNullQuery {
     constructor(public readonly props: IProps) {}
 }

@@ -8,8 +8,8 @@ import { CreateEmailIdentityHandler } from '@/modules/authentication/application
 import { CreateLocalAccountHandler } from '@/modules/authentication/applications/commands/createLocalAccount/createLocalAccount.handler';
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
-import { FindLocalAccountByEmailIdHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailId/findLocalAccountByEmailId.handler';
-import { FindOauthAccountByProviderAndProviderIdHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderId/findOauthAccountByProviderAndProviderId.handler';
+import { FindLocalAccountByEmailIdOrThrowHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrThrow/findLocalAccountByEmailIdOrThrow.handler';
+import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
 import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
@@ -60,8 +60,8 @@ import { UserModule } from '@/modules/user/user.module';
         LocalAccountRepository,
         CreateOauthAccountHandler,
         OauthAccountRepository,
-        FindOauthAccountByProviderAndProviderIdHandler,
-        FindLocalAccountByEmailIdHandler,
+        FindOauthAccountByProviderAndProviderIdOrNullHandler,
+        FindLocalAccountByEmailIdOrThrowHandler,
         FindEmailIdentityByEmailOrNullHandler,
     ],
 })
