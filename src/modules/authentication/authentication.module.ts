@@ -7,6 +7,7 @@ import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { CreateEmailIdentityHandler } from '@/modules/authentication/applications/commands/createEmailIdentity/createEmailIdentity.handler';
 import { CreateLocalAccountHandler } from '@/modules/authentication/applications/commands/createLocalAccount/createLocalAccount.handler';
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
+import { FindLocalAccountByEmailIdHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailId/findLocalAccountByEmailId.handler';
 import { FindOauthAccountByProviderAndProviderIdHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderId/findOauthAccountByProviderAndProviderId.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
@@ -59,6 +60,7 @@ import { UserModule } from '@/modules/user/user.module';
         CreateOauthAccountHandler,
         OauthAccountRepository,
         FindOauthAccountByProviderAndProviderIdHandler,
+        FindLocalAccountByEmailIdHandler,
     ],
 })
 export class AuthenticationModule {}
