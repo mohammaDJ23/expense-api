@@ -9,7 +9,7 @@ import { CreateLocalAccountHandler } from '@/modules/authentication/applications
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
 import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/applications/queries/existsEmailIdentityByEmail/existsEmailIdentityByEmail.handler';
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
-import { FindLocalAccountByEmailIdOrThrowHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrThrow/findLocalAccountByEmailIdOrThrow.handler';
+import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.handler';
 import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
@@ -62,7 +62,7 @@ import { UserModule } from '@/modules/user/user.module';
         CreateOauthAccountHandler,
         OauthAccountRepository,
         FindOauthAccountByProviderAndProviderIdOrNullHandler,
-        FindLocalAccountByEmailIdOrThrowHandler,
+        FindLocalAccountByEmailIdOrNullHandler,
         FindEmailIdentityByEmailOrNullHandler,
         ExistsEmailIdentityByEmailHandler,
     ],

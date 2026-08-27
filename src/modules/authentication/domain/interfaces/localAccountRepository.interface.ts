@@ -8,5 +8,5 @@ export interface ILocalAccountRepository extends ICreateRepository<
     IInsertLocalAccount,
     ISelectLocalAccount
 > {
-    findByEmailIdOrThrow(emailId: string): Promise<ISelectLocalAccount>;
+    findByEmailIdOrNull(emailId: string): Promise<ISelectLocalAccount | null>;
 }
