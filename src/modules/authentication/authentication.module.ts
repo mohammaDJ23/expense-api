@@ -7,6 +7,7 @@ import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { CreateEmailIdentityHandler } from '@/modules/authentication/applications/commands/createEmailIdentity/createEmailIdentity.handler';
 import { CreateLocalAccountHandler } from '@/modules/authentication/applications/commands/createLocalAccount/createLocalAccount.handler';
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
+import { UpdateLocalAccountHandler } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.handler';
 import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/applications/queries/existsEmailIdentityByEmail/existsEmailIdentityByEmail.handler';
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
 import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.handler';
@@ -65,6 +66,7 @@ import { UserModule } from '@/modules/user/user.module';
         FindLocalAccountByEmailIdOrNullHandler,
         FindEmailIdentityByEmailOrNullHandler,
         ExistsEmailIdentityByEmailHandler,
+        UpdateLocalAccountHandler,
     ],
 })
 export class AuthenticationModule {}

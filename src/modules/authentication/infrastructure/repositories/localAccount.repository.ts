@@ -11,6 +11,7 @@ import {
 } from '@/modules/authentication/infrastructure/schemas/localAccount.schema';
 
 import type { ILocalAccountRepository } from '@/modules/authentication/domain/interfaces/localAccountRepository.interface';
+import type { TUpdateLocalAccount } from '@/modules/authentication/domain/types/updateLocalAccount.type';
 
 @Injectable()
 export class LocalAccountRepository implements ILocalAccountRepository {
@@ -20,6 +21,18 @@ export class LocalAccountRepository implements ILocalAccountRepository {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(localAccounts).values(data).returning().execute(),
             'Unable to create',
+        );
+    }
+
+    update(data: TUpdateLocalAccount): Promise<ISelectLocalAccount> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .update(localAccounts)
+                .set(data)
+                .where(eq(localAccounts.id, data.id))
+                .returning()
+                .execute(),
+            'Unable to update',
         );
     }
 
