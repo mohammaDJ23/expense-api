@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
+import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
 import {
     localAccounts,
@@ -22,14 +23,13 @@ export class LocalAccountRepository implements ILocalAccountRepository {
         );
     }
 
-    findByEmailIdOrThrow(emailId: string): Promise<ISelectLocalAccount> {
-        return toEntityOrThrow(
+    findByEmailIdOrNull(emailId: string): Promise<ISelectLocalAccount | null> {
+        return toEntityOrNull(
             this.drizzleRepository.db
                 .select()
                 .from(localAccounts)
                 .where(eq(localAccounts.emailId, emailId))
                 .execute(),
-            'Unable not find',
         );
     }
 }

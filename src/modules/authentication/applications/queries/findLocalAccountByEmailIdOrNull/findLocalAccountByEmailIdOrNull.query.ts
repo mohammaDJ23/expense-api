@@ -2,6 +2,6 @@ interface IProps {
     emailId: string;
 }
 
-export class FindLocalAccountByEmailIdOrThrowQuery {
+export class FindLocalAccountByEmailIdOrNullQuery {
     constructor(public readonly props: IProps) {}
 }
