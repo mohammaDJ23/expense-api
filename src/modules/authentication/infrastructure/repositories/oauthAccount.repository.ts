@@ -12,6 +12,7 @@ import {
 
 import type { OauthProvider } from '@/modules/authentication/domain/enums/oauthProvider.enum';
 import type { IOauthAccountRepository } from '@/modules/authentication/domain/interfaces/oauthAccountRepository.interface';
+import type { TUpdateOauthAccount } from '@/modules/authentication/domain/types/updateOauthAccount.type';
 
 @Injectable()
 export class OauthAccountRepository implements IOauthAccountRepository {
@@ -21,6 +22,18 @@ export class OauthAccountRepository implements IOauthAccountRepository {
         return toEntityOrThrow(
             this.drizzleRepository.db.insert(oauthAccounts).values(data).returning().execute(),
             'Unable to create',
+        );
+    }
+
+    update(data: TUpdateOauthAccount): Promise<ISelectOauthAccount> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .update(oauthAccounts)
+                .set(data)
+                .where(eq(oauthAccounts.id, data.id))
+                .returning()
+                .execute(),
+            'Unable to update',
         );
     }
 
