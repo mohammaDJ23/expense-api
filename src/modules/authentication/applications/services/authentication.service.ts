@@ -34,7 +34,7 @@ export class AuthenticationService {
         return this.localSignupService.execute(body);
     }
 
-    localLogin(response: Response, body: LocalLoginRequestDto): Promise<ISelectUser> {
+    localLogin(response: Response, body: LocalLoginRequestDto): Promise<boolean> {
         return this.localLoginService.execute({ response, body });
     }
 
