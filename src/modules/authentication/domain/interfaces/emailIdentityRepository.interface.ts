@@ -9,5 +9,6 @@ export interface IEmailIdentityRepository extends ICreateRepository<
     ISelectEmailIdentity
 > {
     findByEmailOrNull(email: string): Promise<ISelectEmailIdentity | null>;
+    findByEmailOrThrow(email: string): Promise<ISelectEmailIdentity>;
     existsByEmail(email: string): Promise<boolean>;
 }
