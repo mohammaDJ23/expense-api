@@ -10,6 +10,7 @@ import { GoogleAuthGuard } from './googleAuth.guard';
 import { GoogleAuthStrategy } from './googleAuth.strategy';
 import { JwtAuthGuard } from './jwtAuth.guard';
 import { JwtAuthStrategy } from './jwtAuth.strategy';
+import { OauthAuthenticationService } from './oauthAuthentication.service';
 
 @Module({
     imports: [CqrsModule, JwtModule, QueryDispatcherModule, forwardRef(() => UserModule)],
@@ -19,6 +20,7 @@ import { JwtAuthStrategy } from './jwtAuth.strategy';
         JwtAuthGuard,
         JwtAuthStrategy,
         AccessTokenService,
+        OauthAuthenticationService,
     ],
     exports: [JwtAuthGuard, GoogleAuthGuard, AccessTokenService],
 })

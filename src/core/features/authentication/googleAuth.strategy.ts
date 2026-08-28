@@ -1,25 +1,18 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
 import { Strategy, type Profile } from 'passport-google-oauth20';
 
-import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
-import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { readSecret } from '@/core/utils/readSecret.util';
-import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
-import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
-import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
+import { OauthProvider } from '@/modules/authentication/domain/enums/oauthProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
+import type { OauthAuthenticationService } from './oauthAuthentication.service';
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
-    constructor(
-        private readonly queryDispatcher: QueryDispatcher,
-        private readonly createUserService: CreateUserService,
-    ) {
+    constructor(private readonly oauthAuthenticationService: OauthAuthenticationService) {
         const env = new Env();
         super({
             clientID: readSecret(env.require('GOOGLE_OAUTH_CLIENT_ID_FILE')),
@@ -30,57 +23,24 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    async validate(_: string, __: string, profile: Profile): Promise<ICurrentUser> {
+    validate(_: string, __: string, profile: Profile): Promise<ICurrentUser> {
         const email = profile.emails?.[0];
-        if (!email) {
-            throw new UnauthorizedException();
-        }
 
-        const user = await this.queryDispatcher.execute<
-            FindUserByEmailOrNullQuery,
-            ISelectUser | null
-        >(
-            new FindUserByEmailOrNullQuery({
-                email: email.value,
-            }),
-        );
-
-        if (!user) {
-            const createdUser = await this.createUserService.execute({
-                firstName: profile.name?.givenName,
-                lastName: profile.name?.familyName,
-                googleId: profile.id,
-                email: email.value,
-                avatar: profile.photos?.[0]?.value,
-                authProvider: AuthProvider.GOOGLE,
-                role: UserRoles.USER,
-                verifiedAt: getCurrentUTCTimestamp(),
-                createdAt: getCurrentUTCTimestamp(),
-                updatedAt: getCurrentUTCTimestamp(),
-                lastLoginAt: getCurrentUTCTimestamp(),
-            });
-
-            return {
-                id: createdUser.id,
-                role: createdUser.role,
-            };
-        }
-
-        if (!user.verifiedAt) {
-            throw new ForbiddenException();
-        }
-
-        if (user.authProvider !== AuthProvider.GOOGLE) {
-            throw new ForbiddenException();
-        }
-
-        if (user.authProvider === AuthProvider.GOOGLE && user.googleId !== profile.id) {
-            throw new ForbiddenException();
-        }
-
-        return {
-            id: user.id,
-            role: user.role,
-        };
+        return this.oauthAuthenticationService.execute({
+            email: email?.value,
+            isVerified: email?.verified,
+            provider: OauthProvider.GOOGLE,
+            providerId: profile.id,
+            profile(creationTime) {
+                return {
+                    role: UserRoles.USER,
+                    firstName: profile.name?.givenName,
+                    lastName: profile.name?.familyName,
+                    avatar: profile.photos?.[0]?.value,
+                    createdAt: creationTime,
+                    updatedAt: creationTime,
+                };
+            },
+        });
     }
 }
