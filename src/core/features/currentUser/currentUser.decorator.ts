@@ -10,7 +10,7 @@ const BaseCurrentUser = createParamDecorator(
     (_: never, ctx: ExecutionContext): ICurrentUser | undefined => {
         const request = ctx.switchToHttp().getRequest<IRequest>();
 
-        return request.user;
+        return request.user as ICurrentUser | undefined;
     },
 );
 

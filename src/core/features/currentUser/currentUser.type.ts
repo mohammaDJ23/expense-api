@@ -1,3 +1,6 @@
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-export interface ICurrentUser extends Pick<ISelectUser, 'id' | 'role'> {}
+export interface ICurrentUser {
+    id: string;
+    role: UserRoles;
+}
