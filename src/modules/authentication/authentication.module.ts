@@ -4,6 +4,7 @@ import { AuthenticationModule as CoreAuthenticationModule } from '@/core/feature
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
+import { FindEmailIdentityByEmailOrThrowHandler } from '@/modules/authentication//applications/queries/findEmailIdentityByEmailOrThrow/findEmailIdentityByEmailOrThrow.handler';
 import { CreateEmailIdentityHandler } from '@/modules/authentication/applications/commands/createEmailIdentity/createEmailIdentity.handler';
 import { CreateLocalAccountHandler } from '@/modules/authentication/applications/commands/createLocalAccount/createLocalAccount.handler';
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
@@ -82,6 +83,7 @@ import { UserModule } from '@/modules/user/user.module';
         UniqueEmailIdentityValidatorService,
         SendEmailVerificationHandler,
         UniqueEmailIdentityValidatorService,
+        FindEmailIdentityByEmailOrThrowHandler,
     ],
 })
 export class AuthenticationModule {}
