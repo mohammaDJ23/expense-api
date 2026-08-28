@@ -36,10 +36,18 @@ import { EmailIdentityRepository } from '@/modules/authentication/infrastructure
 import { LocalAccountRepository } from '@/modules/authentication/infrastructure/repositories/localAccount.repository';
 import { OauthAccountRepository } from '@/modules/authentication/infrastructure/repositories/oauthAccount.repository';
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
+import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { UserModule } from '@/modules/user/user.module';
 
 @Module({
-    imports: [CqrsModule, JwtModule, UserModule, CoreAuthenticationModule, QueryDispatcherModule],
+    imports: [
+        CqrsModule,
+        JwtModule,
+        UserModule,
+        CoreAuthenticationModule,
+        QueryDispatcherModule,
+        OutboxModule,
+    ],
     controllers: [AuthenticationController],
     providers: [
         AuthenticationService,
