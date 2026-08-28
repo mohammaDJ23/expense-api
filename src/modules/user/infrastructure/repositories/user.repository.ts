@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { and, asc, desc, eq, gt, isNull, lt, or } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, lt, or } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -49,22 +49,6 @@ export class UserRepository implements IUserRepository {
         );
     }
 
-    deleteManyNotVerified(): Promise<ISelectUser[]> {
-        return toEntities(
-            this.drizzleRepository.db
-                .delete(users)
-                .where(isNull(users.verifiedAt))
-                .returning()
-                .execute(),
-        );
-    }
-
-    findByEmailOrNull(email: string): Promise<ISelectUser | null> {
-        return toEntityOrNull(
-            this.drizzleRepository.db.select().from(users).where(eq(users.email, email)).execute(),
-        );
-    }
-
     findByIdOrNull(id: string): Promise<ISelectUser | null> {
         return toEntityOrNull(
             this.drizzleRepository.db.select().from(users).where(eq(users.id, id)).execute(),
@@ -99,10 +83,6 @@ export class UserRepository implements IUserRepository {
 
     existsById(id: string): Promise<boolean> {
         return toExistsByCount(this.drizzleRepository.db.$count(users, eq(users.id, id)));
-    }
-
-    existsByEmail(email: string): Promise<boolean> {
-        return toExistsByCount(this.drizzleRepository.db.$count(users, eq(users.email, email)));
     }
 
     findTotal(): Promise<number> {
