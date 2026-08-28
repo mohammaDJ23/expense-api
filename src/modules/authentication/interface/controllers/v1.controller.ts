@@ -2,9 +2,8 @@ import { Body, Controller, Get, HttpStatus, Post, Res, UseGuards } from '@nestjs
 import { Throttle } from '@nestjs/throttler';
 
 import { GoogleAuthGuard } from '@/core/features/authentication/googleAuth.guard';
-import { CurrentUser } from '@/core/features/currentUser/currentUser.decorator';
+import { OauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.decorator';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
-import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
@@ -12,7 +11,6 @@ import { LocalResetPasswordRequestDto } from '@/modules/authentication/interface
 import { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
 import { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 import { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
-import { UserResponseDto } from '@/modules/user/interfaces/dtos/user.response.dto';
 
 import {
     SUCCESS_SIGNUP_MESSAGE,
@@ -23,8 +21,7 @@ import {
     SUCCESS_RESET_PASSWORD_MESSAGE,
 } from './v1.constants';
 
-import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
+import type { IOauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.type';
 import type { Response } from 'express';
 
 @Controller({ version: '1', path: 'api/authentication' })
@@ -85,11 +82,10 @@ export class AuthenticationController {
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
-    @SerializerInterceptor(UserResponseDto)
     googleLogin(
         @Res({ passthrough: true }) response: Response,
-        @CurrentUser() user: ICurrentUser,
-    ): Promise<ISelectUser> {
-        return this.authenticationService.googleLogin(response, user);
+        @OauthCurrentUser() user: IOauthCurrentUser,
+    ): Promise<boolean> {
+        return this.authenticationService.oauthLogin(response, user);
     }
 }

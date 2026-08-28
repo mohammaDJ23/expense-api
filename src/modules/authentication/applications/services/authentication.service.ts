@@ -1,21 +1,20 @@
 import { Injectable } from '@nestjs/common';
 
-import { GoogleLoginService } from './googleLogin.service';
 import { LocalForgotPasswordService } from './localForgotPassword.service';
 import { LocalLoginService } from './localLogin.service';
 import { LocalResetPasswordService } from './localResetPassword.service';
 import { LocalSendVerificationService } from './localSendVerification.service';
 import { LocalSignupService } from './localSignup.service';
 import { LocalVerifyVerificationService } from './localVerifyVerification.service';
+import { OauthLoginService } from './oauthLogin.service';
 
-import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
+import type { IOauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.type';
 import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import type { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
 import type { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
 import type { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 import type { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 import type { Response } from 'express';
 
 @Injectable()
@@ -27,7 +26,7 @@ export class AuthenticationService {
         private readonly localVerifyVerificationService: LocalVerifyVerificationService,
         private readonly localForgotPasswordService: LocalForgotPasswordService,
         private readonly localResetPasswordService: LocalResetPasswordService,
-        private readonly googleLoginService: GoogleLoginService,
+        private readonly oauthLoginService: OauthLoginService,
     ) {}
 
     localSignup(body: LocalSignupRequestDto): Promise<boolean> {
@@ -54,7 +53,7 @@ export class AuthenticationService {
         return this.localResetPasswordService.execute(body);
     }
 
-    googleLogin(response: Response, user: ICurrentUser): Promise<ISelectUser> {
-        return this.googleLoginService.execute({ response, user });
+    oauthLogin(response: Response, user: IOauthCurrentUser): Promise<boolean> {
+        return this.oauthLoginService.execute({ response, user });
     }
 }
