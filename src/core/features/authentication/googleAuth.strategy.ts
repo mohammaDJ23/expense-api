@@ -8,7 +8,7 @@ import { OauthProvider } from '@/modules/authentication/domain/enums/oauthProvid
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
 import type { OauthAuthenticationService } from './oauthAuthentication.service';
-import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
+import type { IOauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.type';
 
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
@@ -23,7 +23,7 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    validate(_: string, __: string, profile: Profile): Promise<ICurrentUser> {
+    validate(_: string, __: string, profile: Profile): Promise<IOauthCurrentUser> {
         const email = profile.emails?.[0];
 
         return this.oauthAuthenticationService.execute({

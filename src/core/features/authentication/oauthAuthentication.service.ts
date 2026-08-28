@@ -12,7 +12,7 @@ import { FindOauthAccountByProviderAndProviderIdOrNullQuery } from '@/modules/au
 import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 
-import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
+import type { IOauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.type';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { OauthProvider } from '@/modules/authentication/domain/enums/oauthProvider.enum';
 import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
@@ -29,7 +29,7 @@ interface IInput {
 }
 
 @Injectable()
-export class OauthAuthenticationService implements IService<IInput, ICurrentUser> {
+export class OauthAuthenticationService implements IService<IInput, IOauthCurrentUser> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
@@ -38,7 +38,7 @@ export class OauthAuthenticationService implements IService<IInput, ICurrentUser
     ) {}
 
     @Transactional()
-    async execute(input: IInput): Promise<ICurrentUser> {
+    async execute(input: IInput): Promise<IOauthCurrentUser> {
         if (!input.email) {
             throw new UnauthorizedException();
         }
@@ -73,10 +73,7 @@ export class OauthAuthenticationService implements IService<IInput, ICurrentUser
 
             const user = await this.findUserById(emailIdentity.userId);
 
-            return {
-                id: user.id,
-                role: user.role,
-            };
+            return this.createOauthCurrentUser(user, oauthAccount);
         }
 
         const emailIdentity = await this.queryBus.execute<
@@ -88,43 +85,49 @@ export class OauthAuthenticationService implements IService<IInput, ICurrentUser
             }),
         );
 
-        if (!emailIdentity) {
-            const creationTime = getCurrentUTCTimestamp();
-
-            const createdUser = await this.createUserService.execute(input.profile(creationTime));
-
-            const createdEmailIdentity = await this.commandBus.execute<
-                CreateEmailIdentityCommand,
-                ISelectEmailIdentity
-            >(
-                new CreateEmailIdentityCommand({
-                    email: input.email,
-                    userId: createdUser.id,
-                    createdAt: creationTime,
-                    updatedAt: creationTime,
-                }),
-            );
-
-            await this.createOauthAccount(
-                createdEmailIdentity.id,
+        if (emailIdentity) {
+            const createdOauthAccount = await this.createOauthAccount(
+                emailIdentity.id,
                 input.provider,
                 input.providerId,
-                creationTime,
             );
 
-            return {
-                id: createdUser.id,
-                role: createdUser.role,
-            };
+            const user = await this.findUserById(emailIdentity.userId);
+
+            return this.createOauthCurrentUser(user, createdOauthAccount);
         }
 
-        await this.createOauthAccount(emailIdentity.id, input.provider, input.providerId);
+        const creationTime = getCurrentUTCTimestamp();
 
-        const user = await this.findUserById(emailIdentity.userId);
+        const createdUser = await this.createUserService.execute(input.profile(creationTime));
 
+        const createdEmailIdentity = await this.commandBus.execute<
+            CreateEmailIdentityCommand,
+            ISelectEmailIdentity
+        >(
+            new CreateEmailIdentityCommand({
+                email: input.email,
+                userId: createdUser.id,
+                createdAt: creationTime,
+                updatedAt: creationTime,
+            }),
+        );
+
+        const createdOauthAccount = await this.createOauthAccount(
+            createdEmailIdentity.id,
+            input.provider,
+            input.providerId,
+            creationTime,
+        );
+
+        return this.createOauthCurrentUser(createdUser, createdOauthAccount);
+    }
+
+    private createOauthCurrentUser(user: ISelectUser, oauthAccount: ISelectOauthAccount) {
         return {
             id: user.id,
             role: user.role,
+            oauthAccountId: oauthAccount.id,
         };
     }
 
