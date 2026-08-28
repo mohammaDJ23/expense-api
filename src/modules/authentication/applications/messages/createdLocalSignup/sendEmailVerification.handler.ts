@@ -1,7 +1,7 @@
-import { MailerService } from '@nestjs-modules/mailer';
 import pLimit from 'p-limit';
 
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
+import { VerificationMailerService } from '@/modules/authentication/applications/services/verificationMailer.service';
 import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
@@ -15,7 +15,7 @@ export class SendEmailVerificationHandler implements IMessageHandler<ILocalSignu
     private readonly concurrency = pLimit(2);
 
     constructor(
-        private readonly mailerService: MailerService,
+        private readonly verificationMailerService: VerificationMailerService,
         private readonly verificationStorageService: VerificationStorageService,
     ) {}
 
@@ -27,26 +27,9 @@ export class SendEmailVerificationHandler implements IMessageHandler<ILocalSignu
                         item.payload.email,
                         item.payload.token,
                     );
-
-                    await this.mailerService.sendMail({
-                        to: item.payload.email,
-                        subject: 'Verify Your Email Address',
-                        html: `
-                                <div style="font-family: Arial, sans-serif;">
-                                    <p>Hello <strong>${item.payload.email}</strong>,</p>
-                                    
-                                    <p>Thank you for registering! Please verify your email address to activate your account.</p>
-                                    
-                                    <p>
-                                        Click the link below to verify your email:<br/>
-                                        <a href="${process.env.APP_URL}/authentication/verification?token=${item.payload.token}" style="font-weight: bold; color: #0066cc;">
-                                            Verify my account
-                                        </a>
-                                    </p>
-                                    
-                                    <p>Best regards,<br/>Your Team</p>
-                                </div>
-                            `,
+                    await this.verificationMailerService.execute({
+                        email: item.payload.email,
+                        token: item.payload.token,
                     });
                 }),
             ),
