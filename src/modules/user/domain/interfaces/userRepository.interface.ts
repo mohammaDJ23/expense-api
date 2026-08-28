@@ -22,8 +22,4 @@ export interface IUserRepository
         IDeleteByIdRepository<ISelectUser>,
         IExistsByIdRepository,
         IFindTotalRepository,
-        IFindIdListRepository<IUserIdListCursor> {
-    deleteManyNotVerified(): Promise<ISelectUser[]>;
-    existsByEmail(email: string): Promise<boolean>;
-    findByEmailOrNull(email: string): Promise<ISelectUser | null>;
-}
+        IFindIdListRepository<IUserIdListCursor> {}
