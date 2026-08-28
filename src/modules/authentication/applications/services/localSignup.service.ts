@@ -10,7 +10,6 @@ import { UniqueEmailIdentityValidatorService } from '@/modules/authentication/ap
 import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
-import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
 import { PasswordHasherService } from './passwordHasher.service';
@@ -49,10 +48,7 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
         const createdAt = getCurrentUTCTimestamp();
 
         const createdUser = await this.createUserService.execute({
-            email: input.email,
-            hashedPassword,
             role: UserRoles.USER,
-            authProvider: AuthProvider.LOCAL,
             createdAt,
             updatedAt: createdAt,
         });
