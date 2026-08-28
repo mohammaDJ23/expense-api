@@ -9,6 +9,7 @@ import { CreateLocalAccountHandler } from '@/modules/authentication/applications
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
 import { UpdateLocalAccountHandler } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.handler';
 import { UpdateOauthAccountHandler } from '@/modules/authentication/applications/commands/updateOauthAccount/updateOauthAccount.handler';
+import { SendEmailVerificationHandler } from '@/modules/authentication/applications/messages/createdLocalSignup/sendEmailVerification.handler';
 import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/applications/queries/existsEmailIdentityByEmail/existsEmailIdentityByEmail.handler';
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
 import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.handler';
@@ -26,6 +27,7 @@ import { PasswordMailerService } from '@/modules/authentication/applications/ser
 import { PasswordStorageService } from '@/modules/authentication/applications/services/passwordStorage.service';
 import { PasswordTokenService } from '@/modules/authentication/applications/services/passwordToken.service';
 import { ResetPasswordMailerService } from '@/modules/authentication/applications/services/resetPasswordMailer.service';
+import { UniqueEmailIdentityValidatorService } from '@/modules/authentication/applications/services/validators/uniqueEmailIdentityValidator.service';
 import { VerificationMailerService } from '@/modules/authentication/applications/services/verificationMailer.service';
 import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { VerificationTokenService } from '@/modules/authentication/applications/services/verificationToken.service';
@@ -69,6 +71,9 @@ import { UserModule } from '@/modules/user/user.module';
         ExistsEmailIdentityByEmailHandler,
         UpdateLocalAccountHandler,
         UpdateOauthAccountHandler,
+        UniqueEmailIdentityValidatorService,
+        SendEmailVerificationHandler,
+        UniqueEmailIdentityValidatorService,
     ],
 })
 export class AuthenticationModule {}
