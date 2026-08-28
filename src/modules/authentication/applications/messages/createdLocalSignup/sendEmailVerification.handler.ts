@@ -23,16 +23,15 @@ export class SendEmailVerificationHandler implements IMessageHandler<ILocalSignu
         await Promise.allSettled(
             batch.map((item) =>
                 this.concurrency(async () => {
-                    try {
-                        await this.verificationStorageService.set(
-                            item.payload.email,
-                            item.payload.token,
-                        );
+                    await this.verificationStorageService.set(
+                        item.payload.email,
+                        item.payload.token,
+                    );
 
-                        await this.mailerService.sendMail({
-                            to: item.payload.email,
-                            subject: 'Verify Your Email Address',
-                            html: `
+                    await this.mailerService.sendMail({
+                        to: item.payload.email,
+                        subject: 'Verify Your Email Address',
+                        html: `
                                 <div style="font-family: Arial, sans-serif;">
                                     <p>Hello <strong>${item.payload.email}</strong>,</p>
                                     
@@ -48,12 +47,7 @@ export class SendEmailVerificationHandler implements IMessageHandler<ILocalSignu
                                     <p>Best regards,<br/>Your Team</p>
                                 </div>
                             `,
-                        });
-                    } catch {
-                        try {
-                            await this.verificationStorageService.delete(item.payload.email);
-                        } catch {}
-                    }
+                    });
                 }),
             ),
         );
