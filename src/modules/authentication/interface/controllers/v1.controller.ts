@@ -41,11 +41,10 @@ export class AuthenticationController {
     @Post('local/login')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @HttpResponse(SUCCESS_LOGIN_MESSAGE, HttpStatus.OK)
-    @SerializerInterceptor(UserResponseDto)
     localLogin(
         @Res({ passthrough: true }) response: Response,
         @Body() body: LocalLoginRequestDto,
-    ): Promise<ISelectUser> {
+    ): Promise<boolean> {
         return this.authenticationService.localLogin(response, body);
     }
 
