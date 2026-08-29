@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
+import { v4 as uuid } from 'uuid';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
@@ -81,7 +82,7 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
         };
 
         await this.outboxEventPublisherService.publish({
-            aggregateId: createdUser.id,
+            aggregateId: uuid(),
             aggregateType: AuthenticationResource.LOCAL_SIGNUP,
             eventType: 'created',
             payload,

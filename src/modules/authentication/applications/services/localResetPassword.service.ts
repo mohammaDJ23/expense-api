@@ -4,87 +4,112 @@ import {
     Injectable,
     InternalServerErrorException,
 } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Transactional } from '@nestjs-cls/transactional';
+import { v4 as uuid } from 'uuid';
 
-import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
-import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
-import { ResetPasswordMailerService } from '@/modules/authentication/applications/services/resetPasswordMailer.service';
-import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
-import { UpdateUserService } from '@/modules/user/applications/services/updateUser.service';
-import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
+import { UpdateLocalAccountCommand } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.command';
+import { FindEmailIdentityByEmailOrNullQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.query';
+import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.query';
+import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import { PasswordHasherService } from './passwordHasher.service';
 import { PasswordStorageService } from './passwordStorage.service';
 import { PasswordTokenService } from './passwordToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { INewPasswordPayload } from '@/modules/authentication/domain/types/newPasswordPayload.type';
+import type { ILocalResetPasswordMessagePayload } from '@/modules/authentication/domain/types/localResetPasswordMessagePayload.type';
+import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
+import type { ISelectLocalAccount } from '@/modules/authentication/infrastructure/schemas/localAccount.schema';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class LocalResetPasswordService implements IService<LocalResetPasswordRequestDto, boolean> {
     constructor(
-        private readonly queryDispatcher: QueryDispatcher,
+        private readonly queryBus: QueryBus,
+        private readonly commandBus: CommandBus,
         private readonly passwordHasherService: PasswordHasherService,
         private readonly passwordTokenService: PasswordTokenService,
         private readonly passwordStorageService: PasswordStorageService,
-        private readonly resetPasswordMailerService: ResetPasswordMailerService,
-        private readonly updatedUserService: UpdateUserService,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
+    @Transactional()
     async execute(input: LocalResetPasswordRequestDto): Promise<boolean> {
-        let payload: INewPasswordPayload;
-        try {
-            payload = this.passwordTokenService.verify(input.token);
-        } catch {
-            throw new BadRequestException();
-        }
+        const payload = this.passwordTokenService.verify(input.token);
 
         {
             let storedToken: string | null = null;
             try {
                 storedToken = await this.passwordStorageService.get(payload.email);
             } catch {}
+
             if (storedToken !== input.token) {
                 throw new BadRequestException();
             }
         }
 
-        const user = await this.queryDispatcher.execute<
-            FindUserByEmailOrNullQuery,
-            ISelectUser | null
-        >(new FindUserByEmailOrNullQuery({ email: payload.email }));
+        const emailIdentity = await this.queryBus.execute<
+            FindEmailIdentityByEmailOrNullQuery,
+            ISelectEmailIdentity
+        >(
+            new FindEmailIdentityByEmailOrNullQuery({
+                email: payload.email,
+            }),
+        );
 
-        if (!user) {
+        if (!emailIdentity) {
             throw new BadRequestException();
         }
 
-        if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderForbiddenException();
+        const localAccount = await this.queryBus.execute<
+            FindLocalAccountByEmailIdOrNullQuery,
+            ISelectLocalAccount
+        >(
+            new FindLocalAccountByEmailIdOrNullQuery({
+                emailId: emailIdentity.id,
+            }),
+        );
+
+        if (!localAccount) {
+            throw new BadRequestException();
         }
 
-        if (!user.verifiedAt) {
+        if (!localAccount.verifiedAt) {
             throw new ForbiddenException();
         }
+
+        const creationTime = getCurrentUTCTimestamp();
 
         try {
             const hashedPassword = await this.passwordHasherService.hash(input.newPassword);
 
-            await this.updatedUserService.execute({
-                id: user.id,
-                updatedAt: getCurrentUTCTimestamp(),
-                hashedPassword,
-            });
+            await this.commandBus.execute(
+                new UpdateLocalAccountCommand({
+                    id: localAccount.id,
+                    hashedPassword,
+                    updatedAt: creationTime,
+                }),
+            );
         } catch {
             throw new InternalServerErrorException('Could not change your password, try again');
         }
 
-        try {
-            this.resetPasswordMailerService.execute(user);
+        {
+            const payload: ILocalResetPasswordMessagePayload = {
+                email: emailIdentity.email,
+            };
 
-            await this.passwordStorageService.delete(user.email);
-        } catch {}
+            await this.outboxEventPublisherService.publish({
+                aggregateId: uuid(),
+                aggregateType: AuthenticationResource.LOCAL_RESET_PASSWORD,
+                eventType: 'created',
+                payload,
+                createdAt: creationTime,
+            });
+        }
 
         return true;
     }
