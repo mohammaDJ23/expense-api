@@ -45,12 +45,12 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
             throw new ProcessFailedInternalServerErrorException();
         }
 
-        const createdAt = getCurrentUTCTimestamp();
+        const creationTime = getCurrentUTCTimestamp();
 
         const createdUser = await this.createUserService.execute({
             role: UserRoles.USER,
-            createdAt,
-            updatedAt: createdAt,
+            createdAt: creationTime,
+            updatedAt: creationTime,
         });
 
         const createdEmailIdentity = await this.commandBus.execute<
@@ -60,8 +60,8 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
             new CreateEmailIdentityCommand({
                 email: input.email,
                 userId: createdUser.id,
-                createdAt,
-                updatedAt: createdAt,
+                createdAt: creationTime,
+                updatedAt: creationTime,
             }),
         );
 
@@ -69,8 +69,8 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
             new CreateLocalAccountCommand({
                 hashedPassword,
                 emailId: createdEmailIdentity.id,
-                createdAt,
-                updatedAt: createdAt,
+                createdAt: creationTime,
+                updatedAt: creationTime,
             }),
         );
 
@@ -85,7 +85,7 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
             aggregateType: AuthenticationResource.LOCAL_SIGNUP,
             eventType: 'created',
             payload,
-            createdAt,
+            createdAt: creationTime,
         });
 
         return true;
