@@ -4,20 +4,20 @@ import {
     Injectable,
     ServiceUnavailableException,
 } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 
-import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
-import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
-import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
+import { FindEmailIdentityByEmailOrNullQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.query';
+import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.query';
 
 import { PasswordMailerService } from './passwordMailer.service';
 import { PasswordStorageService } from './passwordStorage.service';
 import { PasswordTokenService } from './passwordToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
+import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
+import type { ISelectLocalAccount } from '@/modules/authentication/infrastructure/schemas/localAccount.schema';
 import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class LocalForgotPasswordService implements IService<
@@ -25,59 +25,63 @@ export class LocalForgotPasswordService implements IService<
     boolean
 > {
     constructor(
-        private readonly queryDispatcher: QueryDispatcher,
+        private readonly queryBus: QueryBus,
         private readonly passwordMailerService: PasswordMailerService,
         private readonly passwordTokenService: PasswordTokenService,
         private readonly passwordStorageService: PasswordStorageService,
     ) {}
 
     async execute(input: LocalForgotPasswordRequestDto): Promise<boolean> {
-        try {
-            const storedToken = await this.passwordStorageService.get(input.email);
-            if (storedToken) {
-                return true;
-            }
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
-
-        const user = await this.queryDispatcher.execute<
-            FindUserByEmailOrNullQuery,
-            ISelectUser | null
+        const emailIdentity = await this.queryBus.execute<
+            FindEmailIdentityByEmailOrNullQuery,
+            ISelectEmailIdentity
         >(
-            new FindUserByEmailOrNullQuery({
+            new FindEmailIdentityByEmailOrNullQuery({
                 email: input.email,
             }),
         );
 
-        if (!user) {
+        if (!emailIdentity) {
             throw new BadRequestException();
         }
 
-        if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderForbiddenException();
+        {
+            const localAccount = await this.queryBus.execute<
+                FindLocalAccountByEmailIdOrNullQuery,
+                ISelectLocalAccount
+            >(
+                new FindLocalAccountByEmailIdOrNullQuery({
+                    emailId: emailIdentity.id,
+                }),
+            );
+
+            if (!localAccount) {
+                throw new BadRequestException();
+            }
+
+            if (!localAccount.verifiedAt) {
+                throw new ForbiddenException();
+            }
         }
 
-        if (!user.verifiedAt) {
-            throw new ForbiddenException();
-        }
+        {
+            const token = this.passwordTokenService.sign(emailIdentity.email);
 
-        const token = this.passwordTokenService.sign(user);
-
-        try {
-            await this.passwordStorageService.set(user.email, token);
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
-
-        try {
-            await this.passwordMailerService.execute({ user, token });
-        } catch {
             try {
-                await this.passwordStorageService.delete(user.email);
-            } catch {}
+                await this.passwordStorageService.delete(emailIdentity.email);
+                await this.passwordStorageService.set(emailIdentity.email, token);
+            } catch {
+                throw new ProcessFailedInternalServerErrorException();
+            }
 
-            throw new ServiceUnavailableException('Could not send you a verification link');
+            try {
+                await this.passwordMailerService.execute({
+                    email: emailIdentity.email,
+                    token,
+                });
+            } catch {
+                throw new ServiceUnavailableException('Could not send you a verification link');
+            }
         }
 
         return true;
