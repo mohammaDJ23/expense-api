@@ -17,4 +17,5 @@ export const OUTBOX_EVENT_ROUTES: TOutboxEventRoute[] = [
     'user.deleted',
     'user.updated',
     'local_signup.created',
+    'local_reset_password.created',
 ];
