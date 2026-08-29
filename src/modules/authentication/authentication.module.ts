@@ -10,6 +10,8 @@ import { CreateLocalAccountHandler } from '@/modules/authentication/applications
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
 import { UpdateLocalAccountHandler } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.handler';
 import { UpdateOauthAccountHandler } from '@/modules/authentication/applications/commands/updateOauthAccount/updateOauthAccount.handler';
+import { DeleteLocalResetPasswordCacheHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/DeleteLocalResetPasswordCache.handler';
+import { SendLocalResetPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/sendLocalResetPasswordEmail.handler';
 import { SendEmailVerificationHandler } from '@/modules/authentication/applications/messages/createdLocalSignup/sendEmailVerification.handler';
 import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/applications/queries/existsEmailIdentityByEmail/existsEmailIdentityByEmail.handler';
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
@@ -17,7 +19,6 @@ import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication
 import { FindOauthAccountByIdOrThrowHandler } from '@/modules/authentication/applications/queries/findOauthAccountByIdOrThrow/findOauthAccountByIdOrThrow.handler';
 import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
-import { GoogleLoginService } from '@/modules/authentication/applications/services/googleLogin.service';
 import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
 import { LocalLoginService } from '@/modules/authentication/applications/services/localLogin.service';
 import { LocalResetPasswordService } from '@/modules/authentication/applications/services/localResetPassword.service';
@@ -53,7 +54,6 @@ import { UserModule } from '@/modules/user/user.module';
     controllers: [AuthenticationController],
     providers: [
         AuthenticationService,
-        GoogleLoginService,
         LocalSignupService,
         LocalLoginService,
         LocalForgotPasswordService,
@@ -86,6 +86,8 @@ import { UserModule } from '@/modules/user/user.module';
         UniqueEmailIdentityValidatorService,
         FindEmailIdentityByEmailOrThrowHandler,
         FindOauthAccountByIdOrThrowHandler,
+        DeleteLocalResetPasswordCacheHandler,
+        SendLocalResetPasswordEmailHandler,
     ],
 })
 export class AuthenticationModule {}
