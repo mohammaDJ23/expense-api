@@ -70,6 +70,6 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
         UserListCursorPaginationDefinition,
         UserIdListCursorPaginationDefinition,
     ],
-    exports: [FindUserListService, UpdateUserService, CreateUserService, FindUserIdListService],
+    exports: [UpdateUserService, CreateUserService, FindUserIdListService],
 })
 export class UserModule {}

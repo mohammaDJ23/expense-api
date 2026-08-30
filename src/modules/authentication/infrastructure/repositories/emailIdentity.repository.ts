@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { and, desc, eq, lt, or } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
+import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
 import { toExistsByCount } from '@/infrastructure/database/drizzle/transformers/toExistsByCount.transformer';
@@ -12,6 +13,7 @@ import {
 } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
 
 import type { IEmailIdentityRepository } from '@/modules/authentication/domain/interfaces/emailIdentityRepository.interface';
+import type { IEmailIdentityListCursor } from '@/modules/authentication/domain/types/emailIdentityListCursor.type';
 
 @Injectable()
 export class EmailIdentityRepository implements IEmailIdentityRepository {
@@ -51,6 +53,31 @@ export class EmailIdentityRepository implements IEmailIdentityRepository {
                 .select()
                 .from(emailIdentities)
                 .where(eq(emailIdentities.userId, userId))
+                .execute(),
+        );
+    }
+
+    findList(
+        limit: number,
+        cursor: IEmailIdentityListCursor | null,
+    ): Promise<ISelectEmailIdentity[]> {
+        return toEntities(
+            this.drizzleRepository.db
+                .select()
+                .from(emailIdentities)
+                .where(
+                    cursor
+                        ? or(
+                              lt(emailIdentities.createdAt, cursor.createdAt),
+                              and(
+                                  eq(emailIdentities.createdAt, cursor.createdAt),
+                                  lt(emailIdentities.id, cursor.id),
+                              ),
+                          )
+                        : undefined,
+                )
+                .orderBy(desc(emailIdentities.createdAt), desc(emailIdentities.id))
+                .limit(limit + 1)
                 .execute(),
         );
     }
