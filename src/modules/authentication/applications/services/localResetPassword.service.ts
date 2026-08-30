@@ -86,7 +86,7 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
         try {
             const hashedPassword = await this.passwordHasherService.hash(input.newPassword);
 
-            await this.commandBus.execute(
+            await this.commandBus.execute<UpdateLocalAccountCommand, ISelectLocalAccount>(
                 new UpdateLocalAccountCommand({
                     id: localAccount.id,
                     hashedPassword,
