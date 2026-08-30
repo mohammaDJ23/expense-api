@@ -4,17 +4,15 @@ import { JwtService } from '@nestjs/jwt';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 
 import type { IVerificationPayload } from '@/modules/authentication/domain/types/verificationPayload.type';
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class VerificationTokenService {
     constructor(private readonly jwtService: JwtService) {}
 
-    sign(user: ISelectUser): string {
+    sign(email: string): string {
         return this.jwtService.sign<IVerificationPayload>(
             {
-                id: user.id,
-                email: user.email,
+                email,
                 type: 'VERIFICATION',
                 issuedAt: getCurrentUTCTimestamp(),
             },

@@ -12,7 +12,8 @@ import { UpdateLocalAccountHandler } from '@/modules/authentication/applications
 import { UpdateOauthAccountHandler } from '@/modules/authentication/applications/commands/updateOauthAccount/updateOauthAccount.handler';
 import { DeleteLocalResetPasswordCacheHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/DeleteLocalResetPasswordCache.handler';
 import { SendLocalResetPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/sendLocalResetPasswordEmail.handler';
-import { SendEmailVerificationHandler } from '@/modules/authentication/applications/messages/createdLocalSignup/sendEmailVerification.handler';
+import { SendEmailVerificationHandler as SendEmailVerificationHandlerByLocalSendVerification } from '@/modules/authentication/applications/messages/createdLocalSendVerification/sendEmailVerification.handler';
+import { SendEmailVerificationHandler as SendEmailVerificationHandlerByLocalSignup } from '@/modules/authentication/applications/messages/createdLocalSignup/sendEmailVerification.handler';
 import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/applications/queries/existsEmailIdentityByEmail/existsEmailIdentityByEmail.handler';
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
 import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.handler';
@@ -82,12 +83,13 @@ import { UserModule } from '@/modules/user/user.module';
         UpdateLocalAccountHandler,
         UpdateOauthAccountHandler,
         UniqueEmailIdentityValidatorService,
-        SendEmailVerificationHandler,
+        SendEmailVerificationHandlerByLocalSendVerification,
         UniqueEmailIdentityValidatorService,
         FindEmailIdentityByEmailOrThrowHandler,
         FindOauthAccountByIdOrThrowHandler,
         DeleteLocalResetPasswordCacheHandler,
         SendLocalResetPasswordEmailHandler,
+        SendEmailVerificationHandlerByLocalSignup,
     ],
 })
 export class AuthenticationModule {}

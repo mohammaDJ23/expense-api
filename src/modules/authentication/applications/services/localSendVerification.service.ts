@@ -1,23 +1,20 @@
-import {
-    BadRequestException,
-    ForbiddenException,
-    Injectable,
-    ServiceUnavailableException,
-} from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
+import { v4 as uuid } from 'uuid';
 
-import { LocalAuthProviderForbiddenException } from '@/core/exceptions/localAuthProviderForbidden.exception';
-import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
-import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
-import { FindUserByEmailOrNullQuery } from '@/modules/user/applications/queries/findUserByEmailOrNull/findUserByEmailOrNull.query';
-import { AuthProvider } from '@/modules/user/domain/enums/authProvider.enum';
+import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
+import { FindEmailIdentityByEmailOrNullQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.query';
+import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.query';
+import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import { VerificationMailerService } from './verificationMailer.service';
-import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
+import type { ILocalSendVerificationMessagePayload } from '@/modules/authentication/domain/types/localSendVerificationMessagePayload.type';
+import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
+import type { ISelectLocalAccount } from '@/modules/authentication/infrastructure/schemas/localAccount.schema';
 import type { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class LocalSendVerificationService implements IService<
@@ -25,59 +22,58 @@ export class LocalSendVerificationService implements IService<
     boolean
 > {
     constructor(
-        private readonly queryDispatcher: QueryDispatcher,
-        private readonly verificationMailerService: VerificationMailerService,
+        private readonly queryBus: QueryBus,
         private readonly verificationTokenService: VerificationTokenService,
-        private readonly verificationStorageService: VerificationStorageService,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
     async execute(input: LocalSendVerificationRequestDto): Promise<boolean> {
-        try {
-            const storedToken = await this.verificationStorageService.get(input.email);
-            if (storedToken) {
-                return true;
-            }
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
-
-        const user = await this.queryDispatcher.execute<
-            FindUserByEmailOrNullQuery,
-            ISelectUser | null
+        const emailIdentity = await this.queryBus.execute<
+            FindEmailIdentityByEmailOrNullQuery,
+            ISelectEmailIdentity
         >(
-            new FindUserByEmailOrNullQuery({
+            new FindEmailIdentityByEmailOrNullQuery({
                 email: input.email,
             }),
         );
 
-        if (!user) {
+        if (!emailIdentity) {
             throw new BadRequestException();
         }
 
-        if (user.authProvider !== AuthProvider.LOCAL) {
-            throw new LocalAuthProviderForbiddenException();
+        {
+            const localAccount = await this.queryBus.execute<
+                FindLocalAccountByEmailIdOrNullQuery,
+                ISelectLocalAccount
+            >(
+                new FindLocalAccountByEmailIdOrNullQuery({
+                    emailId: emailIdentity.id,
+                }),
+            );
+
+            if (!localAccount) {
+                throw new BadRequestException();
+            }
+
+            if (localAccount.verifiedAt) {
+                throw new ForbiddenException();
+            }
         }
 
-        if (user.verifiedAt) {
-            throw new ForbiddenException();
-        }
+        {
+            const token = this.verificationTokenService.sign(emailIdentity.email);
+            const payload: ILocalSendVerificationMessagePayload = {
+                email: emailIdentity.email,
+                token,
+            };
 
-        const token = this.verificationTokenService.sign(user);
-
-        try {
-            await this.verificationStorageService.set(user.email, token);
-        } catch {
-            throw new ProcessFailedInternalServerErrorException();
-        }
-
-        try {
-            await this.verificationMailerService.execute({ user, token });
-        } catch {
-            try {
-                await this.verificationStorageService.delete(user.email);
-            } catch {}
-
-            throw new ServiceUnavailableException('Could not send you a verification link');
+            await this.outboxEventPublisherService.publish({
+                aggregateId: uuid(),
+                aggregateType: AuthenticationResource.LOCAL_SEND_VERIFICATION,
+                eventType: 'created',
+                payload,
+                createdAt: getCurrentUTCTimestamp(),
+            });
         }
 
         return true;
