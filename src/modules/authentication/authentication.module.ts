@@ -29,6 +29,7 @@ import { LocalResetPasswordService } from '@/modules/authentication/applications
 import { LocalSendVerificationService } from '@/modules/authentication/applications/services/localSendVerification.service';
 import { LocalSignupService } from '@/modules/authentication/applications/services/localSignup.service';
 import { LocalVerifyVerificationService } from '@/modules/authentication/applications/services/localVerifyVerification.service';
+import { OauthLoginService } from '@/modules/authentication/applications/services/oauthLogin.service';
 import { PasswordHasherService } from '@/modules/authentication/applications/services/passwordHasher.service';
 import { PasswordMailerService } from '@/modules/authentication/applications/services/passwordMailer.service';
 import { PasswordStorageService } from '@/modules/authentication/applications/services/passwordStorage.service';
@@ -58,6 +59,7 @@ import { UserModule } from '@/modules/user/user.module';
     controllers: [AuthenticationController],
     providers: [
         AuthenticationService,
+        OauthLoginService,
         LocalSignupService,
         LocalLoginService,
         LocalForgotPasswordService,

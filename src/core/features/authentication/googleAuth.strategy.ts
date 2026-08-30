@@ -7,7 +7,8 @@ import { readSecret } from '@/core/utils/readSecret.util';
 import { OauthProvider } from '@/modules/authentication/domain/enums/oauthProvider.enum';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
-import type { OauthAuthenticationService } from './oauthAuthentication.service';
+import { OauthAuthenticationService } from './oauthAuthentication.service';
+
 import type { IOauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.type';
 
 @Injectable()
