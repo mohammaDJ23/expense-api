@@ -65,4 +65,14 @@ export class OauthAccountRepository implements IOauthAccountRepository {
             'Unable to find',
         );
     }
+
+    findByEmailIdOrNull(emailId: string): Promise<ISelectOauthAccount | null> {
+        return toEntityOrNull(
+            this.drizzleRepository.db
+                .select()
+                .from(oauthAccounts)
+                .where(eq(oauthAccounts.emailId, emailId))
+                .execute(),
+        );
+    }
 }
