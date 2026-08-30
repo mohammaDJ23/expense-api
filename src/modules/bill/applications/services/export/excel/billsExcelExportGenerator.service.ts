@@ -11,8 +11,8 @@ import { BILL_EXPORT_KEYS, BILLS_SHEET_NAME } from './billsExcelExport.constants
 
 import type { IExcelContext } from '@/core/features/export/excel/excelContext.type';
 import type { IExcelGenerator } from '@/core/features/export/excel/excelGenerator.interface';
+import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class BillsExcelExportGeneratorService implements IExcelGenerator<IBill> {
@@ -32,8 +32,15 @@ export class BillsExcelExportGeneratorService implements IExcelGenerator<IBill> 
         };
     }
 
-    createMetadataSheets(user: ISelectUser, workbook: ExcelJS.stream.xlsx.WorkbookWriter): void {
-        this.excelMetadataSheets.createUserMetadataSheet(user, workbook);
+    createMetadataSheets(
+        emailIdentity: ISelectEmailIdentity,
+        workbook: ExcelJS.stream.xlsx.WorkbookWriter,
+    ): void {
+        this.excelMetadataSheets.createUserMetadataSheet(
+            emailIdentity.userId,
+            emailIdentity.email,
+            workbook,
+        );
     }
 
     createSheet(workbook: ExcelJS.stream.xlsx.WorkbookWriter): ExcelJS.Worksheet {

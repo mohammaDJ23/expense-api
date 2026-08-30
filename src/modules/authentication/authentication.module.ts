@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthenticationModule as CoreAuthenticationModule } from '@/core/features/authentication/authentication.module';
+import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
@@ -17,14 +18,17 @@ import { SendEmailVerificationHandler as SendEmailVerificationHandlerByLocalSend
 import { SendEmailVerificationHandler as SendEmailVerificationHandlerByLocalSignup } from '@/modules/authentication/applications/messages/createdLocalSignup/sendEmailVerification.handler';
 import { DeleteLocalVerifyVerificationCacheHandler } from '@/modules/authentication/applications/messages/createdLocalVerifyVerification/deleteLocalVerifyVerificationCache.handler';
 import { SendLocalVerifyVerificationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalVerifyVerification/sendLocalVerifyVerificationEmail.handler';
+import { EmailIdentityListCursorPaginationDefinition } from '@/modules/authentication/applications/pagination/cursor/emailIdentityListCursorPagination.definition';
 import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/applications/queries/existsEmailIdentityByEmail/existsEmailIdentityByEmail.handler';
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
 import { FindEmailIdentityByUserIdOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByUserIdOrNull/findEmailIdentityByUserIdOrNull.handler';
+import { FindEmailIdentityListHandler } from '@/modules/authentication/applications/queries/findEmailIdentityList/findEmailIdentityList.handler';
 import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.handler';
 import { FindOauthAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByEmailIdOrNull/findOauthAccountByEmailIdOrNull.handler';
 import { FindOauthAccountByIdOrThrowHandler } from '@/modules/authentication/applications/queries/findOauthAccountByIdOrThrow/findOauthAccountByIdOrThrow.handler';
 import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
+import { FindEmailIdentityListService } from '@/modules/authentication/applications/services/findEmailIdentityList.service';
 import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
 import { LocalLoginService } from '@/modules/authentication/applications/services/localLogin.service';
 import { LocalResetPasswordService } from '@/modules/authentication/applications/services/localResetPassword.service';
@@ -57,6 +61,7 @@ import { UserModule } from '@/modules/user/user.module';
         CoreAuthenticationModule,
         QueryDispatcherModule,
         OutboxModule,
+        CursorPaginationModule,
     ],
     controllers: [AuthenticationController],
     providers: [
@@ -102,6 +107,10 @@ import { UserModule } from '@/modules/user/user.module';
         SendLocalVerifyVerificationEmailHandler,
         FindEmailIdentityByUserIdOrNullHandler,
         FindOauthAccountByEmailIdOrNullHandler,
+        FindEmailIdentityListHandler,
+        EmailIdentityListCursorPaginationDefinition,
+        FindEmailIdentityListService,
     ],
+    exports: [FindEmailIdentityListService],
 })
 export class AuthenticationModule {}

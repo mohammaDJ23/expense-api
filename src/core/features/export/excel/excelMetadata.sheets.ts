@@ -6,11 +6,13 @@ import { toHeader } from '@/core/utils/toHeader.util';
 
 import { USER_METADATA_KEYS, USER_METADATA_SHEET_NAME } from './excel.constants';
 
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
-
 @Injectable()
 export class ExcelMetadataSheets {
-    createUserMetadataSheet(user: ISelectUser, workbook: ExcelJS.stream.xlsx.WorkbookWriter): void {
+    createUserMetadataSheet(
+        userId: string,
+        email: string,
+        workbook: ExcelJS.stream.xlsx.WorkbookWriter,
+    ): void {
         const metadataSheet = workbook.addWorksheet(USER_METADATA_SHEET_NAME);
         metadataSheet.columns = USER_METADATA_KEYS.map((key) => ({
             header: toHeader(key),
@@ -18,8 +20,8 @@ export class ExcelMetadataSheets {
             width: 40,
         }));
         metadataSheet.addRow({
-            userId: user.id,
-            email: user.email,
+            userId,
+            email,
             generatedAt: getCurrentUTCTimestamp(),
         });
     }
