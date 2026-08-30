@@ -21,7 +21,6 @@ import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/appl
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
 import { FindEmailIdentityByUserIdOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByUserIdOrNull/findEmailIdentityByUserIdOrNull.handler';
 import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.handler';
-import { FindManyEmailIdentitiesByUserIdsHandler } from '@/modules/authentication/applications/queries/findManyEmailIdentitiesByUserIds/findManyEmailIdentitiesByUserIds.handler';
 import { FindOauthAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByEmailIdOrNull/findOauthAccountByEmailIdOrNull.handler';
 import { FindOauthAccountByIdOrThrowHandler } from '@/modules/authentication/applications/queries/findOauthAccountByIdOrThrow/findOauthAccountByIdOrThrow.handler';
 import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
@@ -103,7 +102,6 @@ import { UserModule } from '@/modules/user/user.module';
         SendLocalVerifyVerificationEmailHandler,
         FindEmailIdentityByUserIdOrNullHandler,
         FindOauthAccountByEmailIdOrNullHandler,
-        FindManyEmailIdentitiesByUserIdsHandler,
     ],
 })
 export class AuthenticationModule {}
