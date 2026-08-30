@@ -10,6 +10,7 @@ import { CreateLocalAccountHandler } from '@/modules/authentication/applications
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
 import { UpdateLocalAccountHandler } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.handler';
 import { UpdateOauthAccountHandler } from '@/modules/authentication/applications/commands/updateOauthAccount/updateOauthAccount.handler';
+import { SendEmailForgotPasswordHandler } from '@/modules/authentication/applications/messages/createdLocalForgotPassword/sendEmailForgotPassword.handler';
 import { DeleteLocalResetPasswordCacheHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/DeleteLocalResetPasswordCache.handler';
 import { SendLocalResetPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/sendLocalResetPasswordEmail.handler';
 import { SendEmailVerificationHandler as SendEmailVerificationHandlerByLocalSendVerification } from '@/modules/authentication/applications/messages/createdLocalSendVerification/sendEmailVerification.handler';
@@ -90,6 +91,7 @@ import { UserModule } from '@/modules/user/user.module';
         DeleteLocalResetPasswordCacheHandler,
         SendLocalResetPasswordEmailHandler,
         SendEmailVerificationHandlerByLocalSignup,
+        SendEmailForgotPasswordHandler,
     ],
 })
 export class AuthenticationModule {}

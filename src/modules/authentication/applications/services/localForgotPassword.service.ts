@@ -1,20 +1,17 @@
-import {
-    BadRequestException,
-    ForbiddenException,
-    Injectable,
-    ServiceUnavailableException,
-} from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
+import { v4 as uuid } from 'uuid';
 
-import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { FindEmailIdentityByEmailOrNullQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.query';
 import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.query';
+import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
+import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import { PasswordMailerService } from './passwordMailer.service';
-import { PasswordStorageService } from './passwordStorage.service';
 import { PasswordTokenService } from './passwordToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
+import type { ILocalForgotPasswordMessagePayload } from '@/modules/authentication/domain/types/localForgotPasswordMessagePayload.type';
 import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
 import type { ISelectLocalAccount } from '@/modules/authentication/infrastructure/schemas/localAccount.schema';
 import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
@@ -26,9 +23,8 @@ export class LocalForgotPasswordService implements IService<
 > {
     constructor(
         private readonly queryBus: QueryBus,
-        private readonly passwordMailerService: PasswordMailerService,
         private readonly passwordTokenService: PasswordTokenService,
-        private readonly passwordStorageService: PasswordStorageService,
+        private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
     async execute(input: LocalForgotPasswordRequestDto): Promise<boolean> {
@@ -66,22 +62,18 @@ export class LocalForgotPasswordService implements IService<
 
         {
             const token = this.passwordTokenService.sign(emailIdentity.email);
+            const payload: ILocalForgotPasswordMessagePayload = {
+                email: emailIdentity.email,
+                token,
+            };
 
-            try {
-                await this.passwordStorageService.delete(emailIdentity.email);
-                await this.passwordStorageService.set(emailIdentity.email, token);
-            } catch {
-                throw new ProcessFailedInternalServerErrorException();
-            }
-
-            try {
-                await this.passwordMailerService.execute({
-                    email: emailIdentity.email,
-                    token,
-                });
-            } catch {
-                throw new ServiceUnavailableException('Could not send you a verification link');
-            }
+            await this.outboxEventPublisherService.publish({
+                aggregateId: uuid(),
+                aggregateType: AuthenticationResource.LOCAL_FORGOT_PASSWORD,
+                eventType: 'created',
+                payload,
+                createdAt: getCurrentUTCTimestamp(),
+            });
         }
 
         return true;
