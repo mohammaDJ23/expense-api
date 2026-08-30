@@ -75,19 +75,21 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
             }),
         );
 
-        const token = this.verificationTokenService.sign(createdEmailIdentity.email);
-        const payload: ILocalSignupMessagePayload = {
-            email: input.email,
-            token,
-        };
+        {
+            const token = this.verificationTokenService.sign(createdEmailIdentity.email);
+            const payload: ILocalSignupMessagePayload = {
+                email: input.email,
+                token,
+            };
 
-        await this.outboxEventPublisherService.publish({
-            aggregateId: uuid(),
-            aggregateType: AuthenticationResource.LOCAL_SIGNUP,
-            eventType: 'created',
-            payload,
-            createdAt: creationTime,
-        });
+            await this.outboxEventPublisherService.publish({
+                aggregateId: uuid(),
+                aggregateType: AuthenticationResource.LOCAL_SIGNUP,
+                eventType: 'created',
+                payload,
+                createdAt: creationTime,
+            });
+        }
 
         return true;
     }
