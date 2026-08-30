@@ -1,13 +1,14 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
+import { FindEmailIdentityByUserIdrThrowQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByUserIdOrThrow/findEmailIdentityByUserIdOrThrow.query';
 import { FindBillsPeriodByPurchasedAtQuery } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.query';
 import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
 import { BillsExcelExportService } from '@/modules/bill/applications/services/export/excel/billsExcelExport.service';
 import { MostUsedConsumersService } from '@/modules/bill/applications/services/relations/mostUsedConsumers.service';
 import { MostUsedLocationsService } from '@/modules/bill/applications/services/relations/mostUsedLocations.service';
 import { MostUsedReceiversService } from '@/modules/bill/applications/services/relations/mostUsedReceivers.service';
-import { FindUserByIdOrThrowQuery } from '@/modules/user/applications/queries/findUserByIdOrThrow/findUserByIdOrThrow.query';
 
 import { CreateBillService } from './createBill.service';
 import { DeleteBillService } from './deleteBill.service';
@@ -19,6 +20,7 @@ import { UpdateBillService } from './updateBill.service';
 import type { IId } from '@/core/types/id.type';
 import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal.type';
 import type { ITotal } from '@/core/types/total.type';
+import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
 import type { IBill } from '@/modules/bill/domain/types/bill.type';
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
 import type { IBillTimeline } from '@/modules/bill/domain/types/billTimeline.type';
@@ -29,11 +31,11 @@ import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createB
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 import type { FindBillsTimelineRequestDto } from '@/modules/bill/interface/dtos/findBillsTimeline.request.dto';
 import type { UpdateBillRequestDto } from '@/modules/bill/interface/dtos/updateBill.request.dto';
-import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
 @Injectable()
 export class BillService {
     constructor(
+        private readonly queryBus: QueryBus,
         private readonly queryDispatcher: QueryDispatcher,
         private readonly createBillService: CreateBillService,
         private readonly updateBillService: UpdateBillService,
@@ -115,9 +117,12 @@ export class BillService {
 
     exportExcel(userId: string): Promise<StreamableFile> {
         return this.queryDispatcher
-            .execute<FindUserByIdOrThrowQuery, ISelectUser>(
-                new FindUserByIdOrThrowQuery({ id: userId }),
+            .execute<FindEmailIdentityByUserIdrThrowQuery, ISelectEmailIdentity>(
+                new FindEmailIdentityByUserIdrThrowQuery({ userId }),
             )
-            .then((user) => new StreamableFile(this.billsExcelExportService.execute({ user })));
+            .then(
+                (emailIdentity) =>
+                    new StreamableFile(this.billsExcelExportService.execute(emailIdentity)),
+            );
     }
 }

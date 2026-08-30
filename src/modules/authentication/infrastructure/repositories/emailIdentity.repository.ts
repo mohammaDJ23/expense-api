@@ -57,6 +57,17 @@ export class EmailIdentityRepository implements IEmailIdentityRepository {
         );
     }
 
+    findByUserIdOrThrow(userId: string): Promise<ISelectEmailIdentity> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .select()
+                .from(emailIdentities)
+                .where(eq(emailIdentities.userId, userId))
+                .execute(),
+            'Unable to find',
+        );
+    }
+
     findList(
         limit: number,
         cursor: IEmailIdentityListCursor | null,
