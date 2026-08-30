@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
+import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
 import { toExistsByCount } from '@/infrastructure/database/drizzle/transformers/toExistsByCount.transformer';
@@ -51,6 +52,17 @@ export class EmailIdentityRepository implements IEmailIdentityRepository {
                 .select()
                 .from(emailIdentities)
                 .where(eq(emailIdentities.userId, userId))
+                .execute(),
+        );
+    }
+
+    findManyByUserIds(userIds: string[]): Promise<ISelectEmailIdentity[]> {
+        return toEntities(
+            this.drizzleRepository.db
+                .select()
+                .from(emailIdentities)
+                .where(inArray(emailIdentities.userId, userIds))
+                .orderBy(emailIdentities.createdAt)
                 .execute(),
         );
     }
