@@ -75,7 +75,7 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
             }),
         );
 
-        const token = this.verificationTokenService.sign(createdUser);
+        const token = this.verificationTokenService.sign(createdEmailIdentity.email);
         const payload: ILocalSignupMessagePayload = {
             email: input.email,
             token,
