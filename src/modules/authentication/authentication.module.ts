@@ -19,7 +19,9 @@ import { DeleteLocalVerifyVerificationCacheHandler } from '@/modules/authenticat
 import { SendLocalVerifyVerificationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalVerifyVerification/sendLocalVerifyVerificationEmail.handler';
 import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/applications/queries/existsEmailIdentityByEmail/existsEmailIdentityByEmail.handler';
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
+import { FindEmailIdentityByUserIdOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByUserIdOrNull/findEmailIdentityByUserIdOrNull.handler';
 import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.handler';
+import { FindOauthAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByEmailIdOrNull/findOauthAccountByEmailIdOrNull.handler';
 import { FindOauthAccountByIdOrThrowHandler } from '@/modules/authentication/applications/queries/findOauthAccountByIdOrThrow/findOauthAccountByIdOrThrow.handler';
 import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
@@ -98,6 +100,8 @@ import { UserModule } from '@/modules/user/user.module';
         SendEmailForgotPasswordHandler,
         DeleteLocalVerifyVerificationCacheHandler,
         SendLocalVerifyVerificationEmailHandler,
+        FindEmailIdentityByUserIdOrNullHandler,
+        FindOauthAccountByEmailIdOrNullHandler,
     ],
 })
 export class AuthenticationModule {}

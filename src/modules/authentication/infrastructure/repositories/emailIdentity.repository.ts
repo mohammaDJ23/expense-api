@@ -45,6 +45,16 @@ export class EmailIdentityRepository implements IEmailIdentityRepository {
         );
     }
 
+    findByUserIdOrNull(userId: string): Promise<ISelectEmailIdentity | null> {
+        return toEntityOrNull(
+            this.drizzleRepository.db
+                .select()
+                .from(emailIdentities)
+                .where(eq(emailIdentities.userId, userId))
+                .execute(),
+        );
+    }
+
     existsByEmail(email: string): Promise<boolean> {
         return toExistsByCount(
             this.drizzleRepository.db.$count(emailIdentities, eq(emailIdentities.email, email)),
