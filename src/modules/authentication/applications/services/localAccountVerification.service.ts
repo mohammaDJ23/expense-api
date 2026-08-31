@@ -19,14 +19,14 @@ import { VerificationStorageService } from './verificationStorage.service';
 import { VerificationTokenService } from './verificationToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { ILocalVerifyVerificationMessagePayload } from '@/modules/authentication/domain/types/localVerifyVerificationMessagePayload.type';
+import type { ILocalAccountVerificationMessagePayload } from '@/modules/authentication/domain/types/localAccountVerificationMessagePayload.type';
 import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
 import type { ISelectLocalAccount } from '@/modules/authentication/infrastructure/schemas/localAccount.schema';
-import type { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
+import type { LocalAccountVerificationRequestDto } from '@/modules/authentication/interface/dtos/localAccountVerification.request.dto';
 
 @Injectable()
-export class LocalVerifyVerificationService implements IService<
-    LocalVerifyVerificationRequestDto,
+export class LocalAccountVerificationService implements IService<
+    LocalAccountVerificationRequestDto,
     boolean
 > {
     constructor(
@@ -38,7 +38,7 @@ export class LocalVerifyVerificationService implements IService<
     ) {}
 
     @Transactional()
-    async execute(input: LocalVerifyVerificationRequestDto): Promise<boolean> {
+    async execute(input: LocalAccountVerificationRequestDto): Promise<boolean> {
         const payload = this.verificationTokenService.verify(input.token);
 
         {
@@ -97,13 +97,13 @@ export class LocalVerifyVerificationService implements IService<
         }
 
         {
-            const payload: ILocalVerifyVerificationMessagePayload = {
+            const payload: ILocalAccountVerificationMessagePayload = {
                 email: emailIdentity.email,
             };
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: uuid(),
-                aggregateType: AuthenticationResource.LOCAL_VERIFY_VERIFICATION,
+                aggregateType: AuthenticationResource.LOCAL_ACCOUNT_VERIFICATION,
                 eventType: 'created',
                 payload,
                 createdAt: creationTime,

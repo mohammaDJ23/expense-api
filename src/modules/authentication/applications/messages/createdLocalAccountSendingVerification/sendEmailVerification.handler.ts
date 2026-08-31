@@ -11,7 +11,7 @@ import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEven
 
 @MessageHandler()
 export class SendEmailVerificationHandler implements IMessageHandler<ILocalSendVerificationMessagePayload> {
-    route: TOutboxEventRoute = 'local_send_verification.created';
+    route: TOutboxEventRoute = 'local_account_sending_verification.created';
     private readonly concurrency = pLimit(2);
 
     constructor(
