@@ -5,7 +5,6 @@ import {
     NotFoundException,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Transactional } from '@nestjs-cls/transactional';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { AccessTokenService } from '@/core/features/accessToken/accessToken.service';
@@ -40,7 +39,6 @@ export class LocalLoginService implements IService<IInput, boolean> {
         private readonly accessTokenService: AccessTokenService,
     ) {}
 
-    @Transactional()
     async execute(input: IInput): Promise<boolean> {
         const emailIdentity = await this.queryBus.execute<
             FindEmailIdentityByEmailOrNullQuery,
