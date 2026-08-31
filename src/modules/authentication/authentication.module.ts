@@ -11,13 +11,10 @@ import { CreateLocalAccountHandler } from '@/modules/authentication/applications
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
 import { UpdateLocalAccountHandler } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.handler';
 import { UpdateOauthAccountHandler } from '@/modules/authentication/applications/commands/updateOauthAccount/updateOauthAccount.handler';
-import { SendEmailVerificationHandler as SendEmailVerificationHandlerByLocalAccountSendingVerification } from '@/modules/authentication/applications/messages/createdLocalAccountSendingVerification/sendEmailVerification.handler';
-import { DeleteLocalAccountVerificationCacheHandler } from '@/modules/authentication/applications/messages/createdLocalAccountVerification/deleteLocalAccountVerificationCache.handler';
-import { SendLocalAccountVerifiedVerificationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalAccountVerification/sendLocalAcccountVerifiedVerificationEmail.handler';
 import { SendEmailForgotPasswordHandler } from '@/modules/authentication/applications/messages/createdLocalForgotPassword/sendEmailForgotPassword.handler';
 import { DeleteLocalResetPasswordCacheHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/deleteLocalResetPasswordCache.handler';
 import { SendLocalResetPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/sendLocalResetPasswordEmail.handler';
-import { SendEmailVerificationHandler as SendEmailVerificationHandlerByLocalSignup } from '@/modules/authentication/applications/messages/createdLocalSignup/sendEmailVerification.handler';
+import { SendSignupInitiationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalSignupInitiation/sendSignupInitiationEmail.handler';
 import { EmailIdentityListCursorPaginationDefinition } from '@/modules/authentication/applications/pagination/cursor/emailIdentityListCursorPagination.definition';
 import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/applications/queries/existsEmailIdentityByEmail/existsEmailIdentityByEmail.handler';
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
@@ -29,22 +26,20 @@ import { FindOauthAccountByEmailIdOrNullHandler } from '@/modules/authentication
 import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { FindEmailIdentityListService } from '@/modules/authentication/applications/services/findEmailIdentityList.service';
-import { LocalAccountSendingVerificationService } from '@/modules/authentication/applications/services/localAccountSendingVerification.service';
-import { LocalAccountVerificationService } from '@/modules/authentication/applications/services/localAccountVerification.service';
-import { LocalAccountVerificationMailerService } from '@/modules/authentication/applications/services/localAccountVerificationMailer.service';
-import { LocalAccountVerificationStorageService } from '@/modules/authentication/applications/services/localAccountVerificationStorage.service';
-import { LocalAccountVerificationTokenService } from '@/modules/authentication/applications/services/localAccountVerificationToken.service';
-import { LocalAccountVerifiedVerificationMailerService } from '@/modules/authentication/applications/services/localAccountVerifiedVerificationMailer.service';
 import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
 import { LocalLoginService } from '@/modules/authentication/applications/services/localLogin.service';
 import { LocalResetPasswordService } from '@/modules/authentication/applications/services/localResetPassword.service';
+import { LocalResetPasswordMailerService } from '@/modules/authentication/applications/services/localResetPasswordMailer.service';
 import { LocalSignupService } from '@/modules/authentication/applications/services/localSignup.service';
+import { LocalSignupInitiationService } from '@/modules/authentication/applications/services/localSignupInitiation.service';
+import { LocalSignupInitiationMailerService } from '@/modules/authentication/applications/services/localSignupInitiationMailer.service';
+import { LocalSignupStorageService } from '@/modules/authentication/applications/services/localSignupStorage.service';
+import { LocalSignupTokenService } from '@/modules/authentication/applications/services/localSignupToken.service';
 import { OauthLoginService } from '@/modules/authentication/applications/services/oauthLogin.service';
 import { PasswordHasherService } from '@/modules/authentication/applications/services/passwordHasher.service';
 import { PasswordMailerService } from '@/modules/authentication/applications/services/passwordMailer.service';
 import { PasswordStorageService } from '@/modules/authentication/applications/services/passwordStorage.service';
 import { PasswordTokenService } from '@/modules/authentication/applications/services/passwordToken.service';
-import { ResetPasswordMailerService } from '@/modules/authentication/applications/services/resetPasswordMailer.service';
 import { UniqueEmailIdentityValidatorService } from '@/modules/authentication/applications/services/validators/uniqueEmailIdentityValidator.service';
 import { EmailIdentityRepository } from '@/modules/authentication/infrastructure/repositories/emailIdentity.repository';
 import { LocalAccountRepository } from '@/modules/authentication/infrastructure/repositories/localAccount.repository';
@@ -71,14 +66,8 @@ import { UserModule } from '@/modules/user/user.module';
         LocalLoginService,
         LocalForgotPasswordService,
         LocalResetPasswordService,
-        LocalAccountVerificationService,
-        LocalAccountSendingVerificationService,
-        LocalAccountVerificationMailerService,
-        LocalAccountVerificationTokenService,
-        LocalAccountVerificationStorageService,
-        LocalAccountVerifiedVerificationMailerService,
         PasswordMailerService,
-        ResetPasswordMailerService,
+        LocalResetPasswordMailerService,
         PasswordTokenService,
         PasswordStorageService,
         PasswordHasherService,
@@ -95,21 +84,22 @@ import { UserModule } from '@/modules/user/user.module';
         UpdateLocalAccountHandler,
         UpdateOauthAccountHandler,
         UniqueEmailIdentityValidatorService,
-        SendEmailVerificationHandlerByLocalAccountSendingVerification,
         UniqueEmailIdentityValidatorService,
         FindEmailIdentityByEmailOrThrowHandler,
         DeleteLocalResetPasswordCacheHandler,
         SendLocalResetPasswordEmailHandler,
-        SendEmailVerificationHandlerByLocalSignup,
         SendEmailForgotPasswordHandler,
-        DeleteLocalAccountVerificationCacheHandler,
-        SendLocalAccountVerifiedVerificationEmailHandler,
         FindEmailIdentityByUserIdOrNullHandler,
         FindOauthAccountByEmailIdOrNullHandler,
         FindEmailIdentityListHandler,
         EmailIdentityListCursorPaginationDefinition,
         FindEmailIdentityListService,
         FindEmailIdentityByUserIdOrThrowHandler,
+        SendSignupInitiationEmailHandler,
+        LocalSignupInitiationService,
+        LocalSignupInitiationMailerService,
+        LocalSignupStorageService,
+        LocalSignupTokenService,
     ],
     exports: [FindEmailIdentityListService],
 })
