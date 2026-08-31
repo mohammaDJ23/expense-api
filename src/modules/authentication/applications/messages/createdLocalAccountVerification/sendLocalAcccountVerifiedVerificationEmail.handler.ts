@@ -1,7 +1,7 @@
 import pLimit from 'p-limit';
 
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
-import { VerifiedVerificationMailerService } from '@/modules/authentication/applications/services/verifiedVerificationMailer.service';
+import { LocalAccountVerifiedVerificationMailerService } from '@/modules/authentication/applications/services/localAccountVerifiedVerificationMailer.service';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
@@ -9,19 +9,19 @@ import type { ILocalResetPasswordMessagePayload } from '@/modules/authentication
 import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
 @MessageHandler()
-export class SendLocalAccountVerificationEmailHandler implements IMessageHandler<ILocalResetPasswordMessagePayload> {
+export class SendLocalAccountVerifiedVerificationEmailHandler implements IMessageHandler<ILocalResetPasswordMessagePayload> {
     route: TOutboxEventRoute = 'local_account_verification.created';
     private readonly concurrency = pLimit(2);
 
     constructor(
-        private readonly verifiedVerificationMailerService: VerifiedVerificationMailerService,
+        private readonly localAccountVerifiedVerificationMailerService: LocalAccountVerifiedVerificationMailerService,
     ) {}
 
     async execute(batch: IMessageBatch<ILocalResetPasswordMessagePayload>[]): Promise<void> {
         await Promise.allSettled(
             batch.map((item) =>
                 this.concurrency(() =>
-                    this.verifiedVerificationMailerService.execute({
+                    this.localAccountVerifiedVerificationMailerService.execute({
                         email: item.payload.email,
                     }),
                 ),
