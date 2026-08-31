@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 
 @Injectable()
-export class VerificationStorageService {
-    private readonly prefixKey = 'verification';
+export class LocalAccountVerificationStorageService {
+    private readonly prefixKey = 'local-account-verification';
 
     constructor(private readonly redisService: RedisService) {}
 

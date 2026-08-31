@@ -5,17 +5,17 @@ import { GoogleAuthGuard } from '@/core/features/authentication/googleAuth.guard
 import { OauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.decorator';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
+import { LocalAccountSendingVerificationRequestDto } from '@/modules/authentication/interface/dtos/localAccountSendingVerification.request.dto';
 import { LocalAccountVerificationRequestDto } from '@/modules/authentication/interface/dtos/localAccountVerification.request.dto';
 import { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
-import { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
 import { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 
 import {
     SUCCESS_SIGNUP_MESSAGE,
-    SUCCESS_SEND_VERIFICATION_MESSAGE,
-    SUCCESS_VERIFY_VERIFICATION_MESSAGE,
+    SUCCESS_LOCAL_ACCOUNT_SENDING_VERIFICATION_MESSAGE,
+    SUCCESS_LOCAL_ACCOUNT_VERIFIED_VERIFICATION_MESSAGE,
     SUCCESS_LOGIN_MESSAGE,
     SUCCESS_FORGOT_PASSWORD_MESSAGE,
     SUCCESS_RESET_PASSWORD_MESSAGE,
@@ -47,14 +47,16 @@ export class AuthenticationController {
 
     @Post('local/verification/send')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
-    @HttpResponse(SUCCESS_SEND_VERIFICATION_MESSAGE, HttpStatus.OK)
-    localSendVerification(@Body() body: LocalSendVerificationRequestDto): Promise<boolean> {
-        return this.authenticationService.localSendVerification(body);
+    @HttpResponse(SUCCESS_LOCAL_ACCOUNT_SENDING_VERIFICATION_MESSAGE, HttpStatus.OK)
+    localAccountSendingVerification(
+        @Body() body: LocalAccountSendingVerificationRequestDto,
+    ): Promise<boolean> {
+        return this.authenticationService.localAccountSendingVerification(body);
     }
 
     @Post('local/verification/verify')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
-    @HttpResponse(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_LOCAL_ACCOUNT_VERIFIED_VERIFICATION_MESSAGE, HttpStatus.OK)
     localAccountVerification(@Body() body: LocalAccountVerificationRequestDto): Promise<boolean> {
         return this.authenticationService.localAccountVerification(body);
     }

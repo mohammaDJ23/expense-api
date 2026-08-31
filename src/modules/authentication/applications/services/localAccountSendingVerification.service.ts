@@ -8,26 +8,26 @@ import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/a
 import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import { VerificationTokenService } from './verificationToken.service';
+import { LocalAccountVerificationTokenService } from './localAccountVerificationToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ILocalSendVerificationMessagePayload } from '@/modules/authentication/domain/types/localSendVerificationMessagePayload.type';
 import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
 import type { ISelectLocalAccount } from '@/modules/authentication/infrastructure/schemas/localAccount.schema';
-import type { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
+import type { LocalAccountSendingVerificationRequestDto } from '@/modules/authentication/interface/dtos/localAccountSendingVerification.request.dto';
 
 @Injectable()
 export class LocalAccountSendingVerificationService implements IService<
-    LocalSendVerificationRequestDto,
+    LocalAccountSendingVerificationRequestDto,
     boolean
 > {
     constructor(
         private readonly queryBus: QueryBus,
-        private readonly verificationTokenService: VerificationTokenService,
+        private readonly localAccountVerificationTokenService: LocalAccountVerificationTokenService,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
-    async execute(input: LocalSendVerificationRequestDto): Promise<boolean> {
+    async execute(input: LocalAccountSendingVerificationRequestDto): Promise<boolean> {
         const emailIdentity = await this.queryBus.execute<
             FindEmailIdentityByEmailOrNullQuery,
             ISelectEmailIdentity
@@ -61,7 +61,7 @@ export class LocalAccountSendingVerificationService implements IService<
         }
 
         {
-            const token = this.verificationTokenService.sign(emailIdentity.email);
+            const token = this.localAccountVerificationTokenService.sign(emailIdentity.email);
             const payload: ILocalSendVerificationMessagePayload = {
                 email: emailIdentity.email,
                 token,

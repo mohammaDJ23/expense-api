@@ -3,28 +3,28 @@ import { JwtService } from '@nestjs/jwt';
 
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 
-import type { IVerificationPayload } from '@/modules/authentication/domain/types/verificationPayload.type';
+import type { ILocalAccountVerificationTokenPayload } from '@/modules/authentication/domain/types/localAccountVerificationTokenPayload.type';
 
 @Injectable()
-export class VerificationTokenService {
+export class LocalAccountVerificationTokenService {
     constructor(private readonly jwtService: JwtService) {}
 
     sign(email: string): string {
-        return this.jwtService.sign<IVerificationPayload>(
+        return this.jwtService.sign<ILocalAccountVerificationTokenPayload>(
             {
                 email,
-                type: 'VERIFICATION',
+                type: 'LOCAL_ACCOUNT_VERIFICATION',
                 issuedAt: getCurrentUTCTimestamp(),
             },
             { expiresIn: '10m' },
         );
     }
 
-    verify(token: string): IVerificationPayload {
+    verify(token: string): ILocalAccountVerificationTokenPayload {
         {
-            const payload = this.jwtService.verify<IVerificationPayload>(token);
+            const payload = this.jwtService.verify<ILocalAccountVerificationTokenPayload>(token);
 
-            if (payload.type === 'VERIFICATION') {
+            if (payload.type === 'LOCAL_ACCOUNT_VERIFICATION') {
                 return payload;
             }
         }

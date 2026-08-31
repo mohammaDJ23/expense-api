@@ -9,11 +9,11 @@ import { LocalSignupService } from './localSignup.service';
 import { OauthLoginService } from './oauthLogin.service';
 
 import type { IOauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.type';
+import type { LocalAccountSendingVerificationRequestDto } from '@/modules/authentication/interface/dtos/localAccountSendingVerification.request.dto';
 import type { LocalAccountVerificationRequestDto } from '@/modules/authentication/interface/dtos/localAccountVerification.request.dto';
 import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import type { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
-import type { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
 import type { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 import type { Response } from 'express';
 
@@ -37,7 +37,9 @@ export class AuthenticationService {
         return this.localLoginService.execute({ response, body });
     }
 
-    localSendVerification(body: LocalSendVerificationRequestDto): Promise<boolean> {
+    localAccountSendingVerification(
+        body: LocalAccountSendingVerificationRequestDto,
+    ): Promise<boolean> {
         return this.localAccountSendingVerificationService.execute(body);
     }
 
