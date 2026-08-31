@@ -1,8 +1,8 @@
 import pLimit from 'p-limit';
 
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
-import { VerificationMailerService } from '@/modules/authentication/applications/services/verificationMailer.service';
-import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
+import { LocalAccountVerificationMailerService } from '@/modules/authentication/applications/services/localAccountVerificationMailer.service';
+import { LocalAccountVerificationStorageService } from '@/modules/authentication/applications/services/localAccountVerificationStorage.service';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
@@ -15,20 +15,20 @@ export class SendEmailVerificationHandler implements IMessageHandler<ILocalSendV
     private readonly concurrency = pLimit(2);
 
     constructor(
-        private readonly verificationMailerService: VerificationMailerService,
-        private readonly verificationStorageService: VerificationStorageService,
+        private readonly localAccountVerificationMailerService: LocalAccountVerificationMailerService,
+        private readonly localAccountVerificationStorageService: LocalAccountVerificationStorageService,
     ) {}
 
     async execute(batch: IMessageBatch<ILocalSendVerificationMessagePayload>[]): Promise<void> {
         await Promise.allSettled(
             batch.map((item) =>
                 this.concurrency(async () => {
-                    await this.verificationStorageService.delete(item.payload.email);
-                    await this.verificationStorageService.set(
+                    await this.localAccountVerificationStorageService.delete(item.payload.email);
+                    await this.localAccountVerificationStorageService.set(
                         item.payload.email,
                         item.payload.token,
                     );
-                    await this.verificationMailerService.execute({
+                    await this.localAccountVerificationMailerService.execute({
                         email: item.payload.email,
                         token: item.payload.token,
                     });

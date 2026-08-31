@@ -15,8 +15,8 @@ import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/a
 import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
-import { VerificationStorageService } from './verificationStorage.service';
-import { VerificationTokenService } from './verificationToken.service';
+import { LocalAccountVerificationStorageService } from './localAccountVerificationStorage.service';
+import { LocalAccountVerificationTokenService } from './localAccountVerificationToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ILocalAccountVerificationMessagePayload } from '@/modules/authentication/domain/types/localAccountVerificationMessagePayload.type';
@@ -32,19 +32,19 @@ export class LocalAccountVerificationService implements IService<
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
-        private readonly verificationTokenService: VerificationTokenService,
-        private readonly verificationStorageService: VerificationStorageService,
+        private readonly localAccountVerificationTokenService: LocalAccountVerificationTokenService,
+        private readonly localAccountVerificationStorageService: LocalAccountVerificationStorageService,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
     @Transactional()
     async execute(input: LocalAccountVerificationRequestDto): Promise<boolean> {
-        const payload = this.verificationTokenService.verify(input.token);
+        const payload = this.localAccountVerificationTokenService.verify(input.token);
 
         {
             let storedToken: string | null = null;
             try {
-                storedToken = await this.verificationStorageService.get(payload.email);
+                storedToken = await this.localAccountVerificationStorageService.get(payload.email);
             } catch {}
 
             if (storedToken !== input.token) {

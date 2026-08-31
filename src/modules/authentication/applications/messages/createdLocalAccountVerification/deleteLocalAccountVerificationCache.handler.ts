@@ -1,7 +1,7 @@
 import pLimit from 'p-limit';
 
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
-import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
+import { LocalAccountVerificationStorageService } from '@/modules/authentication/applications/services/localAccountVerificationStorage.service';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
@@ -13,12 +13,16 @@ export class DeleteLocalAccountVerificationCacheHandler implements IMessageHandl
     route: TOutboxEventRoute = 'local_account_verification.created';
     private readonly concurrency = pLimit(2);
 
-    constructor(private readonly verificationStorageService: VerificationStorageService) {}
+    constructor(
+        private readonly localAccountVerificationStorageService: LocalAccountVerificationStorageService,
+    ) {}
 
     async execute(batch: IMessageBatch<ILocalResetPasswordMessagePayload>[]): Promise<void> {
         await Promise.allSettled(
             batch.map((item) =>
-                this.concurrency(() => this.verificationStorageService.delete(item.payload.email)),
+                this.concurrency(() =>
+                    this.localAccountVerificationStorageService.delete(item.payload.email),
+                ),
             ),
         );
     }

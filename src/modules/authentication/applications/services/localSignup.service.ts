@@ -13,8 +13,8 @@ import { OutboxEventPublisherService } from '@/modules/outbox/applications/servi
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
 
+import { LocalAccountVerificationTokenService } from './localAccountVerificationToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
-import { VerificationTokenService } from './verificationToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { ILocalSignupMessagePayload } from '@/modules/authentication/domain/types/localSignupMessagePayload.type';
@@ -29,7 +29,7 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
         private readonly passwordHasherService: PasswordHasherService,
         private readonly createUserService: CreateUserService,
         private readonly uniqueEmailIdentityValidatorService: UniqueEmailIdentityValidatorService,
-        private readonly verificationTokenService: VerificationTokenService,
+        private readonly localAccountVerificationTokenService: LocalAccountVerificationTokenService,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
     ) {}
 
@@ -76,7 +76,9 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
         );
 
         {
-            const token = this.verificationTokenService.sign(createdEmailIdentity.email);
+            const token = this.localAccountVerificationTokenService.sign(
+                createdEmailIdentity.email,
+            );
             const payload: ILocalSignupMessagePayload = {
                 email: input.email,
                 token,
