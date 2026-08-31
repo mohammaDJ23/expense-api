@@ -13,7 +13,7 @@ import { UpdateLocalAccountHandler } from '@/modules/authentication/applications
 import { UpdateOauthAccountHandler } from '@/modules/authentication/applications/commands/updateOauthAccount/updateOauthAccount.handler';
 import { SendEmailVerificationHandler as SendEmailVerificationHandlerByLocalAccountSendingVerification } from '@/modules/authentication/applications/messages/createdLocalAccountSendingVerification/sendEmailVerification.handler';
 import { DeleteLocalAccountVerificationCacheHandler } from '@/modules/authentication/applications/messages/createdLocalAccountVerification/deleteLocalAccountVerificationCache.handler';
-import { SendLocalAccountVerificationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalAccountVerification/sendLocalAcccountVerificationEmail.handler';
+import { SendLocalAccountVerifiedVerificationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalAccountVerification/sendLocalAcccountVerifiedVerificationEmail.handler';
 import { SendEmailForgotPasswordHandler } from '@/modules/authentication/applications/messages/createdLocalForgotPassword/sendEmailForgotPassword.handler';
 import { DeleteLocalResetPasswordCacheHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/DeleteLocalResetPasswordCache.handler';
 import { SendLocalResetPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/sendLocalResetPasswordEmail.handler';
@@ -32,6 +32,7 @@ import { AuthenticationService } from '@/modules/authentication/applications/ser
 import { FindEmailIdentityListService } from '@/modules/authentication/applications/services/findEmailIdentityList.service';
 import { LocalAccountSendingVerificationService } from '@/modules/authentication/applications/services/localAccountSendingVerification.service';
 import { LocalAccountVerificationService } from '@/modules/authentication/applications/services/localAccountVerification.service';
+import { LocalAccountVerifiedVerificationMailerService } from '@/modules/authentication/applications/services/localAccountVerifiedVerificationMailer.service';
 import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
 import { LocalLoginService } from '@/modules/authentication/applications/services/localLogin.service';
 import { LocalResetPasswordService } from '@/modules/authentication/applications/services/localResetPassword.service';
@@ -46,7 +47,6 @@ import { UniqueEmailIdentityValidatorService } from '@/modules/authentication/ap
 import { VerificationMailerService } from '@/modules/authentication/applications/services/verificationMailer.service';
 import { VerificationStorageService } from '@/modules/authentication/applications/services/verificationStorage.service';
 import { VerificationTokenService } from '@/modules/authentication/applications/services/verificationToken.service';
-import { VerifiedVerificationMailerService } from '@/modules/authentication/applications/services/verifiedVerificationMailer.service';
 import { EmailIdentityRepository } from '@/modules/authentication/infrastructure/repositories/emailIdentity.repository';
 import { LocalAccountRepository } from '@/modules/authentication/infrastructure/repositories/localAccount.repository';
 import { OauthAccountRepository } from '@/modules/authentication/infrastructure/repositories/oauthAccount.repository';
@@ -77,7 +77,7 @@ import { UserModule } from '@/modules/user/user.module';
         VerificationMailerService,
         VerificationTokenService,
         VerificationStorageService,
-        VerifiedVerificationMailerService,
+        LocalAccountVerifiedVerificationMailerService,
         PasswordMailerService,
         ResetPasswordMailerService,
         PasswordTokenService,
@@ -105,7 +105,7 @@ import { UserModule } from '@/modules/user/user.module';
         SendEmailVerificationHandlerByLocalSignup,
         SendEmailForgotPasswordHandler,
         DeleteLocalAccountVerificationCacheHandler,
-        SendLocalAccountVerificationEmailHandler,
+        SendLocalAccountVerifiedVerificationEmailHandler,
         FindEmailIdentityByUserIdOrNullHandler,
         FindOauthAccountByEmailIdOrNullHandler,
         FindEmailIdentityListHandler,

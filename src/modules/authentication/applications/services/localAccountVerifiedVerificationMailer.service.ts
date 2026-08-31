@@ -8,7 +8,7 @@ interface IInput {
 }
 
 @Injectable()
-export class VerifiedVerificationMailerService implements IService<IInput, void> {
+export class LocalAccountVerifiedVerificationMailerService implements IService<IInput, void> {
     constructor(private readonly mailerService: MailerService) {}
 
     async execute(input: IInput): Promise<void> {
