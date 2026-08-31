@@ -5,12 +5,12 @@ import { GoogleAuthGuard } from '@/core/features/authentication/googleAuth.guard
 import { OauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.decorator';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
+import { LocalAccountVerificationRequestDto } from '@/modules/authentication/interface/dtos/localAccountVerification.request.dto';
 import { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
 import { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
 import { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
-import { LocalVerifyVerificationRequestDto } from '@/modules/authentication/interface/dtos/localVerifyVerification.request.dto';
 
 import {
     SUCCESS_SIGNUP_MESSAGE,
@@ -55,8 +55,8 @@ export class AuthenticationController {
     @Post('local/verification/verify')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @HttpResponse(SUCCESS_VERIFY_VERIFICATION_MESSAGE, HttpStatus.OK)
-    localVerifyVerification(@Body() body: LocalVerifyVerificationRequestDto): Promise<boolean> {
-        return this.authenticationService.localVerifyVerification(body);
+    localAccountVerification(@Body() body: LocalAccountVerificationRequestDto): Promise<boolean> {
+        return this.authenticationService.localAccountVerification(body);
     }
 
     @Post('local/forgot-password')

@@ -17,7 +17,7 @@ import type { ISelectLocalAccount } from '@/modules/authentication/infrastructur
 import type { LocalSendVerificationRequestDto } from '@/modules/authentication/interface/dtos/localSendVerification.request.dto';
 
 @Injectable()
-export class LocalSendVerificationService implements IService<
+export class LocalAccountSendingVerificationService implements IService<
     LocalSendVerificationRequestDto,
     boolean
 > {
@@ -69,7 +69,7 @@ export class LocalSendVerificationService implements IService<
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: uuid(),
-                aggregateType: AuthenticationResource.LOCAL_SEND_VERIFICATION,
+                aggregateType: AuthenticationResource.LOCAL_ACCOUNT_SENDING_VERIFICATION,
                 eventType: 'created',
                 payload,
                 createdAt: getCurrentUTCTimestamp(),
