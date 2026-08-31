@@ -26,7 +26,6 @@ import { FindEmailIdentityByUserIdOrThrowHandler } from '@/modules/authenticatio
 import { FindEmailIdentityListHandler } from '@/modules/authentication/applications/queries/findEmailIdentityList/findEmailIdentityList.handler';
 import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.handler';
 import { FindOauthAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByEmailIdOrNull/findOauthAccountByEmailIdOrNull.handler';
-import { FindOauthAccountByIdOrThrowHandler } from '@/modules/authentication/applications/queries/findOauthAccountByIdOrThrow/findOauthAccountByIdOrThrow.handler';
 import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { FindEmailIdentityListService } from '@/modules/authentication/applications/services/findEmailIdentityList.service';
@@ -99,7 +98,6 @@ import { UserModule } from '@/modules/user/user.module';
         SendEmailVerificationHandlerByLocalAccountSendingVerification,
         UniqueEmailIdentityValidatorService,
         FindEmailIdentityByEmailOrThrowHandler,
-        FindOauthAccountByIdOrThrowHandler,
         DeleteLocalResetPasswordCacheHandler,
         SendLocalResetPasswordEmailHandler,
         SendEmailVerificationHandlerByLocalSignup,
