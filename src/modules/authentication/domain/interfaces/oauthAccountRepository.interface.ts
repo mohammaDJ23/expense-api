@@ -1,6 +1,5 @@
 import type { ICreateRepository } from '@/core/interfaces/repositories/createRepository.interface';
 import type { IFindByEmailIdOrNullRepository } from '@/core/interfaces/repositories/findByEmailIdOrNullRepository.interface';
-import type { IFindByIdOrThrowRepository } from '@/core/interfaces/repositories/findByIdOrThrowRepository.interface';
 import type { IUpdateRepository } from '@/core/interfaces/repositories/updateRepository.interface';
 import type { OauthProvider } from '@/modules/authentication/domain/enums/oauthProvider.enum';
 import type { TUpdateOauthAccount } from '@/modules/authentication/domain/types/updateOauthAccount.type';
@@ -13,7 +12,6 @@ export interface IOauthAccountRepository
     extends
         ICreateRepository<IInsertOauthAccount, ISelectOauthAccount>,
         IUpdateRepository<TUpdateOauthAccount, ISelectOauthAccount>,
-        IFindByIdOrThrowRepository<ISelectOauthAccount>,
         IFindByEmailIdOrNullRepository<ISelectOauthAccount> {
     findByProviderAndProviderIdOrNull(
         provider: OauthProvider,
