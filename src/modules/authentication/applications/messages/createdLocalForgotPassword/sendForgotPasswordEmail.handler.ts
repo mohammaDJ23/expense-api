@@ -10,7 +10,7 @@ import type { ILocalForgotPasswordMessagePayload } from '@/modules/authenticatio
 import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
 @MessageHandler()
-export class SendEmailForgotPasswordHandler implements IMessageHandler<ILocalForgotPasswordMessagePayload> {
+export class SendForgotPasswordEmailHandler implements IMessageHandler<ILocalForgotPasswordMessagePayload> {
     route: TOutboxEventRoute = 'local_forgot_password.created';
     private readonly concurrency = pLimit(2);
 

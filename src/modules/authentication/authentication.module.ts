@@ -11,7 +11,7 @@ import { CreateLocalAccountHandler } from '@/modules/authentication/applications
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
 import { UpdateLocalAccountHandler } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.handler';
 import { UpdateOauthAccountHandler } from '@/modules/authentication/applications/commands/updateOauthAccount/updateOauthAccount.handler';
-import { SendEmailForgotPasswordHandler } from '@/modules/authentication/applications/messages/createdLocalForgotPassword/sendEmailForgotPassword.handler';
+import { SendForgotPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalForgotPassword/sendForgotPasswordEmail.handler';
 import { DeleteLocalResetPasswordCacheHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/deleteLocalResetPasswordCache.handler';
 import { SendLocalResetPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/sendLocalResetPasswordEmail.handler';
 import { SendSignupInitiationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalSignupInitiation/sendSignupInitiationEmail.handler';
@@ -88,7 +88,7 @@ import { UserModule } from '@/modules/user/user.module';
         FindEmailIdentityByEmailOrThrowHandler,
         DeleteLocalResetPasswordCacheHandler,
         SendLocalResetPasswordEmailHandler,
-        SendEmailForgotPasswordHandler,
+        SendForgotPasswordEmailHandler,
         FindEmailIdentityByUserIdOrNullHandler,
         FindOauthAccountByEmailIdOrNullHandler,
         FindEmailIdentityListHandler,
