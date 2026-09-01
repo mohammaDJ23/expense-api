@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { Env } from '@humanwhocodes/env';
@@ -73,17 +73,6 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
             }),
         );
 
-        if (localAccount) {
-            if (!localAccount.verifiedAt) {
-                throw new ForbiddenException();
-            }
-
-            return {
-                id: user.id,
-                role: user.role,
-            };
-        }
-
         const oauthAccount = await this.queryBus.execute<
             FindOauthAccountByEmailIdOrNullQuery,
             ISelectOauthAccount | null
@@ -93,15 +82,15 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
             }),
         );
 
-        if (oauthAccount) {
-            if (!oauthAccount.verifiedAt) {
-                throw new ForbiddenException();
-            }
+        const accounts = [localAccount, oauthAccount];
 
-            return {
-                id: user.id,
-                role: user.role,
-            };
+        for (const account of accounts) {
+            if (account?.verifiedAt) {
+                return {
+                    id: user.id,
+                    role: user.role,
+                };
+            }
         }
 
         throw new UnauthorizedException();
