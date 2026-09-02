@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { CacheModule } from '@/core/features/cache/cache.module';
 import { ExcelModule } from '@/core/features/export/excel/excel.module';
+import { JWTModule } from '@/core/features/jwt/jwt.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
@@ -88,6 +89,7 @@ import { UserModule } from '@/modules/user/user.module';
         CacheModule,
         CursorPaginationModule,
         AuthenticationModule,
+        JWTModule,
     ],
     providers: [
         BillService,

@@ -4,7 +4,12 @@ import { AccessTokenModule } from '@/core/features/accessToken/accessToken.modul
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 
+import { JwtAuthGuard } from './jwtAuth.guard';
+import { JwtAuthStrategy } from './jwtAuth.strategy';
+
 @Module({
     imports: [AccessTokenModule, CqrsModule, QueryDispatcherModule],
+    providers: [JwtAuthStrategy, JwtAuthGuard],
+    exports: [JwtAuthGuard],
 })
 export class JWTModule {}
