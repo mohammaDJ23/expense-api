@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
+import { toEntities } from '@/infrastructure/database/drizzle/transformers/toEntities.transformer';
 import { toEntityOrNull } from '@/infrastructure/database/drizzle/transformers/toEntityOrNull.transformer';
 import { toEntityOrThrow } from '@/infrastructure/database/drizzle/transformers/toEntityOrThrow.transformer';
 import {
@@ -55,8 +56,8 @@ export class OauthAccountRepository implements IOauthAccountRepository {
         );
     }
 
-    findByEmailIdOrNull(emailId: string): Promise<ISelectOauthAccount | null> {
-        return toEntityOrNull(
+    findManyByEmailId(emailId: string): Promise<ISelectOauthAccount[]> {
+        return toEntities(
             this.drizzleRepository.db
                 .select()
                 .from(oauthAccounts)

@@ -2,6 +2,6 @@ interface IProps {
     emailId: string;
 }
 
-export class FindOauthAccountByEmailIdOrNullQuery {
+export class FindManyOauthAccountByEmailIdQuery {
     constructor(public readonly props: IProps) {}
 }
