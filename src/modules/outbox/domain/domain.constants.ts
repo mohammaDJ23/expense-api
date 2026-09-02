@@ -19,4 +19,5 @@ export const OUTBOX_EVENT_ROUTES: TOutboxEventRoute[] = [
     'local_signup_initiation.created',
     'local_reset_password.created',
     'local_forgot_password.created',
+    'local_signup.created',
 ];
