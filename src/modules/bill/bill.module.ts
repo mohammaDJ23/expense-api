@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { AuthenticationModule as BaseAuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { CacheModule } from '@/core/features/cache/cache.module';
 import { ExcelModule } from '@/core/features/export/excel/excel.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
@@ -78,7 +77,6 @@ import { UserModule } from '@/modules/user/user.module';
 @Module({
     imports: [
         CqrsModule,
-        BaseAuthenticationModule,
         ElasticsearchModule,
         LocationModule,
         ConsumerModule,

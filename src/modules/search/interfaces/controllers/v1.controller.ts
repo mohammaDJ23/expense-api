@@ -1,7 +1,7 @@
 import { Controller, Get, HttpStatus, Post, Query, UseGuards } from '@nestjs/common';
 
-import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
 import { CurrentUser } from '@/core/features/currentUser/currentUser.decorator';
+import { JwtAuthGuard } from '@/core/features/jwt/jwtAuth.guard';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { SearchService } from '@/modules/search/applications/services/search.service';

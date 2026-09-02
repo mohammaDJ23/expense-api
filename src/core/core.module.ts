@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { ClientTimezoneModule } from '@/core/features/clientTimezone/clientTimezone.module';
+import { JWTModule } from '@/core/features/jwt/jwt.module';
 import { TransformResponseInterceptor } from '@/core/features/responses/http/transformResponse.interceptor';
 import { GlobalFilterModule } from '@/core/filters/global/globalFilter.module';
 import { ApiVersioningService } from '@/core/services/apiVersioning.service';
@@ -19,6 +20,7 @@ import { VersionService } from '@/core/services/version.service';
         ApiVersioningService,
         AppInstanceService,
         VersionService,
+        JWTModule,
         {
             provide: APP_PIPE,
             useValue: new ValidationPipe({

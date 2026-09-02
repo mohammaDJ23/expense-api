@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 
-import { AuthenticationModule as CoreAuthenticationModule } from '@/core/features/authentication/authentication.module';
+import { AccessTokenModule } from '@/core/features/accessToken/accessToken.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 import { FindEmailIdentityByEmailOrThrowHandler } from '@/modules/authentication//applications/queries/findEmailIdentityByEmailOrThrow/findEmailIdentityByEmailOrThrow.handler';
+import { OauthAuthenticationService } from '@/modules/authentication//applications/services/oauthAuthentication.service';
 import { CreateEmailIdentityHandler } from '@/modules/authentication/applications/commands/createEmailIdentity/createEmailIdentity.handler';
 import { CreateLocalAccountHandler } from '@/modules/authentication/applications/commands/createLocalAccount/createLocalAccount.handler';
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
@@ -45,6 +46,8 @@ import { EmailIdentityRepository } from '@/modules/authentication/infrastructure
 import { LocalAccountRepository } from '@/modules/authentication/infrastructure/repositories/localAccount.repository';
 import { OauthAccountRepository } from '@/modules/authentication/infrastructure/repositories/oauthAccount.repository';
 import { AuthenticationController } from '@/modules/authentication/interface/controllers/v1.controller';
+import { GoogleAuthGuard } from '@/modules/authentication/interface/oauth/google/googleAuth.guard';
+import { GoogleAuthStrategy } from '@/modules/authentication/interface/oauth/google/googleAuth.strategy';
 import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { UserModule } from '@/modules/user/user.module';
 
@@ -53,14 +56,16 @@ import { UserModule } from '@/modules/user/user.module';
         CqrsModule,
         JwtModule,
         UserModule,
-        CoreAuthenticationModule,
         QueryDispatcherModule,
         OutboxModule,
         CursorPaginationModule,
+        AccessTokenModule,
     ],
     controllers: [AuthenticationController],
     providers: [
         AuthenticationService,
+        GoogleAuthGuard,
+        GoogleAuthStrategy,
         OauthLoginService,
         LocalSignupService,
         LocalLoginService,
@@ -100,6 +105,7 @@ import { UserModule } from '@/modules/user/user.module';
         LocalSignupInitiationMailerService,
         LocalSignupStorageService,
         LocalSignupTokenService,
+        OauthAuthenticationService,
     ],
     exports: [FindEmailIdentityListService],
 })

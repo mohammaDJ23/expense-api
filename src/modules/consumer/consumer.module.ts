@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { CacheModule } from '@/core/features/cache/cache.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
@@ -57,7 +56,6 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
 @Module({
     imports: [
         CqrsModule,
-        AuthenticationModule,
         ElasticsearchModule,
         OutboxModule,
         QueryDispatcherModule,

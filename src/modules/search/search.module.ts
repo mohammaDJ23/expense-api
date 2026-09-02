@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { BillModule } from '@/modules/bill/bill.module';
@@ -23,7 +22,6 @@ import { UserModule } from '@/modules/user/user.module';
 @Module({
     imports: [
         CqrsModule,
-        AuthenticationModule,
         ElasticsearchModule,
         BillModule,
         ReceiverModule,
