@@ -10,7 +10,7 @@ import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatche
 import { readSecret } from '@/core/utils/readSecret.util';
 import { FindEmailIdentityByUserIdrNullQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByUserIdOrNull/findEmailIdentityByUserIdOrNull.query';
 import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.query';
-import { FindOauthAccountByEmailIdOrNullQuery } from '@/modules/authentication/applications/queries/findOauthAccountByEmailIdOrNull/findOauthAccountByEmailIdOrNull.query';
+import { FindManyOauthAccountByEmailIdQuery } from '@/modules/authentication/applications/queries/findManyOauthAccountByEmailId/findManyOauthAccountByEmailId.query';
 import { FindUserByIdOrNullQuery } from '@/modules/user/applications/queries/findUserByIdOrNull/findUserByIdOrNull.query';
 
 import type { IAccessTokenPayload } from '@/core/features/accessToken/accessTokenPayload.type';
@@ -64,18 +64,20 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
             throw new UnauthorizedException();
         }
 
-        const accounts = await Promise.all([
+        const [localAccount, oauthAccounts] = await Promise.all([
             this.queryBus.execute<FindLocalAccountByEmailIdOrNullQuery, ISelectLocalAccount | null>(
                 new FindLocalAccountByEmailIdOrNullQuery({
                     emailId: emailIdentity.id,
                 }),
             ),
-            this.queryBus.execute<FindOauthAccountByEmailIdOrNullQuery, ISelectOauthAccount | null>(
-                new FindOauthAccountByEmailIdOrNullQuery({
+            this.queryBus.execute<FindManyOauthAccountByEmailIdQuery, ISelectOauthAccount[]>(
+                new FindManyOauthAccountByEmailIdQuery({
                     emailId: emailIdentity.id,
                 }),
             ),
         ]);
+
+        const accounts = [localAccount, ...oauthAccounts];
 
         for (const account of accounts) {
             if (account?.verifiedAt) {

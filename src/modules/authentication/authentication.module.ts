@@ -23,7 +23,7 @@ import { FindEmailIdentityByUserIdOrNullHandler } from '@/modules/authentication
 import { FindEmailIdentityByUserIdOrThrowHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByUserIdOrThrow/findEmailIdentityByUserIdOrThrow.handler';
 import { FindEmailIdentityListHandler } from '@/modules/authentication/applications/queries/findEmailIdentityList/findEmailIdentityList.handler';
 import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.handler';
-import { FindOauthAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByEmailIdOrNull/findOauthAccountByEmailIdOrNull.handler';
+import { FindManyOauthAccountByEmailIdlHandler } from '@/modules/authentication/applications/queries/findManyOauthAccountByEmailId/findManyOauthAccountByEmailId.handler';
 import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { FindEmailIdentityListService } from '@/modules/authentication/applications/services/findEmailIdentityList.service';
@@ -95,7 +95,7 @@ import { UserModule } from '@/modules/user/user.module';
         SendLocalResetPasswordEmailHandler,
         SendForgotPasswordEmailHandler,
         FindEmailIdentityByUserIdOrNullHandler,
-        FindOauthAccountByEmailIdOrNullHandler,
+        FindManyOauthAccountByEmailIdlHandler,
         FindEmailIdentityListHandler,
         EmailIdentityListCursorPaginationDefinition,
         FindEmailIdentityListService,
