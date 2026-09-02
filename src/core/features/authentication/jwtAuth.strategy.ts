@@ -64,25 +64,18 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
             throw new UnauthorizedException();
         }
 
-        const localAccount = await this.queryBus.execute<
-            FindLocalAccountByEmailIdOrNullQuery,
-            ISelectLocalAccount | null
-        >(
-            new FindLocalAccountByEmailIdOrNullQuery({
-                emailId: emailIdentity.id,
-            }),
-        );
-
-        const oauthAccount = await this.queryBus.execute<
-            FindOauthAccountByEmailIdOrNullQuery,
-            ISelectOauthAccount | null
-        >(
-            new FindOauthAccountByEmailIdOrNullQuery({
-                emailId: emailIdentity.id,
-            }),
-        );
-
-        const accounts = [localAccount, oauthAccount];
+        const accounts = await Promise.all([
+            this.queryBus.execute<FindLocalAccountByEmailIdOrNullQuery, ISelectLocalAccount | null>(
+                new FindLocalAccountByEmailIdOrNullQuery({
+                    emailId: emailIdentity.id,
+                }),
+            ),
+            this.queryBus.execute<FindOauthAccountByEmailIdOrNullQuery, ISelectOauthAccount | null>(
+                new FindOauthAccountByEmailIdOrNullQuery({
+                    emailId: emailIdentity.id,
+                }),
+            ),
+        ]);
 
         for (const account of accounts) {
             if (account?.verifiedAt) {
