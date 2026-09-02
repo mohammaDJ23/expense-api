@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { CacheModule } from '@/core/features/cache/cache.module';
+import { JWTModule } from '@/core/features/jwt/jwt.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
@@ -54,6 +55,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         QueryDispatcherModule,
         CacheModule,
         CursorPaginationModule,
+        JWTModule,
     ],
     controllers: [ReceiverController],
     providers: [

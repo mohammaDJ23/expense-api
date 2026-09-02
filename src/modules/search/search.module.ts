@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
+import { JWTModule } from '@/core/features/jwt/jwt.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { BillModule } from '@/modules/bill/bill.module';
@@ -29,6 +30,7 @@ import { UserModule } from '@/modules/user/user.module';
         LocationModule,
         UserModule,
         CursorPaginationModule,
+        JWTModule,
     ],
     providers: [
         SearchService,
