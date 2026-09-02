@@ -1,7 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 
-import { GoogleAuthGuard } from '@/core/features/authentication/googleAuth.guard';
 import { OauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.decorator';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
@@ -10,6 +9,7 @@ import { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/lo
 import { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
 import { LocalSignupRequestDto } from '@/modules/authentication/interface/dtos/localSignup.request.dto';
 import { LocalSignupInitiationRequestDto } from '@/modules/authentication/interface/dtos/localSignupInitiation.request.dto';
+import { GoogleAuthGuard } from '@/modules/authentication/interface/oauth/google/googleAuth.guard';
 
 import {
     SUCCESS_LOCAL_SIGNUP_MESSAGE,

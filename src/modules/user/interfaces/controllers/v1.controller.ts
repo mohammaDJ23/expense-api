@@ -12,9 +12,9 @@ import {
 
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { TotalResponseDto } from '@/core/dtos/total.response.dto';
-import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
 import { OwnerGuard } from '@/core/features/authorization/owner.guard';
 import { CurrentUser } from '@/core/features/currentUser/currentUser.decorator';
+import { JwtAuthGuard } from '@/core/features/jwt/jwtAuth.guard';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { UserService } from '@/modules/user/applications/services/user.service';

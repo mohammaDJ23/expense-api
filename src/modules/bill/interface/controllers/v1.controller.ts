@@ -15,11 +15,11 @@ import {
 
 import { IdResponseDto } from '@/core/dtos/id.response.dto';
 import { TotalResponseDto } from '@/core/dtos/total.response.dto';
-import { JwtAuthGuard } from '@/core/features/authentication/jwtAuth.guard';
 import { ClientTimezone } from '@/core/features/clientTimezone/clientTimezone.decorator';
 import { CurrentUser } from '@/core/features/currentUser/currentUser.decorator';
 import { ExcelFileInterceptor } from '@/core/features/export/excel/excelFile.interceptor';
 import { ExcelFilename } from '@/core/features/export/excel/excelFilename.decorator';
+import { JwtAuthGuard } from '@/core/features/jwt/jwtAuth.guard';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { SkipTransformResponse } from '@/core/features/responses/http/skipTransformResponse.decorator';
 import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';

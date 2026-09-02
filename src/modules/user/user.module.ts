@@ -1,6 +1,5 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 
-import { AuthenticationModule } from '@/core/features/authentication/authentication.module';
 import { AuthorizationModule } from '@/core/features/authorization/authorization.module';
 import { CacheModule } from '@/core/features/cache/cache.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
@@ -36,7 +35,6 @@ import { UserController } from '@/modules/user/interfaces/controllers/v1.control
 @Module({
     imports: [
         CqrsModule,
-        forwardRef(() => AuthenticationModule),
         AuthorizationModule,
         OutboxModule,
         QueryDispatcherModule,
