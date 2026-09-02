@@ -15,6 +15,7 @@ import { UpdateOauthAccountHandler } from '@/modules/authentication/applications
 import { SendForgotPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalForgotPassword/sendForgotPasswordEmail.handler';
 import { DeleteLocalResetPasswordCacheHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/deleteLocalResetPasswordCache.handler';
 import { SendLocalResetPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/sendLocalResetPasswordEmail.handler';
+import { DeleteLocalSignupCacheHandler } from '@/modules/authentication/applications/messages/createdLocalSignup/deleteLocalSignupCache.handler';
 import { SendSignupInitiationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalSignupInitiation/sendSignupInitiationEmail.handler';
 import { EmailIdentityListCursorPaginationDefinition } from '@/modules/authentication/applications/pagination/cursor/emailIdentityListCursorPagination.definition';
 import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/applications/queries/existsEmailIdentityByEmail/existsEmailIdentityByEmail.handler';
@@ -106,6 +107,7 @@ import { UserModule } from '@/modules/user/user.module';
         LocalSignupStorageService,
         LocalSignupTokenService,
         OauthAuthenticationService,
+        DeleteLocalSignupCacheHandler,
     ],
     exports: [FindEmailIdentityListService],
 })
