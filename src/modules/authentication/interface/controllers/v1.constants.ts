@@ -7,3 +7,5 @@ export const SUCCESS_LOCAL_FORGOT_PASSWORD_MESSAGE =
 export const SUCCESS_LOCAL_RESET_PASSWORD_MESSAGE =
     // eslint-disable-next-line sonarjs/no-hardcoded-passwords
     'Your password has been changed';
+export const SUCCESS_LOCAL_ACCOUNT_INITIATION = 'Check your email for the further instruction';
+export const SUCCESS_LOCAL_ACCOUNT_CREATION = 'Your local account has been created';

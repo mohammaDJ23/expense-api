@@ -4,6 +4,8 @@ import { Throttle } from '@nestjs/throttler';
 import { OauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.decorator';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
+import { LocalAccountCreationRequestDto } from '@/modules/authentication/interface/dtos/localAccountCreation.request.dto';
+import { LocalAccountInitiationRequestDto } from '@/modules/authentication/interface/dtos/localAccountInitiation.request.dto';
 import { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
@@ -17,6 +19,8 @@ import {
     SUCCESS_LOCAL_FORGOT_PASSWORD_MESSAGE,
     SUCCESS_LOCAL_RESET_PASSWORD_MESSAGE,
     SUCCESS_LOCAL_SIGNUP_INITIATION_MESSAGE,
+    SUCCESS_LOCAL_ACCOUNT_INITIATION,
+    SUCCESS_LOCAL_ACCOUNT_CREATION,
 } from './v1.constants';
 
 import type { IOauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.type';
@@ -62,6 +66,20 @@ export class AuthenticationController {
     @HttpResponse(SUCCESS_LOCAL_RESET_PASSWORD_MESSAGE, HttpStatus.OK)
     localResetPassword(@Body() body: LocalResetPasswordRequestDto): Promise<boolean> {
         return this.authenticationService.localResetPassword(body);
+    }
+
+    @Post('local/account/initiation')
+    @Throttle({ default: { limit: 2, ttl: 300000 } })
+    @HttpResponse(SUCCESS_LOCAL_ACCOUNT_INITIATION, HttpStatus.OK)
+    localAccountInitiation(@Body() body: LocalAccountInitiationRequestDto): Promise<boolean> {
+        return this.authenticationService.localAccountInitiation(body);
+    }
+
+    @Post('local/account')
+    @Throttle({ default: { limit: 2, ttl: 300000 } })
+    @HttpResponse(SUCCESS_LOCAL_ACCOUNT_CREATION, HttpStatus.CREATED)
+    localAccountCreation(@Body() body: LocalAccountCreationRequestDto): Promise<boolean> {
+        return this.authenticationService.localAccountCreation(body);
     }
 
     @Get('google')
