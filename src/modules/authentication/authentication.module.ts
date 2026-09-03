@@ -12,8 +12,8 @@ import { CreateLocalAccountHandler } from '@/modules/authentication/applications
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
 import { UpdateLocalAccountHandler } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.handler';
 import { UpdateOauthAccountHandler } from '@/modules/authentication/applications/commands/updateOauthAccount/updateOauthAccount.handler';
-import { DeleteLocalAccountCreationCacheHandler } from '@/modules/authentication/applications/messages/createdlocalAccountCreation/deleteLocalAccountCreationCache.handler';
-import { SendLocalAccountInitiationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalAccountIniitiation/sendLocalAccountInitiationEmail.handler';
+import { DeleteLocalAccountCreationCacheHandler } from '@/modules/authentication/applications/messages/createdLocalAccountCreation/deleteLocalAccountCreationCache.handler';
+import { SendLocalAccountInitiationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalAccountInitiation/sendLocalAccountInitiationEmail.handler';
 import { SendForgotPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalForgotPassword/sendForgotPasswordEmail.handler';
 import { DeleteLocalResetPasswordCacheHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/deleteLocalResetPasswordCache.handler';
 import { SendLocalResetPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/sendLocalResetPasswordEmail.handler';
