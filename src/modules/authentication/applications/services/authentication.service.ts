@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
+import { LocalAccountCreationService } from './localAccountCreation.service';
+import { LocalAccountInitiationService } from './localAccountInitiation.service';
 import { LocalForgotPasswordService } from './localForgotPassword.service';
 import { LocalLoginService } from './localLogin.service';
 import { LocalResetPasswordService } from './localResetPassword.service';
@@ -8,6 +10,8 @@ import { LocalSignupInitiationService } from './localSignupInitiation.service';
 import { OauthLoginService } from './oauthLogin.service';
 
 import type { IOauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.type';
+import type { LocalAccountCreationRequestDto } from '@/modules/authentication//interface/dtos/localAccountCreation.request.dto';
+import type { LocalAccountInitiationRequestDto } from '@/modules/authentication/interface/dtos/localAccountInitiation.request.dto';
 import type { LocalForgotPasswordRequestDto } from '@/modules/authentication/interface/dtos/localForgotPassword.request.dto';
 import type { LocalLoginRequestDto } from '@/modules/authentication/interface/dtos/localLogin.request.dto';
 import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
@@ -24,6 +28,8 @@ export class AuthenticationService {
         private readonly localResetPasswordService: LocalResetPasswordService,
         private readonly oauthLoginService: OauthLoginService,
         private readonly localSignupInitiationService: LocalSignupInitiationService,
+        private readonly localAccountInitiationService: LocalAccountInitiationService,
+        private readonly localAccountCreationService: LocalAccountCreationService,
     ) {}
 
     localSignupInitiation(body: LocalSignupInitiationRequestDto): Promise<boolean> {
@@ -50,5 +56,13 @@ export class AuthenticationService {
 
     oauthLogin(response: Response, user: IOauthCurrentUser): Promise<boolean> {
         return this.oauthLoginService.execute({ response, user });
+    }
+
+    localAccountInitiation(body: LocalAccountInitiationRequestDto): Promise<boolean> {
+        return this.localAccountInitiationService.execute(body);
+    }
+
+    localAccountCreation(body: LocalAccountCreationRequestDto): Promise<boolean> {
+        return this.localAccountCreationService.execute(body);
     }
 }

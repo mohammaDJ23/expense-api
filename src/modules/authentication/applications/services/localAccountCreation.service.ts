@@ -1,49 +1,48 @@
-import {
-    BadRequestException,
-    ForbiddenException,
-    Injectable,
-    InternalServerErrorException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 import { v4 as uuid } from 'uuid';
 
+import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
-import { UpdateLocalAccountCommand } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.command';
+import { CreateLocalAccountCommand } from '@/modules/authentication/applications/commands/createLocalAccount/createLocalAccount.command';
 import { FindEmailIdentityByEmailOrNullQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.query';
 import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.query';
 import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
+import { LocalAccountStorageService } from './localAccountStorage.service';
+import { LocalAccountTokenService } from './localAccountToken.service';
 import { PasswordHasherService } from './passwordHasher.service';
-import { PasswordStorageService } from './passwordStorage.service';
-import { PasswordTokenService } from './passwordToken.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
-import type { ILocalResetPasswordMessagePayload } from '@/modules/authentication/domain/types/localResetPasswordMessagePayload.type';
+import type { ILocalAccountCreationMessagePayload } from '@/modules/authentication/domain/types/localAccountCreationMessagePayload.type';
 import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructure/schemas/emailIdentity.schema';
 import type { ISelectLocalAccount } from '@/modules/authentication/infrastructure/schemas/localAccount.schema';
-import type { LocalResetPasswordRequestDto } from '@/modules/authentication/interface/dtos/localResetPassword.request.dto';
+import type { LocalAccountCreationRequestDto } from '@/modules/authentication/interface/dtos/localAccountCreation.request.dto';
 
 @Injectable()
-export class LocalResetPasswordService implements IService<LocalResetPasswordRequestDto, boolean> {
+export class LocalAccountCreationService implements IService<
+    LocalAccountCreationRequestDto,
+    boolean
+> {
     constructor(
         private readonly queryBus: QueryBus,
         private readonly commandBus: CommandBus,
-        private readonly passwordHasherService: PasswordHasherService,
-        private readonly passwordTokenService: PasswordTokenService,
-        private readonly passwordStorageService: PasswordStorageService,
+        private readonly localAccountTokenService: LocalAccountTokenService,
+        private readonly localAccountStorageService: LocalAccountStorageService,
         private readonly outboxEventPublisherService: OutboxEventPublisherService,
+        private readonly passwordHasherService: PasswordHasherService,
     ) {}
 
     @Transactional()
-    async execute(input: LocalResetPasswordRequestDto): Promise<boolean> {
-        const payload = this.passwordTokenService.verify(input.token);
+    async execute(input: LocalAccountCreationRequestDto): Promise<boolean> {
+        const payload = this.localAccountTokenService.verify(input.token);
 
         {
             let storedToken: string | null = null;
             try {
-                storedToken = await this.passwordStorageService.get(payload.email);
+                storedToken = await this.localAccountStorageService.get(payload.email);
             } catch {}
 
             if (storedToken !== input.token) {
@@ -73,38 +72,37 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
             }),
         );
 
-        if (!localAccount) {
+        if (localAccount) {
             throw new BadRequestException();
         }
 
-        if (!localAccount.verifiedAt) {
-            throw new ForbiddenException();
+        let hashedPassword: string;
+        try {
+            hashedPassword = await this.passwordHasherService.hash(input.password);
+        } catch {
+            throw new ProcessFailedInternalServerErrorException();
         }
 
         const creationTime = getCurrentUTCTimestamp();
 
-        try {
-            const hashedPassword = await this.passwordHasherService.hash(input.newPassword);
-
-            await this.commandBus.execute<UpdateLocalAccountCommand, ISelectLocalAccount>(
-                new UpdateLocalAccountCommand({
-                    id: localAccount.id,
-                    hashedPassword,
-                    updatedAt: creationTime,
-                }),
-            );
-        } catch {
-            throw new InternalServerErrorException('Could not change your password, try again');
-        }
+        await this.commandBus.execute<CreateLocalAccountCommand, ISelectLocalAccount>(
+            new CreateLocalAccountCommand({
+                hashedPassword,
+                emailId: emailIdentity.id,
+                createdAt: creationTime,
+                updatedAt: creationTime,
+                verifiedAt: creationTime,
+            }),
+        );
 
         {
-            const payload: ILocalResetPasswordMessagePayload = {
+            const payload: ILocalAccountCreationMessagePayload = {
                 email: emailIdentity.email,
             };
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: uuid(),
-                aggregateType: AuthenticationResource.LOCAL_RESET_PASSWORD,
+                aggregateType: AuthenticationResource.LOCAL_ACCOUNT_CREATION,
                 eventType: 'created',
                 payload,
                 createdAt: creationTime,

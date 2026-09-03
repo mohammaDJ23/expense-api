@@ -12,6 +12,8 @@ import { CreateLocalAccountHandler } from '@/modules/authentication/applications
 import { CreateOauthAccountHandler } from '@/modules/authentication/applications/commands/createOauthAccount/createOauthAccount.handler';
 import { UpdateLocalAccountHandler } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.handler';
 import { UpdateOauthAccountHandler } from '@/modules/authentication/applications/commands/updateOauthAccount/updateOauthAccount.handler';
+import { DeleteLocalAccountCreationCacheHandler } from '@/modules/authentication/applications/messages/createdlocalAccountCreation/deleteLocalAccountCreationCache.handler';
+import { SendLocalAccountInitiationEmailHandler } from '@/modules/authentication/applications/messages/createdLocalAccountIniitiation/sendLocalAccountInitiationEmail.handler';
 import { SendForgotPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalForgotPassword/sendForgotPasswordEmail.handler';
 import { DeleteLocalResetPasswordCacheHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/deleteLocalResetPasswordCache.handler';
 import { SendLocalResetPasswordEmailHandler } from '@/modules/authentication/applications/messages/createdLocalResetPassword/sendLocalResetPasswordEmail.handler';
@@ -28,6 +30,11 @@ import { FindManyOauthAccountByEmailIdlHandler } from '@/modules/authentication/
 import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { FindEmailIdentityListService } from '@/modules/authentication/applications/services/findEmailIdentityList.service';
+import { LocalAccountCreationService } from '@/modules/authentication/applications/services/localAccountCreation.service';
+import { LocalAccountInitiationService } from '@/modules/authentication/applications/services/localAccountInitiation.service';
+import { LocalAccountInitiationMailerService } from '@/modules/authentication/applications/services/localAccountInitiationMailer.service';
+import { LocalAccountStorageService } from '@/modules/authentication/applications/services/localAccountStorage.service';
+import { LocalAccountTokenService } from '@/modules/authentication/applications/services/localAccountToken.service';
 import { LocalForgotPasswordService } from '@/modules/authentication/applications/services/localForgotPassword.service';
 import { LocalLoginService } from '@/modules/authentication/applications/services/localLogin.service';
 import { LocalResetPasswordService } from '@/modules/authentication/applications/services/localResetPassword.service';
@@ -108,6 +115,13 @@ import { UserModule } from '@/modules/user/user.module';
         LocalSignupTokenService,
         OauthAuthenticationService,
         DeleteLocalSignupCacheHandler,
+        DeleteLocalAccountCreationCacheHandler,
+        SendLocalAccountInitiationEmailHandler,
+        LocalAccountCreationService,
+        LocalAccountInitiationService,
+        LocalAccountInitiationMailerService,
+        LocalAccountStorageService,
+        LocalAccountTokenService,
     ],
     exports: [FindEmailIdentityListService],
 })
