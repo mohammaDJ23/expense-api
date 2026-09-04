@@ -1,9 +1,4 @@
-import {
-    BadRequestException,
-    ForbiddenException,
-    Injectable,
-    InternalServerErrorException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 import { v4 as uuid } from 'uuid';
@@ -75,10 +70,6 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
 
         if (!localAccount) {
             throw new BadRequestException();
-        }
-
-        if (!localAccount.verifiedAt) {
-            throw new ForbiddenException();
         }
 
         const creationTime = getCurrentUTCTimestamp();

@@ -66,10 +66,6 @@ export class LocalLoginService implements IService<IInput, boolean> {
             throw new NotFoundException();
         }
 
-        if (!localAccount.verifiedAt) {
-            throw new ForbiddenException();
-        }
-
         {
             let isPasswordValid = false;
             try {

@@ -63,17 +63,19 @@ export class LocalAccountCreationService implements IService<
             throw new BadRequestException();
         }
 
-        const localAccount = await this.queryBus.execute<
-            FindLocalAccountByEmailIdOrNullQuery,
-            ISelectLocalAccount | null
-        >(
-            new FindLocalAccountByEmailIdOrNullQuery({
-                emailId: emailIdentity.id,
-            }),
-        );
+        {
+            const localAccount = await this.queryBus.execute<
+                FindLocalAccountByEmailIdOrNullQuery,
+                ISelectLocalAccount | null
+            >(
+                new FindLocalAccountByEmailIdOrNullQuery({
+                    emailId: emailIdentity.id,
+                }),
+            );
 
-        if (localAccount) {
-            throw new BadRequestException();
+            if (localAccount) {
+                throw new BadRequestException();
+            }
         }
 
         let hashedPassword: string;
@@ -91,7 +93,6 @@ export class LocalAccountCreationService implements IService<
                 emailId: emailIdentity.id,
                 createdAt: creationTime,
                 updatedAt: creationTime,
-                verifiedAt: creationTime,
             }),
         );
 

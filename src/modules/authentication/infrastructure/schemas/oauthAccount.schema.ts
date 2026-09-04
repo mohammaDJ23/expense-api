@@ -17,7 +17,6 @@ export const oauthAccounts = pgTable(
             .notNull()
             .references(() => emailIdentities.id, { onDelete: 'cascade' }),
         lastLoginAt: timestamp('last_login_at', { withTimezone: true, mode: 'string' }),
-        verifiedAt: timestamp('verified_at', { withTimezone: true, mode: 'string' }),
         createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
             .notNull()
             .defaultNow(),

@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
@@ -58,10 +58,6 @@ export class OauthAuthenticationService implements IService<IInput, IOauthCurren
         );
 
         if (oauthAccount) {
-            if (!oauthAccount.verifiedAt) {
-                throw new ForbiddenException();
-            }
-
             const emailIdentity = await this.queryBus.execute<
                 FindEmailIdentityByEmailOrThrowQuery,
                 ISelectEmailIdentity
@@ -153,7 +149,6 @@ export class OauthAuthenticationService implements IService<IInput, IOauthCurren
                 createdAt: creationTime,
                 updatedAt: creationTime,
                 lastLoginAt: creationTime,
-                verifiedAt: creationTime,
             }),
         );
     }
