@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { ElasticsearchAnalysisSettings } from '@/infrastructure/elasticsearch/elasticsearchAnalysis.settings';
-import { BillResource } from '@/modules/bill/bill.enum';
+import { BillResource } from '@/modules/bill/domain/enums/bill.enum';
 
 import type { IElasticsearchIndex } from '@/infrastructure/elasticsearch/elasticsearchIndex.interface';
 import type { estypes } from '@elastic/elasticsearch';

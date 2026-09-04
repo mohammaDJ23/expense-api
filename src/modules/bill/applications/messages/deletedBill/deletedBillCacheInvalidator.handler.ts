@@ -1,15 +1,13 @@
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
 import { BillCacheInvalidatorProcessor } from '@/modules/bill/applications/messages/billCacheInvalidator.processor';
+import { BillMessageEvent } from '@/modules/bill/domain/enums/billMessageEvent.enum';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
-@MessageHandler()
+@MessageHandler(BillMessageEvent.DELETED_BILL)
 export class DeletedBillCacheInvalidatorHandler implements IMessageHandler<ISelectBill> {
-    route: TOutboxEventRoute = 'bill.deleted';
-
     constructor(private readonly billCacheInvalidatorProcessor: BillCacheInvalidatorProcessor) {}
 
     async execute(batch: IMessageBatch<ISelectBill>[]): Promise<void> {
