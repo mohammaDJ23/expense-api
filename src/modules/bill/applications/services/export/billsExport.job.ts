@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import pLimit from 'p-limit';
 
 import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { EXCEL_FILE_CONTENT_TYPE } from '@/core/features/export/excel/excel.constants';
 import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
+import { concurrency } from '@/core/utils/concurrency.util';
 import { FindEmailIdentityListService } from '@/modules/authentication/applications/services/findEmailIdentityList.service';
 import { BillsExcelExportService } from '@/modules/bill/applications/services/export/excel/billsExcelExport.service';
 import { getBillsExcelFilename } from '@/modules/bill/applications/services/export/excel/billsExcelExport.utils';
@@ -16,8 +16,6 @@ import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructu
 
 @Injectable()
 export class BillsExportJob implements IJob {
-    private readonly concurrency = pLimit(3);
-
     constructor(
         private readonly billsExcelExportService: BillsExcelExportService,
         private readonly billsExportMailerService: BillsExportMailerService,
@@ -43,7 +41,7 @@ export class BillsExportJob implements IJob {
     }
 
     private async processExport(emailIdentity: ISelectEmailIdentity): Promise<void> {
-        await this.concurrency(async () => {
+        await concurrency(async () => {
             const stream = this.billsExcelExportService.execute(emailIdentity);
 
             await this.billsExportMailerService.execute({
