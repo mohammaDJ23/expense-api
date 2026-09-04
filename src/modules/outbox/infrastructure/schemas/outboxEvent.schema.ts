@@ -2,7 +2,6 @@ import { jsonb, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
 import type { TOutboxEventPayload } from '@/modules/outbox/domain/types/outboxEventPayload.type';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 import type { TOutboxEventType } from '@/modules/outbox/domain/types/outboxEventType.type';
 
 export const outboxEvents = pgTable('outbox_events', {
@@ -12,7 +11,6 @@ export const outboxEvents = pgTable('outbox_events', {
         .$type<TOutboxEventAggregateType>(),
     aggregateId: uuid('aggregate_id').notNull(),
     eventType: varchar('event_type', { length: 150 }).notNull().$type<TOutboxEventType>(),
-    route: varchar('route', { length: 255 }).notNull().$type<TOutboxEventRoute>(),
     payload: jsonb('payload').notNull().$type<TOutboxEventPayload>(),
     createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).notNull(),
 });
