@@ -88,7 +88,6 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
                 emailId: createdEmailIdentity.id,
                 createdAt: creationTime,
                 updatedAt: creationTime,
-                verifiedAt: creationTime,
             }),
         );
 
