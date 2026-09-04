@@ -4,7 +4,7 @@ import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindConsumerListByUserIdService } from '@/modules/consumer/applications/services/findConsumerListByUserId.service';
-import { ConsumerResource } from '@/modules/consumer/consumer.enum';
+import { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
 import { DeleteConsumersElasticsearchQuery } from '@/modules/consumer/infrastructure/elasticsearch/deleteConsumersElasticsearch.query';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';

@@ -1,5 +1,5 @@
 import { Cacheable } from '@/core/features/cache/cacheable.decorator';
-import { ConsumerResource } from '@/modules/consumer/consumer.enum';
+import { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
 
 import type { IConsumerListCursor } from '@/modules/consumer/domain/types/consumerListCursor.type';
 

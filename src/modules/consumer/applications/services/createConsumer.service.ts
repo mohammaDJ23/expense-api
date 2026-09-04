@@ -5,7 +5,8 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { CreateConsumerCommand } from '@/modules/consumer/applications/commands/createConsumer/createConsumer.command';
 import { ConsumerNameAvailableValidatorService } from '@/modules/consumer/applications/services/validators/consumerNameAvailableValidator.service';
-import { ConsumerResource } from '@/modules/consumer/consumer.enum';
+import { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
+import { ConsumerMessageEvent } from '@/modules/consumer/domain/enums/consumerMessageEvent.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
@@ -47,7 +48,7 @@ export class CreateConsumerService implements IService<IInput, IId> {
         await this.outboxEventPublisherService.publish({
             aggregateId: createdConsumer.id,
             aggregateType: ConsumerResource.CONSUMER,
-            eventType: 'created',
+            eventType: ConsumerMessageEvent.CREATED_CONSUMER,
             payload: createdConsumer,
             createdAt: getCurrentUTCTimestamp(),
         });

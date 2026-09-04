@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { ConsumerResource } from '@/modules/consumer/consumer.enum';
+import { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
 
 import type { IElasticsearchQuery } from '@/infrastructure/elasticsearch/elasticsearchQuery.interface';
 import type { estypes } from '@elastic/elasticsearch';

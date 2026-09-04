@@ -1,19 +1,15 @@
-import pLimit from 'p-limit';
-
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
+import { concurrency } from '@/core/utils/concurrency.util';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { DeleteConsumersElasticsearchQuery } from '@/modules/consumer/infrastructure/elasticsearch/deleteConsumersElasticsearch.query';
+import { UserMessageEvent } from '@/modules/user/domain/enums/userMessageEvent.enum';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
-@MessageHandler()
+@MessageHandler(UserMessageEvent.DELETED_USER)
 export class DeletedUserConsumerElasticsearchRemoverHandler implements IMessageHandler<ISelectUser> {
-    route: TOutboxEventRoute = 'user.deleted';
-    private readonly concurrency = pLimit(2);
-
     constructor(
         private readonly elasticsearchService: ElasticSearchService,
         private readonly deleteConsumersElasticsearchQuery: DeleteConsumersElasticsearchQuery,
@@ -22,7 +18,7 @@ export class DeletedUserConsumerElasticsearchRemoverHandler implements IMessageH
     async execute(batch: IMessageBatch<ISelectUser>[]): Promise<void> {
         await Promise.all(
             batch.map((item) =>
-                this.concurrency(() =>
+                concurrency(() =>
                     this.elasticsearchService.deleteByQuery(
                         this.deleteConsumersElasticsearchQuery.buildQuery({
                             userId: item.payload.id,

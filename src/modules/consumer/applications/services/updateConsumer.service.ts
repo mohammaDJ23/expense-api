@@ -6,7 +6,8 @@ import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util
 import { UpdateConsumerCommand } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.command';
 import { ConsumerExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumerExistenceValidator.service';
 import { ConsumerUniqueNameValidatorService } from '@/modules/consumer/applications/services/validators/consumerUniqueNameValidator.service';
-import { ConsumerResource } from '@/modules/consumer/consumer.enum';
+import { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
+import { ConsumerMessageEvent } from '@/modules/consumer/domain/enums/consumerMessageEvent.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
@@ -57,7 +58,7 @@ export class UpdateConsumerService implements IService<IInput, IId> {
         await this.outboxEventPublisherService.publish({
             aggregateId: updatedConsumer.id,
             aggregateType: ConsumerResource.CONSUMER,
-            eventType: 'updated',
+            eventType: ConsumerMessageEvent.UPDATED_CONSUMER,
             payload: updatedConsumer,
             createdAt: getCurrentUTCTimestamp(),
         });
