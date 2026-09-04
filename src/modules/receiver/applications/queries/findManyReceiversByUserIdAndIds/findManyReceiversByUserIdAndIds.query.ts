@@ -1,5 +1,5 @@
 import { Cacheable } from '@/core/features/cache/cacheable.decorator';
-import { ReceiverResource } from '@/modules/receiver/receiver.enum';
+import { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
 
 interface IProps {
     userId: string;

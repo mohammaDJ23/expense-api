@@ -6,7 +6,8 @@ import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { CreateReceiverCommand } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.command';
 import { ReceiverNameAvailableValidatorService } from '@/modules/receiver/applications/services/validators/receiverNameAvailableValidator.service';
-import { ReceiverResource } from '@/modules/receiver/receiver.enum';
+import { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
+import { ReceiverMessageEvent } from '@/modules/receiver/domain/enums/receiverMessageEvent.enum';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -47,7 +48,7 @@ export class CreateReceiverService implements IService<IInput, IId> {
         await this.outboxEventPublisherService.publish({
             aggregateId: createdReceiver.id,
             aggregateType: ReceiverResource.RECEIVER,
-            eventType: 'created',
+            eventType: ReceiverMessageEvent.CREATED_RECEIVER,
             payload: createdReceiver,
             createdAt: getCurrentUTCTimestamp(),
         });

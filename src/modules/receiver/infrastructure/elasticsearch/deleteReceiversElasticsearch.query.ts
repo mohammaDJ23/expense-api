@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { ReceiverResource } from '@/modules/receiver/receiver.enum';
+import { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
 
 import type { IElasticsearchQuery } from '@/infrastructure/elasticsearch/elasticsearchQuery.interface';
 import type { estypes } from '@elastic/elasticsearch';

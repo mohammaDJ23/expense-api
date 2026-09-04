@@ -6,7 +6,8 @@ import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { DeleteReceiverCommand } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.command';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
-import { ReceiverResource } from '@/modules/receiver/receiver.enum';
+import { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
+import { ReceiverMessageEvent } from '@/modules/receiver/domain/enums/receiverMessageEvent.enum';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -45,7 +46,7 @@ export class DeleteReceiverService implements IService<IInput, IId> {
         await this.outboxEventPublisherService.publish({
             aggregateId: deletedReceiver.id,
             aggregateType: ReceiverResource.RECEIVER,
-            eventType: 'deleted',
+            eventType: ReceiverMessageEvent.DELETED_RECEIVER,
             payload: deletedReceiver,
             createdAt: getCurrentUTCTimestamp(),
         });

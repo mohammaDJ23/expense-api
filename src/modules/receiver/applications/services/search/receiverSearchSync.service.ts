@@ -4,8 +4,8 @@ import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindReceiverListByUserIdService } from '@/modules/receiver/applications/services/findReceiverListByUserId.service';
+import { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
 import { DeleteReceiversElasticsearchQuery } from '@/modules/receiver/infrastructure/elasticsearch/deleteReceiversElasticsearch.query';
-import { ReceiverResource } from '@/modules/receiver/receiver.enum';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
