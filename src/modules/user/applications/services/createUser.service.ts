@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
-import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { CreateUserCommand } from '@/modules/user/applications/commands/createUser/createUser.command';
 import { UserResource } from '@/modules/user/domain/enums/user.enum';
@@ -30,7 +29,7 @@ export class CreateUserService implements IService<TCreateUser, ISelectUser> {
             aggregateType: UserResource.USER,
             eventType: UserMessageEvent.CREATED_USER,
             payload: createdUser,
-            createdAt: getCurrentUTCTimestamp(),
+            createdAt: input.createdAt,
         });
 
         return createdUser;

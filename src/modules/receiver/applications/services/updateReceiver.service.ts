@@ -43,6 +43,8 @@ export class UpdateReceiverService implements IService<IInput, IId> {
             }),
         ]);
 
+        const creationTime = getCurrentUTCTimestamp();
+
         const updatedReceiver = await this.commandBus.execute<
             UpdateReceiverCommand,
             ISelectReceiver
@@ -51,7 +53,7 @@ export class UpdateReceiverService implements IService<IInput, IId> {
                 id: input.body.id,
                 name: input.body.name,
                 userId: input.userId,
-                updatedAt: getCurrentUTCTimestamp(),
+                updatedAt: creationTime,
             }),
         );
 
@@ -60,7 +62,7 @@ export class UpdateReceiverService implements IService<IInput, IId> {
             aggregateType: ReceiverResource.RECEIVER,
             eventType: ReceiverMessageEvent.UPDATED_RECEIVER,
             payload: updatedReceiver,
-            createdAt: getCurrentUTCTimestamp(),
+            createdAt: creationTime,
         });
 
         return {

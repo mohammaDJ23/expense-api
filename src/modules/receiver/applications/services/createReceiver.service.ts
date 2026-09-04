@@ -33,6 +33,8 @@ export class CreateReceiverService implements IService<IInput, IId> {
             name: input.name,
         });
 
+        const creationTime = getCurrentUTCTimestamp();
+
         const createdReceiver = await this.commandBus.execute<
             CreateReceiverCommand,
             ISelectReceiver
@@ -40,8 +42,8 @@ export class CreateReceiverService implements IService<IInput, IId> {
             new CreateReceiverCommand({
                 name: input.name,
                 userId: input.userId,
-                createdAt: getCurrentUTCTimestamp(),
-                updatedAt: getCurrentUTCTimestamp(),
+                createdAt: creationTime,
+                updatedAt: creationTime,
             }),
         );
 
@@ -50,7 +52,7 @@ export class CreateReceiverService implements IService<IInput, IId> {
             aggregateType: ReceiverResource.RECEIVER,
             eventType: ReceiverMessageEvent.CREATED_RECEIVER,
             payload: createdReceiver,
-            createdAt: getCurrentUTCTimestamp(),
+            createdAt: creationTime,
         });
 
         return {

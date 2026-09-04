@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
-import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
@@ -34,7 +33,7 @@ export class UpdateUserService implements IService<TUpdateUser, ISelectUser> {
             aggregateType: UserResource.USER,
             eventType: UserMessageEvent.UPDATED_USER,
             payload: updatedUser,
-            createdAt: getCurrentUTCTimestamp(),
+            createdAt: input.updatedAt,
         });
 
         return updatedUser;
