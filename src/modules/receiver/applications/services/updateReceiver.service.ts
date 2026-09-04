@@ -7,7 +7,8 @@ import { OutboxEventPublisherService } from '@/modules/outbox/applications/servi
 import { UpdateReceiverCommand } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.command';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 import { ReceiverUniqueNameValidatorService } from '@/modules/receiver/applications/services/validators/receiverUniqueNameValidator.service';
-import { ReceiverResource } from '@/modules/receiver/receiver.enum';
+import { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
+import { ReceiverMessageEvent } from '@/modules/receiver/domain/enums/receiverMessageEvent.enum';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -57,7 +58,7 @@ export class UpdateReceiverService implements IService<IInput, IId> {
         await this.outboxEventPublisherService.publish({
             aggregateId: updatedReceiver.id,
             aggregateType: ReceiverResource.RECEIVER,
-            eventType: 'updated',
+            eventType: ReceiverMessageEvent.UPDATED_RECEIVER,
             payload: updatedReceiver,
             createdAt: getCurrentUTCTimestamp(),
         });
