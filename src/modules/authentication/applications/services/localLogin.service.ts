@@ -63,7 +63,7 @@ export class LocalLoginService implements IService<IInput, boolean> {
         );
 
         if (!localAccount) {
-            throw new NotFoundException('You have not registered a local account before');
+            throw new NotFoundException();
         }
 
         if (!localAccount.verifiedAt) {
