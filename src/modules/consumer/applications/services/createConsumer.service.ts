@@ -33,6 +33,8 @@ export class CreateConsumerService implements IService<IInput, IId> {
             name: input.name,
         });
 
+        const creationTime = getCurrentUTCTimestamp();
+
         const createdConsumer = await this.commandBus.execute<
             CreateConsumerCommand,
             ISelectConsumer
@@ -40,8 +42,8 @@ export class CreateConsumerService implements IService<IInput, IId> {
             new CreateConsumerCommand({
                 name: input.name,
                 userId: input.userId,
-                createdAt: getCurrentUTCTimestamp(),
-                updatedAt: getCurrentUTCTimestamp(),
+                createdAt: creationTime,
+                updatedAt: creationTime,
             }),
         );
 
@@ -50,7 +52,7 @@ export class CreateConsumerService implements IService<IInput, IId> {
             aggregateType: ConsumerResource.CONSUMER,
             eventType: ConsumerMessageEvent.CREATED_CONSUMER,
             payload: createdConsumer,
-            createdAt: getCurrentUTCTimestamp(),
+            createdAt: creationTime,
         });
 
         return {

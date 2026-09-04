@@ -53,13 +53,15 @@ export class CreateBillService implements IService<IInput, IId> {
             }),
         ]);
 
+        const creationTime = getCurrentUTCTimestamp();
+
         const createdBill = await this.commandBus.execute<CreateBillCommand, ISelectBill>(
             new CreateBillCommand({
                 amount: input.body.amount,
                 description: input.body.description,
                 purchasedAt: getCurrentUTCTimestamp(input.body.purchasedAt),
-                createdAt: getCurrentUTCTimestamp(),
-                updatedAt: getCurrentUTCTimestamp(),
+                createdAt: creationTime,
+                updatedAt: creationTime,
                 userId: input.userId,
                 locationId: input.body.locationId,
                 receiverId: input.body.receiverId,
@@ -82,7 +84,7 @@ export class CreateBillService implements IService<IInput, IId> {
                 aggregateType: BillResource.BILL,
                 eventType: BillMessageEvent.CREATED_BILL,
                 payload: bill,
-                createdAt: getCurrentUTCTimestamp(),
+                createdAt: creationTime,
             });
         }
 

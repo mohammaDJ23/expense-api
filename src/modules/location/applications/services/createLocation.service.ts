@@ -33,6 +33,8 @@ export class CreateLocationService implements IService<IInput, IId> {
             name: input.name,
         });
 
+        const creationTime = getCurrentUTCTimestamp();
+
         const createdLocation = await this.commandBus.execute<
             CreateLocationCommand,
             ISelectLocation
@@ -40,8 +42,8 @@ export class CreateLocationService implements IService<IInput, IId> {
             new CreateLocationCommand({
                 name: input.name,
                 userId: input.userId,
-                createdAt: getCurrentUTCTimestamp(),
-                updatedAt: getCurrentUTCTimestamp(),
+                createdAt: creationTime,
+                updatedAt: creationTime,
             }),
         );
 
@@ -50,7 +52,7 @@ export class CreateLocationService implements IService<IInput, IId> {
             aggregateType: LocationResource.LOCATION,
             eventType: LocationMessageEvent.CREATED_LOCATION,
             payload: createdLocation,
-            createdAt: getCurrentUTCTimestamp(),
+            createdAt: creationTime,
         });
 
         return {

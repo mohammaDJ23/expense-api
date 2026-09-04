@@ -43,6 +43,8 @@ export class UpdateConsumerService implements IService<IInput, IId> {
             }),
         ]);
 
+        const creationTime = getCurrentUTCTimestamp();
+
         const updatedConsumer = await this.commandBus.execute<
             UpdateConsumerCommand,
             ISelectConsumer
@@ -51,7 +53,7 @@ export class UpdateConsumerService implements IService<IInput, IId> {
                 id: input.body.id,
                 name: input.body.name,
                 userId: input.userId,
-                updatedAt: getCurrentUTCTimestamp(),
+                updatedAt: creationTime,
             }),
         );
 
@@ -60,7 +62,7 @@ export class UpdateConsumerService implements IService<IInput, IId> {
             aggregateType: ConsumerResource.CONSUMER,
             eventType: ConsumerMessageEvent.UPDATED_CONSUMER,
             payload: updatedConsumer,
-            createdAt: getCurrentUTCTimestamp(),
+            createdAt: creationTime,
         });
 
         return {

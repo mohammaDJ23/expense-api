@@ -43,6 +43,8 @@ export class UpdateLocationService implements IService<IInput, IId> {
             }),
         ]);
 
+        const creationTime = getCurrentUTCTimestamp();
+
         const updatedLocation = await this.commandBus.execute<
             UpdateLocationCommand,
             ISelectLocation
@@ -51,7 +53,7 @@ export class UpdateLocationService implements IService<IInput, IId> {
                 id: input.body.id,
                 name: input.body.name,
                 userId: input.userId,
-                updatedAt: getCurrentUTCTimestamp(),
+                updatedAt: creationTime,
             }),
         );
 
@@ -60,7 +62,7 @@ export class UpdateLocationService implements IService<IInput, IId> {
             aggregateType: LocationResource.LOCATION,
             eventType: LocationMessageEvent.UPDATED_LOCATION,
             payload: updatedLocation,
-            createdAt: getCurrentUTCTimestamp(),
+            createdAt: creationTime,
         });
 
         return {

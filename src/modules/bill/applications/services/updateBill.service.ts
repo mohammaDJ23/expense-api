@@ -63,6 +63,8 @@ export class UpdateBillService implements IService<IInput, IId> {
             }),
         ]);
 
+        const creationTime = getCurrentUTCTimestamp();
+
         {
             let existenceConsumerIds: string[];
             {
@@ -105,7 +107,7 @@ export class UpdateBillService implements IService<IInput, IId> {
                         amount: input.body.amount,
                         description: input.body.description,
                         purchasedAt: input.body.purchasedAt,
-                        updatedAt: getCurrentUTCTimestamp(),
+                        updatedAt: creationTime,
                         userId: input.userId,
                         receiverId: input.body.receiverId,
                         locationId: input.body.locationId,
@@ -125,7 +127,7 @@ export class UpdateBillService implements IService<IInput, IId> {
                 aggregateType: BillResource.BILL,
                 eventType: BillMessageEvent.UPDATED_BILL,
                 payload: bill,
-                createdAt: getCurrentUTCTimestamp(),
+                createdAt: creationTime,
             });
         }
 
