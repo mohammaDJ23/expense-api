@@ -8,12 +8,12 @@ import { ConfigService } from '@nestjs/config';
 import { Kafka } from 'kafkajs';
 
 import { MessageRegistryService } from '@/core/features/message/messageRegistry.service';
-import { OUTBOX_EVENT_ROUTES } from '@/modules/outbox/domain/domain.constants';
+import { OUTBOX_EVENTS } from '@/modules/outbox/domain/domain.constants';
 
 import { KAFKA_PROVIDER } from './kafka.constants';
 import { KafkaBatchParserService } from './kafkaBatchParser.service';
 
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
+import type { TOutboxEventType } from '@/modules/outbox/domain/types/outboxEventType.type';
 
 @Injectable()
 export class KafkaConsumerService implements OnModuleInit {
@@ -33,7 +33,7 @@ export class KafkaConsumerService implements OnModuleInit {
 
             await admin.createTopics({
                 waitForLeaders: true,
-                topics: OUTBOX_EVENT_ROUTES.map((topic) => ({
+                topics: OUTBOX_EVENTS.map((topic) => ({
                     topic,
                     numPartitions: 1,
                     replicationFactor: 1,
@@ -48,7 +48,7 @@ export class KafkaConsumerService implements OnModuleInit {
 
             await consumer.connect();
             await Promise.all(
-                OUTBOX_EVENT_ROUTES.map((topic) =>
+                OUTBOX_EVENTS.map((topic) =>
                     consumer.subscribe({
                         topic,
                         fromBeginning: true,
@@ -59,7 +59,7 @@ export class KafkaConsumerService implements OnModuleInit {
                 eachBatch: async (eachBatch) => {
                     try {
                         const handlers = this.messageRegistryService.get(
-                            eachBatch.batch.topic as TOutboxEventRoute,
+                            eachBatch.batch.topic as TOutboxEventType,
                         );
                         const parsedBatch = this.kafkaBatchParserService.execute(eachBatch.batch);
 

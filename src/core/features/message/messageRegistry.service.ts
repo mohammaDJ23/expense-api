@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 
 import type { IMessageHandler } from './messageHandler.interface';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
+import type { TOutboxEventType } from '@/modules/outbox/domain/types/outboxEventType.type';
 
 @Injectable()
 export class MessageRegistryService {
-    private readonly handlers = new Map<TOutboxEventRoute, IMessageHandler<object>[]>();
+    private readonly handlers = new Map<TOutboxEventType, IMessageHandler<object>[]>();
 
-    register(handler: IMessageHandler<object>): void {
-        const handlers = this.handlers.get(handler.route) ?? [];
+    register(handler: IMessageHandler<object>, eventType: TOutboxEventType): void {
+        const handlers = this.handlers.get(eventType) ?? [];
         handlers.push(handler);
-        this.handlers.set(handler.route, handlers);
+        this.handlers.set(eventType, handlers);
     }
 
-    get(aggregate: TOutboxEventRoute): readonly IMessageHandler<object>[] {
-        return this.handlers.get(aggregate) ?? [];
+    get(eventType: TOutboxEventType): readonly IMessageHandler<object>[] {
+        return this.handlers.get(eventType) ?? [];
     }
 }

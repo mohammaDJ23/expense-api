@@ -5,6 +5,7 @@ import { MESSAGE_HANDLER_METADATA } from './message.constants';
 import { MessageRegistryService } from './messageRegistry.service';
 
 import type { IMessageHandler } from './messageHandler.interface';
+import type { TOutboxEventType } from '@/modules/outbox/domain/types/outboxEventType.type';
 
 @Injectable()
 export class MessageDiscoveryService implements OnModuleInit {
@@ -24,16 +25,16 @@ export class MessageDiscoveryService implements OnModuleInit {
                 continue;
             }
 
-            const isMessageHandler = this.reflector.get<boolean>(
+            const eventType = this.reflector.get<TOutboxEventType>(
                 MESSAGE_HANDLER_METADATA,
                 instance.constructor,
             );
 
-            if (!isMessageHandler) {
+            if (!eventType) {
                 continue;
             }
 
-            this.messageRegistryService.register(instance as IMessageHandler<object>);
+            this.messageRegistryService.register(instance as IMessageHandler<object>, eventType);
         }
     }
 }
