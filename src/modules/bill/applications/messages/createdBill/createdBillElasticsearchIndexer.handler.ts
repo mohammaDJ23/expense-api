@@ -1,15 +1,13 @@
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
 import { BillElasticsearchIndexerProcessor } from '@/modules/bill/applications/messages/billElasticsearchIndexer.processor';
+import { BillMessageEvent } from '@/modules/bill/domain/enums/billMessageEvent.enum';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
 import type { ISelectBill } from '@/modules/bill/infrastructure/schemas/bill.schema';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
-@MessageHandler()
+@MessageHandler(BillMessageEvent.CREATED_BILL)
 export class CreatedBillElasticsearchIndexerHandler implements IMessageHandler<ISelectBill> {
-    route: TOutboxEventRoute = 'bill.created';
-
     constructor(
         private readonly billElasticsearchIndexerProcessor: BillElasticsearchIndexerProcessor,
     ) {}

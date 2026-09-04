@@ -4,7 +4,7 @@ import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindBillListByUserIdService } from '@/modules/bill/applications/services/findBillListByUserId.service';
-import { BillResource } from '@/modules/bill/bill.enum';
+import { BillResource } from '@/modules/bill/domain/enums/bill.enum';
 import { DeleteBillsElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/deleteBillsElasticsearch.query';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';

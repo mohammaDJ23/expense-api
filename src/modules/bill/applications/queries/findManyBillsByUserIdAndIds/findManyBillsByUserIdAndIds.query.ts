@@ -1,5 +1,5 @@
 import { Cacheable } from '@/core/features/cache/cacheable.decorator';
-import { BillResource } from '@/modules/bill/bill.enum';
+import { BillResource } from '@/modules/bill/domain/enums/bill.enum';
 
 interface IProps {
     userId: string;

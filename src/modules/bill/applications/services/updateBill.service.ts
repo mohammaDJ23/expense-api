@@ -8,7 +8,8 @@ import { BillsConsumersRelationLoaderService } from '@/modules/bill/applications
 import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/createBillsConsumersSynchronization.service';
 import { DeleteBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/deleteBillsConsumersSynchronization.service';
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
-import { BillResource } from '@/modules/bill/bill.enum';
+import { BillResource } from '@/modules/bill/domain/enums/bill.enum';
+import { BillMessageEvent } from '@/modules/bill/domain/enums/billMessageEvent.enum';
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
@@ -122,7 +123,7 @@ export class UpdateBillService implements IService<IInput, IId> {
             await this.outboxEventPublisherService.publish({
                 aggregateId: bill.id,
                 aggregateType: BillResource.BILL,
-                eventType: 'updated',
+                eventType: BillMessageEvent.UPDATED_BILL,
                 payload: bill,
                 createdAt: getCurrentUTCTimestamp(),
             });
