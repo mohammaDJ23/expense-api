@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { CacheInvalidatorService } from '@/core/features/cache/cacheInvalidator.service';
 import { concurrency } from '@/core/utils/concurrency.util';
-import { ReceiverResource } from '@/modules/receiver/receiver.enum';
+import { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
 
 import type { IProcessor } from '@/core/interfaces/processor.interface';
 

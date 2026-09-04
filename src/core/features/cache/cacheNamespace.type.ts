@@ -1,8 +1,8 @@
-import type { BillResource } from '@/modules/bill/bill.enum';
-import type { ConsumerResource } from '@/modules/consumer/consumer.enum';
-import type { LocationResource } from '@/modules/location/location.enum';
-import type { ReceiverResource } from '@/modules/receiver/receiver.enum';
-import type { UserResource } from '@/modules/user/user.enum';
+import type { BillResource } from '@/modules/bill/domain/enums/bill.enum';
+import type { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
+import type { LocationResource } from '@/modules/location/domain/enums/location.enum';
+import type { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
+import type { UserResource } from '@/modules/user/domain/enums/user.enum';
 
 export type TCacheNamespace =
     BillResource | ConsumerResource | LocationResource | ReceiverResource | UserResource;
