@@ -15,5 +15,4 @@ export interface IOauthAccountRepository
         provider: OauthProvider,
         providerId: string,
     ): Promise<ISelectOauthAccount | null>;
-    findManyByEmailId(emailId: string): Promise<ISelectOauthAccount[]>;
 }

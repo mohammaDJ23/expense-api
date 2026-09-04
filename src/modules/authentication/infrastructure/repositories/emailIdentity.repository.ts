@@ -47,16 +47,6 @@ export class EmailIdentityRepository implements IEmailIdentityRepository {
         );
     }
 
-    findByUserIdOrNull(userId: string): Promise<ISelectEmailIdentity | null> {
-        return toEntityOrNull(
-            this.drizzleRepository.db
-                .select()
-                .from(emailIdentities)
-                .where(eq(emailIdentities.userId, userId))
-                .execute(),
-        );
-    }
-
     findByUserIdOrThrow(userId: string): Promise<ISelectEmailIdentity> {
         return toEntityOrThrow(
             this.drizzleRepository.db

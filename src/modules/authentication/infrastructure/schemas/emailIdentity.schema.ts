@@ -1,10 +1,6 @@
-import { relations } from 'drizzle-orm';
 import { uuid, pgTable, timestamp, varchar, index } from 'drizzle-orm/pg-core';
 
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
-
-import { localAccounts } from './localAccount.schema';
-import { oauthAccounts } from './oauthAccount.schema';
 
 export const emailIdentities = pgTable(
     'email_identities',
@@ -23,15 +19,6 @@ export const emailIdentities = pgTable(
     },
     (table) => [index('idx_email_identities_user_id').on(table.userId)],
 );
-
-export const emailIdentRelations = relations(emailIdentities, ({ one, many }) => ({
-    user: one(users, {
-        fields: [emailIdentities.userId],
-        references: [users.id],
-    }),
-    localAccounts: one(localAccounts),
-    oauthAccounts: many(oauthAccounts),
-}));
 
 type TSelectEmailIdentity = typeof emailIdentities.$inferSelect;
 type TInsertEmailIdentity = typeof emailIdentities.$inferInsert;

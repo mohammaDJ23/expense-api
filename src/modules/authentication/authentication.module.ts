@@ -22,11 +22,9 @@ import { SendSignupInitiationEmailHandler } from '@/modules/authentication/appli
 import { EmailIdentityListCursorPaginationDefinition } from '@/modules/authentication/applications/pagination/cursor/emailIdentityListCursorPagination.definition';
 import { ExistsEmailIdentityByEmailHandler } from '@/modules/authentication/applications/queries/existsEmailIdentityByEmail/existsEmailIdentityByEmail.handler';
 import { FindEmailIdentityByEmailOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.handler';
-import { FindEmailIdentityByUserIdOrNullHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByUserIdOrNull/findEmailIdentityByUserIdOrNull.handler';
 import { FindEmailIdentityByUserIdOrThrowHandler } from '@/modules/authentication/applications/queries/findEmailIdentityByUserIdOrThrow/findEmailIdentityByUserIdOrThrow.handler';
 import { FindEmailIdentityListHandler } from '@/modules/authentication/applications/queries/findEmailIdentityList/findEmailIdentityList.handler';
 import { FindLocalAccountByEmailIdOrNullHandler } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.handler';
-import { FindManyOauthAccountByEmailIdlHandler } from '@/modules/authentication/applications/queries/findManyOauthAccountByEmailId/findManyOauthAccountByEmailId.handler';
 import { FindOauthAccountByProviderAndProviderIdOrNullHandler } from '@/modules/authentication/applications/queries/findOauthAccountByProviderAndProviderIdOrNull/findOauthAccountByProviderAndProviderIdOrNull.handler';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { FindEmailIdentityListService } from '@/modules/authentication/applications/services/findEmailIdentityList.service';
@@ -102,8 +100,6 @@ import { UserModule } from '@/modules/user/user.module';
         DeleteLocalResetPasswordCacheHandler,
         SendLocalResetPasswordEmailHandler,
         SendForgotPasswordEmailHandler,
-        FindEmailIdentityByUserIdOrNullHandler,
-        FindManyOauthAccountByEmailIdlHandler,
         FindEmailIdentityListHandler,
         EmailIdentityListCursorPaginationDefinition,
         FindEmailIdentityListService,

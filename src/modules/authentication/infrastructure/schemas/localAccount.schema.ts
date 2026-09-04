@@ -1,4 +1,3 @@
-import { relations } from 'drizzle-orm';
 import { uuid, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 import { emailIdentities } from './emailIdentity.schema';
@@ -18,13 +17,6 @@ export const localAccounts = pgTable('local_accounts', {
         .notNull()
         .defaultNow(),
 });
-
-export const localAccountsRelations = relations(localAccounts, ({ one }) => ({
-    email: one(emailIdentities, {
-        fields: [localAccounts.emailId],
-        references: [emailIdentities.id],
-    }),
-}));
 
 type TSelectLocalAccount = typeof localAccounts.$inferSelect;
 type TInsertLocalAccount = typeof localAccounts.$inferInsert;
