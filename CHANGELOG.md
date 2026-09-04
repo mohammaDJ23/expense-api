@@ -1,3 +1,92 @@
+## [5.0.0](https://github.com/mohammaDJ23/expense-api/compare/v4.3.6...v5.0.0) (2026-09-04)
+
+### ✨ Features
+
+- 142074 add CreateEmailIdentityCommand ([1afa566](https://github.com/mohammaDJ23/expense-api/commit/1afa566cd686d25709be0f12379ff5e721f27e85))
+- 142074 add CreateLocalAccountCommand ([99c5164](https://github.com/mohammaDJ23/expense-api/commit/99c51642c5791d088470e7973ec0b67e57c3f4bd))
+- 142074 add CreateOauthAccountCommand ([4716e54](https://github.com/mohammaDJ23/expense-api/commit/4716e5407ec6aa02945589ea3b4fcbab6dd8e5cc))
+- 142074 add ExistsEmailIdentityByEmailQuery ([4d9782a](https://github.com/mohammaDJ23/expense-api/commit/4d9782a7ab1057588812de9d4b0e48029a5a54b4))
+- 142074 add FindEmailIdentityByEmailOrNullQuery ([8a7ca70](https://github.com/mohammaDJ23/expense-api/commit/8a7ca7057153807562319725c081cedf97e2465a))
+- 142074 add FindEmailIdentityByEmailOrThrowQuery ([a8365c1](https://github.com/mohammaDJ23/expense-api/commit/a8365c18ccd017dadc95b0a089a246d74a8efb2e))
+- 142074 add FindEmailIdentityByUserIdrThrowQuery ([05a4d61](https://github.com/mohammaDJ23/expense-api/commit/05a4d61c5d1f42deab259cb039b74e03d1e08c35))
+- 142074 add FindEmailIdentityListService ([664a3d0](https://github.com/mohammaDJ23/expense-api/commit/664a3d0bb58ef3881eb7fd57b884bba5c8c2e95f))
+- 142074 add FindLocalAccountByEmailIdQuery ([8602f68](https://github.com/mohammaDJ23/expense-api/commit/8602f68c60a6b67663c1d3e7733402adff492583))
+- 142074 add FindManyEmailIdentitiesByUserIdsQuery ([d7b044f](https://github.com/mohammaDJ23/expense-api/commit/d7b044f155010e964e0575238b2c18de0058e64f))
+- 142074 add FindOauthAccountByIdOrThrowQuery ([d3e757c](https://github.com/mohammaDJ23/expense-api/commit/d3e757ca976084bd13477329d35bbdc1ff926777))
+- 142074 add FindOauthAccountByProviderAndProviderIdQuery ([2c73470](https://github.com/mohammaDJ23/expense-api/commit/2c73470191c4de64a32d2c41eb6062f79a12bab5))
+- 142074 add OauthAuthenticationService ([35a83e7](https://github.com/mohammaDJ23/expense-api/commit/35a83e75ec3cc175fda53d8293077c8164b5c2c8))
+- 142074 add the FindEmailIdentityByUserIdrNullQuery and FindOauthAccountByEmailIdOrNullQuery queries ([4e1f0d2](https://github.com/mohammaDJ23/expense-api/commit/4e1f0d2c4c67f824ac468f84fe44cf65d2de398c))
+- 142074 add the local account initiation and creation ([465c41f](https://github.com/mohammaDJ23/expense-api/commit/465c41f57214ec91a53405ccdb799830ad6fa2f1))
+- 142074 add the new flow of local signup ([a45bf2f](https://github.com/mohammaDJ23/expense-api/commit/a45bf2f8a4e502fc57384c0dd93d6232b19477fa))
+- 142074 add UpdateLocalAccountCommand ([74fe83a](https://github.com/mohammaDJ23/expense-api/commit/74fe83ab175497c74746eb7f40739044577ba168))
+- 142074 add UpdateOauthAccountCommand ([330f56b](https://github.com/mohammaDJ23/expense-api/commit/330f56bcbcf2df5a0847c1de2afad0262454e809))
+- 142074 implement the local login process ([c5646a7](https://github.com/mohammaDJ23/expense-api/commit/c5646a719d6f8e209cf54eed08564885a3b1a6fa))
+
+### 🐛 Bug Fixes
+
+- 142074 change the flow of check verified account ([7d17634](https://github.com/mohammaDJ23/expense-api/commit/7d1763420b7dde2f629c5d7667784340e2ee94fc))
+- 142074 resolve the dependencies ([ab54318](https://github.com/mohammaDJ23/expense-api/commit/ab54318c327b2fefd55b536df49de0d1ec3afab3))
+
+### ♻️ Code Refactoring
+
+- 142074 change the flow based on oauth current user ([90a5b4a](https://github.com/mohammaDJ23/expense-api/commit/90a5b4adf8f1756eea04e86eac275044e89e9931))
+- 142074 change the logic of LocalForgotPasswordService ([dea3306](https://github.com/mohammaDJ23/expense-api/commit/dea3306e5eac3d18f9c664230cd8945368b4c906))
+- 142074 change the logic of LocalSendVerificationService ([0c5b1c8](https://github.com/mohammaDJ23/expense-api/commit/0c5b1c81288f2b1fd65d6e92b0ccf6bf4eddc96b))
+- 142074 change the logic of LocalVerifyVerificationService ([e9bda05](https://github.com/mohammaDJ23/expense-api/commit/e9bda05aa695b6febe636ce806629a79aeea1af5))
+- 142074 change the query result ([980849d](https://github.com/mohammaDJ23/expense-api/commit/980849dda69611139a0ac52dc59c06c97e66d702))
+- 142074 delete the cache when local signup was success ([27d356e](https://github.com/mohammaDJ23/expense-api/commit/27d356eb7846518ab4eb58227051392308b58bc8))
+- 142074 do not pass email to user and split the message part ([27eea95](https://github.com/mohammaDJ23/expense-api/commit/27eea95cfa287bad0e74a8d6b24a1158f2d1bbc3))
+- 142074 move out the related files to the authentication module ([e3e5d68](https://github.com/mohammaDJ23/expense-api/commit/e3e5d687ecb25b51c60dc23c888dde651642340e))
+- 142074 remove FindOauthAccountByIdOrThrowQuery ([11c54a3](https://github.com/mohammaDJ23/expense-api/commit/11c54a31aa356e659cb040bfb32a72f88bbf2f7e))
+- 142074 remove queries and relations that not using ([1032733](https://github.com/mohammaDJ23/expense-api/commit/1032733c39abd401abf035780f96d3357f034476))
+- 142074 remove transactional ([b383259](https://github.com/mohammaDJ23/expense-api/commit/b38325976635ca1a49cbac0289801f033d7aec0f))
+- 142074 remove try catch ([2c9a0ec](https://github.com/mohammaDJ23/expense-api/commit/2c9a0ecf2463ba925420b145677ad0e5f9b0ed07))
+- 142074 rename all verify verification to local account verification ([39e5d5c](https://github.com/mohammaDJ23/expense-api/commit/39e5d5ce3754607759af2638b60bfb6206b68af5))
+- 142074 rename ExistsEmailIdentityByEmailQuery ([f6911e9](https://github.com/mohammaDJ23/expense-api/commit/f6911e9e5e7c95166ba59932b23fd9c4f6720fe6))
+- 142074 rename LocalAccountVerifiedVerificationMailerService and SendLocalAccountVerifiedVerificationEmailHandler ([6dfbfe3](https://github.com/mohammaDJ23/expense-api/commit/6dfbfe3ebc1bc916f2e94218d343c9736bbe08ec))
+- 142074 rename password token payload ([3292240](https://github.com/mohammaDJ23/expense-api/commit/329224026c3b64ce36dfaa485c88952ca42709c6))
+- 142074 rename verifyVerification ([99ef1cc](https://github.com/mohammaDJ23/expense-api/commit/99ef1cc2c08cb58971a576ef9ca14bbc07b2636f))
+- 142074 return boolean ([e43be55](https://github.com/mohammaDJ23/expense-api/commit/e43be555dbf58e7e7bb221e66a4997f43ce4cc35))
+- 142074 update LocalForgotPasswordService ([ddb67e7](https://github.com/mohammaDJ23/expense-api/commit/ddb67e7d443d6ddadbc37067a3a1ff4b385e278f))
+- 142074 update the logic of jwt ([7a41227](https://github.com/mohammaDJ23/expense-api/commit/7a412273714173a4e69211e53e37768f70bcbde8))
+- 142074 update the logic of LocalResetPasswordService ([f3d707e](https://github.com/mohammaDJ23/expense-api/commit/f3d707e2c9d9c326bfe05f86230d2b15f70cacf3))
+
+### 💄 Breaking changes
+
+- 142074 change the flow of signup ([72984aa](https://github.com/mohammaDJ23/expense-api/commit/72984aaf25e8e5062c9fb6b4cbbe70990650e427))
+- 142074 remove all codes related to email ([b3643bd](https://github.com/mohammaDJ23/expense-api/commit/b3643bdf7a548be799d4c8906614b9a56e6fe675))
+
+### 🔧 Chores
+
+- 142074 add local_reset_password event ([1edf29d](https://github.com/mohammaDJ23/expense-api/commit/1edf29d1ee82024f2a5409114f830835ee484d49))
+- 142074 add OutboxModule ([4524045](https://github.com/mohammaDJ23/expense-api/commit/4524045e0adbd47ca9ce7568d06c7800e3074617))
+- 142074 add the schema tables of the email identity, local and oauth accounts ([d361504](https://github.com/mohammaDJ23/expense-api/commit/d361504529c0689c05cdbd1d0cfbea6245cccbf8))
+- 142074 add the types ([458fbd9](https://github.com/mohammaDJ23/expense-api/commit/458fbd905cd368dd4d82d4a3f319ed739acecf96))
+- 142074 apply the format ([ed4b67c](https://github.com/mohammaDJ23/expense-api/commit/ed4b67c0be878c69125e2e6860219ebc367071bc))
+- 142074 change the order of provider and provider id ([bda6043](https://github.com/mohammaDJ23/expense-api/commit/bda6043f8d5bc0527495d7c2d247e102469fe5ef))
+- 142074 consider the oauth current user type ([0c3cd99](https://github.com/mohammaDJ23/expense-api/commit/0c3cd99eaf3a395bd113f2963eeb405d51394339))
+- 142074 install uuid pacakge ([beae289](https://github.com/mohammaDJ23/expense-api/commit/beae2894d0e2c940dd904bd4f109c18a6aead21e))
+- 142074 registerr DeleteLocalSignupCacheHandler ([cf2856b](https://github.com/mohammaDJ23/expense-api/commit/cf2856bcfefb8936832a3dcce5df98d6a44403c8))
+- 142074 remove createdlocalAccountCreation ([eabc905](https://github.com/mohammaDJ23/expense-api/commit/eabc9051937513e9aa2a0f286810f5862c494e0f))
+- 142074 remove DeleteLocalResetPasswordCache.handler.ts ([35dac60](https://github.com/mohammaDJ23/expense-api/commit/35dac60314b308547a086a625eb684e4cb887327))
+- 142074 remove FindManyEmailIdentitiesByUserIdsQuery ([0e7cffa](https://github.com/mohammaDJ23/expense-api/commit/0e7cffa130f8b41b9bf6fdb732191ea4e48873a8))
+- 142074 remove veryfiedAt since the auth logic was changed ([960a087](https://github.com/mohammaDJ23/expense-api/commit/960a087eede286340bd8c84bd6fdae4b5e564919))
+- 142074 rename creationTime ([dfe2c0e](https://github.com/mohammaDJ23/expense-api/commit/dfe2c0e7bc022dd74bd1815f1c1f4488324fa1b7))
+- 142074 rename DeleteLocalResetPasswordCacheHandler ([c4faeb2](https://github.com/mohammaDJ23/expense-api/commit/c4faeb252191ca151a2990aec1b71f20a6ac39e6))
+- 142074 rename FindLocalAccountByEmailIdOrThrowQuery and FindOauthAccountByProviderAndProviderIdOrNullQuery ([66a714e](https://github.com/mohammaDJ23/expense-api/commit/66a714eca3c8eaca886728e33e5e190aabe108c5))
+- 142074 rename the files ([31cfd62](https://github.com/mohammaDJ23/expense-api/commit/31cfd621610ff7acf04066441b6e086445afb6a2))
+- 142074 rename the path and service ([62d3eda](https://github.com/mohammaDJ23/expense-api/commit/62d3edac4fc7c8af69894631298d27dcb5e5febc))
+- 142074 update current user and add oauth current user ([0480460](https://github.com/mohammaDJ23/expense-api/commit/04804603fa4441f2b0df6b9f774ac262458f91f3))
+- 142074 update fast-uri ([adae0a5](https://github.com/mohammaDJ23/expense-api/commit/adae0a52bb961e8c2812fce2368a5d5d56bb0e76))
+- 142074 update multer ([5e5a9b4](https://github.com/mohammaDJ23/expense-api/commit/5e5a9b4c87b0982614e24003ed192b6c4e18c1f7))
+- 142074 update the logic of VerifiedVerificationMailerService ([018ed34](https://github.com/mohammaDJ23/expense-api/commit/018ed34bf081080937d77462ef7037f5a101d289))
+- 142074 use code block ([d1fe7a2](https://github.com/mohammaDJ23/expense-api/commit/d1fe7a2d71f8e8b0ff44756db4c103d84be3d85e))
+- 142074 use JWTModule ([f4e2fbd](https://github.com/mohammaDJ23/expense-api/commit/f4e2fbddc8b6fdfbfceb41aead79bb89f45580be))
+- 142074 use oauth login service ([0be0db3](https://github.com/mohammaDJ23/expense-api/commit/0be0db3d36402e62b898885fd20ac473f0c7bffc))
+- 142074 use promise all ([d044140](https://github.com/mohammaDJ23/expense-api/commit/d04414040c3b8b1caf57fb1ae7fccd0ac5491b78))
+- 142074 use queryBus ([f3b04ec](https://github.com/mohammaDJ23/expense-api/commit/f3b04ec00066ca8111acf0576d30802fdef0a5ba))
+- 142074 use the related interface and remove the message of error ([1cb2bb2](https://github.com/mohammaDJ23/expense-api/commit/1cb2bb217be370addc38950fa81b59311dff7411))
+
 ## [4.3.6](https://github.com/mohammaDJ23/expense-api/compare/v4.3.5...v4.3.6) (2026-08-25)
 
 ### ♻️ Code Refactoring

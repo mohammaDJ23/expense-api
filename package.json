@@ -1,6 +1,6 @@
 {
     "name": "expense-api",
-    "version": "4.3.6",
+    "version": "5.0.0",
     "description": "This is the backend part of the expense app",
     "author": "Mohammad Nowresideh",
     "private": true,
