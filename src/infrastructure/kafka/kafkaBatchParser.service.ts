@@ -4,7 +4,6 @@ import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessagePayload } from '@/core/features/message/messagePayload.type';
 import type { IService } from '@/core/interfaces/service.interface';
 import type { TOutboxEventAggregateType } from '@/modules/outbox/domain/types/outboxEventAggregateType.type';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 import type { TOutboxEventType } from '@/modules/outbox/domain/types/outboxEventType.type';
 import type { Batch, IHeaders, KafkaMessage } from 'kafkajs';
 
@@ -21,7 +20,6 @@ export class KafkaBatchParserService implements IService<Batch, IMessageBatch[]>
                 ),
                 aggregateId: this.getRequiredHeader<string>(message.headers, 'aggregateId'),
                 eventType: this.getRequiredHeader<TOutboxEventType>(message.headers, 'eventType'),
-                route: this.getRequiredHeader<TOutboxEventRoute>(message.headers, 'route'),
                 createdAt: this.getRequiredHeader<string>(message.headers, 'createdAt'),
                 payload: this.getPayload<T>(message),
             });
