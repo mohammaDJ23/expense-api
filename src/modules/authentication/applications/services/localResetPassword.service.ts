@@ -7,7 +7,8 @@ import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util
 import { UpdateLocalAccountCommand } from '@/modules/authentication/applications/commands/updateLocalAccount/updateLocalAccount.command';
 import { FindEmailIdentityByEmailOrNullQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.query';
 import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.query';
-import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
+import { AuthenticationResource } from '@/modules/authentication/domain/enums/authentication.enum';
+import { AuthenticationMessageEvent } from '@/modules/authentication/domain/enums/authenticationMessageEvent.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import { PasswordHasherService } from './passwordHasher.service';
@@ -95,8 +96,8 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: uuid(),
-                aggregateType: AuthenticationResource.LOCAL_RESET_PASSWORD,
-                eventType: 'created',
+                aggregateType: AuthenticationResource.AUTHENTICATION,
+                eventType: AuthenticationMessageEvent.LOCAL_RESET_PASSWORD,
                 payload,
                 createdAt: creationTime,
             });

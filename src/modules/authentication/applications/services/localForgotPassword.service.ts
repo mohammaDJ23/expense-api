@@ -5,7 +5,8 @@ import { v4 as uuid } from 'uuid';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { FindEmailIdentityByEmailOrNullQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.query';
 import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.query';
-import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
+import { AuthenticationResource } from '@/modules/authentication/domain/enums/authentication.enum';
+import { AuthenticationMessageEvent } from '@/modules/authentication/domain/enums/authenticationMessageEvent.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import { PasswordTokenService } from './passwordToken.service';
@@ -65,8 +66,8 @@ export class LocalForgotPasswordService implements IService<
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: uuid(),
-                aggregateType: AuthenticationResource.LOCAL_FORGOT_PASSWORD,
-                eventType: 'created',
+                aggregateType: AuthenticationResource.AUTHENTICATION,
+                eventType: AuthenticationMessageEvent.LOCAL_FORGOT_PASSWORD,
                 payload,
                 createdAt: getCurrentUTCTimestamp(),
             });

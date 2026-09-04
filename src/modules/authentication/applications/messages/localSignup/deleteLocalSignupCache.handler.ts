@@ -1,24 +1,20 @@
-import pLimit from 'p-limit';
-
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
+import { concurrency } from '@/core/utils/concurrency.util';
 import { LocalSignupStorageService } from '@/modules/authentication/applications/services/localSignupStorage.service';
+import { AuthenticationMessageEvent } from '@/modules/authentication/domain/enums/authenticationMessageEvent.enum';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
 import type { ILocalSignupMessagePayload } from '@/modules/authentication/domain/types/localSignupMessagePayload.type';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
-@MessageHandler()
+@MessageHandler(AuthenticationMessageEvent.LOCAL_SIGNUP)
 export class DeleteLocalSignupCacheHandler implements IMessageHandler<ILocalSignupMessagePayload> {
-    route: TOutboxEventRoute = 'local_signup.created';
-    private readonly concurrency = pLimit(2);
-
     constructor(private readonly localSignupStorageService: LocalSignupStorageService) {}
 
     async execute(batch: IMessageBatch<ILocalSignupMessagePayload>[]): Promise<void> {
         await Promise.allSettled(
             batch.map((item) =>
-                this.concurrency(() => this.localSignupStorageService.delete(item.payload.email)),
+                concurrency(() => this.localSignupStorageService.delete(item.payload.email)),
             ),
         );
     }
