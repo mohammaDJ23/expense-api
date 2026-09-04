@@ -116,7 +116,7 @@ export class BillService {
     }
 
     exportExcel(userId: string): Promise<StreamableFile> {
-        return this.queryDispatcher
+        return this.queryBus
             .execute<FindEmailIdentityByUserIdrThrowQuery, ISelectEmailIdentity>(
                 new FindEmailIdentityByUserIdrThrowQuery({ userId }),
             )
