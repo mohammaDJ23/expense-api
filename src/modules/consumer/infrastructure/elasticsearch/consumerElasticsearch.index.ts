@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { ElasticsearchAnalysisSettings } from '@/infrastructure/elasticsearch/elasticsearchAnalysis.settings';
-import { ConsumerResource } from '@/modules/consumer/consumer.enum';
+import { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
 
 import type { IElasticsearchIndex } from '@/infrastructure/elasticsearch/elasticsearchIndex.interface';
 import type { estypes } from '@elastic/elasticsearch';
