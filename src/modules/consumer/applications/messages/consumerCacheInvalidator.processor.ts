@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { CacheInvalidatorService } from '@/core/features/cache/cacheInvalidator.service';
 import { concurrency } from '@/core/utils/concurrency.util';
 import { BillResource } from '@/modules/bill/domain/enums/bill.enum';
-import { ConsumerResource } from '@/modules/consumer/consumer.enum';
+import { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
 
 import type { IProcessor } from '@/core/interfaces/processor.interface';
 
