@@ -1,5 +1,5 @@
 import { Cacheable } from '@/core/features/cache/cacheable.decorator';
-import { LocationResource } from '@/modules/location/location.enum';
+import { LocationResource } from '@/modules/location/domain/enums/location.enum';
 
 interface IProps {
     userId: string;

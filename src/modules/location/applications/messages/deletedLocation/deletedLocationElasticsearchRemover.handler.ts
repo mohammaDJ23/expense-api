@@ -1,16 +1,14 @@
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
+import { LocationMessageEvent } from '@/modules/location/domain/enums/locationMessageEvent.enum';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 import type { estypes } from '@elastic/elasticsearch';
 
-@MessageHandler()
+@MessageHandler(LocationMessageEvent.DELETED_LOCATION)
 export class DeletedLocationElasticsearchRemoverHandler implements IMessageHandler<ISelectLocation> {
-    route: TOutboxEventRoute = 'location.deleted';
-
     constructor(private readonly elasticsearchService: ElasticSearchService) {}
 
     async execute(batch: IMessageBatch<ISelectLocation>[]): Promise<void> {

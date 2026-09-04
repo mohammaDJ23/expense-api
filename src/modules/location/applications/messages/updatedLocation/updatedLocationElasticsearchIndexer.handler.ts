@@ -1,15 +1,13 @@
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
 import { LocationElasticsearchIndexerProcessor } from '@/modules/location/applications/messages/locationElasticsearchIndexer.processor';
+import { LocationMessageEvent } from '@/modules/location/domain/enums/locationMessageEvent.enum';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
-@MessageHandler()
+@MessageHandler(LocationMessageEvent.UPDATED_LOCATION)
 export class UpdatedLocationElasticsearchIndexerHandler implements IMessageHandler<ISelectLocation> {
-    route: TOutboxEventRoute = 'location.updated';
-
     constructor(
         private readonly locationElasticsearchIndexerProcessor: LocationElasticsearchIndexerProcessor,
     ) {}

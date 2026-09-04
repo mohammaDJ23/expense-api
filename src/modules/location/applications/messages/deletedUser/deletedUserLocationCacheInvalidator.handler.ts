@@ -1,15 +1,13 @@
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
 import { LocationCacheInvalidatorProcessor } from '@/modules/location/applications/messages/locationCacheInvalidator.processor';
+import { UserMessageEvent } from '@/modules/user/domain/enums/userMessageEvent.enum';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.schema';
 
-@MessageHandler()
+@MessageHandler(UserMessageEvent.DELETED_USER)
 export class DeletedUserLocationCacheInvalidatorHandler implements IMessageHandler<ISelectUser> {
-    route: TOutboxEventRoute = 'user.deleted';
-
     constructor(
         private readonly locationCacheInvalidatorProcessor: LocationCacheInvalidatorProcessor,
     ) {}
