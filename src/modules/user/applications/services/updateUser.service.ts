@@ -6,7 +6,8 @@ import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
-import { UserResource } from '@/modules/user/user.enum';
+import { UserResource } from '@/modules/user/domain/enums/user.enum';
+import { UserMessageEvent } from '@/modules/user/domain/enums/userMessageEvent.enum';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { TUpdateUser } from '@/modules/user/domain/types/updateUser.type';
@@ -31,7 +32,7 @@ export class UpdateUserService implements IService<TUpdateUser, ISelectUser> {
         await this.outboxEventPublisherService.publish({
             aggregateId: updatedUser.id,
             aggregateType: UserResource.USER,
-            eventType: 'updated',
+            eventType: UserMessageEvent.UPDATED_USER,
             payload: updatedUser,
             createdAt: getCurrentUTCTimestamp(),
         });
