@@ -3,7 +3,8 @@ import { v4 as uuid } from 'uuid';
 
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { UniqueEmailIdentityValidatorService } from '@/modules/authentication/applications/services/validators/uniqueEmailIdentityValidator.service';
-import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
+import { AuthenticationResource } from '@/modules/authentication/domain/enums/authentication.enum';
+import { AuthenticationMessageEvent } from '@/modules/authentication/domain/enums/authenticationMessageEvent.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import { LocalSignupTokenService } from './localSignupToken.service';
@@ -37,8 +38,8 @@ export class LocalSignupInitiationService implements IService<IInput, boolean> {
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: uuid(),
-                aggregateType: AuthenticationResource.LOCAL_SIGNUP_INITIATION,
-                eventType: 'created',
+                aggregateType: AuthenticationResource.AUTHENTICATION,
+                eventType: AuthenticationMessageEvent.LOCAL_SIGNUP_INITIATION,
                 payload,
                 createdAt: getCurrentUTCTimestamp(),
             });

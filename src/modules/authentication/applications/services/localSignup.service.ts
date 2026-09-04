@@ -8,7 +8,8 @@ import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util
 import { CreateEmailIdentityCommand } from '@/modules/authentication/applications/commands/createEmailIdentity/createEmailIdentity.command';
 import { CreateLocalAccountCommand } from '@/modules/authentication/applications/commands/createLocalAccount/createLocalAccount.command';
 import { UniqueEmailIdentityValidatorService } from '@/modules/authentication/applications/services/validators/uniqueEmailIdentityValidator.service';
-import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
+import { AuthenticationResource } from '@/modules/authentication/domain/enums/authentication.enum';
+import { AuthenticationMessageEvent } from '@/modules/authentication/domain/enums/authenticationMessageEvent.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { CreateUserService } from '@/modules/user/applications/services/createUser.service';
 import { UserRoles } from '@/modules/user/domain/enums/userRoles.enum';
@@ -98,8 +99,8 @@ export class LocalSignupService implements IService<LocalSignupRequestDto, boole
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: uuid(),
-                aggregateType: AuthenticationResource.LOCAL_SIGNUP,
-                eventType: 'created',
+                aggregateType: AuthenticationResource.AUTHENTICATION,
+                eventType: AuthenticationMessageEvent.LOCAL_SIGNUP,
                 payload,
                 createdAt: creationTime,
             });

@@ -8,7 +8,8 @@ import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util
 import { CreateLocalAccountCommand } from '@/modules/authentication/applications/commands/createLocalAccount/createLocalAccount.command';
 import { FindEmailIdentityByEmailOrNullQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByEmailOrNull/findEmailIdentityByEmailOrNull.query';
 import { FindLocalAccountByEmailIdOrNullQuery } from '@/modules/authentication/applications/queries/findLocalAccountByEmailIdOrNull/findLocalAccountByEmailIdOrNull.query';
-import { AuthenticationResource } from '@/modules/authentication/authentication.enum';
+import { AuthenticationResource } from '@/modules/authentication/domain/enums/authentication.enum';
+import { AuthenticationMessageEvent } from '@/modules/authentication/domain/enums/authenticationMessageEvent.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import { LocalAccountStorageService } from './localAccountStorage.service';
@@ -103,8 +104,8 @@ export class LocalAccountCreationService implements IService<
 
             await this.outboxEventPublisherService.publish({
                 aggregateId: uuid(),
-                aggregateType: AuthenticationResource.LOCAL_ACCOUNT_CREATION,
-                eventType: 'created',
+                aggregateType: AuthenticationResource.AUTHENTICATION,
+                eventType: AuthenticationMessageEvent.LOCAL_ACCOUNT_CREATION,
                 payload,
                 createdAt: creationTime,
             });

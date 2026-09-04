@@ -1,19 +1,15 @@
-import pLimit from 'p-limit';
-
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
+import { concurrency } from '@/core/utils/concurrency.util';
 import { LocalAccountInitiationMailerService } from '@/modules/authentication/applications/services/localAccountInitiationMailer.service';
 import { LocalAccountStorageService } from '@/modules/authentication/applications/services/localAccountStorage.service';
+import { AuthenticationMessageEvent } from '@/modules/authentication/domain/enums/authenticationMessageEvent.enum';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
 import type { IMessageHandler } from '@/core/features/message/messageHandler.interface';
 import type { ILocalAccountInitiationMessagePayload } from '@/modules/authentication/domain/types/localAccountInitiationMessagePayload.type';
-import type { TOutboxEventRoute } from '@/modules/outbox/domain/types/outboxEventRoute.type';
 
-@MessageHandler()
+@MessageHandler(AuthenticationMessageEvent.LOCAL_ACCOUNT_INITIATION)
 export class SendLocalAccountInitiationEmailHandler implements IMessageHandler<ILocalAccountInitiationMessagePayload> {
-    route: TOutboxEventRoute = 'local_account_initiation.created';
-    private readonly concurrency = pLimit(2);
-
     constructor(
         private readonly localAccountStorageService: LocalAccountStorageService,
         private readonly localAccountInitiationMailerService: LocalAccountInitiationMailerService,
@@ -22,7 +18,7 @@ export class SendLocalAccountInitiationEmailHandler implements IMessageHandler<I
     async execute(batch: IMessageBatch<ILocalAccountInitiationMessagePayload>[]): Promise<void> {
         await Promise.allSettled(
             batch.map((item) =>
-                this.concurrency(async () => {
+                concurrency(async () => {
                     await this.localAccountStorageService.delete(item.payload.email);
                     await this.localAccountStorageService.set(
                         item.payload.email,
