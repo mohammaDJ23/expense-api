@@ -6,7 +6,8 @@ import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util
 import { UpdateLocationCommand } from '@/modules/location/applications/commands/updateLocation/updateLocation.command';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
 import { LocationUniqueNameValidatorService } from '@/modules/location/applications/services/validators/locationUniqueNameValidator.service';
-import { LocationResource } from '@/modules/location/location.enum';
+import { LocationResource } from '@/modules/location/domain/enums/location.enum';
+import { LocationMessageEvent } from '@/modules/location/domain/enums/locationMessageEvent.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
@@ -57,7 +58,7 @@ export class UpdateLocationService implements IService<IInput, IId> {
         await this.outboxEventPublisherService.publish({
             aggregateId: updatedLocation.id,
             aggregateType: LocationResource.LOCATION,
-            eventType: 'updated',
+            eventType: LocationMessageEvent.UPDATED_LOCATION,
             payload: updatedLocation,
             createdAt: getCurrentUTCTimestamp(),
         });

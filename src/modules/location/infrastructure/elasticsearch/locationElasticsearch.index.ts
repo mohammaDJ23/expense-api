@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { ElasticsearchAnalysisSettings } from '@/infrastructure/elasticsearch/elasticsearchAnalysis.settings';
-import { LocationResource } from '@/modules/location/location.enum';
+import { LocationResource } from '@/modules/location/domain/enums/location.enum';
 
 import type { IElasticsearchIndex } from '@/infrastructure/elasticsearch/elasticsearchIndex.interface';
 import type { estypes } from '@elastic/elasticsearch';

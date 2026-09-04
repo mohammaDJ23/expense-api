@@ -4,8 +4,8 @@ import { MAX_LIST_LIMIT } from '@/core/core.constants';
 import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { ElasticSearchService } from '@/infrastructure/elasticsearch/elasticsearch.service';
 import { FindLocationListByUserIdService } from '@/modules/location/applications/services//findLocationListByUserId.service';
+import { LocationResource } from '@/modules/location/domain/enums/location.enum';
 import { DeleteLocationsElasticsearchQuery } from '@/modules/location/infrastructure/elasticsearch/deleteLocationsElasticsearch.query';
-import { LocationResource } from '@/modules/location/location.enum';
 
 import type { IElasticsearchSync } from '@/infrastructure/elasticsearch/elasticsearchSync.interface';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { LocationResource } from '@/modules/location/location.enum';
+import { LocationResource } from '@/modules/location/domain/enums/location.enum';
 
 import type { IElasticsearchQuery } from '@/infrastructure/elasticsearch/elasticsearchQuery.interface';
 import type { estypes } from '@elastic/elasticsearch';

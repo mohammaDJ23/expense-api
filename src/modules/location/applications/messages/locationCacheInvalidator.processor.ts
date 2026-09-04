@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import pLimit from 'p-limit';
 
 import { CacheInvalidatorService } from '@/core/features/cache/cacheInvalidator.service';
-import { LocationResource } from '@/modules/location/location.enum';
+import { concurrency } from '@/core/utils/concurrency.util';
+import { LocationResource } from '@/modules/location/domain/enums/location.enum';
 
 import type { IProcessor } from '@/core/interfaces/processor.interface';
 
@@ -12,14 +12,12 @@ interface IInput {
 
 @Injectable()
 export class LocationCacheInvalidatorProcessor implements IProcessor<IInput, void> {
-    private readonly concurrency = pLimit(2);
-
     constructor(private readonly cacheInvalidatorService: CacheInvalidatorService) {}
 
     async process(input: IInput): Promise<void> {
         await Promise.all(
             input.userIds.map((userId) =>
-                this.concurrency(() =>
+                concurrency(() =>
                     this.cacheInvalidatorService.invalidateScope(LocationResource.LOCATION, userId),
                 ),
             ),

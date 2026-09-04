@@ -5,7 +5,8 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { DeleteLocationCommand } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.command';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
-import { LocationResource } from '@/modules/location/location.enum';
+import { LocationResource } from '@/modules/location/domain/enums/location.enum';
+import { LocationMessageEvent } from '@/modules/location/domain/enums/locationMessageEvent.enum';
 import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
@@ -45,7 +46,7 @@ export class DeleteLocationService implements IService<IInput, IId> {
         await this.outboxEventPublisherService.publish({
             aggregateId: deletedLocation.id,
             aggregateType: LocationResource.LOCATION,
-            eventType: 'deleted',
+            eventType: LocationMessageEvent.DELETED_LOCATION,
             payload: deletedLocation,
             createdAt: getCurrentUTCTimestamp(),
         });
