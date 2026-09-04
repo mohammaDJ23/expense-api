@@ -1,4 +1,3 @@
-import { relations } from 'drizzle-orm';
 import { uuid, pgTable, timestamp, pgEnum, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
 
 import { OauthProvider } from '@/modules/authentication/domain/enums/oauthProvider.enum';
@@ -29,13 +28,6 @@ export const oauthAccounts = pgTable(
         uniqueIndex('uq_oauth_accounts_email_id_provider').on(table.emailId, table.provider),
     ],
 );
-
-export const oauthAccountsRelations = relations(oauthAccounts, ({ one }) => ({
-    email: one(emailIdentities, {
-        fields: [oauthAccounts.emailId],
-        references: [emailIdentities.id],
-    }),
-}));
 
 type TSelectOauthAccount = typeof oauthAccounts.$inferSelect;
 type TInsertOauthAccount = typeof oauthAccounts.$inferInsert;

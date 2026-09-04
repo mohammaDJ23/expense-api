@@ -1,7 +1,5 @@
-import { relations } from 'drizzle-orm';
 import { index, pgTable, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
 
-import { bills } from '@/modules/bill/infrastructure/schemas/bill.schema';
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
 export const locations = pgTable(
@@ -25,14 +23,6 @@ export const locations = pgTable(
         index('idx_locations_user_id_created_at_id').on(table.userId, table.createdAt, table.id),
     ],
 );
-
-export const locationsRelations = relations(locations, ({ many, one }) => ({
-    user: one(users, {
-        fields: [locations.userId],
-        references: [users.id],
-    }),
-    bills: many(bills),
-}));
 
 type TSelectLocation = typeof locations.$inferSelect;
 type TInsertLocation = typeof locations.$inferInsert;

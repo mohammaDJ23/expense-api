@@ -1,7 +1,5 @@
-import { relations } from 'drizzle-orm';
 import { uuid, pgTable, timestamp, varchar, index } from 'drizzle-orm/pg-core';
 
-import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 import { locations } from '@/modules/location/infrastructure/schemas/location.schema';
 import { receivers } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
@@ -37,22 +35,6 @@ export const bills = pgTable(
         index('idx_bills_user_id_purchased_at').on(table.userId, table.purchasedAt),
     ],
 );
-
-export const billsRelations = relations(bills, ({ one, many }) => ({
-    user: one(users, {
-        fields: [bills.userId],
-        references: [users.id],
-    }),
-    receiver: one(receivers, {
-        fields: [bills.receiverId],
-        references: [receivers.id],
-    }),
-    location: one(locations, {
-        fields: [bills.locationId],
-        references: [locations.id],
-    }),
-    billsConsumers: many(billsConsumers),
-}));
 
 type TSelectBill = typeof bills.$inferSelect;
 type TInsertBill = typeof bills.$inferInsert;

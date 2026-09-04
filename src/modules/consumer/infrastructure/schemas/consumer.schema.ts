@@ -1,7 +1,5 @@
-import { relations } from 'drizzle-orm';
 import { index, pgTable, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
 
-import { billsConsumers } from '@/modules/consumer/infrastructure/schemas/billConsumer.schema';
 import { users } from '@/modules/user/infrastructure/schemas/user.schema';
 
 export const consumers = pgTable(
@@ -25,14 +23,6 @@ export const consumers = pgTable(
         index('idx_consumers_user_id_created_at_id').on(table.userId, table.createdAt, table.id),
     ],
 );
-
-export const consumersRelations = relations(consumers, ({ many, one }) => ({
-    user: one(users, {
-        fields: [consumers.userId],
-        references: [users.id],
-    }),
-    billsConsumers: many(billsConsumers),
-}));
 
 type TSelectConsumer = typeof consumers.$inferSelect;
 type TInsertConsumer = typeof consumers.$inferInsert;
