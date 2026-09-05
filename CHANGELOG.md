@@ -1,3 +1,32 @@
+## [5.0.1](https://github.com/mohammaDJ23/expense-api/compare/v5.0.0...v5.0.1) (2026-09-05)
+
+### 🐛 Bug Fixes
+
+- 062765 use the resources ([cdded3b](https://github.com/mohammaDJ23/expense-api/commit/cdded3be9fd75903ccd2b19628e42bc4fd463eea))
+
+### ♻️ Code Refactoring
+
+- 062765 remove route ([8342830](https://github.com/mohammaDJ23/expense-api/commit/83428304d1073af9984e6dc29c7ee46322a6a908))
+- 062765 remove route ([5642799](https://github.com/mohammaDJ23/expense-api/commit/56427995677b4d7aec4068ef041f519c5b18ea54))
+- 062765 remove route and use just event type ([3923f9b](https://github.com/mohammaDJ23/expense-api/commit/3923f9b967bcba20cf5829e94e1e7b8984a4df98))
+- 062765 rename messages and use message events ([addbb6a](https://github.com/mohammaDJ23/expense-api/commit/addbb6a9d0ccf3d304b625cbdd391c023fb35fdc))
+- 062765 use a proper time to be sync the operation ([cd58eec](https://github.com/mohammaDJ23/expense-api/commit/cd58eecc27356da93012efeccfa74d97a23b7848))
+- 062765 use global concurrency ([e5169be](https://github.com/mohammaDJ23/expense-api/commit/e5169bec14f691379bf8cad426f27ccbbd5e3fee))
+- 062765 use message events ([db14850](https://github.com/mohammaDJ23/expense-api/commit/db1485023f7f8bec20ff49ae49943518fc1d9c67))
+- 062765 use message events ([f4fbf02](https://github.com/mohammaDJ23/expense-api/commit/f4fbf0262030fde2afc017440cf7ebc741575aa6))
+- 062765 use message events ([3369e5f](https://github.com/mohammaDJ23/expense-api/commit/3369e5fc8e405837f761bb7c6e79dbf77dd20762))
+- 062765 use message events ([b687a74](https://github.com/mohammaDJ23/expense-api/commit/b687a748158f084b01e9f8f0e119ea64fc89053e))
+- 062765 use message events ([5232054](https://github.com/mohammaDJ23/expense-api/commit/52320545a7c51e01bcf4d8cbcd70b9c1a7e93281))
+- 062765 use new located resources ([2a323d5](https://github.com/mohammaDJ23/expense-api/commit/2a323d5a76973d89e7b4fed81dbe0d62f925acc0))
+
+### 🔧 Chores
+
+- 062765 add concurrency ([e07a3d3](https://github.com/mohammaDJ23/expense-api/commit/e07a3d38496c298965fcd7d0b3bdb3b282943555))
+- 062765 add resources ([99b48be](https://github.com/mohammaDJ23/expense-api/commit/99b48be1d2da2f45850a2a58d5ab069b878bf53a))
+- 062765 add the message events ([ae9ba5a](https://github.com/mohammaDJ23/expense-api/commit/ae9ba5a6f1dfbc5450b928efca993b85f5b1c0b7))
+- 062765 change the route field ([f0b7983](https://github.com/mohammaDJ23/expense-api/commit/f0b7983860d8ca0589bdf8255078d291a2dfe395))
+- 062765 use eventType ([bef89b9](https://github.com/mohammaDJ23/expense-api/commit/bef89b92e669d84495fabe85d2820246ec84c719))
+
 ## [5.0.0](https://github.com/mohammaDJ23/expense-api/compare/v4.3.6...v5.0.0) (2026-09-04)
 
 ### ✨ Features
