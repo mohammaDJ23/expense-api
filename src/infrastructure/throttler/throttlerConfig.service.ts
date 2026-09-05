@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { RedisService } from '@liaoliaots/nestjs-redis';
 import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
+
+import { CacheService } from '@/core/features/cache/cache.service';
 
 import { THROTTLE_DEFAULT_NAME } from './throttler.constants';
 
@@ -11,13 +12,13 @@ import type { ThrottlerModuleOptions, ThrottlerOptionsFactory } from '@nestjs/th
 export class ThrottlerConfigService implements ThrottlerOptionsFactory {
     constructor(
         private readonly configService: ConfigService,
-        private readonly redisService: RedisService,
+        private readonly cacheService: CacheService,
     ) {}
 
     // eslint-disable-next-line sonarjs/function-return-type
     createThrottlerOptions(): ThrottlerModuleOptions {
         try {
-            const redisClient = this.redisService.getOrThrow();
+            const redis = this.cacheService.getRedis();
 
             return {
                 throttlers: [
@@ -30,7 +31,7 @@ export class ThrottlerConfigService implements ThrottlerOptionsFactory {
                         ),
                     },
                 ],
-                storage: new ThrottlerStorageRedisService(redisClient),
+                storage: new ThrottlerStorageRedisService(redis),
             };
         } catch {
             throw new Error('Could not get the throttle configuration');

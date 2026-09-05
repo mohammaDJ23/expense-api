@@ -1,24 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { RedisService } from '@liaoliaots/nestjs-redis';
+
+import { CacheService } from '@/core/features/cache/cache.service';
 
 @Injectable()
 export class LocalAccountStorageService {
-    private readonly prefixKey = 'local-account';
-
-    constructor(private readonly redisService: RedisService) {}
+    constructor(private readonly cacheService: CacheService) {}
 
     async set(key: string, value: string): Promise<void> {
-        const redis = this.redisService.getOrThrow();
-        await redis.setex(`${this.prefixKey}:${key}`, 1 * 60 * 10, value);
+        await this.cacheService.set(this.createKey(key), value, 1 * 60 * 10);
     }
 
     get(key: string): Promise<string | null> {
-        const redis = this.redisService.getOrThrow();
-        return redis.get(`${this.prefixKey}:${key}`);
+        return this.cacheService.get(this.createKey(key));
     }
 
     async delete(key: string): Promise<void> {
-        const redis = this.redisService.getOrThrow();
-        await redis.del(`${this.prefixKey}:${key}`);
+        await this.cacheService.delete(this.createKey(key));
+    }
+
+    private createKey(key: string): string {
+        return `local-account:${key}`;
     }
 }
