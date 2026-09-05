@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
-import { CACHE_KEY_PREFIX } from './cache.constants';
+import { CACHE_KEY_PREFIX } from './queryCache.constants';
 
-import type { TCacheNamespace } from './cacheNamespace.type';
+import type { TQueryCacheNamespace } from './queryCacheNamespace.type';
 
 @Injectable()
-export class CacheKeyService {
-    create(namespace: TCacheNamespace, scopeId: string, hash: string): string {
+export class QueryCacheKeyService {
+    create(namespace: TQueryCacheNamespace, scopeId: string, hash: string): string {
         return `${CACHE_KEY_PREFIX}:${namespace}:${scopeId}:${hash}`;
     }
 

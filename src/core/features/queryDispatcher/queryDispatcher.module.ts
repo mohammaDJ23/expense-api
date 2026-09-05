@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 
-import { CacheModule } from '@/core/features/cache/cache.module';
+import { QueryCacheModule } from '@/core/features/queryCache/queryCache.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 
 import { QueryDispatcher } from './query.dispatcher';
 import { QueryPipeline } from './query.pipeline';
 
 @Module({
-    imports: [CqrsModule, CacheModule],
+    imports: [CqrsModule, QueryCacheModule],
     providers: [QueryDispatcher, QueryPipeline],
     exports: [QueryDispatcher],
 })

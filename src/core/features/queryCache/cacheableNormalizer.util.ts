@@ -1,4 +1,4 @@
-import { DEFAULT_CACHE_SCOPE, DEFAULT_CACHE_TTL } from './cache.constants';
+import { DEFAULT_CACHE_SCOPE, DEFAULT_CACHE_TTL } from './queryCache.constants';
 
 import type { ICacheable, INormalizedCacheable } from './cacheable.type';
 import type { TQuery } from '@/infrastructure/cqrs/query.type';

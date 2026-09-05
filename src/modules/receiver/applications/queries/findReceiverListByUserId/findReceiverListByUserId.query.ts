@@ -1,4 +1,4 @@
-import { Cacheable } from '@/core/features/cache/cacheable.decorator';
+import { Cacheable } from '@/core/features/queryCache/cacheable.decorator';
 import { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
 
 import type { IReceiverListCursor } from '@/modules/receiver/domain/types/receiverListCursor.type';

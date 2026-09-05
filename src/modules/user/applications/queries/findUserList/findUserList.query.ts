@@ -1,4 +1,4 @@
-import { Cacheable } from '@/core/features/cache/cacheable.decorator';
+import { Cacheable } from '@/core/features/queryCache/cacheable.decorator';
 import { UserResource } from '@/modules/user/domain/enums/user.enum';
 
 import type { IUserListCursor } from '@/modules/user/domain/types/userListCursor.type';

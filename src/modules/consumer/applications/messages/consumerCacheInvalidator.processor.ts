@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { CacheInvalidatorService } from '@/core/features/cache/cacheInvalidator.service';
+import { QueryCacheInvalidatorService } from '@/core/features/queryCache/queryCacheInvalidator.service';
 import { concurrency } from '@/core/utils/concurrency.util';
 import { BillResource } from '@/modules/bill/domain/enums/bill.enum';
 import { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
@@ -13,18 +13,18 @@ interface IInput {
 
 @Injectable()
 export class ConsumerCacheInvalidatorProcessor implements IProcessor<IInput, void> {
-    constructor(private readonly cacheInvalidatorService: CacheInvalidatorService) {}
+    constructor(private readonly queryCacheInvalidatorService: QueryCacheInvalidatorService) {}
 
     async process(input: IInput): Promise<void> {
         await Promise.all(
             input.userIds.map((userId) =>
                 concurrency(() =>
                     Promise.all([
-                        this.cacheInvalidatorService.invalidateScope(
+                        this.queryCacheInvalidatorService.invalidateScope(
                             ConsumerResource.CONSUMER,
                             userId,
                         ),
-                        this.cacheInvalidatorService.invalidateScope(
+                        this.queryCacheInvalidatorService.invalidateScope(
                             BillResource.BILL_CONSUMER,
                             userId,
                         ),

@@ -6,7 +6,7 @@ import type { IService } from '@/core/interfaces/service.interface';
 import type { TQuery } from '@/infrastructure/cqrs/query.type';
 
 @Injectable()
-export class CacheQueryHasherService implements IService<TQuery, string> {
+export class QueryCacheHasherService implements IService<TQuery, string> {
     execute(input: TQuery): string {
         const payload = {
             queryName: input.constructor.name,
