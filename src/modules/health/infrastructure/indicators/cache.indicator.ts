@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { RedisService } from '@liaoliaots/nestjs-redis';
 
+import { CacheService } from '@/core/features/cache/cache.service';
 import { REDIS_NAME } from '@/infrastructure/redis/redis.constants';
 import { HealthEntity } from '@/modules/health/domain/entities/health.entity';
 
@@ -8,20 +8,16 @@ import type { IHealthIndicator } from '@/modules/health/domain/interfaces/health
 import type { THealthIndicatorResult } from '@/modules/health/domain/types/healthIndicatorResult.type';
 
 @Injectable()
-export class RedisIndicator implements IHealthIndicator {
-    constructor(private readonly redisService: RedisService) {}
+export class CacheIndicator implements IHealthIndicator {
+    constructor(private readonly cacheService: CacheService) {}
 
     async check(): Promise<THealthIndicatorResult> {
         try {
-            const redis = this.redisService.getOrNil();
+            const redis = this.cacheService.getRedis();
 
-            if (redis) {
-                await redis.ping();
+            await redis.ping();
 
-                return HealthEntity.up(REDIS_NAME).toJSON();
-            }
-
-            return HealthEntity.down(REDIS_NAME).toJSON();
+            return HealthEntity.up(REDIS_NAME).toJSON();
         } catch (error) {
             return HealthEntity.down(REDIS_NAME, { error }).toJSON();
         }

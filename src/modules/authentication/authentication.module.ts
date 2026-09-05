@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AccessTokenModule } from '@/core/features/accessToken/accessToken.module';
+import { CacheModule } from '@/core/features/cache/cache.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
@@ -66,6 +67,7 @@ import { UserModule } from '@/modules/user/user.module';
         OutboxModule,
         CursorPaginationModule,
         AccessTokenModule,
+        CacheModule,
     ],
     controllers: [AuthenticationController],
     providers: [
