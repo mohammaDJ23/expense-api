@@ -1,22 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 
-import { CACHE_SCAN_CURSOR_COUNT } from './cache.constants';
-import { CacheKeyService } from './cacheKey.service';
-import { CacheQueryHasherService } from './cacheQueryHasher.service';
+import { CACHE_SCAN_CURSOR_COUNT } from './queryCache.constants';
+import { QueryCacheHasherService } from './queryCacheHasher.service';
+import { QueryCacheKeyService } from './queryCacheKey.service';
 
-import type { TCacheNamespace } from './cacheNamespace.type';
+import type { TQueryCacheNamespace } from './queryCacheNamespace.type';
 import type { TQuery } from '@/infrastructure/cqrs/query.type';
 
 @Injectable()
-export class CacheService {
+export class QueryCacheService {
     constructor(
         private readonly redisService: RedisService,
-        private readonly cacheQueryHasherService: CacheQueryHasherService,
-        private readonly cacheKeyService: CacheKeyService,
+        private readonly queryCacheHasherService: QueryCacheHasherService,
+        private readonly queryCacheKeyService: QueryCacheKeyService,
     ) {}
 
-    get(namespace: TCacheNamespace, scopeId: string, query: TQuery): Promise<string | null> {
+    get(namespace: TQueryCacheNamespace, scopeId: string, query: TQuery): Promise<string | null> {
         const redis = this.getRedis();
         const key = this.createKey(namespace, scopeId, query);
 
@@ -24,7 +24,7 @@ export class CacheService {
     }
 
     async set<T>(
-        namespace: TCacheNamespace,
+        namespace: TQueryCacheNamespace,
         scopeId: string,
         query: TQuery,
         value: T,
@@ -37,9 +37,9 @@ export class CacheService {
         await redis.set(key, serializedValue, 'EX', ttl);
     }
 
-    async invalidateScope(namespace: TCacheNamespace, scopeId: string): Promise<void> {
+    async invalidateScope(namespace: TQueryCacheNamespace, scopeId: string): Promise<void> {
         const redis = this.getRedis();
-        const pattern = this.cacheKeyService.createScopePattern(namespace, scopeId);
+        const pattern = this.queryCacheKeyService.createScopePattern(namespace, scopeId);
 
         let cursor = '0';
         do {
@@ -59,10 +59,10 @@ export class CacheService {
         } while (cursor !== '0');
     }
 
-    private createKey(namespace: TCacheNamespace, scopeId: string, query: TQuery): string {
-        const hash = this.cacheQueryHasherService.execute(query);
+    private createKey(namespace: TQueryCacheNamespace, scopeId: string, query: TQuery): string {
+        const hash = this.queryCacheHasherService.execute(query);
 
-        return this.cacheKeyService.create(namespace, scopeId, hash);
+        return this.queryCacheKeyService.create(namespace, scopeId, hash);
     }
 
     private getRedis(): ReturnType<typeof this.redisService.getOrThrow> {

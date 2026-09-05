@@ -4,5 +4,5 @@ import type { LocationResource } from '@/modules/location/domain/enums/location.
 import type { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
 import type { UserResource } from '@/modules/user/domain/enums/user.enum';
 
-export type TCacheNamespace =
+export type TQueryCacheNamespace =
     BillResource | ConsumerResource | LocationResource | ReceiverResource | UserResource;

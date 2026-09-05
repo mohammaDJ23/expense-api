@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { CacheInvalidatorService } from '@/core/features/cache/cacheInvalidator.service';
+import { QueryCacheInvalidatorService } from '@/core/features/queryCache/queryCacheInvalidator.service';
 import { concurrency } from '@/core/utils/concurrency.util';
 import { LocationResource } from '@/modules/location/domain/enums/location.enum';
 
@@ -12,13 +12,16 @@ interface IInput {
 
 @Injectable()
 export class LocationCacheInvalidatorProcessor implements IProcessor<IInput, void> {
-    constructor(private readonly cacheInvalidatorService: CacheInvalidatorService) {}
+    constructor(private readonly queryCacheInvalidatorService: QueryCacheInvalidatorService) {}
 
     async process(input: IInput): Promise<void> {
         await Promise.all(
             input.userIds.map((userId) =>
                 concurrency(() =>
-                    this.cacheInvalidatorService.invalidateScope(LocationResource.LOCATION, userId),
+                    this.queryCacheInvalidatorService.invalidateScope(
+                        LocationResource.LOCATION,
+                        userId,
+                    ),
                 ),
             ),
         );

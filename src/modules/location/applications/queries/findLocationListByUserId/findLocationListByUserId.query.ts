@@ -1,4 +1,4 @@
-import { Cacheable } from '@/core/features/cache/cacheable.decorator';
+import { Cacheable } from '@/core/features/queryCache/cacheable.decorator';
 import { LocationResource } from '@/modules/location/domain/enums/location.enum';
 
 import type { ILocationListCursor } from '@/modules/location/domain/types/locationListCursor.type';

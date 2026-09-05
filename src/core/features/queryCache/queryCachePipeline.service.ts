@@ -1,17 +1,17 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
-import { CACHEABLE_METADATA_KEY } from './cache.constants';
-import { CacheService } from './cache.service';
+import { CACHEABLE_METADATA_KEY } from './queryCache.constants';
+import { QueryCacheService } from './queryCache.service';
 
 import type { INormalizedCacheable } from './cacheable.type';
 import type { IQueryPipeline } from '@/core/features/queryDispatcher/queryPipeline.interface';
 import type { TQuery } from '@/infrastructure/cqrs/query.type';
 
 @Injectable()
-export class CacheQueryPipelineService implements IQueryPipeline {
+export class QueryCachePipelineService implements IQueryPipeline {
     constructor(
-        private readonly cacheService: CacheService,
+        private readonly cacheService: QueryCacheService,
         private readonly reflector: Reflector,
     ) {}
 

@@ -1,7 +1,7 @@
 import { SetMetadata, type CustomDecorator } from '@nestjs/common';
 
-import { CACHEABLE_METADATA_KEY } from './cache.constants';
 import { cacheableNormalizer } from './cacheableNormalizer.util';
+import { CACHEABLE_METADATA_KEY } from './queryCache.constants';
 
 import type { ICacheable } from './cacheable.type';
 import type { TQuery } from '@/infrastructure/cqrs/query.type';

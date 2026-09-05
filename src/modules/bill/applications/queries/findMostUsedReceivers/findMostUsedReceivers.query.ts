@@ -1,4 +1,4 @@
-import { Cacheable } from '@/core/features/cache/cacheable.decorator';
+import { Cacheable } from '@/core/features/queryCache/cacheable.decorator';
 import { BillResource } from '@/modules/bill/domain/enums/bill.enum';
 
 interface IProps {
