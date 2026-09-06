@@ -32,6 +32,7 @@ import { DeleteLocationService } from '@/modules/location/applications/services/
 import { FindLocationListAndTotalByUserIdService } from '@/modules/location/applications/services/findLocationListAndTotalByUserId.service';
 import { FindLocationListByUserIdService } from '@/modules/location/applications/services/findLocationListByUserId.service';
 import { LocationService } from '@/modules/location/applications/services/location.service';
+import { LocationSearchQueryService } from '@/modules/location/applications/services/locationSearchQuery.service';
 import { LocationSearchService } from '@/modules/location/applications/services/search/locationSearch.service';
 import { LocationSearchAggregateService } from '@/modules/location/applications/services/search/locationSearchAggregate.service';
 import { LocationSearchIndexRegisterService } from '@/modules/location/applications/services/search/locationSearchIndexRegister.service';
@@ -98,6 +99,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         UpdatedLocationCacheInvalidatorHandler,
         LocationCacheInvalidatorProcessor,
         LocationListCursorPaginationDefinition,
+        LocationSearchQueryService,
     ],
     exports: [
         LocationSearchService,
