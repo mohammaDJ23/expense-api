@@ -33,6 +33,7 @@ import { FindManyBillsConsumersByRefIdHandler } from '@/modules/consumer/applica
 import { FindManyConsumersByUserIdAndIdsHandler } from '@/modules/consumer/applications/queries/findManyConsumersByUserIdAndIds/findManyConsumersByUserIdAndIds.handler';
 import { FindTotalConsumersByUserIdHandler } from '@/modules/consumer/applications/queries/findTotalConsumersByUserId/findTotalConsumersByUserId.handler';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
+import { ConsumerSearchQueryService } from '@/modules/consumer/applications/services/consumerSearchQuery.service';
 import { CreateConsumerService } from '@/modules/consumer/applications/services/createConsumer.service';
 import { DeleteConsumerService } from '@/modules/consumer/applications/services/deleteConsumer.service';
 import { FindConsumerListAndTotalByUserIdService } from '@/modules/consumer/applications/services/findConsumerListAndTotalByUserId.service';
@@ -111,6 +112,7 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         UpdatedConsumerCacheInvalidatorHandler,
         ConsumerCacheInvalidatorProcessor,
         ConsumerListCursorPaginationDefinition,
+        ConsumerSearchQueryService,
     ],
     exports: [
         ConsumerSearchService,
