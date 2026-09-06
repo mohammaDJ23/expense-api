@@ -1,3 +1,11 @@
+## [5.1.0](https://github.com/mohammaDJ23/expense-api/compare/v5.0.2...v5.1.0) (2026-09-06)
+
+### ✨ Features
+
+- 851618 add the consumer search ([f2c5cb8](https://github.com/mohammaDJ23/expense-api/commit/f2c5cb8bfa6845476fbdc56af7100fece3c55ad6))
+- 851618 add the location search ([9663a16](https://github.com/mohammaDJ23/expense-api/commit/9663a16e138e31799c49ed8011b8645f7d71598d))
+- 851618 add the receiver search ([a7f1393](https://github.com/mohammaDJ23/expense-api/commit/a7f1393852f3abdbd29046c023653b11a9ea1390))
+
 ## [5.0.2](https://github.com/mohammaDJ23/expense-api/compare/v5.0.1...v5.0.2) (2026-09-06)
 
 ### ♻️ Code Refactoring
