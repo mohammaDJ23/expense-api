@@ -1,3 +1,13 @@
+## [5.0.2](https://github.com/mohammaDJ23/expense-api/compare/v5.0.1...v5.0.2) (2026-09-06)
+
+### ♻️ Code Refactoring
+
+- 316857 reuse cahce everywhere needed ([1e139f5](https://github.com/mohammaDJ23/expense-api/commit/1e139f586af952a2941eb50d19f572897b59a658))
+
+### 🔧 Chores
+
+- 316857 rename cache to queryCache since it's been used for queries ([b5626d1](https://github.com/mohammaDJ23/expense-api/commit/b5626d1e22bb665701c07cb95df2393d4d93b024))
+
 ## [5.0.1](https://github.com/mohammaDJ23/expense-api/compare/v5.0.0...v5.0.1) (2026-09-05)
 
 ### 🐛 Bug Fixes
