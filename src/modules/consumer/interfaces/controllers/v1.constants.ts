@@ -4,3 +4,4 @@ export const SUCCESS_CREATE_CONSUMER_MESSAGE = 'You have created a new consumer 
 export const SUCCESS_UPDATE_CONSUMER_MESSAGE = 'You have updated the consumer successfully';
 export const SUCCESS_DELETE_CONSUMER_MESSAGE = 'You have deleted the consumer successfully';
 export const SUCCESS_TOTAL_CONSUMERS_MESSAGE = 'You have got the total consumers';
+export const SUCCESS_CONSUMER_SEARCH_MESSAGE = 'The search of consumers was successful';

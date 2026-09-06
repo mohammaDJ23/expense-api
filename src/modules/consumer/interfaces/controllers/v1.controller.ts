@@ -19,6 +19,7 @@ import { HttpResponse } from '@/core/features/responses/http/httpResponse.decora
 import { SerializerInterceptor } from '@/core/features/serializer/serializerInterceptor.decorator';
 import { ConsumerService } from '@/modules/consumer/applications/services/consumer.service';
 import { ConsumerResponseDto } from '@/modules/consumer/interfaces/dtos/consumer.response.dto';
+import { ConsumerSearchRequestDto } from '@/modules/consumer/interfaces/dtos/consumerSearch.request.dto';
 import { CreateConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/createConsumer.request.dto';
 import { DeleteConsumerRequestDto } from '@/modules/consumer/interfaces/dtos/deleteConsumer.request.dto';
 import { FindConsumerByIdRequestDto } from '@/modules/consumer/interfaces/dtos/findConsumerById.request.dto';
@@ -33,6 +34,7 @@ import {
     SUCCESS_FIND_CONSUMERS_MESSAGE,
     SUCCESS_UPDATE_CONSUMER_MESSAGE,
     SUCCESS_TOTAL_CONSUMERS_MESSAGE,
+    SUCCESS_CONSUMER_SEARCH_MESSAGE,
 } from './v1.constants';
 
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
@@ -87,6 +89,17 @@ export class ConsumerController {
         @Query() query: FindConsumerListRequestDto,
     ): Promise<IListResultWithTotal<ISelectConsumer, string>> {
         return this.consumerService.findListByUserId(user.id, query);
+    }
+
+    @Get('/search')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(ConsumerResponseDto)
+    @HttpResponse(SUCCESS_CONSUMER_SEARCH_MESSAGE, HttpStatus.OK)
+    search(
+        @CurrentUser() user: ICurrentUser,
+        @Query() query: ConsumerSearchRequestDto,
+    ): Promise<ISelectConsumer[]> {
+        return this.consumerService.search(user.id, query);
     }
 
     @Get('total')
