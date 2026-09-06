@@ -7,6 +7,7 @@ import { FindTotalReceiversByUserIdQuery } from '@/modules/receiver/applications
 import { CreateReceiverService } from './createReceiver.service';
 import { DeleteReceiverService } from './deleteReceiver.service';
 import { FindReceiverListAndTotalByUserIdService } from './findReceiverListAndTotalByUserId.service';
+import { ReceiverSearchQueryService } from './receiverSearchQuery.service';
 import { UpdateReceiverService } from './updateReceiver.service';
 
 import type { IId } from '@/core/types/id.type';
@@ -14,6 +15,7 @@ import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 import type { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';
+import type { ReceiverSearchRequestDto } from '@/modules/receiver/interfaces/dtos/receiverSearch.request.dto';
 import type { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/updateReceiver.request.dto';
 
 @Injectable()
@@ -24,6 +26,7 @@ export class ReceiverService {
         private readonly updateReceiverService: UpdateReceiverService,
         private readonly deleteReceiverService: DeleteReceiverService,
         private readonly findReceiverListAndTotalByUserIdService: FindReceiverListAndTotalByUserIdService,
+        private readonly receiverSearchQueryService: ReceiverSearchQueryService,
     ) {}
 
     create(userId: string, name: string): Promise<IId> {
@@ -59,5 +62,13 @@ export class ReceiverService {
                 }),
             )
             .then((total) => ({ total }));
+    }
+
+    search(userId: string, query: ReceiverSearchRequestDto): Promise<ISelectReceiver[]> {
+        return this.receiverSearchQueryService.execute({
+            userId,
+            limit: query.limit,
+            q: query.q,
+        });
     }
 }

@@ -4,3 +4,4 @@ export const SUCCESS_CREATE_RECEIVER_MESSAGE = 'You have created a new receiver 
 export const SUCCESS_UPDATE_RECEIVER_MESSAGE = 'You have updated the receiver successfully';
 export const SUCCESS_DELETE_RECEIVER_MESSAGE = 'You have deleted the receiver successfully';
 export const SUCCESS_TOTAL_RECEIVERS_MESSAGE = 'You have got the total receivers';
+export const SUCCESS_RECEIVER_SEARCH_MESSAGE = 'The search of receivers was successful';
