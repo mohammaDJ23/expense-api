@@ -24,6 +24,7 @@ import { FindReceiverByIdRequestDto } from '@/modules/receiver/interfaces/dtos/f
 import { FindReceiverListRequestDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.request.dto';
 import { FindReceiverListResponseDto } from '@/modules/receiver/interfaces/dtos/findReceiverList.response.dto';
 import { ReceiverResponseDto } from '@/modules/receiver/interfaces/dtos/receiver.response.dto';
+import { ReceiverSearchRequestDto } from '@/modules/receiver/interfaces/dtos/receiverSearch.request.dto';
 import { UpdateReceiverRequestDto } from '@/modules/receiver/interfaces/dtos/updateReceiver.request.dto';
 
 import {
@@ -31,6 +32,7 @@ import {
     SUCCESS_DELETE_RECEIVER_MESSAGE,
     SUCCESS_FIND_RECEIVER_MESSAGE,
     SUCCESS_FIND_RECEIVERS_MESSAGE,
+    SUCCESS_RECEIVER_SEARCH_MESSAGE,
     SUCCESS_TOTAL_RECEIVERS_MESSAGE,
     SUCCESS_UPDATE_RECEIVER_MESSAGE,
 } from './v1.constants';
@@ -87,6 +89,17 @@ export class ReceiverController {
         @Query() query: FindReceiverListRequestDto,
     ): Promise<IListResultWithTotal<ISelectReceiver, string>> {
         return this.receiverService.findListByUserId(user.id, query);
+    }
+
+    @Get('/search')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(ReceiverResponseDto)
+    @HttpResponse(SUCCESS_RECEIVER_SEARCH_MESSAGE, HttpStatus.OK)
+    search(
+        @CurrentUser() user: ICurrentUser,
+        @Query() query: ReceiverSearchRequestDto,
+    ): Promise<ISelectReceiver[]> {
+        return this.receiverService.search(user.id, query);
     }
 
     @Get('total')

@@ -33,6 +33,7 @@ import { DeleteReceiverService } from '@/modules/receiver/applications/services/
 import { FindReceiverListAndTotalByUserIdService } from '@/modules/receiver/applications/services/findReceiverListAndTotalByUserId.service';
 import { FindReceiverListByUserIdService } from '@/modules/receiver/applications/services/findReceiverListByUserId.service';
 import { ReceiverService } from '@/modules/receiver/applications/services/receiver.service';
+import { ReceiverSearchQueryService } from '@/modules/receiver/applications/services/receiverSearchQuery.service';
 import { ReceiverSearchService } from '@/modules/receiver/applications/services/search/receiverSearch.service';
 import { ReceiverSearchAggregateService } from '@/modules/receiver/applications/services/search/receiverSearchAggregate.service';
 import { ReceiverSearchIndexRegisterService } from '@/modules/receiver/applications/services/search/receiverSearchIndexRegister.service';
@@ -97,6 +98,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         DeletedUserReceiverCacheInvalidatorHandler,
         UpdatedReceiverCacheInvalidatorHandler,
         ReceiverListCursorPaginationDefinition,
+        ReceiverSearchQueryService,
     ],
     exports: [
         ReceiverSearchService,
