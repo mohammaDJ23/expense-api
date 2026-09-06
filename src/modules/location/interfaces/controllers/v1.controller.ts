@@ -24,6 +24,7 @@ import { FindLocationByIdRequestDto } from '@/modules/location/interfaces/dtos/f
 import { FindLocationListRequestDto } from '@/modules/location/interfaces/dtos/findLocationList.request.dto';
 import { FindLocationListResponseDto } from '@/modules/location/interfaces/dtos/findLocationList.response.dto';
 import { LocationResponseDto } from '@/modules/location/interfaces/dtos/location.response.dto';
+import { LocationSearchRequestDto } from '@/modules/location/interfaces/dtos/locationSearch.request.dto';
 import { UpdateLocationRequestDto } from '@/modules/location/interfaces/dtos/updateLocation.request.dto';
 
 import {
@@ -31,6 +32,7 @@ import {
     SUCCESS_DELETE_LOCATION_MESSAGE,
     SUCCESS_FIND_LOCATION_MESSAGE,
     SUCCESS_FIND_LOCATIONS_MESSAGE,
+    SUCCESS_LOCATION_SEARCH_MESSAGE,
     SUCCESS_TOTAL_LOCATIONS_MESSAGE,
     SUCCESS_UPDATE_LOCATION_MESSAGE,
 } from './v1.constants';
@@ -87,6 +89,17 @@ export class LocationController {
         @Query() query: FindLocationListRequestDto,
     ): Promise<IListResultWithTotal<ISelectLocation, string>> {
         return this.locationService.findListByUserId(user.id, query);
+    }
+
+    @Get('/search')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(LocationResponseDto)
+    @HttpResponse(SUCCESS_LOCATION_SEARCH_MESSAGE, HttpStatus.OK)
+    search(
+        @CurrentUser() user: ICurrentUser,
+        @Query() query: LocationSearchRequestDto,
+    ): Promise<ISelectLocation[]> {
+        return this.locationService.search(user.id, query);
     }
 
     @Get('total')

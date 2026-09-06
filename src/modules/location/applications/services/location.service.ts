@@ -7,6 +7,7 @@ import { FindTotalLocationsByUserIdQuery } from '@/modules/location/applications
 import { CreateLocationService } from './createLocation.service';
 import { DeleteLocationService } from './deleteLocation.service';
 import { FindLocationListAndTotalByUserIdService } from './findLocationListAndTotalByUserId.service';
+import { LocationSearchQueryService } from './locationSearchQuery.service';
 import { UpdateLocationService } from './updateLocation.service';
 
 import type { IId } from '@/core/types/id.type';
@@ -14,6 +15,7 @@ import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectLocation } from '@/modules/location/infrastructure/schemas/location.schema';
 import type { FindLocationListRequestDto } from '@/modules/location/interfaces/dtos/findLocationList.request.dto';
+import type { LocationSearchRequestDto } from '@/modules/location/interfaces/dtos/locationSearch.request.dto';
 import type { UpdateLocationRequestDto } from '@/modules/location/interfaces/dtos/updateLocation.request.dto';
 
 @Injectable()
@@ -24,6 +26,7 @@ export class LocationService {
         private readonly updateLocationService: UpdateLocationService,
         private readonly deleteLocationService: DeleteLocationService,
         private readonly findLocationListAndTotalByUserIdService: FindLocationListAndTotalByUserIdService,
+        private readonly locationSearchQueryService: LocationSearchQueryService,
     ) {}
 
     create(userId: string, name: string): Promise<IId> {
@@ -59,5 +62,13 @@ export class LocationService {
                 }),
             )
             .then((total) => ({ total }));
+    }
+
+    search(userId: string, query: LocationSearchRequestDto): Promise<ISelectLocation[]> {
+        return this.locationSearchQueryService.execute({
+            userId,
+            limit: query.limit,
+            q: query.q,
+        });
     }
 }
