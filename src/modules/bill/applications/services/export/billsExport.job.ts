@@ -6,8 +6,8 @@ import { EXCEL_FILE_CONTENT_TYPE } from '@/core/features/export/excel/excel.cons
 import { CursorPaginationService } from '@/core/features/pagination/cursor/cursorPagination.service';
 import { concurrency } from '@/core/utils/concurrency.util';
 import { FindEmailIdentityListService } from '@/modules/authentication/applications/services/findEmailIdentityList.service';
-import { BillsExcelExportService } from '@/modules/bill/applications/services/export/excel/billsExcelExport.service';
 import { getBillsExcelFilename } from '@/modules/bill/applications/services/export/excel/billsExcelExport.utils';
+import { BillsExcelExportGeneratorService } from '@/modules/bill/applications/services/export/excel/billsExcelExportGenerator.service';
 
 import { BillsExportMailerService } from './billsExportMailer.service';
 
@@ -17,7 +17,7 @@ import type { ISelectEmailIdentity } from '@/modules/authentication/infrastructu
 @Injectable()
 export class BillsExportJob implements IJob {
     constructor(
-        private readonly billsExcelExportService: BillsExcelExportService,
+        private readonly billsExcelExportGeneratorService: BillsExcelExportGeneratorService,
         private readonly billsExportMailerService: BillsExportMailerService,
         private readonly findEmailIdentityListService: FindEmailIdentityListService,
         private readonly cursorPaginationService: CursorPaginationService,
@@ -42,7 +42,7 @@ export class BillsExportJob implements IJob {
 
     private async processExport(emailIdentity: ISelectEmailIdentity): Promise<void> {
         await concurrency(async () => {
-            const stream = this.billsExcelExportService.execute(emailIdentity);
+            const stream = this.billsExcelExportGeneratorService.generate(emailIdentity);
 
             await this.billsExportMailerService.execute({
                 email: emailIdentity.email,

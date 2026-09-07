@@ -5,7 +5,7 @@ import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatche
 import { FindEmailIdentityByUserIdrThrowQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByUserIdOrThrow/findEmailIdentityByUserIdOrThrow.query';
 import { FindBillsPeriodByPurchasedAtQuery } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.query';
 import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
-import { BillsExcelExportService } from '@/modules/bill/applications/services/export/excel/billsExcelExport.service';
+import { BillsExcelExportGeneratorService } from '@/modules/bill/applications/services/export/excel/billsExcelExportGenerator.service';
 import { MostUsedConsumersService } from '@/modules/bill/applications/services/relations/mostUsedConsumers.service';
 import { MostUsedLocationsService } from '@/modules/bill/applications/services/relations/mostUsedLocations.service';
 import { MostUsedReceiversService } from '@/modules/bill/applications/services/relations/mostUsedReceivers.service';
@@ -46,7 +46,7 @@ export class BillService {
         private readonly mostUsedReceiversService: MostUsedReceiversService,
         private readonly mostUsedConsumersService: MostUsedConsumersService,
         private readonly findBillsTimelineByPurchasedAtService: FindBillsTimelineByPurchasedAtService,
-        private readonly billsExcelExportService: BillsExcelExportService,
+        private readonly billsExcelExportGeneratorService: BillsExcelExportGeneratorService,
     ) {}
 
     create(userId: string, body: CreateBillRequestDto): Promise<IId> {
@@ -122,7 +122,9 @@ export class BillService {
             )
             .then(
                 (emailIdentity) =>
-                    new StreamableFile(this.billsExcelExportService.execute(emailIdentity)),
+                    new StreamableFile(
+                        this.billsExcelExportGeneratorService.generate(emailIdentity),
+                    ),
             );
     }
 }

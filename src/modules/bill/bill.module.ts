@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { ExcelModule } from '@/core/features/export/excel/excel.module';
 import { JWTModule } from '@/core/features/jwt/jwt.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryCacheModule } from '@/core/features/queryCache/queryCache.module';
@@ -38,7 +37,6 @@ import { DeleteBillService } from '@/modules/bill/applications/services/deleteBi
 import { BillsExportJob } from '@/modules/bill/applications/services/export/billsExport.job';
 import { BillsExportDataLoaderService } from '@/modules/bill/applications/services/export/billsExportDataLoader.service';
 import { BillsExportMailerService } from '@/modules/bill/applications/services/export/billsExportMailer.service';
-import { BillsExcelExportService } from '@/modules/bill/applications/services/export/excel/billsExcelExport.service';
 import { BillsExcelExportGeneratorService } from '@/modules/bill/applications/services/export/excel/billsExcelExportGenerator.service';
 import { FindBillByUserIdAndIdOrThrowService } from '@/modules/bill/applications/services/findBillByUserIdAndIdOrThrow.service';
 import { FindBillListAndTotalByUserIdService } from '@/modules/bill/applications/services/findBillListAndTotalByUserId.service';
@@ -84,7 +82,6 @@ import { UserModule } from '@/modules/user/user.module';
         ReceiverModule,
         OutboxModule,
         UserModule,
-        ExcelModule,
         QueryDispatcherModule,
         QueryCacheModule,
         CursorPaginationModule,
@@ -141,7 +138,6 @@ import { UserModule } from '@/modules/user/user.module';
         FindBillsTimelineByPurchasedAtService,
         BillsExportDataLoaderService,
         BillsExcelExportGeneratorService,
-        BillsExcelExportService,
         BillsExportJob,
         BillsExportMailerService,
         BillSearchSyncService,
