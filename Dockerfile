@@ -79,4 +79,4 @@ USER expense-api
 
 EXPOSE 3000
 
-ENTRYPOINT ["sh", "-c", "pnpm run db:migrate && exec node dist/main"]
+ENTRYPOINT ["node", "dist/main"]
