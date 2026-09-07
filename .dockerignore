@@ -11,7 +11,6 @@ Dockerfile*
 .gitattributes
 secrets
 TODO.txt
-/drizzle/
 db_backup
 *.tsbuildinfo
 .DS_Store
