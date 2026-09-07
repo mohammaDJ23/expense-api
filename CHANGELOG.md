@@ -1,3 +1,17 @@
+## [5.1.1](https://github.com/mohammaDJ23/expense-api/compare/v5.1.0...v5.1.1) (2026-09-07)
+
+### 🐛 Bug Fixes
+
+- 498546 update undici ([347646b](https://github.com/mohammaDJ23/expense-api/commit/347646ba0a35cc16aaff143b8b9ff1e7bb91c5b5))
+
+### ♻️ Code Refactoring
+
+- 498546 update the interface of export generator ([edcdae3](https://github.com/mohammaDJ23/expense-api/commit/edcdae3697e446fdf48b57885948168158830ee0))
+
+### 🔧 Chores
+
+- 498546 add the export generator interface ([3b8b080](https://github.com/mohammaDJ23/expense-api/commit/3b8b0802898581ed01ab195379593b95b6051372))
+
 ## [5.1.0](https://github.com/mohammaDJ23/expense-api/compare/v5.0.2...v5.1.0) (2026-09-06)
 
 ### ✨ Features
