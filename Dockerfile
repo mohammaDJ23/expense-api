@@ -23,7 +23,6 @@ WORKDIR /usr/src/app
 COPY --chown=expense-api:nodejs package.json ./
 COPY --chown=expense-api:nodejs pnpm-lock.yaml ./
 COPY --chown=expense-api:nodejs .npmrc ./
-COPY --chown=expense-api:nodejs drizzle.config.ts ./
 
 RUN pnpm install --ignore-scripts --frozen-lockfile && \
     pnpm cache clean
@@ -65,10 +64,8 @@ WORKDIR /usr/src/app
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/package.json ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/pnpm-lock.yaml ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/.npmrc ./
-COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/drizzle.config.ts ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/dist ./dist
-COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/drizzle ./drizzle
 
 RUN mkdir -p logs uploads temp && \
     chown -R expense-api:nodejs logs uploads temp && \
