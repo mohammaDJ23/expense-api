@@ -68,6 +68,7 @@ COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/.npmrc ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/drizzle.config.ts ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/dist ./dist
+COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/drizzle ./drizzle
 
 RUN mkdir -p logs uploads temp && \
     chown -R expense-api:nodejs logs uploads temp && \
@@ -78,4 +79,4 @@ USER expense-api
 
 EXPOSE 3000
 
-ENTRYPOINT ["node", "dist/main"]
+ENTRYPOINT ["sh", "-c", "pnpm run db:migrate && exec node dist/main"]
