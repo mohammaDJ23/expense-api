@@ -50,6 +50,15 @@ RUN pnpm run build && \
     pnpm prune --production && \
     rm -rf src
 
+FROM base AS db-migration
+
+COPY --chown=expense-api:nodejs drizzle.config.ts ./
+COPY --chown=expense-api:nodejs drizzle ./drizzle
+
+USER expense-api
+
+ENTRYPOINT ["pnpm", "run", "db:migrate"]
+
 FROM node-patched AS production
 
 ENV NODE_ENV=production
