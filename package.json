@@ -76,7 +76,6 @@
         "detect:branch:name": "bash ./scripts/detectBranchName.sh",
         "validate:branch:name:ci": "bash ./scripts/ciValidateBranchName.sh",
         "detect:commitsha": "bash ./scripts/detectCommitSha.sh",
-        "postinstall": "prettier --write pnpm-lock.yaml",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:push": "drizzle-kit push --force",
