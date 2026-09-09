@@ -1,3 +1,10 @@
+## [5.1.5](https://github.com/mohammaDJ23/expense-api/compare/v5.1.4...v5.1.5) (2026-09-09)
+
+### 🔧 Chores
+
+- 115301 add the db-migration stage ([97ce15b](https://github.com/mohammaDJ23/expense-api/commit/97ce15bb935cae0b6038d9198c4a6d7ce8973730))
+- 115301 restructure the dockerfile ([59285fe](https://github.com/mohammaDJ23/expense-api/commit/59285fef08a8d6e2534c40f7fb2d35b302381535))
+
 ## [5.1.4](https://github.com/mohammaDJ23/expense-api/compare/v5.1.3...v5.1.4) (2026-09-09)
 
 ### 🔧 Chores
