@@ -4,16 +4,16 @@ ENV COREPACK_INTEGRITY_KEYS=0
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 RUN apk update && \
-    apk upgrade --available
-
-RUN corepack enable && \
-    corepack prepare pnpm@10.29.2 --activate && \
+    apk upgrade --available && \
     addgroup -g 1001 -S nodejs && \
     adduser -S expense-api -u 1001 -G nodejs && \
     mkdir -p /usr/src/app && \
     chown -R expense-api:nodejs /usr/src/app
 
 FROM node-patched AS base
+
+RUN corepack enable && \
+    corepack prepare pnpm@10.29.2 --activate
 
 WORKDIR /usr/src/app
 
@@ -62,7 +62,9 @@ COPY --from=db-migration-build --chown=expense-api:nodejs /usr/src/app/drizzle .
 
 USER expense-api
 
-ENTRYPOINT ["pnpm", "run", "db:migrate"]
+# Since docker security scan is catching some vulnerability from pnpm,
+# it's been used drizzle-kit directly from node-modules
+ENTRYPOINT ["./node_modules/.bin/drizzle-kit", "migrate"]
 
 FROM installed-packages AS production-build
 
