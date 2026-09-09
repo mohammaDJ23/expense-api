@@ -1,3 +1,9 @@
+## [5.1.6](https://github.com/mohammaDJ23/expense-api/compare/v5.1.5...v5.1.6) (2026-09-09)
+
+### 🔧 Chores
+
+- 115301 remove postinstall command ([ac581df](https://github.com/mohammaDJ23/expense-api/commit/ac581df10638627c34322ca33c0af6ba7ad2647e))
+
 ## [5.1.5](https://github.com/mohammaDJ23/expense-api/compare/v5.1.4...v5.1.5) (2026-09-09)
 
 ### 🔧 Chores
