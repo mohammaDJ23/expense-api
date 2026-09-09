@@ -120,6 +120,19 @@ jobs:
                   image_name: ${{ steps.run-entrypoint.outputs.image_name }}
                   snyk_token: ${{ secrets.SNYK_TOKEN }}
 
+            - name: Create & push the migration image
+              id: create-migration
+              run: pnpm run create:migration:ci:production
+              env:
+                  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+                  TAG: ${{ needs.create-version.outputs.version }}
+
+            - name: Scan the migration docker image
+              uses: ./.github/actions/scan-docker-image
+              with:
+                  image_name: ${{ steps.create-migration.outputs.image_name }}
+                  snyk_token: ${{ secrets.SNYK_TOKEN }}
+
             - name: Cleanup secrets
               if: always()
               run: rm -rf ./secrets

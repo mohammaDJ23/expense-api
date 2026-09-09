@@ -71,6 +71,7 @@
         "start:docker:ci": "bash ./scripts/docker/ciEntrypoint.sh",
         "start:docker:ci:production": "bash ./scripts/docker/ciProductionEntrypoint.sh",
         "start:docker:production": "bash ./scripts/docker/productionEntrypoint.sh",
+        "create:migration:ci:production": "bash ./scripts/database/ciProductionMigrationEntrypoint.sh",
         "create:version": "bash ./scripts/createVersion.sh",
         "detect:branch:name": "bash ./scripts/detectBranchName.sh",
         "validate:branch:name:ci": "bash ./scripts/ciValidateBranchName.sh",
