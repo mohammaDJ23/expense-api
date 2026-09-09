@@ -43,10 +43,8 @@ ENTRYPOINT ["sh", "-c", "pnpm run db:push && pnpm run start:debug"]
 FROM installed-packages AS db-migration
 
 ENV NODE_ENV=production
-ENV HUSKY=0
 
-RUN pnpm prune --production && \
-    pnpm add drizzle-kit@0.31.10 --ignore-scripts
+RUN pnpm prune --production
 
 COPY --chown=expense-api:nodejs drizzle.config.ts ./
 COPY --chown=expense-api:nodejs drizzle ./drizzle
