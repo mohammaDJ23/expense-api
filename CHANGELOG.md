@@ -1,3 +1,9 @@
+## [5.1.7](https://github.com/mohammaDJ23/expense-api/compare/v5.1.6...v5.1.7) (2026-09-09)
+
+### 🔧 Chores
+
+- 115301 disable husky ([cfda3ac](https://github.com/mohammaDJ23/expense-api/commit/cfda3ac47a40cf72600cb2ae0b3af9fe5df9d753))
+
 ## [5.1.6](https://github.com/mohammaDJ23/expense-api/compare/v5.1.5...v5.1.6) (2026-09-09)
 
 ### 🔧 Chores
