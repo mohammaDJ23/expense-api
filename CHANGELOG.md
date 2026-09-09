@@ -1,3 +1,9 @@
+## [5.1.8](https://github.com/mohammaDJ23/expense-api/compare/v5.1.7...v5.1.8) (2026-09-09)
+
+### 🔧 Chores
+
+- 115301 move drizzle-kit to dependencies ([0af1830](https://github.com/mohammaDJ23/expense-api/commit/0af1830f99fe54af15a5ad7671db35089840c70a))
+
 ## [5.1.7](https://github.com/mohammaDJ23/expense-api/compare/v5.1.6...v5.1.7) (2026-09-09)
 
 ### 🔧 Chores
