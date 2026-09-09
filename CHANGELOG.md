@@ -1,3 +1,9 @@
+## [5.1.4](https://github.com/mohammaDJ23/expense-api/compare/v5.1.3...v5.1.4) (2026-09-09)
+
+### 🔧 Chores
+
+- 115301 extend from node-patched ([608cfa9](https://github.com/mohammaDJ23/expense-api/commit/608cfa9367732c9c0ba352d55a4f7b85ea0da441))
+
 ## [5.1.3](https://github.com/mohammaDJ23/expense-api/compare/v5.1.2...v5.1.3) (2026-09-09)
 
 ### 🔧 Chores
