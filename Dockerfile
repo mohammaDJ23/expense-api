@@ -1,20 +1,19 @@
 FROM node:24-alpine AS node-patched
 
-RUN apk update && apk upgrade --available
+RUN apk update && \
+    apk upgrade --available
 
-FROM node-patched AS base
-
-ENV COREPACK_INTEGRITY_KEYS=0
-ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-
-RUN apk add --no-cache \
-    curl && \
-    corepack enable && \
+RUN corepack enable && \
     corepack prepare pnpm@10.29.2 --activate && \
     addgroup -g 1001 -S nodejs && \
     adduser -S expense-api -u 1001 -G nodejs && \
     mkdir -p /usr/src/app && \
     chown -R expense-api:nodejs /usr/src/app
+
+FROM node-patched AS base
+
+ENV COREPACK_INTEGRITY_KEYS=0
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 WORKDIR /usr/src/app
 
@@ -47,12 +46,12 @@ ENV npm_config_ignore_scripts=true
 
 RUN pnpm prune --production
 
+COPY --chown=expense-api:nodejs drizzle.config.ts ./
+COPY --chown=expense-api:nodejs drizzle ./drizzle
+
 FROM node-patched AS db-migration
 
 ENV NODE_ENV=production
-
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S expense-api -u 1001 -G nodejs
 
 WORKDIR /usr/src/app
 
@@ -80,10 +79,7 @@ FROM node-patched AS production
 
 ENV NODE_ENV=production
 
-RUN apk add --no-cache curl && \
-    addgroup -g 1001 -S nodejs && \
-    adduser -S expense-api -u 1001 -G nodejs && \
-    rm -rf /var/cache/apk/*
+RUN apk add --no-cache curl
 
 WORKDIR /usr/src/app
 
