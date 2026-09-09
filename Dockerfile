@@ -1,4 +1,5 @@
 FROM node:24-alpine AS node-patched
+
 RUN apk update && apk upgrade --available
 
 FROM node-patched AS base
@@ -7,9 +8,6 @@ ENV COREPACK_INTEGRITY_KEYS=0
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 RUN apk add --no-cache \
-    python3 \
-    make \
-    g++ \
     curl && \
     corepack enable && \
     corepack prepare pnpm@10.29.2 --activate && \
@@ -24,10 +22,14 @@ COPY --chown=expense-api:nodejs package.json ./
 COPY --chown=expense-api:nodejs pnpm-lock.yaml ./
 COPY --chown=expense-api:nodejs .npmrc ./
 
-RUN pnpm install --ignore-scripts --frozen-lockfile && \
+FROM base AS installed-packages
+
+RUN pnpm install \
+    --ignore-scripts \
+    --frozen-lockfile && \
     pnpm cache clean
 
-FROM base AS development
+FROM installed-packages AS development
 
 ENV NODE_ENV=development
 
@@ -39,7 +41,7 @@ EXPOSE 4000 9229
 
 ENTRYPOINT ["sh", "-c", "pnpm run db:push && pnpm run start:debug"]
 
-FROM base AS production-build
+FROM installed-packages AS production-build
 
 ENV NODE_ENV=production
 ENV npm_config_ignore_scripts=true
@@ -49,26 +51,6 @@ COPY --chown=expense-api:nodejs . .
 RUN pnpm run build && \
     pnpm prune --production && \
     rm -rf src
-
-FROM node-patched AS db-migration
-
-ENV NODE_ENV=production
-
-RUN corepack enable && \
-    corepack prepare pnpm@10.29.2 --activate && \
-    addgroup -g 1001 -S nodejs && \
-    adduser -S expense-api -u 1001 -G nodejs
-
-WORKDIR /usr/src/app
-
-COPY --from=base --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
-COPY --from=base --chown=expense-api:nodejs /usr/src/app/package.json ./
-COPY --chown=expense-api:nodejs drizzle.config.ts ./
-COPY --chown=expense-api:nodejs drizzle ./drizzle
-
-USER expense-api
-
-ENTRYPOINT ["pnpm", "run", "db:migrate"]
 
 FROM node-patched AS production
 
@@ -82,15 +64,10 @@ RUN apk add --no-cache curl && \
 WORKDIR /usr/src/app
 
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/package.json ./
-COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/pnpm-lock.yaml ./
-COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/.npmrc ./
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
 COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/dist ./dist
 
-RUN mkdir -p logs uploads temp && \
-    chown -R expense-api:nodejs logs uploads temp && \
-    chmod -R 555 /usr/src/app && \
-    chmod -R 755 /usr/src/app/logs /usr/src/app/uploads /usr/src/app/temp
+RUN chmod -R 555 /usr/src/app
 
 USER expense-api
 
