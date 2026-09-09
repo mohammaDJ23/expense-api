@@ -1,3 +1,11 @@
+## [5.1.11](https://github.com/mohammaDJ23/expense-api/compare/v5.1.10...v5.1.11) (2026-09-09)
+
+### 🔧 Chores
+
+- 115301 install drizzle-kit directly from node-modules ([b17d11f](https://github.com/mohammaDJ23/expense-api/commit/b17d11fd81d55d1e534027efefa27f48ec2b1e67))
+- 115301 move envs to node-patched ([74799cd](https://github.com/mohammaDJ23/expense-api/commit/74799cdbfe4fd31b562ec9deba5ea68ed074d73b))
+- 115301 reuse some codes from node-patched ([53add08](https://github.com/mohammaDJ23/expense-api/commit/53add08f95a02b401b418c27c251e9d49c61ee46))
+
 ## [5.1.10](https://github.com/mohammaDJ23/expense-api/compare/v5.1.9...v5.1.10) (2026-09-09)
 
 ### 🔧 Chores
