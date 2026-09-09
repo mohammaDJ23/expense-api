@@ -40,15 +40,26 @@ EXPOSE 4000 9229
 
 ENTRYPOINT ["sh", "-c", "pnpm run db:push && pnpm run start:debug"]
 
-FROM installed-packages AS db-migration
+FROM installed-packages AS db-migration-build
 
 ENV NODE_ENV=production
 ENV npm_config_ignore_scripts=true
 
 RUN pnpm prune --production
 
-COPY --chown=expense-api:nodejs drizzle.config.ts ./
-COPY --chown=expense-api:nodejs drizzle ./drizzle
+FROM node-patched AS db-migration
+
+ENV NODE_ENV=production
+
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S expense-api -u 1001 -G nodejs
+
+WORKDIR /usr/src/app
+
+COPY --from=db-migration-build --chown=expense-api:nodejs /usr/src/app/package.json ./
+COPY --from=db-migration-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
+COPY --from=db-migration-build --chown=expense-api:nodejs /usr/src/app/drizzle.config.ts ./
+COPY --from=db-migration-build --chown=expense-api:nodejs /usr/src/app/drizzle ./drizzle
 
 USER expense-api
 
