@@ -1,3 +1,17 @@
+## [5.1.2](https://github.com/mohammaDJ23/expense-api/compare/v5.1.1...v5.1.2) (2026-09-09)
+
+### 🔧 Chores
+
+- 115301 add the db schemas ([3519a10](https://github.com/mohammaDJ23/expense-api/commit/3519a10af20db3025fc0d0762698a962685dec0c))
+- 115301 add the migrate command to the production entrypoint ([825d45f](https://github.com/mohammaDJ23/expense-api/commit/825d45f2f285012503d32390789a665f6a19778e))
+- 115301 add the scripts of migration ([ffca8e5](https://github.com/mohammaDJ23/expense-api/commit/ffca8e5ee3ba2845a1cd5892defb04564eb3beba))
+- 115301 add the service of migration ([b1abde6](https://github.com/mohammaDJ23/expense-api/commit/b1abde67990196f0f3a9b18cc0ff39e36d4d7350))
+- 115301 add the stage of migration ([c688e0b](https://github.com/mohammaDJ23/expense-api/commit/c688e0b0a33770ec667ef9f743436e7afb0be246))
+- 115301 do not run migrate command before starting the app ([59fc8c8](https://github.com/mohammaDJ23/expense-api/commit/59fc8c8d7a241e039d20cb95ab59234f3bf64028))
+- 115301 remove all drizzle related files ([4257b83](https://github.com/mohammaDJ23/expense-api/commit/4257b838de4ccc6afb77673bc0d5da22a0073885))
+- 115301 remove drizzle folder from ignore files ([4d26fb5](https://github.com/mohammaDJ23/expense-api/commit/4d26fb5372f661ff960b1bd73dd74e9eaeb7dd3e))
+- 115301 update some packages ([f63aa02](https://github.com/mohammaDJ23/expense-api/commit/f63aa028638e69a9395e5f7be48e7399c9727161))
+
 ## [5.1.1](https://github.com/mohammaDJ23/expense-api/compare/v5.1.0...v5.1.1) (2026-09-07)
 
 ### 🐛 Bug Fixes
