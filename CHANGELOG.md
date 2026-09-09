@@ -1,3 +1,9 @@
+## [5.1.9](https://github.com/mohammaDJ23/expense-api/compare/v5.1.8...v5.1.9) (2026-09-09)
+
+### 🔧 Chores
+
+- 115301 add ENV npm_config_ignore_scripts=true ([529f9cb](https://github.com/mohammaDJ23/expense-api/commit/529f9cb67d6576ad6364b09298b3813d161a734a))
+
 ## [5.1.8](https://github.com/mohammaDJ23/expense-api/compare/v5.1.7...v5.1.8) (2026-09-09)
 
 ### 🔧 Chores
