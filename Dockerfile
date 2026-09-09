@@ -26,8 +26,7 @@ FROM base AS installed-packages
 
 RUN pnpm install \
     --ignore-scripts \
-    --frozen-lockfile && \
-    pnpm cache clean
+    --frozen-lockfile
 
 FROM installed-packages AS development
 
@@ -44,6 +43,7 @@ ENTRYPOINT ["sh", "-c", "pnpm run db:push && pnpm run start:debug"]
 FROM installed-packages AS db-migration
 
 ENV NODE_ENV=production
+ENV HUSKY=0
 
 RUN pnpm prune --production && \
     pnpm add drizzle-kit@0.31.10 --ignore-scripts
