@@ -1,3 +1,9 @@
+## [5.1.10](https://github.com/mohammaDJ23/expense-api/compare/v5.1.9...v5.1.10) (2026-09-09)
+
+### 🔧 Chores
+
+- 115301 separate db-migration from installed-packages ([be5f63f](https://github.com/mohammaDJ23/expense-api/commit/be5f63fcf314bc314db76b3339fd3c2212fc5e43))
+
 ## [5.1.9](https://github.com/mohammaDJ23/expense-api/compare/v5.1.8...v5.1.9) (2026-09-09)
 
 ### 🔧 Chores
