@@ -47,6 +47,8 @@ services:
                 condition: service_completed_successfully
             elasticsearch:
                 condition: service_healthy
+            db-migration:
+                condition: service_completed_successfully
         restart: unless-stopped
         pull_policy: always
         mem_limit: 512M
@@ -131,6 +133,33 @@ services:
             options:
                 max-size: '10m'
                 max-file: '3'
+
+    db-migration:
+        image: mohammadnowresideh1997/expense-api-production-db-migration:latest
+        restart: no
+        depends_on:
+            postgres:
+                condition: service_healthy
+        environment:
+            - DATABASE_HOST=postgres
+            - DATABASE_PORT=5432
+            - DATABASE_NAME=expense_api_prod
+            - DATABASE_USER=expense_api
+            - DATABASE_PASSWORD_FILE=/run/secrets/database_password
+        secrets:
+            - database_password
+        networks:
+            - expense-api-network-internal
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        logging:
+            driver: json-file
+            options:
+                max-size: '1m'
+                max-file: '1'
 
     redis:
         image: redis:7-alpine
