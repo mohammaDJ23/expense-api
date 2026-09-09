@@ -33,11 +33,11 @@
             "ws": ">=8.21.0",
             "form-data": ">=4.0.6",
             "piscina": ">=4.9.3",
-            "nodemailer": ">=9.0.1",
+            "nodemailer": ">=9.1.0",
             "linkify-it": ">=5.0.2",
             "liquidjs": ">=10.27.1",
             "js-yaml": "5.2.2",
-            "svgo": ">=4.0.2",
+            "svgo": ">=4.1.0",
             "postcss": ">=8.5.18",
             "typeorm": "1.1.0",
             "nanoid": ">=5.1.16"
