@@ -1,5 +1,8 @@
 FROM node:24-alpine AS node-patched
 
+ENV COREPACK_INTEGRITY_KEYS=0
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+
 RUN apk update && \
     apk upgrade --available
 
@@ -11,9 +14,6 @@ RUN corepack enable && \
     chown -R expense-api:nodejs /usr/src/app
 
 FROM node-patched AS base
-
-ENV COREPACK_INTEGRITY_KEYS=0
-ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 WORKDIR /usr/src/app
 
