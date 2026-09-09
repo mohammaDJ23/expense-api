@@ -50,12 +50,21 @@ RUN pnpm run build && \
     pnpm prune --production && \
     rm -rf src
 
-FROM base AS db-migration
+FROM node-patched AS db-migration
 
+ENV NODE_ENV=production
+
+RUN corepack enable && \
+    corepack prepare pnpm@10.29.2 --activate && \
+    addgroup -g 1001 -S nodejs && \
+    adduser -S expense-api -u 1001 -G nodejs
+
+WORKDIR /usr/src/app
+
+COPY --from=base --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
+COPY --from=base --chown=expense-api:nodejs /usr/src/app/package.json ./
 COPY --chown=expense-api:nodejs drizzle.config.ts ./
 COPY --chown=expense-api:nodejs drizzle ./drizzle
-
-RUN rm -rf /root/.local/share/pnpm/store
 
 USER expense-api
 
