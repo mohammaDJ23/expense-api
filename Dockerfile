@@ -55,6 +55,8 @@ FROM base AS db-migration
 COPY --chown=expense-api:nodejs drizzle.config.ts ./
 COPY --chown=expense-api:nodejs drizzle ./drizzle
 
+RUN rm -rf /root/.local/share/pnpm/store
+
 USER expense-api
 
 ENTRYPOINT ["pnpm", "run", "db:migrate"]
