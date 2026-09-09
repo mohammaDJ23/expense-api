@@ -43,6 +43,7 @@ ENTRYPOINT ["sh", "-c", "pnpm run db:push && pnpm run start:debug"]
 FROM installed-packages AS db-migration
 
 ENV NODE_ENV=production
+ENV npm_config_ignore_scripts=true
 
 RUN pnpm prune --production
 
