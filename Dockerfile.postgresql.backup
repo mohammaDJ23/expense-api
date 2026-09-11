@@ -1,0 +1,23 @@
+FROM postgres:16
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl \
+        ca-certificates && \
+    rm -rf /var/lib/apt/lists/* && \
+    curl -L https://github.com/wal-g/wal-g/releases/download/v3.0.9/wal-g-pg-22.04-aarch64.tar.gz | tar -xz && \
+    mv wal-g-pg-22.04-aarch64 /usr/local/bin/wal-g && \
+    chmod 755 /usr/local/bin/wal-g && \
+    curl -fsSL https://github.com/aptible/supercronic/releases/latest/download/supercronic-linux-arm64 -o /usr/local/bin/supercronic && \
+    chmod 755 /usr/local/bin/supercronic
+
+COPY dbBackup.cron /etc/dbBackup.cron
+COPY ./scripts/database/backup.sh /usr/local/bin/backup.sh
+COPY ./scripts/database/backupEntrypoint.sh /usr/local/bin/backupEntrypoint.sh
+
+RUN chmod +x /usr/local/bin/backup.sh && \
+    chmod +x /usr/local/bin/backupEntrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/backupEntrypoint.sh"]
+
+CMD ["supercronic", "/etc/dbBackup.cron"]

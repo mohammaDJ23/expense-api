@@ -49,6 +49,8 @@ services:
                 condition: service_healthy
             db-migration:
                 condition: service_completed_successfully
+            postgres-backup:
+                condition: service_healthy
         restart: unless-stopped
         pull_policy: always
         mem_limit: 512M
@@ -78,8 +80,11 @@ services:
             - POSTGRES_PASSWORD_FILE=/run/secrets/database_password
             - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 --auth-local=scram-sha-256
             - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
-            - WALG_FILE_PREFIX=/db_backup
             - WALG_COMPRESSION_METHOD=brotli
+            - WALG_S3_PREFIX=s3://expense-api/db-backup
+            - AWS_ENDPOINT=https://s3.ir-thr-at1.arvanstorage.ir
+            - AWS_REGION=ir-thr-at1
+            - AWS_S3_FORCE_PATH_STYLE=true
             - PGHOST=/var/run/postgresql
             - PGPORT=5432
             - PGDATABASE=expense_api_prod
@@ -100,10 +105,12 @@ services:
             - archive_command=wal-g wal-push %p
         secrets:
             - database_password
+            - arvan_access_key
+            - arvan_secret_key
         volumes:
             - postgres-data:/var/lib/postgresql/data
-            - ./db_backup:/db_backup
         networks:
+            - expense-api-network
             - expense-api-network-internal
         healthcheck:
             test:
@@ -134,6 +141,55 @@ services:
                 max-size: '10m'
                 max-file: '3'
 
+    postgres-backup:
+        build:
+            context: .
+            dockerfile: Dockerfile.postgresql.backup
+        user: '999:999'
+        environment:
+            - WALG_COMPRESSION_METHOD=brotli
+            - WALG_S3_PREFIX=s3://expense-api/db-backup
+            - AWS_ENDPOINT=https://s3.ir-thr-at1.arvanstorage.ir
+            - AWS_REGION=ir-thr-at1
+            - AWS_S3_FORCE_PATH_STYLE=true
+            - PGHOST=postgres
+            - PGPORT=5432
+            - PGDATABASE=expense_api_prod
+            - PGUSER=expense_api
+        secrets:
+            - database_password
+            - arvan_access_key
+            - arvan_secret_key
+        volumes:
+            - postgres-data:/var/lib/postgresql/data:ro
+        networks:
+            - expense-api-network
+        healthcheck:
+            test:
+                - 'CMD-SHELL'
+                - 'pg_isready -U expense_api'
+            interval: 15s
+            timeout: 5s
+            start_period: 90s
+            retries: 3
+        depends_on:
+            postgres:
+                condition: service_healthy
+        restart: unless-stopped
+        mem_limit: 512M
+        mem_reservation: 128M
+        cpus: '0.5'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '5m'
+                max-file: '3'
+
     db-migration:
         image: mohammadnowresideh1997/expense-api-production-db-migration:latest
         restart: no
@@ -150,6 +206,7 @@ services:
             - database_password
         networks:
             - expense-api-network-internal
+        pull_policy: always
         init: true
         security_opt:
             - no-new-privileges:true
@@ -357,7 +414,7 @@ services:
                 - 'CMD-SHELL'
                 - >
                     curl -fs -u elastic:$(cat /run/secrets/elasticsearch_password)
-                    "http://localhost:9200/_cluster/health?wait_for_status=green&timeout=60s"
+                    "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=60s"
                     >/dev/null
             interval: 15s
             timeout: 5s
@@ -404,6 +461,10 @@ secrets:
         file: ./secrets/google_oauth_client_secret.txt
     elasticsearch_password:
         file: ./secrets/elasticsearch_password.txt
+    arvan_access_key:
+        file: ./secrets/arvan_access_key.txt
+    arvan_secret_key:
+        file: ./secrets/arvan_secret_key.txt
 
 networks:
     expense-api-network:
