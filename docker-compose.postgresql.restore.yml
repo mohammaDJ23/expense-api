@@ -1,0 +1,55 @@
+services:
+    postgres-restore:
+        build:
+            context: .
+            dockerfile: Dockerfile.postgresql.restore
+        environment:
+            - POSTGRES_DB=expense_api_restore
+            - POSTGRES_USER=expense_api
+            - POSTGRES_PASSWORD_FILE=/run/secrets/database_password
+            - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 --auth-local=scram-sha-256
+            - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
+            - WALG_COMPRESSION_METHOD=brotli
+            - WALG_S3_PREFIX=s3://expense-api/db-backup
+            - AWS_ENDPOINT=https://s3.ir-thr-at1.arvanstorage.ir
+            - AWS_REGION=ir-thr-at1
+            - AWS_S3_FORCE_PATH_STYLE=true
+            - PGHOST=/var/run/postgresql
+            - PGPORT=5432
+            - PGDATABASE=expense_api_restore
+            - PGUSER=expense_api
+        secrets:
+            - database_password
+            - arvan_access_key
+            - arvan_secret_key
+        volumes:
+            - postgres-restore-data:/var/lib/postgresql/data
+        networks:
+            - expense-api-restore-network
+        restart: 'no'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        logging:
+            driver: json-file
+            options:
+                max-size: '1m'
+                max-file: '1'
+
+volumes:
+    postgres-restore-data:
+        driver: local
+
+networks:
+    expense-api-restore-network:
+        name: expense-api-restore-network
+
+secrets:
+    database_password:
+        file: ./secrets/database_password.txt
+    arvan_access_key:
+        file: ./secrets/arvan_access_key.txt
+    arvan_secret_key:
+        file: ./secrets/arvan_secret_key.txt
