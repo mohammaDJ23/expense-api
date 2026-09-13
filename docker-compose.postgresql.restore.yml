@@ -4,11 +4,6 @@ services:
             context: .
             dockerfile: Dockerfile.postgresql.restore
         environment:
-            - POSTGRES_DB=expense_api_restore
-            - POSTGRES_USER=expense_api
-            - POSTGRES_PASSWORD_FILE=/run/secrets/database_password
-            - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 --auth-local=scram-sha-256
-            - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
             - WALG_COMPRESSION_METHOD=brotli
             - WALG_S3_PREFIX=s3://expense-api/db-backup
             - AWS_ENDPOINT=https://s3.ir-thr-at1.arvanstorage.ir
@@ -16,7 +11,7 @@ services:
             - AWS_S3_FORCE_PATH_STYLE=true
             - PGHOST=/var/run/postgresql
             - PGPORT=5432
-            - PGDATABASE=expense_api_restore
+            - PGDATABASE=expense_api_prod
             - PGUSER=expense_api
         secrets:
             - database_password
@@ -32,6 +27,12 @@ services:
             - no-new-privileges:true
         cap_drop:
             - ALL
+        cap_add:
+            - CHOWN
+            - DAC_OVERRIDE
+            - FOWNER
+            - SETGID
+            - SETUID
         logging:
             driver: json-file
             options:
