@@ -52,7 +52,6 @@ services:
             postgres-backup:
                 condition: service_healthy
         restart: unless-stopped
-        pull_policy: always
         mem_limit: 512M
         mem_reservation: 256M
         cpus: '0.5'
@@ -100,7 +99,7 @@ services:
             - -c
             - archive_mode=on
             - -c
-            - archive_timeout=60s
+            - archive_timeout=20s
             - -c
             - archive_command=wal-g wal-push %p
         secrets:
@@ -206,7 +205,6 @@ services:
             - database_password
         networks:
             - expense-api-network-internal
-        pull_policy: always
         init: true
         security_opt:
             - no-new-privileges:true
