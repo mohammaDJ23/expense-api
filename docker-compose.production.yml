@@ -99,7 +99,7 @@ services:
             - -c
             - archive_mode=on
             - -c
-            - archive_timeout=20s
+            - archive_timeout=60s
             - -c
             - archive_command=wal-g wal-push %p
         secrets:
