@@ -14,28 +14,19 @@ echo "========================================"
 
 echo
 echo "Checking available backups..."
-
 wal-g backup-list
 
 echo
-echo "Checking restore data directory..."
-
-if [ "$(find "$DATA_DIR" -mindepth 1 -maxdepth 1 -print -quit)" ]; then
-    echo "ERROR: Restore data directory is not empty."
-    echo
-    echo "This restore volume must be empty."
-    echo "Remove the temporary restore volume and try again."
-    exit 1
-fi
+echo "Preparing restore data directory..."
+find "$DATA_DIR" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
+echo "Restore data directory is clean."
 
 echo
 echo "Fetching latest full backup..."
-
 wal-g backup-fetch "$DATA_DIR" LATEST
 
 echo
 echo "Configuring WAL recovery..."
-
 cat >> "${DATA_DIR}/postgresql.auto.conf" <<'EOF'
 restore_command = 'wal-g wal-fetch "%f" "%p"'
 EOF
