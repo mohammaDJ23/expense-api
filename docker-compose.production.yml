@@ -174,8 +174,8 @@ services:
         depends_on:
             postgres:
                 condition: service_healthy
-        db-migration:
-            condition: service_completed_successfully
+            db-migration:
+                condition: service_completed_successfully
         restart: unless-stopped
         mem_limit: 512M
         mem_reservation: 128M
