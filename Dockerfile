@@ -31,6 +31,8 @@ FROM installed-packages AS development
 
 ENV NODE_ENV=development
 
+RUN apk add --no-cache curl
+
 COPY --chown=expense-api:nodejs . .
 
 USER expense-api
