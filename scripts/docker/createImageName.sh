@@ -2,24 +2,23 @@
 
 set -euo pipefail
 
-source ./scripts/logs.sh
+source ./scripts/validateDockerImageTag.sh
 
-create_image_name() {
-    local APP_NAME=$(source ./scripts/appName.sh)
+TAG="${TAG:?ERROR TAG is required as env}"
 
-    log_info "Create the image name..." >&2
+validate_docker_image_tag "${TAG}"
 
-    local ENVIRONMENT="${ENVIRONMENT:?ERROR ENVIRONMENT is required as env}"
-    local DOCKER_USERNAME="${DOCKER_USERNAME:?ERROR DOCKER_USERNAME is required as env}"
-    local TAG="${TAG:-latest}"
-    
-    local IMAGE_NAME="${DOCKER_USERNAME}/${APP_NAME}-${ENVIRONMENT}:${TAG}"
+IMAGE="mohammadnowresideh1997/expense-api-production"
 
-    log_success "The image name create: ${IMAGE_NAME}" >&2
+VERSIONED_IMAGE="${IMAGE}:${TAG}"
+LATEST_IMAGE="${IMAGE}:latest"
 
-    echo "${IMAGE_NAME}"
-}
+if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+    echo "image=${IMAGE}" >> "$GITHUB_OUTPUT"
+    echo "versioned_image=${VERSIONED_IMAGE}" >> "$GITHUB_OUTPUT"
+    echo "latest_image=${LATEST_IMAGE}" >> "$GITHUB_OUTPUT"
 
-IMAGE_NAME=$(create_image_name)
-
-export IMAGE_NAME
+    echo "✓ GitHub output set: image=${IMAGE}"
+    echo "✓ GitHub output set: versioned_image=${VERSIONED_IMAGE}"
+    echo "✓ GitHub output set: latest_image=${LATEST_IMAGE}"
+fi

@@ -2,12 +2,11 @@
 
 set -euo pipefail
 
+source ./scripts/validateDockerImageTag.sh
+
 TAG="${TAG:?ERROR TAG is required as env}"
 
-if [[ ! "${TAG}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "ERROR TAG must follow the format X.Y.Z (e.g. 2.234.242)"
-    exit 1
-fi
+validate_docker_image_tag "${TAG}"
 
 IMAGE="mohammadnowresideh1997/expense-api-production-db-migration"
 
@@ -32,8 +31,11 @@ docker push "${LATEST_IMAGE}"
 echo "Pushed: ${LATEST_IMAGE}"
 
 if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
-    echo "image_name=${VERSIONED_IMAGE}" >> "$GITHUB_OUTPUT"
-    echo "✓ GitHub output set: image_name=${VERSIONED_IMAGE}"
-else
-    echo "⚠ Missing GITHUB_OUTPUT, skipping output"
+    echo "image=${IMAGE}" >> "$GITHUB_OUTPUT"
+    echo "versioned_image=${VERSIONED_IMAGE}" >> "$GITHUB_OUTPUT"
+    echo "latest_image=${LATEST_IMAGE}" >> "$GITHUB_OUTPUT"
+
+    echo "✓ GitHub output set: image=${IMAGE}"
+    echo "✓ GitHub output set: versioned_image=${VERSIONED_IMAGE}"
+    echo "✓ GitHub output set: latest_image=${LATEST_IMAGE}"
 fi
