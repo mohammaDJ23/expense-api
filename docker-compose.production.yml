@@ -1,6 +1,6 @@
 services:
     expense-api:
-        image: ${IMAGE_NAME:?ERROR IMAGE_NAME is required}
+        image: mohammadnowresideh1997/expense-api-production:latest
         env_file:
             - .env.production
         environment:
