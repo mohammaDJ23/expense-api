@@ -122,9 +122,8 @@ jobs:
 
             - name: Create & push the migration image
               id: create-migration
-              run: pnpm run create:migration:ci:production
+              run: pnpm run create:migration
               env:
-                  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
                   TAG: ${{ needs.create-version.outputs.version }}
 
             - name: Scan the migration docker image
