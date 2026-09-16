@@ -242,7 +242,7 @@ services:
                 - 'CMD-SHELL'
                 - >
                     curl -fs -u elastic:$(cat /run/secrets/elasticsearch_password)
-                    "http://localhost:9200/_cluster/health?wait_for_status=green&timeout=5s"
+                    "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s"
                     >/dev/null
             interval: 15s
             timeout: 5s
