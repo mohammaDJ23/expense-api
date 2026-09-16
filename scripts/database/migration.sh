@@ -2,48 +2,38 @@
 
 set -euo pipefail
 
-source ./scripts/logs.sh
+TAG="${TAG:?ERROR TAG is required as env}"
 
-main() {
-    local APP_NAME
-    APP_NAME=$(source ./scripts/appName.sh)
+if [[ ! "${TAG}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "ERROR TAG must follow the format X.Y.Z (e.g. 2.234.242)"
+    exit 1
+fi
 
-    local ENVIRONMENT="${ENVIRONMENT:?ERROR ENVIRONMENT is required as env}"
-    local DOCKER_USERNAME="${DOCKER_USERNAME:?ERROR DOCKER_USERNAME is required as env}"
+IMAGE="mohammadnowresideh1997/expense-api-production-db-migration"
 
-    local TAG="${TAG:?ERROR TAG is required as env}"
-    if [[ ! "${TAG}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        log_error "ERROR TAG must follow the format X.Y.Z (e.g. 2.234.242)"
-        return 1
-    fi
+VERSIONED_IMAGE="${IMAGE}:${TAG}"
+LATEST_IMAGE="${IMAGE}:latest"
 
-    local IMAGE_REPOSITORY="${DOCKER_USERNAME}/${APP_NAME}-${ENVIRONMENT}-db-migration"
-    local VERSIONED_IMAGE="${IMAGE_REPOSITORY}:${TAG}"
-    local LATEST_IMAGE="${IMAGE_REPOSITORY}:latest"
+echo "Building image: ${VERSIONED_IMAGE}"
+docker build \
+    --target db-migration \
+    --tag "${VERSIONED_IMAGE}" \
+    .
+echo "Built: ${VERSIONED_IMAGE}"
 
-    log_info "Building image: ${VERSIONED_IMAGE}"
-    docker build \
-        --target db-migration \
-        --tag "${VERSIONED_IMAGE}" \
-        .
-    log_success "Built: ${VERSIONED_IMAGE}"
+echo "Pushing image: ${VERSIONED_IMAGE}"
+docker push "${VERSIONED_IMAGE}"
+echo "Pushed: ${VERSIONED_IMAGE}"
 
-    log_info "Pushing image: ${VERSIONED_IMAGE}"
-    docker push "${VERSIONED_IMAGE}"
-    log_success "Pushed: ${VERSIONED_IMAGE}"
+docker tag "${VERSIONED_IMAGE}" "${LATEST_IMAGE}"
 
-    docker tag "${VERSIONED_IMAGE}" "${LATEST_IMAGE}"
+echo "Pushing image: ${LATEST_IMAGE}"
+docker push "${LATEST_IMAGE}"
+echo "Pushed: ${LATEST_IMAGE}"
 
-    log_info "Pushing image: ${LATEST_IMAGE}"
-    docker push "${LATEST_IMAGE}"
-    log_success "Pushed: ${LATEST_IMAGE}"
-
-    if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
-        echo "image_name=${VERSIONED_IMAGE}" >> "$GITHUB_OUTPUT"
-        log_success "✓ GitHub output set: image-name=${VERSIONED_IMAGE}"
-    else
-        log_warning "⚠ Missing GITHUB_OUTPUT, skipping output"
-    fi
-}
-
-main "$@"
+if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+    echo "image_name=${VERSIONED_IMAGE}" >> "$GITHUB_OUTPUT"
+    echo "✓ GitHub output set: image_name=${VERSIONED_IMAGE}"
+else
+    echo "⚠ Missing GITHUB_OUTPUT, skipping output"
+fi
