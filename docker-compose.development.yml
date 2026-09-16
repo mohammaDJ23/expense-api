@@ -1,6 +1,6 @@
 services:
     expense-api:
-        image: ${IMAGE_NAME:?ERROR IMAGE_NAME is required}
+        image: expense-api
         stdin_open: true
         tty: true
         env_file:
