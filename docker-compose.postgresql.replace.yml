@@ -1,0 +1,36 @@
+name: production-expense-api
+
+services:
+    postgres-replace:
+        build:
+            context: .
+            dockerfile: Dockerfile.postgresql.replace
+        volumes:
+            - postgres-data:/production
+            - postgres-restore-data:/restore:ro
+            - postgres-rollback-data:/rollback
+        networks:
+            - postgres-replace-network
+        restart: 'no'
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        logging:
+            driver: json-file
+            options:
+                max-size: '1m'
+                max-file: '1'
+
+volumes:
+    postgres-data:
+        driver: local
+    postgres-restore-data:
+        driver: local
+    postgres-rollback-data:
+        driver: local
+
+networks:
+    postgres-replace-network:
+        driver: bridge
