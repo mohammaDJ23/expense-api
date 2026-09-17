@@ -39,7 +39,8 @@
             "svgo": ">=4.1.0",
             "postcss": ">=8.5.18",
             "typeorm": "1.1.0",
-            "nanoid": ">=5.1.16"
+            "nanoid": ">=5.1.16",
+            "nodemailer": ">=9.1.0"
         }
     },
     "scripts": {
