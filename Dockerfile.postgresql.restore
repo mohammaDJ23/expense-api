@@ -9,8 +9,8 @@ RUN apt-get update && \
     mv wal-g-pg-22.04-aarch64 /usr/local/bin/wal-g && \
     chmod 755 /usr/local/bin/wal-g
 
-COPY ./scripts/database/restore.sh /usr/local/bin/restore.sh
+COPY ./scripts/database/restoreEntrypoint.sh /usr/local/bin/restoreEntrypoint.sh
 
-RUN chmod +x /usr/local/bin/restore.sh
+RUN chmod +x /usr/local/bin/restoreEntrypoint.sh
 
-ENTRYPOINT ["/usr/local/bin/restore.sh"]
+ENTRYPOINT ["/usr/local/bin/restoreEntrypoint.sh"]
