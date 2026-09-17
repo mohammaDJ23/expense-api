@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ./scripts/dockerComposeCommand.sh
+source ./scripts/docker/dockerComposeCommand.sh
 
 docker_compose \
     -f docker-compose.production.yml \
