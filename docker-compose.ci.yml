@@ -1,3 +1,5 @@
+name: ci-expense-api
+
 services:
     expense-api:
         image: ${IMAGE:?ERROR IMAGE must be provided}

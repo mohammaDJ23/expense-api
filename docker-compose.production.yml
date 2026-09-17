@@ -1,3 +1,5 @@
+name: production-expense-api
+
 services:
     expense-api:
         image: mohammadnowresideh1997/expense-api-production:latest
