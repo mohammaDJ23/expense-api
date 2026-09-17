@@ -66,7 +66,7 @@
         "validate:branch:name:development": "bash ./scripts/developmentValidateBranchName.sh",
         "validate:commit:message": "bash ./scripts/validateCommitMessage.sh",
         "lint:staged": "bash ./scripts/lintStaged.sh",
-        "create:app:docker:image:name": "bash ./scripts/app/createImageName.sh",
+        "create:app:docker:image:name": "bash ./scripts/app/createDockerImageName.sh",
         "create:migration:docker:image:name": "bash ./scripts/database/createMigrationDockerImageName.sh",
         "build:migration:docker:image": "bash ./scripts/database/buildMigrationDockerImage.sh",
         "tag:docker:images": "bash ./scripts/docker/tagDockerImage.sh",
