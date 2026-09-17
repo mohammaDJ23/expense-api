@@ -1,6 +1,6 @@
 services:
     expense-api:
-        image: expense-api
+        image: ${IMAGE:?ERROR IMAGE must be provided}
         build:
             context: .
             target: production
