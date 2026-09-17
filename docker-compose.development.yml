@@ -24,7 +24,7 @@ services:
             - '4000:4000'
             - '9229:9229'
         networks:
-            - expense-api-network
+            - app-network
         healthcheck:
             test:
                 - 'CMD-SHELL'
@@ -84,7 +84,7 @@ services:
         ports:
             - '5432:5432'
         networks:
-            - expense-api-network
+            - app-network
         healthcheck:
             test:
                 - 'CMD-SHELL'
@@ -110,7 +110,7 @@ services:
         ports:
             - '6379:6379'
         networks:
-            - expense-api-network
+            - app-network
         healthcheck:
             test:
                 - 'CMD'
@@ -155,7 +155,7 @@ services:
             start_period: 90s
             retries: 3
         networks:
-            - expense-api-network
+            - app-network
 
     debezium-connect:
         image: mohammadnowresideh1997/debezium-connect:3.0.8.Final
@@ -192,7 +192,7 @@ services:
             start_period: 90s
             retries: 3
         networks:
-            - expense-api-network
+            - app-network
 
     debezium-init:
         build:
@@ -211,7 +211,7 @@ services:
         secrets:
             - database_password
         networks:
-            - expense-api-network
+            - app-network
 
     elasticsearch:
         build:
@@ -238,7 +238,7 @@ services:
         ports:
             - '9200:9200'
         networks:
-            - expense-api-network
+            - app-network
         healthcheck:
             test:
                 - 'CMD-SHELL'
@@ -280,5 +280,5 @@ secrets:
         file: ./secrets/elasticsearch_password.txt
 
 networks:
-    expense-api-network:
+    app-network:
         driver: bridge

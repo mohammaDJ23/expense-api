@@ -22,7 +22,7 @@ services:
         volumes:
             - postgres-restore-data:/var/lib/postgresql/data
         networks:
-            - expense-api-restore-network
+            - postgres-restore-network
         restart: 'no'
         init: true
         security_opt:
@@ -46,8 +46,8 @@ volumes:
         driver: local
 
 networks:
-    expense-api-restore-network:
-        name: expense-api-restore-network
+    postgres-restore-network:
+        driver: bridge
 
 secrets:
     database_password:

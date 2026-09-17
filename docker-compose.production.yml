@@ -17,8 +17,8 @@ services:
         ports:
             - '127.0.0.1:3000:3000'
         networks:
-            - expense-api-network
-            - expense-api-network-internal
+            - app-network
+            - app-network-internal
         healthcheck:
             test:
                 - 'CMD-SHELL'
@@ -111,8 +111,8 @@ services:
         volumes:
             - postgres-data:/var/lib/postgresql/data
         networks:
-            - expense-api-network
-            - expense-api-network-internal
+            - app-network
+            - app-network-internal
         healthcheck:
             test:
                 - 'CMD-SHELL'
@@ -164,7 +164,7 @@ services:
         volumes:
             - postgres-data:/var/lib/postgresql/data:ro
         networks:
-            - expense-api-network
+            - app-network
         healthcheck:
             test:
                 - 'CMD-SHELL'
@@ -208,7 +208,7 @@ services:
         secrets:
             - database_password
         networks:
-            - expense-api-network-internal
+            - app-network-internal
         init: true
         security_opt:
             - no-new-privileges:true
@@ -233,7 +233,7 @@ services:
         volumes:
             - redis-data:/data
         networks:
-            - expense-api-network-internal
+            - app-network-internal
         healthcheck:
             test:
                 - 'CMD'
@@ -293,7 +293,7 @@ services:
             start_period: 90s
             retries: 3
         networks:
-            - expense-api-network-internal
+            - app-network-internal
         mem_limit: 1G
         mem_reservation: 512M
         cpus: '1.0'
@@ -341,7 +341,7 @@ services:
             start_period: 90s
             retries: 3
         networks:
-            - expense-api-network-internal
+            - app-network-internal
         mem_limit: 768M
         mem_reservation: 384M
         cpus: '0.75'
@@ -373,7 +373,7 @@ services:
         secrets:
             - database_password
         networks:
-            - expense-api-network-internal
+            - app-network-internal
         init: true
         security_opt:
             - no-new-privileges:true
@@ -423,7 +423,7 @@ services:
             start_period: 90s
             retries: 3
         networks:
-            - expense-api-network-internal
+            - app-network-internal
         mem_limit: 4G
         mem_reservation: 2G
         cpus: '2'
@@ -469,8 +469,8 @@ secrets:
         file: ./secrets/arvan_secret_key.txt
 
 networks:
-    expense-api-network:
+    app-network:
         driver: bridge
-    expense-api-network-internal:
+    app-network-internal:
         driver: bridge
         internal: true
