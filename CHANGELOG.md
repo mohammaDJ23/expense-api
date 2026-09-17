@@ -1,3 +1,9 @@
+## [5.1.13](https://github.com/mohammaDJ23/expense-api/compare/v5.1.12...v5.1.13) (2026-09-17)
+
+### 🔧 Chores
+
+- 106976 use installing node_modules step ([9b99f26](https://github.com/mohammaDJ23/expense-api/commit/9b99f26d9a4773ce12c48ab44250fd1dc7c92d49))
+
 ## [5.1.12](https://github.com/mohammaDJ23/expense-api/compare/v5.1.11...v5.1.12) (2026-09-17)
 
 ### 🐛 Bug Fixes
