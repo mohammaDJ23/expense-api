@@ -11,3 +11,9 @@ docker_compose \
     -d \
     --wait \
     --wait-timeout 240
+
+cleanup() {
+    docker image prune -f >/dev/null 2>&1 || true
+}
+
+trap cleanup EXIT
