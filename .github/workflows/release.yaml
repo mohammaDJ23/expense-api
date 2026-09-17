@@ -1,10 +1,7 @@
 name: Release
 
 on:
-    workflow_run:
-        workflows: ['PR CI']
-        types:
-            - completed
+    push:
         branches:
             - master
 
@@ -19,7 +16,6 @@ env:
 
 jobs:
     manual-approval:
-        if: github.event.workflow_run.conclusion == 'success'
         runs-on: ubuntu-latest
         environment: production-release
         steps:
@@ -33,14 +29,6 @@ jobs:
                   echo "   Run #: ${RUN_NUMBER}"
                   echo "   SHA: ${SHA}"
                   echo "   By: ${BY}"
-                  echo ""
-                  echo "📋 Before approving, verify:"
-                  echo "   1. Master Pipeline completed successfully"
-                  echo "   2. No Master Pipeline is currently running"
-                  echo "   3. You want to proceed with this release"
-                  echo ""
-                  echo "⚠️  This release will use SHA:"
-                  echo "   ${SHA}"
                   echo ""
                   echo "=========================================="
 
@@ -72,7 +60,7 @@ jobs:
               id: get-commit-sha
               run: pnpm run detect:commitsha
 
-    run-test-push:
+    app:
         needs: create-version
         timeout-minutes: 30
         runs-on: ubuntu-latest
@@ -81,9 +69,6 @@ jobs:
               uses: actions/checkout@v4
               with:
                   ref: ${{ needs.create-version.outputs.commit_sha }}
-
-            - name: Install node and node_modules
-              uses: ./.github/actions/setup-node
 
             - name: Login to Docker Hub
               uses: docker/login-action@v3
@@ -108,34 +93,98 @@ jobs:
                   echo "${{ secrets.ARVAN_ACCESS_KEY }}" > ./secrets/arvan_access_key.txt
                   echo "${{ secrets.ARVAN_SECRET_KEY }}" > ./secrets/arvan_secret_key.txt
 
-            - name: Run the entrypoint
-              id: run-entrypoint
-              run: pnpm run start:docker:ci:production
+            - name: Create image name
+              id: create-docker-image-name
+              run: pnpm run create:app:docker:image:name
               env:
-                  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
                   TAG: ${{ needs.create-version.outputs.version }}
+
+            - name: Run the ci entrypoint
+              run: pnpm run start:docker:ci
+              env:
+                  IMAGE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
 
             - name: Scan the docker image
               uses: ./.github/actions/scan-docker-image
               with:
-                  image_name: ${{ steps.run-entrypoint.outputs.image_name }}
+                  image_name: ${{ steps.create-docker-image-name.outputs.versioned_image }}
                   snyk_token: ${{ secrets.SNYK_TOKEN }}
 
-            - name: Create & push the migration image
-              id: create-migration
-              run: pnpm run create:migration
+            - name: Tag the images
+              run: pnpm run tag:docker:images
               env:
-                  TAG: ${{ needs.create-version.outputs.version }}
+                  SOURCE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
+                  TARGET: ${{ steps.create-docker-image-name.outputs.latest_image }}
 
-            - name: Scan the migration docker image
-              uses: ./.github/actions/scan-docker-image
+            - name: Push versioned image to dockerhub
+              run: pnpm run push:docker:image
               with:
-                  image_name: ${{ steps.create-migration.outputs.image_name }}
-                  snyk_token: ${{ secrets.SNYK_TOKEN }}
+                  IMAGE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
+
+            - name: Push latest image to dockerhub
+              run: pnpm run push:docker:image
+              with:
+                  IMAGE: ${{ steps.create-docker-image-name.outputs.latest_image }}
 
             - name: Cleanup secrets
               if: always()
               run: rm -rf ./secrets
+
+            - name: Log out from DockerHub
+              if: always()
+              run: docker logout
+
+    migration:
+        needs: [create-version, run-test-push]
+        timeout-minutes: 30
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the source
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ needs.create-version.outputs.commit_sha }}
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Create image name
+              id: create-docker-image-name
+              run: pnpm run create:migration:docker:image:name
+              env:
+                  TAG: ${{ needs.create-version.outputs.version }}
+
+            - name: build the image
+              run: pnpm run build:migration:docker:image
+              env:
+                  IMAGE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
+
+            - name: Scan the docker image
+              uses: ./.github/actions/scan-docker-image
+              with:
+                  image_name: ${{ steps.create-docker-image-name.outputs.versioned_image }}
+                  snyk_token: ${{ secrets.SNYK_TOKEN }}
+
+            - name: Tag the images
+              run: pnpm run tag:docker:images
+              env:
+                  SOURCE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
+                  TARGET: ${{ steps.create-docker-image-name.outputs.latest_image }}
+
+            - name: Push versioned image to dockerhub
+              run: pnpm run push:docker:image
+              with:
+                  IMAGE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
+
+            - name: Push latest image to dockerhub
+              run: pnpm run push:docker:image
+              with:
+                  IMAGE: ${{ steps.create-docker-image-name.outputs.latest_image }}
 
             - name: Log out from DockerHub
               if: always()
