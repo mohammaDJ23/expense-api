@@ -1,3 +1,5 @@
+name: production-expense-api
+
 services:
     postgres-restore:
         build:
