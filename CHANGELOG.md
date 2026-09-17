@@ -1,3 +1,60 @@
+## [5.1.12](https://github.com/mohammaDJ23/expense-api/compare/v5.1.11...v5.1.12) (2026-09-17)
+
+### 🐛 Bug Fixes
+
+- 106976 fix the indentation ([4961f91](https://github.com/mohammaDJ23/expense-api/commit/4961f91320b42b6ba80e53ae4f832143d2177260))
+
+### ⚡ Performance Improvements
+
+- 106976 split the backup of db into another service ([3cbbe76](https://github.com/mohammaDJ23/expense-api/commit/3cbbe761bba9b661c654bbd76e183da8c8309ab4))
+
+### ♻️ Code Refactoring
+
+- 106976 remove all services of ci ([51f1cbf](https://github.com/mohammaDJ23/expense-api/commit/51f1cbf63e91ac76a2a5b4fb4b98f11fa9df8425))
+- 106976 remove master ci and remove services from ci ([85f6ebd](https://github.com/mohammaDJ23/expense-api/commit/85f6ebd2c26f5bdfbbde159df7789e644909370d))
+- 106976 remove unused code for migration ([19ee448](https://github.com/mohammaDJ23/expense-api/commit/19ee448ebe55a23465c8e2a20e71142c735dd74b))
+- 106976 reuse the docker scripts ([3afc7b7](https://github.com/mohammaDJ23/expense-api/commit/3afc7b73e7c31c0c17d10cb9ff06a133a28547a2))
+
+### 🔧 Continuous Integration
+
+- 106976 change the steps of app and migration ([5ad51e8](https://github.com/mohammaDJ23/expense-api/commit/5ad51e8a6b90624203ae4ff27606ddb72b6934c2))
+- 106976 change the steps of app and migration ([dd8530f](https://github.com/mohammaDJ23/expense-api/commit/dd8530f527a001156aa100840b5977f8b2779dee))
+- 106976 rename the serivces ([4971b4c](https://github.com/mohammaDJ23/expense-api/commit/4971b4c3a43be5a3accc3fe38300539882c13077))
+- 106976 use env instead of with ([41648e7](https://github.com/mohammaDJ23/expense-api/commit/41648e794fa1fc8f25f76270635bff660a809d2e))
+
+### 🔧 Chores
+
+- 106976 add always pull_policy ([7b786ce](https://github.com/mohammaDJ23/expense-api/commit/7b786ce0853ffb97e03e7940a9d441309e6dc6c6))
+- 106976 add arvan secrets ([2fafd9f](https://github.com/mohammaDJ23/expense-api/commit/2fafd9f1ac177454fa2ac57bcaf0166e233d9e87))
+- 106976 add cap_add and remove some envs ([8ed6a7b](https://github.com/mohammaDJ23/expense-api/commit/8ed6a7b1999d8d6bb0a5e370f51ca0da7648ba28))
+- 106976 add db-migration as a depending service to postgres-backup ([1fedbbf](https://github.com/mohammaDJ23/expense-api/commit/1fedbbf67b6946490b992f8a1fac2131e0b0762c))
+- 106976 add the cleanup func ([4d02284](https://github.com/mohammaDJ23/expense-api/commit/4d02284f8cbc17e0384a7bfd556ac36bc398ff67))
+- 106976 add the restore service ([912431e](https://github.com/mohammaDJ23/expense-api/commit/912431eb0d06003bdf37449432d317a86bb89574))
+- 106976 add the service related to replace of db ([724df83](https://github.com/mohammaDJ23/expense-api/commit/724df83483078f6f4566cf6cac804d2ae6ae2880))
+- 106976 change archive_timeout to 20s ([ec75bb4](https://github.com/mohammaDJ23/expense-api/commit/ec75bb47306b85c1e149662abc1e3b85d45f3134))
+- 106976 change the status of ES to yellow ([117f221](https://github.com/mohammaDJ23/expense-api/commit/117f2216111b330e531ead6e6d37df03e3fd05f6))
+- 106976 change the timeout of ES and also install curl for dev mode ([47f201d](https://github.com/mohammaDJ23/expense-api/commit/47f201d8822bed8f4f14761518a465293455f8dc))
+- 106976 format lock file ([8c48535](https://github.com/mohammaDJ23/expense-api/commit/8c485353ff564c8160d825b916ff84d08983fc4e))
+- 106976 remove all dangling images ([76c4e7a](https://github.com/mohammaDJ23/expense-api/commit/76c4e7ac7d1213ac1496c569f0ead949e4b5bc73))
+- 106976 remove extra spaces ([55dfe4d](https://github.com/mohammaDJ23/expense-api/commit/55dfe4d2e89b2b9024eac4f957b5fbe45a85bc80))
+- 106976 remove unused postgres docker file ([9fcaed3](https://github.com/mohammaDJ23/expense-api/commit/9fcaed32b3b5900d937424d45db8657ca4428e43))
+- 106976 remove unused scripts related to app running ([78db9da](https://github.com/mohammaDJ23/expense-api/commit/78db9da1d23f83cdfec2c2159c9f781afc624c58))
+- 106976 rename restoreEntryopoint ([83b369e](https://github.com/mohammaDJ23/expense-api/commit/83b369e81f7ad91278971e6041e64bd055b4c89f))
+- 106976 rename the image ([0ec987f](https://github.com/mohammaDJ23/expense-api/commit/0ec987ffc0ff50604391457e13dacc2e1e832a4e))
+- 106976 rename the services ([7db0480](https://github.com/mohammaDJ23/expense-api/commit/7db048025a5b2323cc1ae594313b5ab8da8cb553))
+- 106976 set the backup time to 6h ([b75a9ce](https://github.com/mohammaDJ23/expense-api/commit/b75a9ce0404c18732e293bd6e4262db24c8ec223))
+- 106976 set the name of serivce ([bdc4a59](https://github.com/mohammaDJ23/expense-api/commit/bdc4a595578fb2f802dfbf57729b0f7ee80c4f01))
+- 106976 switch from 20s to 60s for archive timeout ([13c6da9](https://github.com/mohammaDJ23/expense-api/commit/13c6da9616aa75b2a00309baa70ff921b0013de5))
+- 106976 update nodemailer ([3a7f127](https://github.com/mohammaDJ23/expense-api/commit/3a7f1275f3a9a4940f2671c5308865c5e3d0945f))
+- 106976 update the creation image ([e9793b3](https://github.com/mohammaDJ23/expense-api/commit/e9793b345259f5b1451bd6b714d0708a147b24b2))
+- 106976 update the network names ([c392bd0](https://github.com/mohammaDJ23/expense-api/commit/c392bd039e6d3fc1f06291a2eef19626890f41b2))
+- 106976 update the package ([5468ca7](https://github.com/mohammaDJ23/expense-api/commit/5468ca78d478ab964ee95abc34c376e8ebfa5df4))
+- 106976 update the packages ([3926485](https://github.com/mohammaDJ23/expense-api/commit/39264850b75a3ea2a573bfdba1a3666fdc37bf84))
+- 106976 update the path of docker compose command source ([6d5fad6](https://github.com/mohammaDJ23/expense-api/commit/6d5fad686b522c90bf0880bb2f0c3959498c0b96))
+- 106976 use 10 min for backup ([3440fc2](https://github.com/mohammaDJ23/expense-api/commit/3440fc25d490ffd33e1dc749a4be7c9e9cda7825))
+- 106976 use auto removing command for restoring db ([778bc0a](https://github.com/mohammaDJ23/expense-api/commit/778bc0a6e7bb9229e1cc767c3e5d312c08578458))
+- 106976 use the initial version of @nestjs/platform-express ([95f74af](https://github.com/mohammaDJ23/expense-api/commit/95f74afe4c7cf783bf9ac608eb7589e18cfb46e9))
+
 ## [5.1.11](https://github.com/mohammaDJ23/expense-api/compare/v5.1.10...v5.1.11) (2026-09-09)
 
 ### 🔧 Chores
