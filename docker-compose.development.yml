@@ -1,3 +1,5 @@
+name: development-expense-api
+
 services:
     expense-api:
         image: expense-api
