@@ -60,7 +60,7 @@ jobs:
               id: get-commit-sha
               run: pnpm run detect:commitsha
 
-    app:
+    expense-api:
         needs: create-version
         timeout-minutes: 30
         runs-on: ubuntu-latest
@@ -134,8 +134,8 @@ jobs:
               if: always()
               run: docker logout
 
-    migration:
-        needs: [create-version, run-test-push]
+    db-migration:
+        needs: [create-version, expense-api]
         timeout-minutes: 30
         runs-on: ubuntu-latest
         steps:
