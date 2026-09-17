@@ -118,12 +118,12 @@ jobs:
 
             - name: Push versioned image to dockerhub
               run: pnpm run push:docker:image
-              with:
+              env:
                   IMAGE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
 
             - name: Push latest image to dockerhub
               run: pnpm run push:docker:image
-              with:
+              env:
                   IMAGE: ${{ steps.create-docker-image-name.outputs.latest_image }}
 
             - name: Cleanup secrets
@@ -178,12 +178,12 @@ jobs:
 
             - name: Push versioned image to dockerhub
               run: pnpm run push:docker:image
-              with:
+              env:
                   IMAGE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
 
             - name: Push latest image to dockerhub
               run: pnpm run push:docker:image
-              with:
+              env:
                   IMAGE: ${{ steps.create-docker-image-name.outputs.latest_image }}
 
             - name: Log out from DockerHub
