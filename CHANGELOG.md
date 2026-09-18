@@ -1,3 +1,12 @@
+## [5.1.15](https://github.com/mohammaDJ23/expense-api/compare/v5.1.14...v5.1.15) (2026-09-18)
+
+### 🔧 Chores
+
+- 106976 add pull_policy never ([958ad36](https://github.com/mohammaDJ23/expense-api/commit/958ad36a4afdd1a0b804f6347cf395d094ba5820))
+- 106976 connect to postgres ([5de5261](https://github.com/mohammaDJ23/expense-api/commit/5de5261ea8d714d8993229b89657a8e5e7d32e29))
+- 106976 install bash ([72fe412](https://github.com/mohammaDJ23/expense-api/commit/72fe412fdf3103a27424c28577bbb8cce500bc88))
+- 106976 keep compose log for ci ([359ff10](https://github.com/mohammaDJ23/expense-api/commit/359ff10073fe2be3e67133c9d835af7c5b9d8f68))
+
 ## [5.1.14](https://github.com/mohammaDJ23/expense-api/compare/v5.1.13...v5.1.14) (2026-09-18)
 
 ### 🔧 Chores
