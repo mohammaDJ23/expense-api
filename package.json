@@ -67,7 +67,7 @@
         "validate:commit:message": "bash ./scripts/validateCommitMessage.sh",
         "lint:staged": "bash ./scripts/lintStaged.sh",
         "create:app:docker:image:name": "bash ./scripts/app/createDockerImageName.sh",
-        "push:app:to:dockerhub": "bash ./scripts/app/pushToDockerhub",
+        "push:app:to:dockerhub": "bash ./scripts/app/pushToDockerhub.sh",
         "tag:app:docker:image": "bash ./scripts/app/tagDockerImage.sh",
         "create:migration:docker:image:name": "bash ./scripts/database/createMigrationDockerImageName.sh",
         "build:migration:docker:image": "bash ./scripts/database/buildMigrationDockerImage.sh",
