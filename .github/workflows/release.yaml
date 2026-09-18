@@ -114,18 +114,18 @@ jobs:
                   snyk_token: ${{ secrets.SNYK_TOKEN }}
 
             - name: Tag the images
-              run: pnpm run tag:docker:images
+              run: pnpm run tag:app:docker:image
               env:
                   SOURCE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
                   TARGET: ${{ steps.create-docker-image-name.outputs.latest_image }}
 
             - name: Push versioned image to dockerhub
-              run: pnpm run push:docker:image
+              run: pnpm run push:app:to:dockerhub
               env:
                   IMAGE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
 
             - name: Push latest image to dockerhub
-              run: pnpm run push:docker:image
+              run: pnpm run push:app:to:dockerhub
               env:
                   IMAGE: ${{ steps.create-docker-image-name.outputs.latest_image }}
 
@@ -177,18 +177,18 @@ jobs:
                   snyk_token: ${{ secrets.SNYK_TOKEN }}
 
             - name: Tag the images
-              run: pnpm run tag:docker:images
+              run: pnpm run tag:migration:docker:image
               env:
                   SOURCE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
                   TARGET: ${{ steps.create-docker-image-name.outputs.latest_image }}
 
             - name: Push versioned image to dockerhub
-              run: pnpm run push:docker:image
+              run: pnpm run push:migration:to:dockerhub
               env:
                   IMAGE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
 
             - name: Push latest image to dockerhub
-              run: pnpm run push:docker:image
+              run: pnpm run push:migration:to:dockerhub
               env:
                   IMAGE: ${{ steps.create-docker-image-name.outputs.latest_image }}
 

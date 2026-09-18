@@ -7,9 +7,7 @@ build_docker_image() {
 
     echo "Building image: ${image}"
 
-    docker build \
-        --tag "${image}" \
-        "$@"
+    docker build "$@"
 
     echo "Built: ${image}"
 }
