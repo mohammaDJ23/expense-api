@@ -4,16 +4,24 @@ set -euo pipefail
 
 source ./scripts/docker/dockerComposeCommand.sh
 
-docker_compose \
+cleanup() {
+    docker image prune -f >/dev/null 2>&1 || true
+}
+
+trap cleanup EXIT
+
+if ! docker_compose \
     -f docker-compose.development.yml \
     up \
     --build \
     -d \
     --wait \
     --wait-timeout 240
+else
+    docker_compose \
+        -f docker-compose.development.yml \
+        logs \
+        --tail=300
 
-cleanup() {
-    docker image prune -f >/dev/null 2>&1 || true
-}
-
-trap cleanup EXIT
+    exit 1
+fi
