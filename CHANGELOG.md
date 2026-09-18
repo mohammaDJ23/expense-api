@@ -1,3 +1,12 @@
+## [5.1.14](https://github.com/mohammaDJ23/expense-api/compare/v5.1.13...v5.1.14) (2026-09-18)
+
+### 🔧 Chores
+
+- 106976 override the bucket path ([2c0b67f](https://github.com/mohammaDJ23/expense-api/commit/2c0b67fbb975978350184c6a7d9e17c96dbe7d2f))
+- 106976 remove postgresql image from backup ([77ee439](https://github.com/mohammaDJ23/expense-api/commit/77ee43914eab30a211f20f90fa2940464fc0d8e7))
+- 106976 show the compose logs when it failes ([de86b59](https://github.com/mohammaDJ23/expense-api/commit/de86b59ae8b434fd3c3457e4df661d3c79ceed9f))
+- 106976 use then ([00a735d](https://github.com/mohammaDJ23/expense-api/commit/00a735dc9c6891220ed20cfbb3bb0e3decf35911))
+
 ## [5.1.13](https://github.com/mohammaDJ23/expense-api/compare/v5.1.12...v5.1.13) (2026-09-17)
 
 ### 🔧 Chores
