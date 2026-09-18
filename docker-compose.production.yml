@@ -154,6 +154,10 @@ services:
             - AWS_ENDPOINT=https://s3.ir-thr-at1.arvanstorage.ir
             - AWS_REGION=ir-thr-at1
             - AWS_S3_FORCE_PATH_STYLE=true
+            - PGHOST=postgres
+            - PGPORT=5432
+            - PGDATABASE=expense_api_prod
+            - PGUSER=expense_api
         secrets:
             - database_password
             - arvan_access_key
@@ -165,7 +169,7 @@ services:
         healthcheck:
             test:
                 - 'CMD-SHELL'
-                - 'wal-g backup-list'
+                - 'pg_isready -h postgres -U expense_api'
             interval: 15s
             timeout: 5s
             start_period: 90s
