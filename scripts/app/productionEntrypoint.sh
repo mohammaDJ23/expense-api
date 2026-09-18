@@ -10,17 +10,9 @@ cleanup() {
 
 trap cleanup EXIT
 
-if ! docker_compose \
+docker_compose \
     -f docker-compose.production.yml \
     up \
     -d \
     --wait \
     --wait-timeout 240
-then
-    docker_compose \
-        -f docker-compose.production.yml \
-        logs \
-        --tail=300
-
-    exit 1
-fi
