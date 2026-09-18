@@ -70,7 +70,7 @@
         "create:migration:docker:image:name": "bash ./scripts/database/createMigrationDockerImageName.sh",
         "build:migration:docker:image": "bash ./scripts/database/buildMigrationDockerImage.sh",
         "tag:docker:images": "bash ./scripts/docker/tagDockerImage.sh",
-        "push:docker:image": "bash ./scripts/docker/pushDockerImage.sh",
+        "push:docker:image": "bash ./scripts/docker/pushToDockerhub.sh",
         "start:docker:development": "bash ./scripts/app/developmentEntrypoint.sh",
         "start:docker:ci": "bash ./scripts/app/ciEntrypoint.sh",
         "start:docker:production": "bash ./scripts/app/productionEntrypoint.sh",
