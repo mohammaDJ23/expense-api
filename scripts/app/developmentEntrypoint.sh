@@ -17,7 +17,7 @@ if ! docker_compose \
     -d \
     --wait \
     --wait-timeout 240
-else
+then
     docker_compose \
         -f docker-compose.development.yml \
         logs \
