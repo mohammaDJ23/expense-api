@@ -7,3 +7,11 @@ services:
             context: .
             target: production
             dockerfile: Dockerfile
+
+    postgres:
+        environment:
+            - WALG_S3_PREFIX=s3://expense-api/db-backup/ci
+
+    postgres-backup:
+        environment:
+            - WALG_S3_PREFIX=s3://expense-api/db-backup/ci
