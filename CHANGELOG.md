@@ -1,3 +1,9 @@
+## [5.1.18](https://github.com/mohammaDJ23/expense-api/compare/v5.1.17...v5.1.18) (2026-09-18)
+
+### 🔧 Chores
+
+- 106976 separete the scirpts of push and tagging ([b9947e5](https://github.com/mohammaDJ23/expense-api/commit/b9947e5ddb92f3edbf0a9ff52ced9953d02c52ee))
+
 ## [5.1.17](https://github.com/mohammaDJ23/expense-api/compare/v5.1.16...v5.1.17) (2026-09-18)
 
 ### 🔧 Chores
