@@ -1,3 +1,10 @@
+## [5.1.19](https://github.com/mohammaDJ23/expense-api/compare/v5.1.18...v5.1.19) (2026-09-18)
+
+### 🔧 Chores
+
+- 106976 add production path ([fb84fef](https://github.com/mohammaDJ23/expense-api/commit/fb84fefe174cf7a17089638a7f811a5abecde361))
+- 106976 use .sh ([e48e72a](https://github.com/mohammaDJ23/expense-api/commit/e48e72a89536d898558d2055892074d93933c468))
+
 ## [5.1.18](https://github.com/mohammaDJ23/expense-api/compare/v5.1.17...v5.1.18) (2026-09-18)
 
 ### 🔧 Chores
