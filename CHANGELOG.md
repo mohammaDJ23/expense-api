@@ -1,3 +1,9 @@
+## [5.1.16](https://github.com/mohammaDJ23/expense-api/compare/v5.1.15...v5.1.16) (2026-09-18)
+
+### 🔧 Chores
+
+- 106976 consider multi arch support ([8a6ec5a](https://github.com/mohammaDJ23/expense-api/commit/8a6ec5a55188a6eced06c7dd7d937708fb8ee5d8))
+
 ## [5.1.15](https://github.com/mohammaDJ23/expense-api/compare/v5.1.14...v5.1.15) (2026-09-18)
 
 ### 🔧 Chores
