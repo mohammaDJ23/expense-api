@@ -1,3 +1,9 @@
+## [5.1.17](https://github.com/mohammaDJ23/expense-api/compare/v5.1.16...v5.1.17) (2026-09-18)
+
+### 🔧 Chores
+
+- 106976 correct the name of script ([d01f11f](https://github.com/mohammaDJ23/expense-api/commit/d01f11f96224f6168bae35f7ccec385574e357be))
+
 ## [5.1.16](https://github.com/mohammaDJ23/expense-api/compare/v5.1.15...v5.1.16) (2026-09-18)
 
 ### 🔧 Chores
