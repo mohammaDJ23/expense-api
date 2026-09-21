@@ -40,6 +40,18 @@
             ],
             "status": "not_affected",
             "justification": "vulnerable_code_not_in_executable_path"
+        },
+        {
+            "vulnerability": {
+                "name": "SNYK-JS-DEEPMERGE-19964053"
+            },
+            "products": [
+                {
+                    "@id": "pkg:npm/deepmerge@4.3.1"
+                }
+            ],
+            "status": "not_affected",
+            "justification": "vulnerable_code_not_in_executable_path"
         }
     ]
 }
