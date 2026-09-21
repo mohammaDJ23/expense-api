@@ -13,3 +13,8 @@ ignore:
         - '*':
               reason: 'ExcelJS is used only for server-side XLSX generation. The application does not parse or load user-controlled XLSX files.'
               expires: 2027-08-25
+
+    SNYK-JS-DEEPMERGE-19964053:
+        - '*':
+              reason: 'No upgrade or patch available; accepted risk'
+              expires: 2027-08-25
