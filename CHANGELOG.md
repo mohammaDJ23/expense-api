@@ -1,3 +1,10 @@
+## [5.1.20](https://github.com/mohammaDJ23/expense-api/compare/v5.1.19...v5.1.20) (2026-09-21)
+
+### 🔧 Chores
+
+- 106976 increase backup files ([9099c6c](https://github.com/mohammaDJ23/expense-api/commit/9099c6c32ec176c86a0d1aa018cc40e2f4a723cd))
+- 106976 increase the backup time ([2933ce2](https://github.com/mohammaDJ23/expense-api/commit/2933ce2614345563ac36f0ccb5a6e2f56471cc4e))
+
 ## [5.1.19](https://github.com/mohammaDJ23/expense-api/compare/v5.1.18...v5.1.19) (2026-09-18)
 
 ### 🔧 Chores
