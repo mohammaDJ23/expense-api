@@ -1,3 +1,11 @@
+## [5.1.21](https://github.com/mohammaDJ23/expense-api/compare/v5.1.20...v5.1.21) (2026-09-21)
+
+### 🔧 Chores
+
+- 106976 add ioredis and ignore deepmerge since there is no patched version ([10ac5d1](https://github.com/mohammaDJ23/expense-api/commit/10ac5d1a26b8991f733de7d317e1d8412807969c))
+- 106976 format pnpm-lock.yaml file ([3dc520e](https://github.com/mohammaDJ23/expense-api/commit/3dc520e36385642714e16454692aae3f94cebedd))
+- 106976 update the packages ([d2906f0](https://github.com/mohammaDJ23/expense-api/commit/d2906f0e850f0da0e840a1aab35adc684515ac86))
+
 ## [5.1.20](https://github.com/mohammaDJ23/expense-api/compare/v5.1.19...v5.1.20) (2026-09-21)
 
 ### 🔧 Chores
