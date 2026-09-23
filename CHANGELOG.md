@@ -1,3 +1,9 @@
+## [5.1.22](https://github.com/mohammaDJ23/expense-api/compare/v5.1.21...v5.1.22) (2026-09-23)
+
+### 🔧 Chores
+
+- 106976 rename docker file of postgres ([b4290f1](https://github.com/mohammaDJ23/expense-api/commit/b4290f192d9a93345fcd123c35914974bf953238))
+
 ## [5.1.21](https://github.com/mohammaDJ23/expense-api/compare/v5.1.20...v5.1.21) (2026-09-21)
 
 ### 🔧 Chores
