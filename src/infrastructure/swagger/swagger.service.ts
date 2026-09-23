@@ -23,7 +23,6 @@ export class SwaggerService implements OnApplicationBootstrap {
         const configBuilder = new DocumentBuilder()
             .setTitle(TITLE)
             .setDescription(DESCRIPTION)
-            .addBearerAuth()
             .setVersion(version);
 
         const config = configBuilder.build();
