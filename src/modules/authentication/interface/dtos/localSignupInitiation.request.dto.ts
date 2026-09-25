@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Matches } from 'class-validator';
 
 export class LocalSignupInitiationRequestDto {
@@ -8,5 +9,9 @@ export class LocalSignupInitiationRequestDto {
             message: 'Invalid email',
         },
     )
+    @ApiProperty({
+        type: 'string',
+        example: 'test@gmail.com',
+    })
     email: string;
 }

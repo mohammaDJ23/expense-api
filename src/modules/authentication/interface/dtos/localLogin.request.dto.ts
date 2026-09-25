@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Matches, Length } from 'class-validator';
 
 export class LocalLoginRequestDto {
@@ -8,6 +9,10 @@ export class LocalLoginRequestDto {
             message: 'Invalid email',
         },
     )
+    @ApiProperty({
+        type: 'string',
+        example: 'test@gmail.com',
+    })
     email: string;
 
     // eslint-disable-next-line sonarjs/concise-regex
@@ -15,5 +20,9 @@ export class LocalLoginRequestDto {
         message: 'The password should be strong',
     })
     @Length(6, 45)
+    @ApiProperty({
+        type: 'string',
+        example: 'sdIF8s*&so32difFSS',
+    })
     password: string;
 }
