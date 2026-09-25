@@ -10,6 +10,7 @@ import {
     ApiOkResponse,
     ApiOperation,
     ApiTags,
+    ApiTooManyRequestsResponse,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
@@ -61,6 +62,7 @@ export class AuthenticationController {
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiConflictResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localSignupInitiation(@Body() body: LocalSignupInitiationRequestDto): Promise<boolean> {
         return this.authenticationService.localSignupInitiation(body);
     }
@@ -79,6 +81,7 @@ export class AuthenticationController {
     @ApiConflictResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localSignup(@Body() body: LocalSignupRequestDto): Promise<boolean> {
         return this.authenticationService.localSignup(body);
     }
@@ -97,6 +100,7 @@ export class AuthenticationController {
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiForbiddenResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localLogin(
         @Res({ passthrough: true }) response: Response,
         @Body() body: LocalLoginRequestDto,
@@ -117,6 +121,7 @@ export class AuthenticationController {
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localForgotPassword(@Body() body: LocalForgotPasswordRequestDto): Promise<boolean> {
         return this.authenticationService.localForgotPassword(body);
     }
@@ -134,6 +139,7 @@ export class AuthenticationController {
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localResetPassword(@Body() body: LocalResetPasswordRequestDto): Promise<boolean> {
         return this.authenticationService.localResetPassword(body);
     }
@@ -151,6 +157,7 @@ export class AuthenticationController {
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localAccountInitiation(@Body() body: LocalAccountInitiationRequestDto): Promise<boolean> {
         return this.authenticationService.localAccountInitiation(body);
     }
@@ -168,6 +175,7 @@ export class AuthenticationController {
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localAccountCreation(@Body() body: LocalAccountCreationRequestDto): Promise<boolean> {
         return this.authenticationService.localAccountCreation(body);
     }
@@ -180,6 +188,7 @@ export class AuthenticationController {
         description: 'Create or login a google account',
         operationId: 'google',
     })
+    @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     google(): void {}
 
     @Get('google/callback')
@@ -197,6 +206,7 @@ export class AuthenticationController {
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     googleLogin(
         @Res({ passthrough: true }) response: Response,
         @OauthCurrentUser() user: IOauthCurrentUser,
