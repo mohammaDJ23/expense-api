@@ -4,7 +4,9 @@ import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util
 
 import { INTERNAL_SERVER_ERROR_MESSAGE } from './normalizerException.constants';
 
-export class ExceptionNormalizerEntity {
+import type { IException } from './exception.type';
+
+export class ExceptionNormalizerEntity implements IException {
     public readonly statusCode: number;
     public readonly message: string;
     public readonly timestamp: string;
