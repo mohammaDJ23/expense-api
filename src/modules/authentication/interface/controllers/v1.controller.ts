@@ -1,23 +1,9 @@
-import {
-    BadRequestException,
-    Body,
-    ConflictException,
-    Controller,
-    ForbiddenException,
-    Get,
-    HttpStatus,
-    InternalServerErrorException,
-    NotFoundException,
-    Post,
-    Res,
-    UnauthorizedException,
-    UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
 import {
     ApiBadRequestResponse,
     ApiConflictResponse,
     ApiCreatedResponse,
-    ApiExcludeEndpoint,
+    ApiExtraModels,
     ApiForbiddenResponse,
     ApiInternalServerErrorResponse,
     ApiNotFoundResponse,
@@ -28,9 +14,12 @@ import {
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 
+import { ExceptionDto } from '@/core/features/exceptionNormalizer/exception.dto';
 import { OauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.decorator';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
-import { HttpResponseEntity } from '@/core/features/responses/http/httpResponse.entity';
+import { HttpResponseDto } from '@/core/features/responses/http/httpResponse.dto';
+import { httpBooleanResponseSwaggerSchema } from '@/infrastructure/swagger/schemas/httpBooleanResponse.schema';
+import { httpExceptionResponseSwaggerSchema } from '@/infrastructure/swagger/schemas/httpExceptionResponse.schema';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
 import { LocalAccountCreationRequestDto } from '@/modules/authentication/interface/dtos/localAccountCreation.request.dto';
 import { LocalAccountInitiationRequestDto } from '@/modules/authentication/interface/dtos/localAccountInitiation.request.dto';
@@ -63,13 +52,15 @@ export class AuthenticationController {
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @HttpResponse(SUCCESS_LOCAL_SIGNUP_INITIATION_MESSAGE, HttpStatus.OK)
     @ApiOperation({
+        summary: 'Local signup initialization',
         description: 'Send a token for the initiation of an account',
         operationId: 'localSignupInitiation',
     })
-    @ApiOkResponse({ type: HttpResponseEntity<boolean> })
-    @ApiInternalServerErrorResponse({ type: HttpResponseEntity<InternalServerErrorException> })
-    @ApiConflictResponse({ type: HttpResponseEntity<ConflictException> })
-    @ApiNotFoundResponse({ type: HttpResponseEntity<NotFoundException> })
+    @ApiExtraModels(HttpResponseDto, ExceptionDto)
+    @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
+    @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiConflictResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localSignupInitiation(@Body() body: LocalSignupInitiationRequestDto): Promise<boolean> {
         return this.authenticationService.localSignupInitiation(body);
     }
@@ -77,12 +68,17 @@ export class AuthenticationController {
     @Post('local/signup')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @HttpResponse(SUCCESS_LOCAL_SIGNUP_MESSAGE, HttpStatus.CREATED)
-    @ApiOperation({ description: 'Create a new local account', operationId: 'localSignup' })
-    @ApiCreatedResponse({ type: HttpResponseEntity<boolean> })
-    @ApiInternalServerErrorResponse({ type: HttpResponseEntity<InternalServerErrorException> })
-    @ApiBadRequestResponse({ type: HttpResponseEntity<BadRequestException> })
-    @ApiConflictResponse({ type: HttpResponseEntity<ConflictException> })
-    @ApiNotFoundResponse({ type: HttpResponseEntity<NotFoundException> })
+    @ApiOperation({
+        summary: 'Local signup',
+        description: 'Create a new local account after the initiation',
+        operationId: 'localSignup',
+    })
+    @ApiExtraModels(HttpResponseDto, ExceptionDto)
+    @ApiCreatedResponse({ schema: httpBooleanResponseSwaggerSchema() })
+    @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiConflictResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localSignup(@Body() body: LocalSignupRequestDto): Promise<boolean> {
         return this.authenticationService.localSignup(body);
     }
@@ -90,12 +86,17 @@ export class AuthenticationController {
     @Post('local/login')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @HttpResponse(SUCCESS_LOCAL_LOGIN_MESSAGE, HttpStatus.OK)
-    @ApiOperation({ description: 'Enter to app with the local login', operationId: 'localLogin' })
-    @ApiOkResponse({ type: HttpResponseEntity<boolean> })
-    @ApiInternalServerErrorResponse({ type: HttpResponseEntity<InternalServerErrorException> })
-    @ApiBadRequestResponse({ type: HttpResponseEntity<BadRequestException> })
-    @ApiNotFoundResponse({ type: HttpResponseEntity<NotFoundException> })
-    @ApiForbiddenResponse({ type: HttpResponseEntity<ForbiddenException> })
+    @ApiOperation({
+        summary: 'Local login',
+        description: 'Enter to app with the local login',
+        operationId: 'localLogin',
+    })
+    @ApiExtraModels(HttpResponseDto, ExceptionDto)
+    @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
+    @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiForbiddenResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localLogin(
         @Res({ passthrough: true }) response: Response,
         @Body() body: LocalLoginRequestDto,
@@ -107,13 +108,15 @@ export class AuthenticationController {
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @HttpResponse(SUCCESS_LOCAL_FORGOT_PASSWORD_MESSAGE, HttpStatus.OK)
     @ApiOperation({
+        summary: 'Local forgot password',
         description: 'Send a token for the process of resetting a password',
         operationId: 'localForgotPassword',
     })
-    @ApiOkResponse({ type: HttpResponseEntity<boolean> })
-    @ApiInternalServerErrorResponse({ type: HttpResponseEntity<InternalServerErrorException> })
-    @ApiBadRequestResponse({ type: HttpResponseEntity<BadRequestException> })
-    @ApiNotFoundResponse({ type: HttpResponseEntity<NotFoundException> })
+    @ApiExtraModels(HttpResponseDto, ExceptionDto)
+    @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
+    @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localForgotPassword(@Body() body: LocalForgotPasswordRequestDto): Promise<boolean> {
         return this.authenticationService.localForgotPassword(body);
     }
@@ -121,11 +124,16 @@ export class AuthenticationController {
     @Post('local/reset-password')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @HttpResponse(SUCCESS_LOCAL_RESET_PASSWORD_MESSAGE, HttpStatus.OK)
-    @ApiOperation({ description: 'Reset the password', operationId: 'localResetPassword' })
-    @ApiOkResponse({ type: HttpResponseEntity<boolean> })
-    @ApiInternalServerErrorResponse({ type: HttpResponseEntity<InternalServerErrorException> })
-    @ApiNotFoundResponse({ type: HttpResponseEntity<NotFoundException> })
-    @ApiBadRequestResponse({ type: HttpResponseEntity<BadRequestException> })
+    @ApiOperation({
+        summary: 'Local reset password',
+        description: 'Reset the password',
+        operationId: 'localResetPassword',
+    })
+    @ApiExtraModels(HttpResponseDto, ExceptionDto)
+    @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
+    @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localResetPassword(@Body() body: LocalResetPasswordRequestDto): Promise<boolean> {
         return this.authenticationService.localResetPassword(body);
     }
@@ -134,13 +142,15 @@ export class AuthenticationController {
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @HttpResponse(SUCCESS_LOCAL_ACCOUNT_INITIATION, HttpStatus.OK)
     @ApiOperation({
+        summary: 'Local account initiation',
         description: 'Send a token for initiation of a local account',
         operationId: 'localAccountInitiation',
     })
-    @ApiOkResponse({ type: HttpResponseEntity<boolean> })
-    @ApiInternalServerErrorResponse({ type: HttpResponseEntity<InternalServerErrorException> })
-    @ApiBadRequestResponse({ type: HttpResponseEntity<BadRequestException> })
-    @ApiNotFoundResponse({ type: HttpResponseEntity<NotFoundException> })
+    @ApiExtraModels(HttpResponseDto, ExceptionDto)
+    @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
+    @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localAccountInitiation(@Body() body: LocalAccountInitiationRequestDto): Promise<boolean> {
         return this.authenticationService.localAccountInitiation(body);
     }
@@ -148,11 +158,16 @@ export class AuthenticationController {
     @Post('local/account')
     @Throttle({ default: { limit: 2, ttl: 300000 } })
     @HttpResponse(SUCCESS_LOCAL_ACCOUNT_CREATION, HttpStatus.CREATED)
-    @ApiOperation({ description: 'Create a local account', operationId: 'localAccountCreation' })
-    @ApiCreatedResponse({ type: HttpResponseEntity<boolean> })
-    @ApiInternalServerErrorResponse({ type: HttpResponseEntity<InternalServerErrorException> })
-    @ApiBadRequestResponse({ type: HttpResponseEntity<BadRequestException> })
-    @ApiNotFoundResponse({ type: HttpResponseEntity<NotFoundException> })
+    @ApiOperation({
+        summary: 'Local account creation',
+        description: 'Create a local account',
+        operationId: 'localAccountCreation',
+    })
+    @ApiExtraModels(HttpResponseDto, ExceptionDto)
+    @ApiCreatedResponse({ schema: httpBooleanResponseSwaggerSchema() })
+    @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localAccountCreation(@Body() body: LocalAccountCreationRequestDto): Promise<boolean> {
         return this.authenticationService.localAccountCreation(body);
     }
@@ -161,6 +176,7 @@ export class AuthenticationController {
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
     @ApiOperation({
+        summary: 'Google login or signup',
         description: 'Create or login a google account',
         operationId: 'google',
     })
@@ -171,15 +187,16 @@ export class AuthenticationController {
     @UseGuards(GoogleAuthGuard)
     @HttpResponse(SUCCESS_LOCAL_LOGIN_MESSAGE, HttpStatus.OK)
     @ApiOperation({
+        summary: 'Google callback',
         description: 'This is the callback of google login',
         operationId: 'googleLogin',
     })
-    @ApiOkResponse({ type: HttpResponseEntity<boolean> })
-    @ApiInternalServerErrorResponse({ type: HttpResponseEntity<InternalServerErrorException> })
-    @ApiBadRequestResponse({ type: HttpResponseEntity<BadRequestException> })
-    @ApiNotFoundResponse({ type: HttpResponseEntity<NotFoundException> })
-    @ApiUnauthorizedResponse({ type: HttpResponseEntity<UnauthorizedException> })
-    @ApiExcludeEndpoint()
+    @ApiExtraModels(HttpResponseDto, ExceptionDto)
+    @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
+    @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     googleLogin(
         @Res({ passthrough: true }) response: Response,
         @OauthCurrentUser() user: IOauthCurrentUser,
