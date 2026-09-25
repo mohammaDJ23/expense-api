@@ -1,4 +1,4 @@
-import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule as NestSwaggerModule } from '@nestjs/swagger';
 
 import { AppInstanceService } from '@/core/services/appInstance.service';
@@ -7,13 +7,13 @@ import { VersionService } from '@/core/services/version.service';
 import { DESCRIPTION, JSON_PATH, PATH, TITLE, VERSION } from './swagger.constants';
 
 @Injectable()
-export class SwaggerService implements OnApplicationBootstrap {
+export class SwaggerService implements OnModuleInit {
     constructor(
         private readonly appInstanceService: AppInstanceService,
         private readonly versionService: VersionService,
     ) {}
 
-    onApplicationBootstrap(): void {
+    onModuleInit(): void {
         this.setupSwagger();
     }
 
@@ -31,6 +31,7 @@ export class SwaggerService implements OnApplicationBootstrap {
 
         NestSwaggerModule.setup(PATH, app, document, {
             jsonDocumentUrl: JSON_PATH,
+            useGlobalPrefix: false,
         });
     }
 }
