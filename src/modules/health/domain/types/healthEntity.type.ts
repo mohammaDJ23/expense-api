@@ -1,8 +1,8 @@
-import type { THealthIndicatorStatus } from './healthIndicatorStatus.type';
+import type { IndicatorHealthStatus } from '@/modules/health/domain/enums/indicatorHealthStatus.enum';
 
 export interface IHealthEntity {
     readonly timestamp: string;
     readonly name: string;
-    readonly status: THealthIndicatorStatus;
+    readonly status: IndicatorHealthStatus;
     readonly details: Record<string, unknown>;
 }
