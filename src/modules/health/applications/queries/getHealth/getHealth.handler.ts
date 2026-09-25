@@ -1,6 +1,8 @@
 import { type IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { ProcessFailedInternalServerErrorException } from '@/core/exceptions/processFailedInternalServerError.exception';
+import { HealthStatus } from '@/modules/health/domain/enums/healthStatus.enum';
+import { IndicatorHealthStatus } from '@/modules/health/domain/enums/indicatorHealthStatus.enum';
 import { CacheIndicator } from '@/modules/health/infrastructure/indicators/cache.indicator';
 import { DatabaseIndicator } from '@/modules/health/infrastructure/indicators/database.indicator';
 
@@ -18,7 +20,7 @@ export class GetHealthHandler implements IQueryHandler<GetHealthQuery, IHealthCh
     async execute(): Promise<IHealthCheckResult> {
         try {
             const result: IHealthCheckResult = {
-                status: 'ok',
+                status: HealthStatus.OK,
                 details: {},
             };
 
@@ -33,10 +35,10 @@ export class GetHealthHandler implements IQueryHandler<GetHealthQuery, IHealthCh
             }
 
             result.status = Object.values(result.details).every(
-                (indicator) => indicator.status === 'up',
+                (indicator) => indicator.status === IndicatorHealthStatus.UP,
             )
-                ? 'ok'
-                : 'error';
+                ? HealthStatus.OK
+                : HealthStatus.ERROR;
 
             return result;
         } catch {

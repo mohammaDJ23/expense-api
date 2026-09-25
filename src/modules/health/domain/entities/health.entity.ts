@@ -1,13 +1,13 @@
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
+import { IndicatorHealthStatus } from '@/modules/health/domain/enums/indicatorHealthStatus.enum';
 
 import type { IHealthEntity } from '@/modules/health/domain/types/healthEntity.type';
 import type { THealthIndicatorResult } from '@/modules/health/domain/types/healthIndicatorResult.type';
-import type { THealthIndicatorStatus } from '@/modules/health/domain/types/healthIndicatorStatus.type';
 
 export class HealthEntity implements IHealthEntity {
     public readonly timestamp: string;
     public readonly name: string;
-    public readonly status: THealthIndicatorStatus;
+    public readonly status: IndicatorHealthStatus;
     public readonly details: Record<string, unknown>;
 
     private constructor(data: IHealthEntity) {
@@ -19,7 +19,7 @@ export class HealthEntity implements IHealthEntity {
 
     static create(
         name: string,
-        status: THealthIndicatorStatus,
+        status: IndicatorHealthStatus,
         details: Record<string, unknown> = {},
     ): HealthEntity {
         return new HealthEntity({
@@ -31,11 +31,11 @@ export class HealthEntity implements IHealthEntity {
     }
 
     static up(name: string, details?: Record<string, unknown>): HealthEntity {
-        return HealthEntity.create(name, 'up', details);
+        return HealthEntity.create(name, IndicatorHealthStatus.UP, details);
     }
 
     static down(name: string, details?: Record<string, unknown>): HealthEntity {
-        return HealthEntity.create(name, 'down', details);
+        return HealthEntity.create(name, IndicatorHealthStatus.DOWN, details);
     }
 
     toJSON(): THealthIndicatorResult {
