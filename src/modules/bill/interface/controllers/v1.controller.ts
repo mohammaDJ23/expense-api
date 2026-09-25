@@ -13,12 +13,14 @@ import {
     UseInterceptors,
 } from '@nestjs/common';
 import {
+    ApiBadRequestResponse,
     ApiCreatedResponse,
     ApiExtraModels,
     ApiInternalServerErrorResponse,
     ApiNotFoundResponse,
     ApiOkResponse,
     ApiOperation,
+    ApiTags,
     ApiTooManyRequestsResponse,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -89,6 +91,7 @@ import type { IMostUsedConsumer } from '@/modules/bill/domain/types/mostUsedCons
 import type { IMostUsedLocation } from '@/modules/bill/domain/types/mostUsedLocation.type';
 import type { IMostUsedReceiver } from '@/modules/bill/domain/types/mostUsedReceiver.type';
 
+@ApiTags('Bill')
 @Controller({ version: '1', path: 'api/bills' })
 export class BillController {
     constructor(private readonly billService: BillService) {}
@@ -108,6 +111,7 @@ export class BillController {
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     create(@CurrentUser() user: ICurrentUser, @Body() body: CreateBillRequestDto): Promise<IId> {
         return this.billService.create(user.id, body);
     }
@@ -127,6 +131,7 @@ export class BillController {
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     update(@CurrentUser() user: ICurrentUser, @Body() body: UpdateBillRequestDto): Promise<IId> {
         return this.billService.update(user.id, body);
     }
@@ -146,6 +151,7 @@ export class BillController {
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     delete(@CurrentUser() user: ICurrentUser, @Param() param: DeleteBillRequestDto): Promise<IId> {
         return this.billService.delete(user.id, param.id);
     }
@@ -164,6 +170,7 @@ export class BillController {
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     findListByUserId(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindBillListRequestDto,
@@ -185,6 +192,7 @@ export class BillController {
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     findTotal(@CurrentUser() user: ICurrentUser): Promise<ITotal> {
         return this.billService.findTotal(user.id);
     }
@@ -203,6 +211,7 @@ export class BillController {
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     findMostUsedLocations(
         @CurrentUser() user: ICurrentUser,
         @Query() query: MostUsedRequestDto,
@@ -224,6 +233,7 @@ export class BillController {
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     findMostUsedReceivers(
         @CurrentUser() user: ICurrentUser,
         @Query() query: MostUsedRequestDto,
@@ -245,6 +255,7 @@ export class BillController {
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     findMostUsedConsumers(
         @CurrentUser() user: ICurrentUser,
         @Query() query: MostUsedRequestDto,
@@ -268,6 +279,7 @@ export class BillController {
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     findPeriod(@CurrentUser() user: ICurrentUser): Promise<IBillPeriod> {
         return this.billService.findPeriod(user.id);
     }
@@ -287,6 +299,7 @@ export class BillController {
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     findTimeline(
         @CurrentUser() user: ICurrentUser,
         @Query() query: FindBillsTimelineRequestDto,
@@ -312,6 +325,7 @@ export class BillController {
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     exportExcel(@CurrentUser() user: ICurrentUser): Promise<StreamableFile> {
         return this.billService.exportExcel(user.id);
     }
@@ -331,6 +345,7 @@ export class BillController {
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     findByUserIdAndId(
         @CurrentUser() user: ICurrentUser,
         @Param() param: FindBillRequestDto,
