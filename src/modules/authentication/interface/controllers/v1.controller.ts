@@ -63,6 +63,7 @@ export class AuthenticationController {
     @ApiConflictResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localSignupInitiation(@Body() body: LocalSignupInitiationRequestDto): Promise<boolean> {
         return this.authenticationService.localSignupInitiation(body);
     }
