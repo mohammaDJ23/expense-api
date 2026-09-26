@@ -1,3 +1,4 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsOptional, IsInt, Min, IsString, Max } from 'class-validator';
 
@@ -9,9 +10,18 @@ export class FindLocationListRequestDto {
     @IsInt()
     @Min(MIN_LIST_LIMIT)
     @Max(MAX_LIST_LIMIT)
+    @ApiPropertyOptional({
+        type: 'number',
+        example: 10,
+    })
     limit: number = MAX_LIST_LIMIT;
 
     @IsOptional()
     @IsString()
+    @ApiPropertyOptional({
+        type: 'string',
+        example: 'e25hbWU6ICJkZGQifQ==',
+        nullable: true,
+    })
     cursor: string | null = null;
 }
