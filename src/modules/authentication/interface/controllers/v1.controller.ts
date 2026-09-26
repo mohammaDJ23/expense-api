@@ -19,6 +19,7 @@ import { ExceptionDto } from '@/core/features/exceptionNormalizer/exception.dto'
 import { OauthCurrentUser } from '@/core/features/oauthCurrentUser/oauthCurrentUser.decorator';
 import { HttpResponse } from '@/core/features/responses/http/httpResponse.decorator';
 import { HttpResponseDto } from '@/core/features/responses/http/httpResponse.dto';
+import { htmlSwaggerContent } from '@/infrastructure/swagger/content/html.content';
 import { httpBooleanResponseSwaggerSchema } from '@/infrastructure/swagger/schemas/httpBooleanResponse.schema';
 import { httpExceptionResponseSwaggerSchema } from '@/infrastructure/swagger/schemas/httpExceptionResponse.schema';
 import { AuthenticationService } from '@/modules/authentication/applications/services/authentication.service';
@@ -189,7 +190,7 @@ export class AuthenticationController {
         description: 'Create or login a google account',
         operationId: 'google',
     })
-    @ApiForbiddenResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiForbiddenResponse({ content: htmlSwaggerContent() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     google(): void {}
 
