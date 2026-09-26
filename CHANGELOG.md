@@ -1,3 +1,36 @@
+## [5.1.23](https://github.com/mohammaDJ23/expense-api/compare/v5.1.22...v5.1.23) (2026-09-26)
+
+### 🔧 Chores
+
+- 989202 add ApiProperty to all dtos ([6e0a81a](https://github.com/mohammaDJ23/expense-api/commit/6e0a81aa77726a0c603a203b493746844cc98f8f))
+- 989202 add forbidden error ([2a6d0b2](https://github.com/mohammaDJ23/expense-api/commit/2a6d0b22b42d30a5674a39eb9f1cfc971ae155e9))
+- 989202 add forbidden error ([5c213af](https://github.com/mohammaDJ23/expense-api/commit/5c213af32f645c8256f79e29da4c9b06aa686fcf))
+- 989202 add forbidden error ([84f19cd](https://github.com/mohammaDJ23/expense-api/commit/84f19cde0484688d63d8419b98d4d194f76dd3a7))
+- 989202 add the api bad request response to the apis ([08686a6](https://github.com/mohammaDJ23/expense-api/commit/08686a6709ac5ac932462165981d8dd665f4dc0d))
+- 989202 add the api properties of bill dtos ([4163828](https://github.com/mohammaDJ23/expense-api/commit/41638286301e66c0c1a9bf6ad49442bd1b4e64e4))
+- 989202 add the api property of consumer dtos ([908c61d](https://github.com/mohammaDJ23/expense-api/commit/908c61d8ebd96062d44624832217687b7608752b))
+- 989202 add the authentication decorator ([67b9cac](https://github.com/mohammaDJ23/expense-api/commit/67b9cacbd58af297bea7a1b697fe3ac1eaaaf7ad))
+- 989202 add the decorators of the swagger to the bill apis ([1009a3b](https://github.com/mohammaDJ23/expense-api/commit/1009a3b2dafb3ac2ee385e89a59fbcad7b58a5d3))
+- 989202 add the dto's swagger decorators ([889f6fa](https://github.com/mohammaDJ23/expense-api/commit/889f6fa639c19732ece77bf3335655b5bd19b559))
+- 989202 add the dto's swagger decorators ([406aaea](https://github.com/mohammaDJ23/expense-api/commit/406aaea09d4fa93b9ec37db5bdec93829a16edaf))
+- 989202 add the dtos and decorators of swagger to health module ([3aa3258](https://github.com/mohammaDJ23/expense-api/commit/3aa3258340fc49169e554052e2a26d06149080f2))
+- 989202 add the responses of swagger to authentication module ([75870ce](https://github.com/mohammaDJ23/expense-api/commit/75870ce5ad57e340f1f7aca37f9c74d18f94286a))
+- 989202 add the schema & dto of http respnose ([c364977](https://github.com/mohammaDJ23/expense-api/commit/c3649779773869ef3399cfed86af91ad9220fefd))
+- 989202 add the swagger decorators to consumer apis ([2ae075a](https://github.com/mohammaDJ23/expense-api/commit/2ae075a2cec8f629c416c82ed0483bb7ad4ab609))
+- 989202 add the swagger decorators to the authentication module ([8069211](https://github.com/mohammaDJ23/expense-api/commit/806921168019c086eefc2e5a35a31bd8fc52acf8))
+- 989202 add the swagger decorators to the location apis ([2b2517c](https://github.com/mohammaDJ23/expense-api/commit/2b2517c4b7e86819a32e6394d3492d82c0cd66a7))
+- 989202 add the swagger decorators to the receiver apis ([15fe49d](https://github.com/mohammaDJ23/expense-api/commit/15fe49de0513749a3830ef3897f5a0561fb72bce))
+- 989202 add the swagger decorators to the search apis ([4aedaed](https://github.com/mohammaDJ23/expense-api/commit/4aedaed06b1d808d4e0629b658b7d09238a95ebb))
+- 989202 add the swagger decorators to the user apis ([f69dd22](https://github.com/mohammaDJ23/expense-api/commit/f69dd22be7381d6b8b10304a7e98288a9f98dccb))
+- 989202 add the throttler decorator response ([5f25319](https://github.com/mohammaDJ23/expense-api/commit/5f25319d03382092476641fc08f21a4f2a88346c))
+- 989202 add the type & dto of exception ([3d14c57](https://github.com/mohammaDJ23/expense-api/commit/3d14c5745f584a0289eef886f0a3cab9bb899862))
+- 989202 complie app into commonjs ([965e599](https://github.com/mohammaDJ23/expense-api/commit/965e59906ebc440b93f482b69649ecb91c269e3b))
+- 989202 ignore drizzle config file ([7ecaa59](https://github.com/mohammaDJ23/expense-api/commit/7ecaa59cce7cea22ae88e3ebf8f4e32f8396cdb9))
+- 989202 remove authentication ([d93eaea](https://github.com/mohammaDJ23/expense-api/commit/d93eaea6859e4b8dee105ac3fad1fc2db9325ba9))
+- 989202 remove git add ([323868e](https://github.com/mohammaDJ23/expense-api/commit/323868eccb0f29bff6ca0af93244882175075a69))
+- 989202 remove swc and add the auto complete swagger metadata plugin ([b837f8f](https://github.com/mohammaDJ23/expense-api/commit/b837f8fb4b555ce4a93738c6f044effe6ea94e94))
+- 989202 use onModuleInit ([ed78655](https://github.com/mohammaDJ23/expense-api/commit/ed78655d241624e580765a013bc0afd76219e840))
+
 ## [5.1.22](https://github.com/mohammaDJ23/expense-api/compare/v5.1.21...v5.1.22) (2026-09-23)
 
 ### 🔧 Chores
