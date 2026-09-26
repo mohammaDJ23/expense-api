@@ -205,6 +205,7 @@ export class AuthenticationController {
     })
     @ApiExtraModels(HttpResponseDto, ExceptionDto)
     @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
+    @ApiForbiddenResponse({ content: htmlSwaggerContent() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
