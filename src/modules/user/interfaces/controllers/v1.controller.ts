@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import {
     ApiBadRequestResponse,
+    ApiCookieAuth,
     ApiExtraModels,
     ApiForbiddenResponse,
     ApiInternalServerErrorResponse,
@@ -71,6 +72,7 @@ export class UserController {
         description: 'This is for updating a user',
         operationId: 'updateUser',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiOkResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -91,6 +93,7 @@ export class UserController {
         description: 'This is for deleting a user',
         operationId: 'deleteUser',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiOkResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -111,6 +114,7 @@ export class UserController {
         description: 'This is for finding a user list',
         operationId: 'findUserList',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, FindUserListResponseDto, UserResponseDto)
     @ApiOkResponse({ schema: httpUserListResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -133,6 +137,7 @@ export class UserController {
         description: 'This is for finding the current user',
         operationId: 'findMe',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, UserResponseDto)
     @ApiOkResponse({ schema: httpUserResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -153,6 +158,7 @@ export class UserController {
         description: 'This is for finding the total user numbers',
         operationId: 'findTotalUsers',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, TotalResponseDto)
     @ApiOkResponse({ schema: httpTotalResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -173,6 +179,7 @@ export class UserController {
         description: 'This is for finding a user',
         operationId: 'findUser',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, UserResponseDto)
     @ApiOkResponse({ schema: httpUserResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })

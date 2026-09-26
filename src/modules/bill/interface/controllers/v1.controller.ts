@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import {
     ApiBadRequestResponse,
+    ApiCookieAuth,
     ApiCreatedResponse,
     ApiExtraModels,
     ApiInternalServerErrorResponse,
@@ -105,6 +106,7 @@ export class BillController {
         description: 'This is for creating a new bill',
         operationId: 'createBill',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiCreatedResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -125,6 +127,7 @@ export class BillController {
         description: 'This is for updating a bill',
         operationId: 'updateBill',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiOkResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -145,6 +148,7 @@ export class BillController {
         description: 'This is for deleting a bill',
         operationId: 'deleteBill',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiOkResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -165,6 +169,7 @@ export class BillController {
         description: 'This is for finding a bill list',
         operationId: 'findBillList',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, FindBillListResponseDto, BillResponseDto)
     @ApiOkResponse({ schema: httpBillListResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -187,6 +192,7 @@ export class BillController {
         description: 'This is for finding the total bill numbers',
         operationId: 'findTotalBills',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, TotalResponseDto)
     @ApiOkResponse({ schema: httpTotalResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -206,6 +212,7 @@ export class BillController {
         description: 'This is for finding the most used locations of the all bills',
         operationId: 'findMostUsedLocations',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, MostUsedLocationResponseDto)
     @ApiOkResponse({ schema: httpMostUsedLocationsResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -228,6 +235,7 @@ export class BillController {
         description: 'This is for finding the most used receivers of the all bills',
         operationId: 'findMostUsedReceivers',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, MostUsedReceiverResponseDto)
     @ApiOkResponse({ schema: httpMostUsedReceiversResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -250,6 +258,7 @@ export class BillController {
         description: 'This is for finding the most used consumers of the all bills',
         operationId: 'findMostUsedConsumers',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, MostUsedConsumerResponseDto)
     @ApiOkResponse({ schema: httpMostUsedConsumersResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -273,6 +282,7 @@ export class BillController {
             'This is for finding the start and end date of the creation of the whole bills',
         operationId: 'findBillsPeriod',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, FindBillsPeriodResponseDto)
     @ApiOkResponse({ schema: httpBillsPeriodResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -293,6 +303,7 @@ export class BillController {
         description: 'This is for finding the total bills created at a day',
         operationId: 'findBillsTimeline',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, FindBillsTimelineResponseDto)
     @ApiOkResponse({ schema: httpBillsTimelineResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -319,6 +330,7 @@ export class BillController {
         description: 'Export the bills as an excel file',
         operationId: 'exportBillsExcel',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto)
     @ApiOkResponse({ content: excelSwaggerContent() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -339,6 +351,7 @@ export class BillController {
         description: 'This is for finding a bill',
         operationId: 'findBill',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, BillResponseDto)
     @ApiOkResponse({ schema: httpBillResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
