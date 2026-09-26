@@ -19,6 +19,7 @@ import {
     ApiNotFoundResponse,
     ApiOkResponse,
     ApiOperation,
+    ApiTags,
     ApiTooManyRequestsResponse,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -63,6 +64,7 @@ import type { IListResultWithTotal } from '@/core/types/list/listResultWithTotal
 import type { ITotal } from '@/core/types/total.type';
 import type { ISelectReceiver } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
 
+@ApiTags('Receiver')
 @Controller({ version: '1', path: 'api/receivers' })
 export class ReceiverController {
     constructor(private readonly receiverService: ReceiverService) {}
@@ -97,7 +99,7 @@ export class ReceiverController {
     @HttpResponse(SUCCESS_UPDATE_RECEIVER_MESSAGE, HttpStatus.OK)
     @ApiOperation({
         summary: 'Update a receiver',
-        description: 'This is for updating a new receiver',
+        description: 'This is for updating a receiver',
         operationId: 'updateReceiver',
     })
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
@@ -121,7 +123,7 @@ export class ReceiverController {
     @HttpResponse(SUCCESS_DELETE_RECEIVER_MESSAGE, HttpStatus.OK)
     @ApiOperation({
         summary: 'Delete a receiver',
-        description: 'This is for deleting a new receiver',
+        description: 'This is for deleting a receiver',
         operationId: 'deleteReceiver',
     })
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
