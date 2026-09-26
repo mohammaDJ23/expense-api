@@ -1,8 +1,7 @@
 import type { THealthIndicatorResult } from './healthIndicatorResult.type';
-
-type TStatus = 'ok' | 'error';
+import type { HealthStatus } from '@/modules/health/domain/enums/healthStatus.enum';
 
 export interface IHealthCheckResult {
-    status: TStatus;
+    status: HealthStatus;
     details: THealthIndicatorResult;
 }

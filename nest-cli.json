@@ -3,11 +3,9 @@
     "collection": "@nestjs/schematics",
     "sourceRoot": "src",
     "compilerOptions": {
-        "builder": "swc",
-        "typeCheck": true,
+        "builder": "tsc",
         "deleteOutDir": true,
-        "tsConfigPath": "tsconfig.json",
-        "assets": [],
+        "tsConfigPath": "tsconfig.build.json",
         "plugins": []
     }
 }

@@ -1,3 +1,4 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsInt, IsOptional, Max, Min } from 'class-validator';
 
@@ -9,5 +10,9 @@ export class MostUsedRequestDto {
     @IsInt()
     @Min(MIN_LIST_LIMIT)
     @Max(MAX_LIST_LIMIT)
+    @ApiPropertyOptional({
+        type: 'number',
+        example: 10,
+    })
     limit: number = MAX_LIST_LIMIT;
 }
