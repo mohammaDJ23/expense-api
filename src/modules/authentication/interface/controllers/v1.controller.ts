@@ -189,6 +189,7 @@ export class AuthenticationController {
         description: 'Create or login a google account',
         operationId: 'google',
     })
+    @ApiForbiddenResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     google(): void {}
 
