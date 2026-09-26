@@ -13,6 +13,7 @@ import {
 import {
     ApiBadRequestResponse,
     ApiConflictResponse,
+    ApiCookieAuth,
     ApiCreatedResponse,
     ApiExtraModels,
     ApiInternalServerErrorResponse,
@@ -78,6 +79,7 @@ export class LocationController {
         description: 'This is for creating a new location',
         operationId: 'createLocation',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiCreatedResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -99,9 +101,10 @@ export class LocationController {
     @HttpResponse(SUCCESS_UPDATE_LOCATION_MESSAGE, HttpStatus.OK)
     @ApiOperation({
         summary: 'Update a location',
-        description: 'This is for updating a new location',
+        description: 'This is for updating a location',
         operationId: 'updateLocation',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiOkResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -123,9 +126,10 @@ export class LocationController {
     @HttpResponse(SUCCESS_DELETE_LOCATION_MESSAGE, HttpStatus.OK)
     @ApiOperation({
         summary: 'Delete a location',
-        description: 'This is for deleting a new location',
+        description: 'This is for deleting a location',
         operationId: 'deleteLocation',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiOkResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -149,6 +153,7 @@ export class LocationController {
         description: 'This is for finding a location list',
         operationId: 'findLocationList',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, FindLocationListResponseDto, LocationResponseDto)
     @ApiOkResponse({ schema: httpLocationListResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -171,6 +176,7 @@ export class LocationController {
         description: 'This is for finding the locations by searching',
         operationId: 'searchLocations',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, LocationResponseDto)
     @ApiOkResponse({ schema: httpLocationsResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -193,6 +199,7 @@ export class LocationController {
         description: 'This is for finding the total location numbers',
         operationId: 'findTotalLocations',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, TotalResponseDto)
     @ApiOkResponse({ schema: httpTotalResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -212,6 +219,7 @@ export class LocationController {
         description: 'This is for finding a location',
         operationId: 'findLocation',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, LocationResponseDto)
     @ApiOkResponse({ schema: httpLocationResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })

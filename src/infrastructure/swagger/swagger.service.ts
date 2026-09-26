@@ -23,6 +23,7 @@ export class SwaggerService implements OnModuleInit {
         const configBuilder = new DocumentBuilder()
             .setTitle(TITLE)
             .setDescription(DESCRIPTION)
+            .addCookieAuth('accessToken')
             .setVersion(version);
 
         const config = configBuilder.build();

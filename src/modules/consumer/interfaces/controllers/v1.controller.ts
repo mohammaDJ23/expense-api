@@ -13,6 +13,7 @@ import {
 import {
     ApiBadRequestResponse,
     ApiConflictResponse,
+    ApiCookieAuth,
     ApiCreatedResponse,
     ApiExtraModels,
     ApiInternalServerErrorResponse,
@@ -78,6 +79,7 @@ export class ConsumerController {
         description: 'This is for creating a new consumer',
         operationId: 'createConsumer',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiCreatedResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -99,9 +101,10 @@ export class ConsumerController {
     @HttpResponse(SUCCESS_UPDATE_CONSUMER_MESSAGE, HttpStatus.OK)
     @ApiOperation({
         summary: 'Update a consumer',
-        description: 'This is for updating a new consumer',
+        description: 'This is for updating a consumer',
         operationId: 'updateConsumer',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiOkResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -123,9 +126,10 @@ export class ConsumerController {
     @HttpResponse(SUCCESS_DELETE_CONSUMER_MESSAGE, HttpStatus.OK)
     @ApiOperation({
         summary: 'Delete a consumer',
-        description: 'This is for deleting a new consumer',
+        description: 'This is for deleting a consumer',
         operationId: 'deleteConsumer',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiOkResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -149,6 +153,7 @@ export class ConsumerController {
         description: 'This is for finding a consumer list',
         operationId: 'findConsumerList',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, FindConsumerListResponseDto, ConsumerResponseDto)
     @ApiOkResponse({ schema: httpConsumerListResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -171,6 +176,7 @@ export class ConsumerController {
         description: 'This is for finding the consumers by searching',
         operationId: 'searchConsumers',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, ConsumerResponseDto)
     @ApiOkResponse({ schema: httpConsumersResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -193,6 +199,7 @@ export class ConsumerController {
         description: 'This is for finding the total consumer numbers',
         operationId: 'findTotalConsumers',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, TotalResponseDto)
     @ApiOkResponse({ schema: httpTotalResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -212,6 +219,7 @@ export class ConsumerController {
         description: 'This is for finding a consumer',
         operationId: 'findConsumer',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, ConsumerResponseDto)
     @ApiOkResponse({ schema: httpConsumerResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })

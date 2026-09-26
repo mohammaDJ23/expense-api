@@ -1,6 +1,7 @@
 import { Controller, Get, HttpStatus, Post, Query, UseGuards } from '@nestjs/common';
 import {
     ApiBadRequestResponse,
+    ApiCookieAuth,
     ApiExtraModels,
     ApiInternalServerErrorResponse,
     ApiOkResponse,
@@ -46,6 +47,7 @@ export class SearchController {
         description: 'It is including the bills, receivers, consumers and locations',
         operationId: 'globalSearch',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(
         HttpResponseDto,
         ExceptionDto,
@@ -75,6 +77,7 @@ export class SearchController {
         description: 'It is for syncing the search engine with database',
         operationId: 'syncGlobalSearch',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto)
     @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })

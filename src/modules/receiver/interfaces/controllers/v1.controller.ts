@@ -13,6 +13,7 @@ import {
 import {
     ApiBadRequestResponse,
     ApiConflictResponse,
+    ApiCookieAuth,
     ApiCreatedResponse,
     ApiExtraModels,
     ApiInternalServerErrorResponse,
@@ -78,6 +79,7 @@ export class ReceiverController {
         description: 'This is for creating a new receiver',
         operationId: 'createReceiver',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiCreatedResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -102,6 +104,7 @@ export class ReceiverController {
         description: 'This is for updating a receiver',
         operationId: 'updateReceiver',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiOkResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -126,6 +129,7 @@ export class ReceiverController {
         description: 'This is for deleting a receiver',
         operationId: 'deleteReceiver',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, IdResponseDto)
     @ApiOkResponse({ schema: httpIdResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -149,6 +153,7 @@ export class ReceiverController {
         description: 'This is for finding a receiver list',
         operationId: 'findReceiverList',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, FindReceiverListResponseDto, ReceiverResponseDto)
     @ApiOkResponse({ schema: httpReceiverListResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -171,6 +176,7 @@ export class ReceiverController {
         description: 'This is for finding the receivers by searching',
         operationId: 'searchReceivers',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, ReceiverResponseDto)
     @ApiOkResponse({ schema: httpReceiversResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -193,6 +199,7 @@ export class ReceiverController {
         description: 'This is for finding the total receiver numbers',
         operationId: 'findTotalReceivers',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, TotalResponseDto)
     @ApiOkResponse({ schema: httpTotalResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -212,6 +219,7 @@ export class ReceiverController {
         description: 'This is for finding a receiver',
         operationId: 'findReceiver',
     })
+    @ApiCookieAuth()
     @ApiExtraModels(HttpResponseDto, ExceptionDto, ReceiverResponseDto)
     @ApiOkResponse({ schema: httpReceiverResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
