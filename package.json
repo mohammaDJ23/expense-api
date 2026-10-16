@@ -15,7 +15,7 @@
             "@isaacs/brace-expansion": ">=5.0.1",
             "brace-expansion": ">=5.0.11",
             "minimatch": ">=10.2.3",
-            "qs": ">=6.14.2",
+            "qs": ">=6.16.1",
             "handlebars": ">=4.7.10",
             "multer": ">=2.4.0",
             "undici": ">=8.10.2",
@@ -43,7 +43,8 @@
             "nodemailer": ">=9.1.0",
             "proxy-addr": "2.0.8",
             "engine.io": ">=6.6.10",
-            "source-map-js": ">=1.2.2"
+            "source-map-js": ">=1.2.2",
+            "postcss-selector-parser": ">=7.1.6"
         }
     },
     "scripts": {
