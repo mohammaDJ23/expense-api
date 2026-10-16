@@ -1,3 +1,11 @@
+## [5.1.24](https://github.com/mohammaDJ23/expense-api/compare/v5.1.23...v5.1.24) (2026-10-16)
+
+### 🔧 Chores
+
+- 052122 add the scripts related to replace and restore of db ([b82b3c3](https://github.com/mohammaDJ23/expense-api/commit/b82b3c388fa3e48ded1d735b7a88580953ea36d2))
+- 052122 update some packages ([526998a](https://github.com/mohammaDJ23/expense-api/commit/526998a866fd93e6f1ecc924442c81bc0e5bbbed))
+- 052122 update some packages ([fd7b6f0](https://github.com/mohammaDJ23/expense-api/commit/fd7b6f0f267a1bf4b053662119d66fc3b707cd52))
+
 ## [5.1.23](https://github.com/mohammaDJ23/expense-api/compare/v5.1.22...v5.1.23) (2026-09-26)
 
 ### 🔧 Chores
