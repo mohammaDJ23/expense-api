@@ -81,6 +81,8 @@
         "detect:branch:name": "bash ./scripts/detectBranchName.sh",
         "validate:branch:name:ci": "bash ./scripts/ciValidateBranchName.sh",
         "detect:commitsha": "bash ./scripts/detectCommitSha.sh",
+        "db:restore": "bash ./scripts/database/restore.sh",
+        "db:replace": "bash ./scripts/database/replace.sh",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:push": "drizzle-kit push --force",
