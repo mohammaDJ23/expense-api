@@ -1,3 +1,9 @@
+## [5.1.25](https://github.com/mohammaDJ23/expense-api/compare/v5.1.24...v5.1.25) (2026-10-16)
+
+### 🔧 Chores
+
+- 052122 update some packages ([876a735](https://github.com/mohammaDJ23/expense-api/commit/876a73532c181a014e106551884531c6b81fd3ac))
+
 ## [5.1.24](https://github.com/mohammaDJ23/expense-api/compare/v5.1.23...v5.1.24) (2026-10-16)
 
 ### 🔧 Chores
