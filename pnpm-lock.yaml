@@ -65,7 +65,7 @@ importers:
                 version: 2.3.7(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.28)(chokidar@4.0.3)(nodemailer@10.0.10)(svgo@4.1.0)(terser@5.49.0)(typescript@5.9.3)
             '@nestjs/axios':
                 specifier: ^4.0.1
-                version: 4.0.1(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.19.0)(rxjs@7.8.2)
+                version: 4.0.1(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.20.0)(rxjs@7.8.2)
             '@nestjs/common':
                 specifier: ^11.1.17
                 version: 11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -100,8 +100,8 @@ importers:
                 specifier: ^0.44.0
                 version: 0.44.0
             axios:
-                specifier: ^1.18.0
-                version: 1.19.0
+                specifier: ^1.20.0
+                version: 1.20.0
             class-transformer:
                 specifier: ^0.5.1
                 version: 0.5.1
@@ -4516,10 +4516,10 @@ packages:
             }
         engines: { node: '>=8.0.0' }
 
-    axios@1.19.0:
+    axios@1.20.0:
         resolution:
             {
-                integrity: sha512-ht/iuYZXEjFxLH/Hkezgd7m6JKlHHXEUSneaDz8uZe1Gj5QZtCnpyDsckvAiEnT89OEbCLmnte4R4sn7P0EKFw==,
+                integrity: sha512-r8aOh8j9cGKpgQAqpzrUHnSIc6a59Y3Xf/cv8sy1DrHCkZHzQGEuoq1tARk6qSyDdtQGSDgpb9kFlruzPvrgwg==,
             }
 
     b4a@1.8.1:
@@ -14060,10 +14060,10 @@ snapshots:
             - typescript
             - uncss
 
-    '@nestjs/axios@4.0.1(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.19.0)(rxjs@7.8.2)':
+    '@nestjs/axios@4.0.1(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.20.0)(rxjs@7.8.2)':
         dependencies:
             '@nestjs/common': 11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-            axios: 1.19.0
+            axios: 1.20.0
             rxjs: 7.8.2
 
     '@nestjs/cli@11.0.24(@swc/cli@0.7.10(@swc/core@1.15.47)(chokidar@4.0.3))(@swc/core@1.15.47)(@types/node@22.20.1)(cssnano@7.1.9(postcss@8.5.25))(postcss@8.5.25)(prettier@3.9.6)':
@@ -15496,7 +15496,7 @@ snapshots:
 
     atomic-sleep@1.0.0: {}
 
-    axios@1.19.0:
+    axios@1.20.0:
         dependencies:
             follow-redirects: 1.16.0
             form-data: 4.0.6
