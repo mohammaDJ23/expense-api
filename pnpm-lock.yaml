@@ -5,12 +5,12 @@ settings:
     excludeLinksFromLockfile: false
 
 overrides:
-    '@xhmikosr/decompress': '>=10.2.1'
+    '@xhmikosr/decompress': '>=11.1.4'
     '@isaacs/brace-expansion': '>=5.0.1'
-    brace-expansion: '>=5.0.8'
+    brace-expansion: '>=5.0.11'
     minimatch: '>=10.2.3'
     qs: '>=6.14.2'
-    handlebars: '>=4.7.9'
+    handlebars: '>=4.7.10'
     multer: '>=2.4.0'
     undici: '>=8.10.2'
     serialize-javascript: '>=7.0.3'
@@ -26,7 +26,7 @@ overrides:
     tmp: '>=0.2.7'
     ws: '>=8.21.0'
     form-data: '>=4.0.6'
-    piscina: '>=4.9.3'
+    piscina: '>=5.3.2'
     linkify-it: '>=5.0.2'
     liquidjs: '>=10.27.1'
     js-yaml: 5.2.2
@@ -36,6 +36,8 @@ overrides:
     nanoid: '>=5.1.16'
     nodemailer: '>=9.1.0'
     proxy-addr: 2.0.8
+    engine.io: '>=6.6.10'
+    source-map-js: '>=1.2.2'
 
 importers:
     .:
@@ -4091,10 +4093,10 @@ packages:
             }
         engines: { node: '>=18' }
 
-    '@xhmikosr/decompress-tar@9.0.1':
+    '@xhmikosr/decompress-tar@9.0.2':
         resolution:
             {
-                integrity: sha512-4AkVR1SoqTxYY22IRRYKDeLirPIDGqMqYsqgjKYuwhgRcBb+yDP4t5Xph33UCzL/nahK/aADmlMEjTNstbX7kw==,
+                integrity: sha512-8nPZ6lZ3ExhsSxi/X/PMB3K+Vtsuxk43HowxYpxw4AsCHTYqFBXwC8B3Y+M/meaUOGOVm+2tFNUAfWGRjBt+Ww==,
             }
         engines: { node: '>=20' }
 
@@ -4119,10 +4121,10 @@ packages:
             }
         engines: { node: '>=20' }
 
-    '@xhmikosr/decompress@11.1.3':
+    '@xhmikosr/decompress@11.1.4':
         resolution:
             {
-                integrity: sha512-NiyhJq6z7ERsYghcnXZUI6ooDXgZtoB+G9eUsYhfSM4VLp2rKx9UxhKI1NEf1PqosrNPxG3bnSsr2UBVbNurlg==,
+                integrity: sha512-ZbYL7SAfY37/TMpopqBR3mQiuQ76kI/RNpN4q82YHSw/UxktZNy8P4wgiKPSrTImMAWRaUG8UK1pgEa56YdLaw==,
             }
         engines: { node: '>=20' }
 
@@ -4702,10 +4704,10 @@ packages:
                 integrity: sha512-VHiNCbI1lKdl44tGrhNfU3lup0Tj/ZBMJB5/2ZbNXRCPuRCO7ed2mgcK4r17y+KB2EfuYuRaVlwNbAeaWGSpbw==,
             }
 
-    brace-expansion@5.0.9:
+    brace-expansion@5.0.12:
         resolution:
             {
-                integrity: sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg==,
+                integrity: sha512-YovQ3rzhaLMIrDjNDMkNS01tea93qhEhG5xy8f6+R0l+dw3Ki+5sCoIoI942iuLZTHWogWktgwVDhU09iNEimQ==,
             }
         engines: { node: 20 || >=22 }
 
@@ -6096,10 +6098,10 @@ packages:
             }
         engines: { node: '>=10.0.0' }
 
-    engine.io@6.6.9:
+    engine.io@6.6.11:
         resolution:
             {
-                integrity: sha512-clKkw4C7nJ22mGgoVcCg6V/W/TxdNyIOTr89k2ONZu81qqkddPFDF0LXcbAwhzPD8DjkiRCjzuiO6Y+fkpD4vg==,
+                integrity: sha512-z34mGpLoY/82ZbkX1LqGMIaf3wjVMPL6gVC681QDqnmzJ26synI8qAE32P+a7UazmpJZ8UGrFIeAavgRfXzYrg==,
             }
         engines: { node: '>=10.2.0' }
 
@@ -7195,10 +7197,10 @@ packages:
                 integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==,
             }
 
-    handlebars@4.7.9:
+    handlebars@4.7.10:
         resolution:
             {
-                integrity: sha512-4E71E0rpOaQuJR2A3xDZ+GM1HyWYv1clR58tC8emQNeQe3RH7MAzSbat+V0wG78LQBo6m6bzSG/L4pBuCsgnUQ==,
+                integrity: sha512-P5VJMVM7qgBn6vjXMw8WG9uVI+ncf2pi72j4de4yz5ZULLj2RGqLYaKOYGsgyrViQ0tePOVlN1tDCCXXtFqXKg==,
             }
         engines: { node: '>=0.4.7' }
         hasBin: true
@@ -10091,10 +10093,10 @@ packages:
             }
         engines: { node: '>= 6' }
 
-    piscina@5.3.0:
+    piscina@5.3.2:
         resolution:
             {
-                integrity: sha512-9D3tPBayfoal6l9l4Y8NrMn1jkV718qJoYrla6P51+hh9h0Q+9/1c8KgEnoBQqhguyfgjay4biADI8HJG3pkoA==,
+                integrity: sha512-vv7l/mM7B9WgrhDaudIqv1x6v4LOBRYYmpWGdWushhpbCmVHp11sUB2v4hj1CAeTGXVxuZFz6xOU1RalAiPKfQ==,
             }
         engines: { node: '>=20.x' }
 
@@ -11303,10 +11305,10 @@ packages:
             }
         engines: { node: '>=0.10.0' }
 
-    source-map-js@1.2.1:
+    source-map-js@1.2.2:
         resolution:
             {
-                integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==,
+                integrity: sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==,
             }
         engines: { node: '>=0.10.0' }
 
@@ -14042,7 +14044,7 @@ snapshots:
             '@types/mjml': 4.7.4
             '@types/pug': 2.0.10
             ejs: 5.0.2
-            handlebars: 4.7.9
+            handlebars: 4.7.10
             liquidjs: 10.27.2
             mjml: 5.4.0(svgo@4.1.0)(terser@5.49.0)(typescript@5.9.3)
             nunjucks: 3.2.4(chokidar@4.0.3)
@@ -14602,7 +14604,7 @@ snapshots:
             '@xhmikosr/bin-wrapper': 13.2.0
             commander: 8.3.0
             minimatch: 10.2.6
-            piscina: 5.3.0
+            piscina: 5.3.2
             semver: 7.8.5
             slash: 3.0.0
             source-map: 0.7.6
@@ -15195,7 +15197,7 @@ snapshots:
             - supports-color
         optional: true
 
-    '@xhmikosr/decompress-tar@9.0.1':
+    '@xhmikosr/decompress-tar@9.0.2':
         dependencies:
             file-type: 21.3.4
             is-stream: 4.0.1
@@ -15208,7 +15210,7 @@ snapshots:
 
     '@xhmikosr/decompress-tarbz2@9.0.2':
         dependencies:
-            '@xhmikosr/decompress-tar': 9.0.1
+            '@xhmikosr/decompress-tar': 9.0.2
             file-type: 21.3.4
             is-stream: 4.0.1
             seek-bzip: 2.0.0
@@ -15221,7 +15223,7 @@ snapshots:
 
     '@xhmikosr/decompress-targz@9.0.1':
         dependencies:
-            '@xhmikosr/decompress-tar': 9.0.1
+            '@xhmikosr/decompress-tar': 9.0.2
             file-type: 21.3.4
             is-stream: 4.0.1
         transitivePeerDependencies:
@@ -15239,9 +15241,9 @@ snapshots:
             - supports-color
         optional: true
 
-    '@xhmikosr/decompress@11.1.3':
+    '@xhmikosr/decompress@11.1.4':
         dependencies:
-            '@xhmikosr/decompress-tar': 9.0.1
+            '@xhmikosr/decompress-tar': 9.0.2
             '@xhmikosr/decompress-tarbz2': 9.0.2
             '@xhmikosr/decompress-targz': 9.0.1
             '@xhmikosr/decompress-unzip': 8.2.1
@@ -15256,7 +15258,7 @@ snapshots:
     '@xhmikosr/downloader@15.2.0':
         dependencies:
             '@xhmikosr/archive-type': 7.1.0
-            '@xhmikosr/decompress': 11.1.3
+            '@xhmikosr/decompress': 11.1.4
             content-disposition: 0.5.4
             defaults: 2.0.2
             ext-name: 5.0.0
@@ -15645,7 +15647,7 @@ snapshots:
 
     bottleneck@2.19.5: {}
 
-    brace-expansion@5.0.9:
+    brace-expansion@5.0.12:
         dependencies:
             balanced-match: 4.0.4
 
@@ -16025,7 +16027,7 @@ snapshots:
         dependencies:
             '@simple-libs/stream-utils': 1.2.0
             conventional-commits-filter: 5.0.0
-            handlebars: 4.7.9
+            handlebars: 4.7.10
             meow: 13.2.0
             semver: 7.8.5
 
@@ -16140,13 +16142,13 @@ snapshots:
     css-tree@2.2.1:
         dependencies:
             mdn-data: 2.0.28
-            source-map-js: 1.2.1
+            source-map-js: 1.2.2
         optional: true
 
     css-tree@3.2.1:
         dependencies:
             mdn-data: 2.27.1
-            source-map-js: 1.2.1
+            source-map-js: 1.2.2
         optional: true
 
     css-what@6.2.2:
@@ -16434,13 +16436,12 @@ snapshots:
 
     engine.io-parser@5.2.3: {}
 
-    engine.io@6.6.9:
+    engine.io@6.6.11:
         dependencies:
             '@types/cors': 2.8.19
             '@types/node': 22.20.1
             '@types/ws': 8.18.1
             accepts: 1.3.8
-            base64id: 2.0.0
             cookie: 0.7.2
             cors: 2.8.6
             debug: 4.4.3
@@ -17238,7 +17239,7 @@ snapshots:
 
     graceful-fs@4.2.11: {}
 
-    handlebars@4.7.9:
+    handlebars@4.7.10:
         dependencies:
             minimist: 1.2.8
             neo-async: 2.6.2
@@ -18453,7 +18454,7 @@ snapshots:
 
     minimatch@10.2.6:
         dependencies:
-            brace-expansion: 5.0.9
+            brace-expansion: 5.0.12
 
     minimist-options@4.1.0:
         dependencies:
@@ -19468,7 +19469,7 @@ snapshots:
 
     pirates@4.0.7: {}
 
-    piscina@5.3.0:
+    piscina@5.3.2:
         optionalDependencies:
             '@napi-rs/nice': 1.1.1
         optional: true
@@ -19675,7 +19676,7 @@ snapshots:
         dependencies:
             nanoid: 6.0.0
             picocolors: 1.1.1
-            source-map-js: 1.2.1
+            source-map-js: 1.2.2
         optional: true
 
     postgres-array@2.0.0: {}
@@ -20287,7 +20288,7 @@ snapshots:
             base64id: 2.0.0
             cors: 2.8.6
             debug: 4.4.3
-            engine.io: 6.6.9
+            engine.io: 6.6.11
             socket.io-adapter: 2.5.8
             socket.io-parser: 4.2.7
         transitivePeerDependencies:
@@ -20309,7 +20310,7 @@ snapshots:
             is-plain-obj: 1.1.0
         optional: true
 
-    source-map-js@1.2.1:
+    source-map-js@1.2.2:
         optional: true
 
     source-map-support@0.5.13:
@@ -20673,7 +20674,7 @@ snapshots:
         dependencies:
             bs-logger: 0.2.6
             fast-json-stable-stringify: 2.1.0
-            handlebars: 4.7.9
+            handlebars: 4.7.10
             jest: 30.4.2(@types/node@22.20.1)(ts-node@10.9.2(@swc/core@1.15.47)(@types/node@22.20.1)(typescript@5.9.3))
             json5: 2.2.3
             lodash.memoize: 4.1.2
