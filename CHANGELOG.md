@@ -1,3 +1,9 @@
+## [5.1.27](https://github.com/mohammaDJ23/expense-api/compare/v5.1.26...v5.1.27) (2026-10-20)
+
+### ♻️ Code Refactoring
+
+- 744514 rename the script files ([733795a](https://github.com/mohammaDJ23/expense-api/commit/733795a494d4061552b7c69d72afbafc8d7122f7))
+
 ## [5.1.26](https://github.com/mohammaDJ23/expense-api/compare/v5.1.25...v5.1.26) (2026-10-20)
 
 ### ♻️ Code Refactoring
