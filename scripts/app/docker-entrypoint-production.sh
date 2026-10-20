@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ./scripts/docker/dockerComposeCommand.sh
+source ./scripts/docker/docker-compose-command.sh
 
 cleanup() {
     docker image prune -f >/dev/null 2>&1 || true
