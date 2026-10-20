@@ -1,3 +1,9 @@
+## [5.1.28](https://github.com/mohammaDJ23/expense-api/compare/v5.1.27...v5.1.28) (2026-10-20)
+
+### 🔧 Chores
+
+- 744514 ignore the error ([9d778ca](https://github.com/mohammaDJ23/expense-api/commit/9d778ca7874fe7d425d3f2b7d9d9ec77736f596d))
+
 ## [5.1.27](https://github.com/mohammaDJ23/expense-api/compare/v5.1.26...v5.1.27) (2026-10-20)
 
 ### ♻️ Code Refactoring
