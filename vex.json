@@ -40,6 +40,18 @@
             ],
             "status": "not_affected",
             "justification": "vulnerable_code_not_in_executable_path"
+        },
+        {
+            "vulnerability": {
+                "name": "CVE-2026-92392"
+            },
+            "products": [
+                {
+                    "@id": "pkg:apk/alpine/curl@8.22.0-r0"
+                }
+            ],
+            "status": "not_affected",
+            "justification": "vulnerable_code_not_in_executable_path"
         }
     ]
 }
