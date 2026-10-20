@@ -1,3 +1,14 @@
+## [5.1.26](https://github.com/mohammaDJ23/expense-api/compare/v5.1.25...v5.1.26) (2026-10-20)
+
+### ♻️ Code Refactoring
+
+- 744514 rename the script files ([2e724ad](https://github.com/mohammaDJ23/expense-api/commit/2e724ada2ecd3bbd37f405244de43f6b4bc31969))
+- 744514 rename the script files ([126c830](https://github.com/mohammaDJ23/expense-api/commit/126c83064870599e5dcf15b91b0e9ee45c2bdc8d))
+- 744514 rename the script files ([d5a88aa](https://github.com/mohammaDJ23/expense-api/commit/d5a88aa82f29f1f6bda559490ab0fd69e58be28d))
+- 744514 rename the script files ([6386ba1](https://github.com/mohammaDJ23/expense-api/commit/6386ba1c1cd55b689c25c957c1dff4c9e79ad80e))
+- 744514 rename the script files ([31eaa55](https://github.com/mohammaDJ23/expense-api/commit/31eaa55ac96807a1dfe8082782daf44720980e30))
+- 744514 rename the script files ([80bbbd6](https://github.com/mohammaDJ23/expense-api/commit/80bbbd62c591bde39846262b89f51c0c1b8bb73b))
+
 ## [5.1.25](https://github.com/mohammaDJ23/expense-api/compare/v5.1.24...v5.1.25) (2026-10-16)
 
 ### 🔧 Chores
