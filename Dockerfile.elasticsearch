@@ -1,5 +1,5 @@
 FROM mohammadnowresideh1997/elasticsearch:8.17.6
 
-COPY --chmod=755 ./scripts/elasticsearch/entrypoint.sh /entrypoint.sh
+COPY --chmod=755 ./scripts/elasticsearch/docker-entrypoint.sh /docker-entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
