@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source ./scripts/docker/validateDockerImageName.sh
+source ./scripts/docker/docker-image-name-validator.sh
 
 create_latest_docker_image_name() {
     local -r image="${1:-}"

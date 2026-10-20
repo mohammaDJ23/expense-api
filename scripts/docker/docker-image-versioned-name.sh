@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-source ./scripts/docker/validateDockerImageTag.sh
-source ./scripts/docker/validateDockerImageName.sh
+source ./scripts/docker/docker-image-tag-validator.sh
+source ./scripts/docker/docker-image-name-validator.sh
 
 create_versioned_docker_image_name() {
     local -r image="${1:-}"
