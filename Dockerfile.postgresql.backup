@@ -13,12 +13,12 @@ RUN apt-get update && \
     chmod 755 /usr/local/bin/supercronic
 
 COPY dbBackup.cron /etc/dbBackup.cron
-COPY ./scripts/database/backup.sh /usr/local/bin/backup.sh
-COPY ./scripts/database/backupEntrypoint.sh /usr/local/bin/backupEntrypoint.sh
+COPY ./scripts/database/backup-push.sh /usr/local/bin/backup-push.sh
+COPY ./scripts/database/docker-entrypoint-backup.sh /usr/local/bin/docker-entrypoint-backup.sh
 
-RUN chmod +x /usr/local/bin/backup.sh && \
-    chmod +x /usr/local/bin/backupEntrypoint.sh
+RUN chmod +x /usr/local/bin/backup-push.sh && \
+    chmod +x /usr/local/bin/docker-entrypoint-backup.sh
 
-ENTRYPOINT ["/usr/local/bin/backupEntrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint-backup.sh"]
 
 CMD ["supercronic", "/etc/dbBackup.cron"]

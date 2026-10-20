@@ -9,8 +9,8 @@ RUN apt-get update && \
     mv wal-g-pg-22.04-aarch64 /usr/local/bin/wal-g && \
     chmod 755 /usr/local/bin/wal-g
 
-COPY ./scripts/database/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./scripts/database/docker-entrypoint-production.sh /usr/local/bin/docker-entrypoint-production.sh
 
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint-production.sh
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint-production.sh"]
