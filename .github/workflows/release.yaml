@@ -98,7 +98,7 @@ jobs:
 
             - name: Create image name
               id: create-docker-image-name
-              run: pnpm run create:app:docker:image:name
+              run: pnpm run build:app:docker:image
               env:
                   TAG: ${{ needs.create-version.outputs.version }}
 
@@ -120,12 +120,12 @@ jobs:
                   TARGET: ${{ steps.create-docker-image-name.outputs.latest_image }}
 
             - name: Push versioned image to dockerhub
-              run: pnpm run push:app:to:dockerhub
+              run: pnpm run push:app:docker:image
               env:
                   IMAGE: ${{ steps.create-docker-image-name.outputs.versioned_image }}
 
             - name: Push latest image to dockerhub
-              run: pnpm run push:app:to:dockerhub
+              run: pnpm run push:app:docker:image
               env:
                   IMAGE: ${{ steps.create-docker-image-name.outputs.latest_image }}
 
