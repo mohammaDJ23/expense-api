@@ -2,6 +2,6 @@
 
 set -euo pipefail
 
-source ./scripts/docker/tagDockerImage.sh
+source ./scripts/docker/docker-image-tag.sh
 
 tag_docker_image

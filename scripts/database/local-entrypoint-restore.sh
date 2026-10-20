@@ -2,6 +2,6 @@
 
 set -euo pipefail
 
-source ./scripts/docker/dockerComposeCommand.sh
+source ./scripts/docker/docker-compose-command.sh
 
 docker_compose -f docker-compose.postgresql.restore.yml up -d

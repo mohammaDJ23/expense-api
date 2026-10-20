@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-source ./scripts/docker/createVersionedDockerImageName.sh
-source ./scripts/docker/createLatestDockerImageName.sh
+source ./scripts/docker/docker-image-versioned-name.sh
+source ./scripts/docker/docker-image-latest-name.sh
 
 IMAGE="mohammadnowresideh1997/expense-api-production"
 

@@ -2,6 +2,6 @@
 
 set -euo pipefail
 
-source ./scripts/docker/pushToDockerhub.sh
+source ./scripts/docker/docker-image-push.sh
 
 push_to_docker_hub
