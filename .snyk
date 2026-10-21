@@ -18,3 +18,8 @@ ignore:
         - '*':
               reason: 'No upgrade or patch available; accepted risk'
               expires: 2027-08-25
+
+    SNYK-JS-PICOMATCH-21248802:
+        - '*':
+              reason: 'No verified patched version is available for this ReDoS vulnerability in picomatch.'
+              expires: 2027-08-25
