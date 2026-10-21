@@ -1,3 +1,9 @@
+## [5.1.31](https://github.com/mohammaDJ23/expense-api/compare/v5.1.30...v5.1.31) (2026-10-21)
+
+### 🔧 Chores
+
+- 583077 rename the package ([b8186a1](https://github.com/mohammaDJ23/expense-api/commit/b8186a1d6d3d0b9e7ec2540a3118e240b81e1c98))
+
 ## [5.1.30](https://github.com/mohammaDJ23/expense-api/compare/v5.1.29...v5.1.30) (2026-10-21)
 
 ### 🔧 Chores
