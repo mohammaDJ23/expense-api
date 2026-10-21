@@ -1,3 +1,9 @@
+## [5.1.30](https://github.com/mohammaDJ23/expense-api/compare/v5.1.29...v5.1.30) (2026-10-21)
+
+### 🔧 Chores
+
+- 583077 update some packages ([bbbd92a](https://github.com/mohammaDJ23/expense-api/commit/bbbd92ac9231e9253f7b141b5e4e80ea3f1c29e7))
+
 ## [5.1.29](https://github.com/mohammaDJ23/expense-api/compare/v5.1.28...v5.1.29) (2026-10-21)
 
 ### 🔧 Chores
