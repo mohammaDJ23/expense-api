@@ -44,7 +44,8 @@
             "proxy-addr": "2.0.8",
             "engine.io": ">=6.6.10",
             "source-map-js": ">=1.2.2",
-            "postcss-selector-parser": ">=7.1.6"
+            "postcss-selector-parser": ">=7.1.6",
+            "follow-redirects": ">=1.16.1"
         }
     },
     "scripts": {
