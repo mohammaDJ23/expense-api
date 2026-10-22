@@ -1,3 +1,9 @@
+## [5.2.1](https://github.com/mohammaDJ23/expense-api/compare/v5.2.0...v5.2.1) (2026-10-22)
+
+### 🐛 Bug Fixes
+
+- 346998 change the generated drizzle sql ([696c11f](https://github.com/mohammaDJ23/expense-api/commit/696c11f9132afd75bb5108b1fc4e3807c5f325ec))
+
 ## [5.2.0](https://github.com/mohammaDJ23/expense-api/compare/v5.1.31...v5.2.0) (2026-10-22)
 
 ### ✨ Features
