@@ -1,4 +1,4 @@
-import { uuid, pgTable, timestamp, varchar, index } from 'drizzle-orm/pg-core';
+import { uuid, pgTable, timestamp, varchar, index, numeric } from 'drizzle-orm/pg-core';
 
 import { locations } from '@/modules/location/infrastructure/schemas/location.schema';
 import { receivers } from '@/modules/receiver/infrastructure/schemas/receiver.schema';
@@ -8,7 +8,7 @@ export const bills = pgTable(
     'bills',
     {
         id: uuid('id').primaryKey().defaultRandom().notNull(),
-        amount: varchar('amount', { length: 12 }).notNull(),
+        amount: numeric('amount', { precision: 30, scale: 0 }).notNull(),
         description: varchar('description', { length: 500 }).notNull(),
         purchasedAt: timestamp('purchased_at', { withTimezone: true, mode: 'string' }).notNull(),
         createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })

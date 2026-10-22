@@ -4,6 +4,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { QueryDispatcher } from '@/core/features/queryDispatcher/query.dispatcher';
 import { FindEmailIdentityByUserIdrThrowQuery } from '@/modules/authentication/applications/queries/findEmailIdentityByUserIdOrThrow/findEmailIdentityByUserIdOrThrow.query';
 import { FindBillsPeriodByPurchasedAtQuery } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.query';
+import { FindBillsTotalAmountByUserIdOrThrowQuery } from '@/modules/bill/applications/queries/findBillsTotalAmountByUserIdOrThrow/findBillsTotalAmountByUserIdOrThrow.query';
 import { FindTotalBillsByUserIdQuery } from '@/modules/bill/applications/queries/findTotalBillsByUserId/findTotalBillsByUserId.query';
 import { BillsExcelExportGeneratorService } from '@/modules/bill/applications/services/export/excel/billsExcelExportGenerator.service';
 import { MostUsedConsumersService } from '@/modules/bill/applications/services/relations/mostUsedConsumers.service';
@@ -27,6 +28,7 @@ import type { IBillTimeline } from '@/modules/bill/domain/types/billTimeline.typ
 import type { IMostUsedConsumer } from '@/modules/bill/domain/types/mostUsedConsumer.type';
 import type { IMostUsedLocation } from '@/modules/bill/domain/types/mostUsedLocation.type';
 import type { IMostUsedReceiver } from '@/modules/bill/domain/types/mostUsedReceiver.type';
+import type { ITotalAmount } from '@/modules/bill/domain/types/totalAmount.type';
 import type { CreateBillRequestDto } from '@/modules/bill/interface/dtos/createBill.request.dto';
 import type { FindBillListRequestDto } from '@/modules/bill/interface/dtos/findBillList.request.dto';
 import type { FindBillsTimelineRequestDto } from '@/modules/bill/interface/dtos/findBillsTimeline.request.dto';
@@ -126,5 +128,13 @@ export class BillService {
                         this.billsExcelExportGeneratorService.generate(emailIdentity),
                     ),
             );
+    }
+
+    findTotalAmount(userId: string): Promise<ITotalAmount> {
+        return this.queryDispatcher.execute<FindBillsTotalAmountByUserIdOrThrowQuery, ITotalAmount>(
+            new FindBillsTotalAmountByUserIdOrThrowQuery({
+                userId,
+            }),
+        );
     }
 }

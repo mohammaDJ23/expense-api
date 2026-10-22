@@ -48,6 +48,7 @@ import { httpBillListResponseSwaggerSchema } from '@/modules/bill/infrastructure
 import { httpBillResponseSwaggerSchema } from '@/modules/bill/infrastructure/swagger/schemas/httpBillResponse.schema';
 import { httpBillsPeriodResponseSwaggerSchema } from '@/modules/bill/infrastructure/swagger/schemas/httpBillsPeriodResponse.schema';
 import { httpBillsTimelineResponseSwaggerSchema } from '@/modules/bill/infrastructure/swagger/schemas/httpBillsTimelineResponse.schema';
+import { httpBillsTotalAmountResponseSwaggerSchema } from '@/modules/bill/infrastructure/swagger/schemas/httpBillsTotalAmountResponse.schema';
 import { httpMostUsedConsumersResponseSwaggerSchema } from '@/modules/bill/infrastructure/swagger/schemas/httpMostUsedConsumersResponse.schema';
 import { httpMostUsedLocationsResponseSwaggerSchema } from '@/modules/bill/infrastructure/swagger/schemas/httpMostUsedLocationsResponse.schema';
 import { httpMostUsedReceiversResponseSwaggerSchema } from '@/modules/bill/infrastructure/swagger/schemas/httpMostUsedReceiversResponse.schema';
@@ -60,6 +61,7 @@ import { FindBillListResponseDto } from '@/modules/bill/interface/dtos/findBillL
 import { FindBillsPeriodResponseDto } from '@/modules/bill/interface/dtos/findBillsPeriod.response.dto';
 import { FindBillsTimelineRequestDto } from '@/modules/bill/interface/dtos/findBillsTimeline.request.dto';
 import { FindBillsTimelineResponseDto } from '@/modules/bill/interface/dtos/findBillsTimeline.response.dto';
+import { FindBillsTotalAmountResponseDto } from '@/modules/bill/interface/dtos/findBillsTotalAmount.response.dto';
 import { MostUsedRequestDto } from '@/modules/bill/interface/dtos/mostUsed.request.dto';
 import { MostUsedConsumerResponseDto } from '@/modules/bill/interface/dtos/mostUsedConsumer.response.dto';
 import { MostUsedLocationResponseDto } from '@/modules/bill/interface/dtos/mostUsedLocation.response.dto';
@@ -79,6 +81,7 @@ import {
     SUCCESS_UPDATE_BILL_MESSAGE,
     SUCCESS_FIND_BILLS_TIMELINE_MESSAGE,
     SUCCESS_BILL_EXPORT_MESSAGE,
+    SUCCESS_BILLS_TOTAL_AMOUNT_MESSAGE,
 } from './v1.constants';
 
 import type { ICurrentUser } from '@/core/features/currentUser/currentUser.type';
@@ -91,6 +94,7 @@ import type { IBillTimeline } from '@/modules/bill/domain/types/billTimeline.typ
 import type { IMostUsedConsumer } from '@/modules/bill/domain/types/mostUsedConsumer.type';
 import type { IMostUsedLocation } from '@/modules/bill/domain/types/mostUsedLocation.type';
 import type { IMostUsedReceiver } from '@/modules/bill/domain/types/mostUsedReceiver.type';
+import type { ITotalAmount } from '@/modules/bill/domain/types/totalAmount.type';
 
 @ApiTags('Bill')
 @Controller({ version: '1', path: 'api/bills' })
@@ -292,6 +296,27 @@ export class BillController {
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
     findPeriod(@CurrentUser() user: ICurrentUser): Promise<IBillPeriod> {
         return this.billService.findPeriod(user.id);
+    }
+
+    @Get('total-amount')
+    @UseGuards(JwtAuthGuard)
+    @SerializerInterceptor(FindBillsTotalAmountResponseDto)
+    @HttpResponse(SUCCESS_BILLS_TOTAL_AMOUNT_MESSAGE, HttpStatus.OK)
+    @ApiOperation({
+        summary: 'Find the bills total amount',
+        description: 'This is for finding the summation of the amount of the whole bills',
+        operationId: 'findBillsTotalAmount',
+    })
+    @ApiCookieAuth()
+    @ApiExtraModels(HttpResponseDto, ExceptionDto, FindBillsTotalAmountResponseDto)
+    @ApiOkResponse({ schema: httpBillsTotalAmountResponseSwaggerSchema() })
+    @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiUnauthorizedResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    findTotalAmount(@CurrentUser() user: ICurrentUser): Promise<ITotalAmount> {
+        return this.billService.findTotalAmount(user.id);
     }
 
     @Get('timeline')

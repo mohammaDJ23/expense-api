@@ -10,3 +10,5 @@ export const SUCCESS_FIND_MOST_CONSUMERS_MESSAGE = 'You have got the most used c
 export const SUCCESS_FIND_BILLS_PERIOD_MESSAGE = 'You have got the bills period';
 export const SUCCESS_FIND_BILLS_TIMELINE_MESSAGE = 'You have got the bills timeline';
 export const SUCCESS_BILL_EXPORT_MESSAGE = 'You have received the bill report';
+export const SUCCESS_BILLS_TOTAL_AMOUNT_MESSAGE =
+    'You have received the total amount of your entire bills';
