@@ -1,3 +1,14 @@
+## [5.2.0](https://github.com/mohammaDJ23/expense-api/compare/v5.1.31...v5.2.0) (2026-10-22)
+
+### ✨ Features
+
+- 346998 add the total amount api ([8bf17cf](https://github.com/mohammaDJ23/expense-api/commit/8bf17cf2cae144c103bad5bea6e6bb237af009ff))
+
+### 🔧 Chores
+
+- 346998 generate the related db schema ([c68d478](https://github.com/mohammaDJ23/expense-api/commit/c68d47844ba60c5768ceb22550f3397e9b4d627c))
+- 346998 update the service of db-migation for ci mode ([b7700c5](https://github.com/mohammaDJ23/expense-api/commit/b7700c5ba26f64b1da16599dab0606ee3de6dd6a))
+
 ## [5.1.31](https://github.com/mohammaDJ23/expense-api/compare/v5.1.30...v5.1.31) (2026-10-21)
 
 ### 🔧 Chores
