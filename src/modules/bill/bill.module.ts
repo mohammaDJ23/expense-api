@@ -26,6 +26,7 @@ import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications
 import { FindBillListByUserIdHandler } from '@/modules/bill/applications/queries/findBillListByUserId/findBillListByUserId.handler';
 import { FindBillsPeriodByPurchasedAtHandler } from '@/modules/bill/applications/queries/findBillsPeriodByPurchasedAt/findBillsPeriodByPurchasedAt.handler';
 import { FindBillsTimelineByPurchasedAtHandler } from '@/modules/bill/applications/queries/findBillsTimelineByPurchasedAt/findBillsTimelineByPurchasedAt.handler';
+import { FindBillsTotalAmountByUserIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillsTotalAmountByUserIdOrThrow/findBillsTotalAmountByUserIdOrThrow.handler';
 import { FindManyBillsByUserIdAndIdsHandler } from '@/modules/bill/applications/queries/findManyBillsByUserIdAndIds/findManyBillsByUserIdAndIds.handler';
 import { FindMostUsedConsumersHandler } from '@/modules/bill/applications/queries/findMostUsedConsumers/findMostUsedConsumers.handler';
 import { FindMostUsedLocationsHandler } from '@/modules/bill/applications/queries/findMostUsedLocations/findMostUsedLocations.handler';
@@ -148,6 +149,7 @@ import { UserModule } from '@/modules/user/user.module';
         BillCacheInvalidatorProcessor,
         BillElasticsearchIndexerProcessor,
         BillListCursorPaginationDefinition,
+        FindBillsTotalAmountByUserIdOrThrowHandler,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService, BillSearchSyncService],

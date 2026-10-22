@@ -1,5 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { and, asc, between, count, desc, eq, inArray, lt, max, min, or, sql } from 'drizzle-orm';
+import {
+    and,
+    asc,
+    between,
+    count,
+    desc,
+    eq,
+    inArray,
+    lt,
+    max,
+    min,
+    or,
+    sql,
+    sum,
+} from 'drizzle-orm';
 
 import { DrizzleRepository } from '@/infrastructure/database/drizzle/drizzle.repository';
 import { toCount } from '@/infrastructure/database/drizzle/transformers/toCount.transformer';
@@ -18,6 +32,7 @@ import type { IBillListCursor } from '@/modules/bill/domain/types/billListCursor
 import type { IBillPeriod } from '@/modules/bill/domain/types/billPeriod.type';
 import type { IBillTimeline } from '@/modules/bill/domain/types/billTimeline.type';
 import type { IMostUsed } from '@/modules/bill/domain/types/mostUsed.type';
+import type { ITotalAmount } from '@/modules/bill/domain/types/totalAmount.type';
 
 @Injectable()
 export class BillRepository implements IBillRepository {
@@ -204,6 +219,19 @@ export class BillRepository implements IBillRepository {
                 .groupBy(date)
                 .orderBy(asc(date))
                 .execute(),
+        );
+    }
+
+    findTotalAmountByUserIdOrThrow(userId: string): Promise<ITotalAmount> {
+        return toEntityOrThrow(
+            this.drizzleRepository.db
+                .select({
+                    totalAmount: sum(bills.amount),
+                })
+                .from(bills)
+                .where(eq(bills.userId, userId))
+                .execute(),
+            'Unable to find the total amount',
         );
     }
 }
