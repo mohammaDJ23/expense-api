@@ -16,3 +16,10 @@ services:
     postgres-backup:
         environment:
             - WALG_S3_PREFIX=s3://expense-api/db-backup/ci
+
+    db-migration:
+        build:
+            context: .
+            target: db-migration
+            dockerfile: Dockerfile
+        pull_policy: never
