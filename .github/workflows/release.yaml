@@ -141,6 +141,9 @@ jobs:
         needs: [create-version, expense-api]
         timeout-minutes: 30
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: db-migration
         steps:
             - name: Checkout the source
               uses: actions/checkout@v4
