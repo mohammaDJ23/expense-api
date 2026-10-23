@@ -55,6 +55,13 @@ FROM node-patched AS db-migration
 
 ENV NODE_ENV=production
 
+RUN rm -rf /usr/local/lib/node_modules \
+    /usr/local/bin/npm \
+    /usr/local/bin/npx \
+    /usr/local/bin/corepack \
+    /usr/local/bin/pnpm \
+    /usr/local/bin/pnpx
+
 WORKDIR /usr/src/app
 
 COPY --from=db-migration-build --chown=expense-api:nodejs /usr/src/app/package.json ./
@@ -83,7 +90,13 @@ FROM node-patched AS production
 
 ENV NODE_ENV=production
 
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl && \
+    rm -rf /usr/local/lib/node_modules \
+           /usr/local/bin/npm \
+           /usr/local/bin/npx \
+           /usr/local/bin/corepack \
+           /usr/local/bin/pnpm \
+           /usr/local/bin/pnpx
 
 WORKDIR /usr/src/app
 
