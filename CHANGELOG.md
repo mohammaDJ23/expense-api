@@ -1,3 +1,9 @@
+## [5.2.5](https://github.com/mohammaDJ23/expense-api/compare/v5.2.4...v5.2.5) (2026-10-23)
+
+### 🔧 Chores
+
+- 619582 update the step of snyk scanning ([54614b6](https://github.com/mohammaDJ23/expense-api/commit/54614b61e48f569101b8eebe11cf5a97ab3fe25e))
+
 ## [5.2.4](https://github.com/mohammaDJ23/expense-api/compare/v5.2.3...v5.2.4) (2026-10-23)
 
 ### 🔧 Chores
