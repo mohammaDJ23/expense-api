@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 
-import { defineConfig } from 'drizzle-kit';
+import { defineConfig, type Config } from 'drizzle-kit';
 
 export default defineConfig({
     dialect: 'postgresql',
@@ -8,4 +8,4 @@ export default defineConfig({
     out: './drizzle',
     verbose: true,
     strict: true,
-});
+} as Config);
