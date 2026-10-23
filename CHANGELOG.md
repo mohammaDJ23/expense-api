@@ -1,3 +1,9 @@
+## [5.2.3](https://github.com/mohammaDJ23/expense-api/compare/v5.2.2...v5.2.3) (2026-10-23)
+
+### 🔧 Chores
+
+- 619582 add --all-projects ([0b24f83](https://github.com/mohammaDJ23/expense-api/commit/0b24f83f9d05326345815b62b3f7286c9c69372e))
+
 ## [5.2.2](https://github.com/mohammaDJ23/expense-api/compare/v5.2.1...v5.2.2) (2026-10-23)
 
 ### 🐛 Bug Fixes
