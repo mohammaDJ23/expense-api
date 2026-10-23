@@ -1,3 +1,13 @@
+## [5.2.2](https://github.com/mohammaDJ23/expense-api/compare/v5.2.1...v5.2.2) (2026-10-23)
+
+### 🐛 Bug Fixes
+
+- 619582 add the packages to override them ([6f6726f](https://github.com/mohammaDJ23/expense-api/commit/6f6726f73993a648afd5a3399b752dae333466a1))
+
+### 🔧 Chores
+
+- 619582 update some packages ([52be50b](https://github.com/mohammaDJ23/expense-api/commit/52be50b84f0b88205b544366c3c5ba33a521bb37))
+
 ## [5.2.1](https://github.com/mohammaDJ23/expense-api/compare/v5.2.0...v5.2.1) (2026-10-22)
 
 ### 🐛 Bug Fixes
