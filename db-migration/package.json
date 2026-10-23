@@ -9,6 +9,11 @@
     "engines": {
         "node": "24"
     },
+    "pnpm": {
+        "overrides": {
+            "esbuild": ">=0.28.1"
+        }
+    },
     "scripts": {
         "install:ci": "pnpm install --ignore-scripts --frozen-lockfile",
         "name:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-name.sh",
