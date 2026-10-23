@@ -42,7 +42,4 @@ runs:
               SNYK_TOKEN: ${{ inputs.snyk_token }}
           with:
               image: ${{ inputs.image_name }}
-              args: |
-                  --severity-threshold=high
-                  --exclude=/usr/local/lib/node_modules/npm
-                  --all-projects
+              args: '--severity-threshold=high --exclude=/usr/local/lib/node_modules/npm --all-projects'
