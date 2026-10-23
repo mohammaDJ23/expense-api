@@ -1,3 +1,9 @@
+## [5.2.7](https://github.com/mohammaDJ23/expense-api/compare/v5.2.6...v5.2.7) (2026-10-23)
+
+### 🔧 Chores
+
+- 619582 remove the global node_modules ([0b742ea](https://github.com/mohammaDJ23/expense-api/commit/0b742ea1f5131b16b3bf482073030692f5c3eeb0))
+
 ## [5.2.6](https://github.com/mohammaDJ23/expense-api/compare/v5.2.5...v5.2.6) (2026-10-23)
 
 ### 🔧 Chores
