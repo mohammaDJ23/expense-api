@@ -17,7 +17,7 @@
             "minimatch": ">=10.2.3",
             "qs": ">=6.16.1",
             "handlebars": ">=4.7.10",
-            "multer": ">=2.4.0",
+            "multer": ">=2.5.0",
             "undici": ">=8.12.2",
             "serialize-javascript": ">=7.0.3",
             "flatted": ">=3.4.2",
@@ -44,7 +44,8 @@
             "engine.io": ">=6.6.10",
             "source-map-js": ">=1.2.2",
             "postcss-selector-parser": ">=7.1.6",
-            "follow-redirects": ">=1.16.1"
+            "follow-redirects": ">=1.16.1",
+            "body-parser": ">=2.4.0"
         }
     },
     "scripts": {
