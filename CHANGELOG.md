@@ -1,3 +1,9 @@
+## [5.2.8](https://github.com/mohammaDJ23/expense-api/compare/v5.2.7...v5.2.8) (2026-10-23)
+
+### 🔧 Chores
+
+- 619582 load the snyk file ([e2502ec](https://github.com/mohammaDJ23/expense-api/commit/e2502ecff490b0d632bea01b5397356e2f845cd3))
+
 ## [5.2.7](https://github.com/mohammaDJ23/expense-api/compare/v5.2.6...v5.2.7) (2026-10-23)
 
 ### 🔧 Chores
