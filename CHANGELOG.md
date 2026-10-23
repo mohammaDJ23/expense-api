@@ -1,3 +1,9 @@
+## [5.2.6](https://github.com/mohammaDJ23/expense-api/compare/v5.2.5...v5.2.6) (2026-10-23)
+
+### 🔧 Chores
+
+- 619582 add shell ([b43d9af](https://github.com/mohammaDJ23/expense-api/commit/b43d9af95b3f2c633e571ed122467bdae51feead))
+
 ## [5.2.5](https://github.com/mohammaDJ23/expense-api/compare/v5.2.4...v5.2.5) (2026-10-23)
 
 ### 🔧 Chores
