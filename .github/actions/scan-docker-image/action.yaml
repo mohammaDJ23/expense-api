@@ -45,6 +45,8 @@ runs:
               docker run --rm \
               -e SNYK_TOKEN \
               -v /var/run/docker.sock:/var/run/docker.sock \
+              -v "$GITHUB_WORKSPACE/.snyk:/scan/.snyk:ro" \
               snyk/snyk:docker \
               snyk container test "$IMAGE_NAME" \
-                  --severity-threshold=high
+                  --severity-threshold=high \
+                  --policy-path=/scan/.snyk
