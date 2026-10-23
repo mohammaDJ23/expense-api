@@ -20,6 +20,6 @@ services:
     db-migration:
         build:
             context: .
-            target: db-migration
-            dockerfile: Dockerfile
+            target: production
+            dockerfile: db-migration/Dockerfile
         pull_policy: never
