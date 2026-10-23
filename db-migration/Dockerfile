@@ -1,0 +1,74 @@
+FROM node:24-alpine AS node-patched
+
+ENV COREPACK_INTEGRITY_KEYS=0
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+
+RUN apk update && \
+    apk upgrade --available && \
+    addgroup -g 1001 -S nodejs && \
+    adduser -S expense-api-db-migration -u 1001 -G nodejs && \
+    mkdir -p /usr/src/app && \
+    chown -R expense-api-db-migration:nodejs /usr/src/app
+
+FROM node-patched AS base
+
+RUN corepack enable && \
+    corepack prepare pnpm@10.29.2 --activate
+
+WORKDIR /usr/src/app
+
+COPY --chown=expense-api-db-migration:nodejs db-migration/package.json ./
+COPY --chown=expense-api-db-migration:nodejs db-migration/pnpm-lock.yaml ./
+COPY --chown=expense-api-db-migration:nodejs .npmrc ./
+
+FROM base AS installed-packages
+
+RUN pnpm install \
+    --ignore-scripts \
+    --frozen-lockfile
+
+FROM installed-packages AS development
+
+ENV NODE_ENV=development
+
+COPY --chown=expense-api-db-migration:nodejs db-migration/ .
+COPY --chown=expense-api-db-migration:nodejs src/ ./src/
+COPY --chown=expense-api-db-migration:nodejs tsconfig.json ./
+
+USER expense-api-db-migration
+
+ENTRYPOINT ["sh", "-c", "pnpm run db:push"]
+
+FROM installed-packages AS build
+
+ENV NODE_ENV=production
+ENV npm_config_ignore_scripts=true
+
+RUN pnpm prune --production
+
+COPY --chown=expense-api-db-migration:nodejs db-migration/drizzle.config.ts ./
+COPY --chown=expense-api-db-migration:nodejs db-migration/drizzle ./drizzle
+
+FROM node-patched AS production
+
+ENV NODE_ENV=production
+
+RUN rm -rf /usr/local/lib/node_modules \
+    /usr/local/bin/npm \
+    /usr/local/bin/npx \
+    /usr/local/bin/corepack \
+    /usr/local/bin/pnpm \
+    /usr/local/bin/pnpx
+
+WORKDIR /usr/src/app
+
+COPY --from=build --chown=expense-api-db-migration:nodejs /usr/src/app/package.json ./
+COPY --from=build --chown=expense-api-db-migration:nodejs /usr/src/app/node_modules ./node_modules
+COPY --from=build --chown=expense-api-db-migration:nodejs /usr/src/app/drizzle.config.ts ./
+COPY --from=build --chown=expense-api-db-migration:nodejs /usr/src/app/drizzle ./drizzle
+
+USER expense-api-db-migration
+
+# Since docker security scan is catching some vulnerability from pnpm,
+# it's been used drizzle-kit directly from node-modules
+ENTRYPOINT ["./node_modules/.bin/drizzle-kit", "migrate"]

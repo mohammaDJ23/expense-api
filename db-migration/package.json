@@ -1,0 +1,30 @@
+{
+    "name": "expense-api-db-migration",
+    "version": "5.2.8",
+    "description": "This is the db-migration part of the expense app",
+    "author": "Mohammad Nowresideh",
+    "private": true,
+    "license": "UNLICENSED",
+    "packageManager": "pnpm@10.29.2",
+    "engines": {
+        "node": "24"
+    },
+    "scripts": {
+        "name:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-name.sh",
+        "build:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-build.sh",
+        "push:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-push.sh",
+        "tag:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-tag.sh",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate",
+        "db:push": "drizzle-kit push --force"
+    },
+    "dependencies": {
+        "@humanwhocodes/env": "^4.0.1",
+        "drizzle-kit": "^0.31.10",
+        "pg": "^8.18.0",
+        "drizzle-orm": "^0.45.2"
+    },
+    "devDependencies": {
+        "@types/pg": "^8.20.0"
+    }
+}
