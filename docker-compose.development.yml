@@ -56,10 +56,32 @@ services:
                 condition: service_healthy
             debezium-init:
                 condition: service_completed_successfully
+            db-migration:
+                condition: service_completed_successfully
             elasticsearch:
                 condition: service_healthy
         restart: unless-stopped
         pull_policy: never
+
+    db-migration:
+        build:
+            context: .
+            target: development
+            dockerfile: db-migration/Dockerfile
+        restart: no
+        depends_on:
+            postgres:
+                condition: service_healthy
+        environment:
+            - DATABASE_HOST=postgres
+            - DATABASE_PORT=5432
+            - DATABASE_NAME=expense_api_dev
+            - DATABASE_USER=expense_api
+            - DATABASE_PASSWORD_FILE=/run/secrets/database_password
+        secrets:
+            - database_password
+        networks:
+            - app-network
 
     postgres:
         image: postgres:16

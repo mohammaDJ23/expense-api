@@ -39,43 +39,9 @@ USER expense-api
 
 EXPOSE 4000 9229
 
-ENTRYPOINT ["sh", "-c", "pnpm run db:push && pnpm run start:debug"]
+ENTRYPOINT ["sh", "-c", "pnpm run start:debug"]
 
-FROM installed-packages AS db-migration-build
-
-ENV NODE_ENV=production
-ENV npm_config_ignore_scripts=true
-
-RUN pnpm prune --production
-
-COPY --chown=expense-api:nodejs drizzle.config.ts ./
-COPY --chown=expense-api:nodejs drizzle ./drizzle
-
-FROM node-patched AS db-migration
-
-ENV NODE_ENV=production
-
-RUN rm -rf /usr/local/lib/node_modules \
-    /usr/local/bin/npm \
-    /usr/local/bin/npx \
-    /usr/local/bin/corepack \
-    /usr/local/bin/pnpm \
-    /usr/local/bin/pnpx
-
-WORKDIR /usr/src/app
-
-COPY --from=db-migration-build --chown=expense-api:nodejs /usr/src/app/package.json ./
-COPY --from=db-migration-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
-COPY --from=db-migration-build --chown=expense-api:nodejs /usr/src/app/drizzle.config.ts ./
-COPY --from=db-migration-build --chown=expense-api:nodejs /usr/src/app/drizzle ./drizzle
-
-USER expense-api
-
-# Since docker security scan is catching some vulnerability from pnpm,
-# it's been used drizzle-kit directly from node-modules
-ENTRYPOINT ["./node_modules/.bin/drizzle-kit", "migrate"]
-
-FROM installed-packages AS production-build
+FROM installed-packages AS build
 
 ENV NODE_ENV=production
 ENV npm_config_ignore_scripts=true
@@ -100,9 +66,9 @@ RUN apk add --no-cache curl && \
 
 WORKDIR /usr/src/app
 
-COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/package.json ./
-COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
-COPY --from=production-build --chown=expense-api:nodejs /usr/src/app/dist ./dist
+COPY --from=build --chown=expense-api:nodejs /usr/src/app/package.json ./
+COPY --from=build --chown=expense-api:nodejs /usr/src/app/node_modules ./node_modules
+COPY --from=build --chown=expense-api:nodejs /usr/src/app/dist ./dist
 
 RUN chmod -R 555 /usr/src/app
 
