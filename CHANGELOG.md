@@ -1,3 +1,29 @@
+## [5.3.0](https://github.com/mohammaDJ23/expense-api/compare/v5.2.8...v5.3.0) (2026-10-23)
+
+### ✨ Features
+
+- 941449 add the db-migration project ([467c512](https://github.com/mohammaDJ23/expense-api/commit/467c512cc636b5a073755d408ef276d2a3426340))
+
+### 🐛 Bug Fixes
+
+- 941449 exclude db-migration ([a9b5b4d](https://github.com/mohammaDJ23/expense-api/commit/a9b5b4d95387233170fa25becab4e92e6ce6ede8))
+
+### 🔧 Continuous Integration
+
+- 941449 update the db-migration command paths ([dec4893](https://github.com/mohammaDJ23/expense-api/commit/dec489340e02196979d6fdc44213e06a028899c8))
+
+### 🔧 Chores
+
+- 941449 add esbuild to override ([233e727](https://github.com/mohammaDJ23/expense-api/commit/233e727ace6037ac418f0f6036b1ce2ff9070e26))
+- 941449 add esbuild to override ([3e6a157](https://github.com/mohammaDJ23/expense-api/commit/3e6a157c2241895fbbfbb3f00f6e9495ab18571d))
+- 941449 add the configs related to the db-migration ([ee7228c](https://github.com/mohammaDJ23/expense-api/commit/ee7228cf776e3a5d5e158dd0ae2cbb64bb20e265))
+- 941449 add the env files ([319533b](https://github.com/mohammaDJ23/expense-api/commit/319533bffcbf21c7aa28110936d2ae7293b4286e))
+- 941449 add the type ([87c9b69](https://github.com/mohammaDJ23/expense-api/commit/87c9b693a34bae5c9e5de3ec3b4d47ce060c0e46))
+- 941449 include the ci installation of db-migration ([4d9f392](https://github.com/mohammaDJ23/expense-api/commit/4d9f392a14a4f22e46d06f2d74e7df4c16975f90))
+- 941449 split the drizzle files ([5f76765](https://github.com/mohammaDJ23/expense-api/commit/5f76765a20525c32279c624007d7d20b799fbd5a))
+- 941449 update zod ([8c66979](https://github.com/mohammaDJ23/expense-api/commit/8c66979d5c21b71f89291a8c4c378c417561a98d))
+- 941449 use path and url based on environemnt ([6db21d6](https://github.com/mohammaDJ23/expense-api/commit/6db21d65eaf8acb90054eaab031cd52825e9bea4))
+
 ## [5.2.8](https://github.com/mohammaDJ23/expense-api/compare/v5.2.7...v5.2.8) (2026-10-23)
 
 ### 🔧 Chores
