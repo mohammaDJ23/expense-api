@@ -14,13 +14,19 @@ function readSecret(filePath: string): string {
     }
 }
 
+const isDev = env.require('NODE_ENV') === 'development';
+
+const schemaRoot = resolve(__dirname, isDev ? '../src' : './src');
+
 export default defineConfig({
     dialect: 'postgresql',
-    schema: resolve(__dirname, './src/**/infrastructure/schemas/*.schema.ts'),
-    out: resolve(__dirname, './drizzle'),
-    dbCredentials: {
-        url: `postgresql://${env.require('DATABASE_USER')}:${encodeURIComponent(readSecret(env.require('DATABASE_PASSWORD_FILE')))}@${env.require('DATABASE_HOST')}:${parseInt(env.require('DATABASE_PORT'), 10)}/${env.require('DATABASE_NAME')}`,
-    },
+    schema: resolve(schemaRoot, '**/infrastructure/schemas/**/*.schema.ts'),
+    out: './drizzle',
+    dbCredentials: isDev
+        ? {}
+        : {
+              url: `postgresql://${env.require('DATABASE_USER')}:${encodeURIComponent(readSecret(env.require('DATABASE_PASSWORD_FILE')))}@${env.require('DATABASE_HOST')}:${parseInt(env.require('DATABASE_PORT'), 10)}/${env.require('DATABASE_NAME')}`,
+          },
     verbose: true,
     strict: true,
 });
