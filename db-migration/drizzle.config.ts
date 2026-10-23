@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 import { Env } from '@humanwhocodes/env';
-import { defineConfig } from 'drizzle-kit';
+import { defineConfig, type Config } from 'drizzle-kit';
 
 const env = new Env();
 
@@ -21,4 +21,4 @@ export default defineConfig({
     },
     verbose: true,
     strict: true,
-});
+} as Config);
