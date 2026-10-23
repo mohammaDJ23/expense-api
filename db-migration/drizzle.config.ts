@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { resolve } from 'path';
 
 import { Env } from '@humanwhocodes/env';
 import { defineConfig } from 'drizzle-kit';
@@ -14,19 +13,12 @@ function readSecret(filePath: string): string {
     }
 }
 
-const isProd = env.require('NODE_ENV') === 'production';
-
-const schemaRoot = resolve(__dirname, isProd ? './src' : '../src');
-
 export default defineConfig({
     dialect: 'postgresql',
-    schema: resolve(schemaRoot, '**/infrastructure/schemas/**/*.schema.ts'),
-    out: './drizzle',
-    dbCredentials: isProd
-        ? {
-              url: `postgresql://${env.require('DATABASE_USER')}:${encodeURIComponent(readSecret(env.require('DATABASE_PASSWORD_FILE')))}@${env.require('DATABASE_HOST')}:${parseInt(env.require('DATABASE_PORT'), 10)}/${env.require('DATABASE_NAME')}`,
-          }
-        : {},
+    schema: './src/**/infrastructure/schemas/**/*.schema.ts',
+    dbCredentials: {
+        url: `postgresql://${env.require('DATABASE_USER')}:${encodeURIComponent(readSecret(env.require('DATABASE_PASSWORD_FILE')))}@${env.require('DATABASE_HOST')}:${parseInt(env.require('DATABASE_PORT'), 10)}/${env.require('DATABASE_NAME')}`,
+    },
     verbose: true,
     strict: true,
 });

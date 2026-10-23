@@ -14,9 +14,9 @@
         "build:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-build.sh",
         "push:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-push.sh",
         "tag:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-tag.sh",
-        "db:generate": "drizzle-kit generate",
-        "db:migrate": "drizzle-kit migrate",
-        "db:push": "drizzle-kit push --force"
+        "db:generate": "drizzle-kit generate --config=drizzle.config.local.ts",
+        "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
+        "db:push": "drizzle-kit push --force --config=drizzle.config.ts"
     },
     "dependencies": {
         "@humanwhocodes/env": "^4.0.1",
