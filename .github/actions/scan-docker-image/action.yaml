@@ -45,3 +45,4 @@ runs:
               args: |
                   --severity-threshold=high
                   --exclude=/usr/local/lib/node_modules/npm
+                  --all-projects
