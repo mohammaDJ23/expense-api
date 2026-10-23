@@ -65,7 +65,7 @@
         "start:prod": "node dist/main",
         "semantic-release": "semantic-release",
         "prepare:release": "prettier --write CHANGELOG.md package.json",
-        "install:ci": "pnpm install --ignore-scripts --frozen-lockfile",
+        "install:ci": "pnpm install --ignore-scripts --frozen-lockfile && pnpm --dir db-migration install:ci",
         "name:app:docker:image": "bash ./scripts/app/docker-image-name.sh",
         "push:app:docker:image": "bash ./scripts/app/docker-image-push.sh",
         "tag:app:docker:image": "bash ./scripts/app/docker-image-tag.sh",
