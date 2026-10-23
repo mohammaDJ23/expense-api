@@ -37,6 +37,7 @@ runs:
               only-vex-affected: true
 
         - name: Snyk container scan
+          shell: bash
           env:
               SNYK_TOKEN: ${{ inputs.snyk_token }}
               IMAGE_NAME: ${{ inputs.image_name }}
