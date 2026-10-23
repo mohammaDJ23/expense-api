@@ -10,6 +10,7 @@
         "node": "24"
     },
     "scripts": {
+        "install:ci": "pnpm install --ignore-scripts --frozen-lockfile",
         "name:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-name.sh",
         "build:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-build.sh",
         "push:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-push.sh",
