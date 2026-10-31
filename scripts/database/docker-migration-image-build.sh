@@ -4,4 +4,8 @@ set -euo pipefail
 
 source ./scripts/docker/docker-image-build.sh
 
-build_docker_image --tag "${IMAGE}" --target production ./Dockerfile.db.migration
+build_docker_image \
+    --tag "${IMAGE}" \
+    --file ./Dockerfile.db.migration \
+    --target production \
+    .
