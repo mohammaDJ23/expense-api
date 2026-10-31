@@ -1,3 +1,13 @@
+## [5.3.1](https://github.com/mohammaDJ23/expense-api/compare/v5.3.0...v5.3.1) (2026-10-31)
+
+### 🔧 Chores
+
+- 427683 separete the db-migration package ([31d4eda](https://github.com/mohammaDJ23/expense-api/commit/31d4edafd5d5934e520a62b18ae30fc0e1e9b8c3))
+- 427683 update the package ([b6b9729](https://github.com/mohammaDJ23/expense-api/commit/b6b9729c22a850973758a30e67d3e461e3e74665))
+- 427683 update the package ([03651c2](https://github.com/mohammaDJ23/expense-api/commit/03651c24b37e3e702ff82773d62f09a9b6f425fc))
+- 427683 update the package ([6378b18](https://github.com/mohammaDJ23/expense-api/commit/6378b185c1fd924383a7339cba8b55fe214f0f03))
+- 427683 use SendMailOptions ([a7d6e7f](https://github.com/mohammaDJ23/expense-api/commit/a7d6e7f66a6ba9303c4fb1c00743a55f63f00358))
+
 ## [5.3.0](https://github.com/mohammaDJ23/expense-api/compare/v5.2.8...v5.3.0) (2026-10-23)
 
 ### ✨ Features
