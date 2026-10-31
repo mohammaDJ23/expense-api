@@ -1,3 +1,10 @@
+## [5.3.2](https://github.com/mohammaDJ23/expense-api/compare/v5.3.1...v5.3.2) (2026-10-31)
+
+### 🔧 Chores
+
+- 427683 add pnpm-workspace.yaml ([cb58877](https://github.com/mohammaDJ23/expense-api/commit/cb588774b9e231a418b4946d668e1fbaab5c3a58))
+- 427683 add pnpm-workspace.yaml ([ff863e7](https://github.com/mohammaDJ23/expense-api/commit/ff863e7455d8ad059471d9314b8a389235a09191))
+
 ## [5.3.1](https://github.com/mohammaDJ23/expense-api/compare/v5.3.0...v5.3.1) (2026-10-31)
 
 ### 🔧 Chores
