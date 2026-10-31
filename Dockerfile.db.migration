@@ -18,9 +18,9 @@ RUN corepack enable && \
 WORKDIR /usr/src/app
 
 COPY --chown=expense-api-db-migration:nodejs packages/db-migration/package.json ./
-COPY --chown=expense-api-db-migration:nodejs pnpm-lock.yaml ./
-COPY --chown=expense-api-db-migration:nodejs pnpm-workspace.yaml ./
-COPY --chown=expense-api-db-migration:nodejs .npmrc ./
+COPY --chown=expense-api-db-migration:nodejs packages/db-migration/pnpm-lock.yaml ./
+COPY --chown=expense-api-db-migration:nodejs packages/db-migration/pnpm-workspace.yaml ./
+COPY --chown=expense-api-db-migration:nodejs packages/db-migration/.npmrc ./
 
 FROM base AS installed-packages
 
