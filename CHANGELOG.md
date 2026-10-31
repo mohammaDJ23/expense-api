@@ -1,3 +1,9 @@
+## [5.3.3](https://github.com/mohammaDJ23/expense-api/compare/v5.3.2...v5.3.3) (2026-10-31)
+
+### 🔧 Chores
+
+- 427683 move overrides to workspace file ([3bab1f4](https://github.com/mohammaDJ23/expense-api/commit/3bab1f49bd8aa0c9fdd953ce8d95c45a082a91e7))
+
 ## [5.3.2](https://github.com/mohammaDJ23/expense-api/compare/v5.3.1...v5.3.2) (2026-10-31)
 
 ### 🔧 Chores
