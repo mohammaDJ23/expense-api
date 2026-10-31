@@ -17,8 +17,8 @@ RUN corepack enable && \
 
 WORKDIR /usr/src/app
 
-COPY --chown=expense-api-db-migration:nodejs db-migration/package.json ./
-COPY --chown=expense-api-db-migration:nodejs db-migration/pnpm-lock.yaml ./
+COPY --chown=expense-api-db-migration:nodejs packages/db-migration/package.json ./
+COPY --chown=expense-api-db-migration:nodejs pnpm-lock.yaml ./
 COPY --chown=expense-api-db-migration:nodejs .npmrc ./
 
 FROM base AS installed-packages
@@ -31,7 +31,7 @@ FROM installed-packages AS development
 
 ENV NODE_ENV=development
 
-COPY --chown=expense-api-db-migration:nodejs db-migration/ .
+COPY --chown=expense-api-db-migration:nodejs packages/db-migration/ .
 COPY --chown=expense-api-db-migration:nodejs src/ ./src/
 COPY --chown=expense-api-db-migration:nodejs tsconfig.json ./
 
@@ -46,8 +46,8 @@ ENV npm_config_ignore_scripts=true
 
 RUN pnpm prune --production
 
-COPY --chown=expense-api-db-migration:nodejs db-migration/drizzle.config.ts ./
-COPY --chown=expense-api-db-migration:nodejs db-migration/drizzle ./drizzle
+COPY --chown=expense-api-db-migration:nodejs packages/db-migration/drizzle.config.ts ./
+COPY --chown=expense-api-db-migration:nodejs packages/db-migration/drizzle ./drizzle
 
 FROM node-patched AS production
 

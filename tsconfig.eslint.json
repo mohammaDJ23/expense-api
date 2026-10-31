@@ -1,5 +1,8 @@
 {
     "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": "./"
+    },
     "include": ["eslint.config.mjs", "**/*.js", "**/*.ts"],
     "exclude": ["node_modules", "dist", "coverage"]
 }

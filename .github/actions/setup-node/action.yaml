@@ -16,9 +16,7 @@ runs:
           with:
               node-version: '24'
               cache: 'pnpm'
-              cache-dependency-path: |
-                  pnpm-lock.yaml
-                  db-migration/pnpm-lock.yaml
+              cache-dependency-path: pnpm-lock.yaml
 
         - name: Install dependencies
           shell: bash
