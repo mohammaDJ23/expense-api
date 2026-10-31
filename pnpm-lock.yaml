@@ -220,9 +220,6 @@ importers:
             '@types/node':
                 specifier: ^22.10.7
                 version: 22.20.1
-            '@types/nodemailer':
-                specifier: ^8.0.0
-                version: 8.0.1
             '@types/passport-google-oauth20':
                 specifier: ^2.0.17
                 version: 2.0.17
@@ -3580,12 +3577,6 @@ packages:
         resolution:
             {
                 integrity: sha512-OScDchr2fwuUmWdf4kZ9h7PcJiYDVInhJizG/biAq3cAvqwYktuy/TYGGdZNMtNTFUP7rnb0NU4TUdm82kt4Rg==,
-            }
-
-    '@types/nodemailer@8.0.1':
-        resolution:
-            {
-                integrity: sha512-PxpaInm8V1JQDd4j0ds5HfvWQk8JupS1C0Picb96QJsrrRDjBH+DlK7L4ZdNSqNULhiZRQHc40nLVShaGxXAMw==,
             }
 
     '@types/normalize-package-data@2.4.4':
@@ -14860,10 +14851,6 @@ snapshots:
     '@types/node@25.9.5':
         dependencies:
             undici-types: 7.24.6
-
-    '@types/nodemailer@8.0.1':
-        dependencies:
-            '@types/node': 22.20.1
 
     '@types/normalize-package-data@2.4.4': {}
 
