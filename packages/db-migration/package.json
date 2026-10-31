@@ -9,17 +9,7 @@
     "engines": {
         "node": "24"
     },
-    "pnpm": {
-        "overrides": {
-            "esbuild": ">=0.28.1"
-        }
-    },
     "scripts": {
-        "install:ci": "pnpm install --ignore-scripts --frozen-lockfile",
-        "name:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-name.sh",
-        "build:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-build.sh",
-        "push:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-push.sh",
-        "tag:migration:database:docker:image": "bash ./scripts/database/docker-migration-image-tag.sh",
         "db:generate": "drizzle-kit generate --config=drizzle.config.local.ts",
         "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
         "db:push": "drizzle-kit push --force --config=drizzle.config.ts"

@@ -67,7 +67,7 @@ services:
         build:
             context: .
             target: development
-            dockerfile: db-migration/Dockerfile
+            dockerfile: Dockerfile.db.migration
         restart: no
         depends_on:
             postgres:

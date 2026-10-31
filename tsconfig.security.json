@@ -19,8 +19,8 @@
         "noEmit": true,
         "declaration": false,
         "sourceMap": false,
-        "outDir": null
+        "outDir": null,
+        "rootDir": "./"
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "dist", "db-migration"]
+    "exclude": ["node_modules", "dist"]
 }
