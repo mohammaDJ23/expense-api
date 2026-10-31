@@ -19,6 +19,7 @@ WORKDIR /usr/src/app
 
 COPY --chown=expense-api:nodejs package.json ./
 COPY --chown=expense-api:nodejs pnpm-lock.yaml ./
+COPY --chown=expense-api:nodejs pnpm-workspace.yaml ./
 COPY --chown=expense-api:nodejs .npmrc ./
 
 FROM base AS installed-packages
