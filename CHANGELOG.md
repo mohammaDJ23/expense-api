@@ -1,3 +1,9 @@
+## [5.3.4](https://github.com/mohammaDJ23/expense-api/compare/v5.3.3...v5.3.4) (2026-10-31)
+
+### 🔧 Chores
+
+- 427683 considor totaly different roots ([ffc3eb5](https://github.com/mohammaDJ23/expense-api/commit/ffc3eb5596179f21582a3067f4bee30a8d99464c))
+
 ## [5.3.3](https://github.com/mohammaDJ23/expense-api/compare/v5.3.2...v5.3.3) (2026-10-31)
 
 ### 🔧 Chores
