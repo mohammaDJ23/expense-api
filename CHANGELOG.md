@@ -1,3 +1,9 @@
+## [5.3.5](https://github.com/mohammaDJ23/expense-api/compare/v5.3.4...v5.3.5) (2026-10-31)
+
+### 🔧 Chores
+
+- 427683 consider --file ([3865a5d](https://github.com/mohammaDJ23/expense-api/commit/3865a5d0021cc178e0a811e551dd4554bebb2c3c))
+
 ## [5.3.4](https://github.com/mohammaDJ23/expense-api/compare/v5.3.3...v5.3.4) (2026-10-31)
 
 ### 🔧 Chores
