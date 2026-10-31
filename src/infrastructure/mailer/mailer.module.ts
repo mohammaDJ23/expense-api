@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MailerModule as BaseMailerModule } from '@nestjs-modules/mailer';
+// eslint-disable-next-line sonarjs/no-internal-api-use
+import { SendMailOptions } from 'node_modules/nodemailer/dist/cjs/mailer';
 
 import { readSecret } from '@/core/utils/readSecret.util';
 
@@ -33,7 +35,7 @@ import { readSecret } from '@/core/utils/readSecret.util';
                     },
                     defaults: {
                         from: configService.getOrThrow('MAIL_FROM'),
-                    },
+                    } as SendMailOptions,
                 };
             },
         }),
