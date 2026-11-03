@@ -4,7 +4,6 @@ import { fileURLToPath } from 'node:url';
 import eslint from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import importPlugin from 'eslint-plugin-import-x';
-import jestPlugin from 'eslint-plugin-jest';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import securityPlugin from 'eslint-plugin-security';
 import sonarjs from 'eslint-plugin-sonarjs';
