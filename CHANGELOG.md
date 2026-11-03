@@ -1,3 +1,12 @@
+## [5.3.6](https://github.com/mohammaDJ23/expense-api/compare/v5.3.5...v5.3.6) (2026-11-03)
+
+### 🔧 Chores
+
+- 461230 remove .swcrc file ([7f71de2](https://github.com/mohammaDJ23/expense-api/commit/7f71de2b9bd7009c4b60723cac5ad7fba8bcbb5d))
+- 461230 remove the packages ([3ec3405](https://github.com/mohammaDJ23/expense-api/commit/3ec34050629039b5a21e3a0cc545072f9311a11c))
+- 461230 remove unused import ([000b19f](https://github.com/mohammaDJ23/expense-api/commit/000b19f134f119ad8979089848d866187cee2ec4))
+- 461230 remove unused packages ([56ffa82](https://github.com/mohammaDJ23/expense-api/commit/56ffa827f23f854204d310451ac9da714e8a2bad))
+
 ## [5.3.5](https://github.com/mohammaDJ23/expense-api/compare/v5.3.4...v5.3.5) (2026-10-31)
 
 ### 🔧 Chores
