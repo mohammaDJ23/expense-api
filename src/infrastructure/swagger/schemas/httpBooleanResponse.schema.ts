@@ -13,6 +13,7 @@ export function httpBooleanResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         type: 'boolean',
