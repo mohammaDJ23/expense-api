@@ -1,3 +1,10 @@
+## [5.3.7](https://github.com/mohammaDJ23/expense-api/compare/v5.3.6...v5.3.7) (2026-11-07)
+
+### 🔧 Chores
+
+- 095843 add require property ([4af9ba1](https://github.com/mohammaDJ23/expense-api/commit/4af9ba18f09ca040174a276bd8f139bb577ad95b))
+- 095843 update open package ([83dd4f2](https://github.com/mohammaDJ23/expense-api/commit/83dd4f2c7723278c1368c1552bc1d634a7274f02))
+
 ## [5.3.6](https://github.com/mohammaDJ23/expense-api/compare/v5.3.5...v5.3.6) (2026-11-03)
 
 ### 🔧 Chores
