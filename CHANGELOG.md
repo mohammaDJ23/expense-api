@@ -1,3 +1,13 @@
+## [5.3.8](https://github.com/mohammaDJ23/expense-api/compare/v5.3.7...v5.3.8) (2026-11-07)
+
+### 🔧 Chores
+
+- 095843 add an step to download the swagger apis ([dae8f72](https://github.com/mohammaDJ23/expense-api/commit/dae8f721f2ddf9d5419af3a9a1a09f2e182f8c77))
+- 095843 add the required property ([cff749d](https://github.com/mohammaDJ23/expense-api/commit/cff749dcf625cd4433d01d8865bfd8c2e7ed911e))
+- 095843 apply format ([3e89896](https://github.com/mohammaDJ23/expense-api/commit/3e898963cefa9c1187f4f404060326637670c58e))
+- 095843 pass port and output destination to the script ([8ecb62d](https://github.com/mohammaDJ23/expense-api/commit/8ecb62daa4034597b62290c549b056721bfb1a14))
+- 095843 update the path of json ([3471b80](https://github.com/mohammaDJ23/expense-api/commit/3471b803040bbbd85a5b800ec69dc2309af04a94))
+
 ## [5.3.7](https://github.com/mohammaDJ23/expense-api/compare/v5.3.6...v5.3.7) (2026-11-07)
 
 ### 🔧 Chores
