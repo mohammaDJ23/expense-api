@@ -14,6 +14,7 @@ export function httpBillsTotalAmountResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         $ref: getSchemaPath(FindBillsTotalAmountResponseDto),

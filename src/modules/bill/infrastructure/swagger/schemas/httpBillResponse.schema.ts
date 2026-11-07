@@ -14,6 +14,7 @@ export function httpBillResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         $ref: getSchemaPath(BillResponseDto),
