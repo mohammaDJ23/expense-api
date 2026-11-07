@@ -14,7 +14,7 @@ curl \
     --retry 10 \
     --retry-connrefused \
     --retry-delay 3 \
-    "http://127.0.0.1:${PORT}/swagger-json" \
+    "http://127.0.0.1:${PORT}/swagger/json" \
     --output "$OUTPUT_FILE"
 
 jq -e '
