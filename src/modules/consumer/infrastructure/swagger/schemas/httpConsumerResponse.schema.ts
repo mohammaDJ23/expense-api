@@ -14,6 +14,7 @@ export function httpConsumerResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         $ref: getSchemaPath(ConsumerResponseDto),

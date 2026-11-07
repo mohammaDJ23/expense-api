@@ -18,6 +18,7 @@ export function httpSearchResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         allOf: [
@@ -26,6 +27,7 @@ export function httpSearchResponseSwaggerSchema(): SchemaObject {
                             },
                             {
                                 type: 'object',
+                                required: ['bills', 'receivers', 'locations', 'consumers'],
                                 properties: {
                                     bills: {
                                         type: 'array',

@@ -14,6 +14,7 @@ export function httpMostUsedConsumersResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         type: 'array',

@@ -14,6 +14,7 @@ export function httpMostUsedLocationsResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         type: 'array',

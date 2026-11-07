@@ -14,6 +14,7 @@ export function httpLocationsResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         type: 'array',

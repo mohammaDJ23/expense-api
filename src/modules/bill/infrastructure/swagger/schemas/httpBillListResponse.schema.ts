@@ -15,6 +15,7 @@ export function httpBillListResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         allOf: [
@@ -23,6 +24,7 @@ export function httpBillListResponseSwaggerSchema(): SchemaObject {
                             },
                             {
                                 type: 'object',
+                                required: ['items'],
                                 properties: {
                                     items: {
                                         type: 'array',

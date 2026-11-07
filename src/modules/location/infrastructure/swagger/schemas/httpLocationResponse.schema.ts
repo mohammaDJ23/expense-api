@@ -14,6 +14,7 @@ export function httpLocationResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         $ref: getSchemaPath(LocationResponseDto),

@@ -14,6 +14,7 @@ export function httpUserResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         $ref: getSchemaPath(UserResponseDto),

@@ -14,6 +14,7 @@ export function httpBillsPeriodResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         $ref: getSchemaPath(FindBillsPeriodResponseDto),
