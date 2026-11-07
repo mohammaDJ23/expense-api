@@ -14,6 +14,7 @@ export function httpTotalResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         $ref: getSchemaPath(TotalResponseDto),

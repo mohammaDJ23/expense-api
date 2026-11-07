@@ -14,6 +14,7 @@ export function httpIdResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         $ref: getSchemaPath(IdResponseDto),

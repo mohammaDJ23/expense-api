@@ -14,6 +14,7 @@ export function httpExceptionResponseSwaggerSchema(): SchemaObject {
             },
             {
                 type: 'object',
+                required: ['data'],
                 properties: {
                     data: {
                         $ref: getSchemaPath(ExceptionDto),
