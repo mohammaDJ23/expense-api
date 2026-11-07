@@ -110,8 +110,8 @@ jobs:
             - name: Download OpenAPI specification
               run: pnpm run download:swagger:apis
               env:
-                PORT: 3000
-                OUTPUT_FILE: artifacts/backend-apis.json
+                  PORT: 3000
+                  OUTPUT_FILE: artifacts/backend-apis.json
 
             - name: Upload OpenAPI specification
               uses: actions/upload-artifact@v4
