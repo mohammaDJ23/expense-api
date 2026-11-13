@@ -1,3 +1,10 @@
+## [5.3.10](https://github.com/mohammaDJ23/expense-api/compare/v5.3.9...v5.3.10) (2026-11-13)
+
+### 🔧 Chores
+
+- 019211 update the process of google callback to redirect to the main path ([c778f5e](https://github.com/mohammaDJ23/expense-api/commit/c778f5e01b2786983d9faa12d56cc6db445f97bb))
+- 019211 use CLIENT_URL ([36f03e9](https://github.com/mohammaDJ23/expense-api/commit/36f03e938ebfc08275e3350c13a21709168f4c33))
+
 ## [5.3.9](https://github.com/mohammaDJ23/expense-api/compare/v5.3.8...v5.3.9) (2026-11-13)
 
 ### 🔧 Chores
