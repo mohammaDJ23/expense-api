@@ -1,3 +1,10 @@
+## [5.3.9](https://github.com/mohammaDJ23/expense-api/compare/v5.3.8...v5.3.9) (2026-11-13)
+
+### 🔧 Chores
+
+- 019211 enable cors ([ebc9ada](https://github.com/mohammaDJ23/expense-api/commit/ebc9ada25da49f456ca716d82511db8aff45f302))
+- 019211 update some packages ([dbe600f](https://github.com/mohammaDJ23/expense-api/commit/dbe600f8c07120097e97bbad99cf05507668d3f1))
+
 ## [5.3.8](https://github.com/mohammaDJ23/expense-api/compare/v5.3.7...v5.3.8) (2026-11-07)
 
 ### 🔧 Chores
