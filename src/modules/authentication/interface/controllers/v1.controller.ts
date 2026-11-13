@@ -5,6 +5,7 @@ import {
     ApiCreatedResponse,
     ApiExtraModels,
     ApiForbiddenResponse,
+    ApiFoundResponse,
     ApiInternalServerErrorResponse,
     ApiNotFoundResponse,
     ApiOkResponse,
@@ -197,14 +198,14 @@ export class AuthenticationController {
     @Get('google/callback')
     @Throttle({ default: { limit: 3, ttl: 60000 } })
     @UseGuards(GoogleAuthGuard)
-    @HttpResponse(SUCCESS_LOCAL_LOGIN_MESSAGE, HttpStatus.OK)
+    @HttpResponse(SUCCESS_LOCAL_LOGIN_MESSAGE, HttpStatus.FOUND)
     @ApiOperation({
         summary: 'Google callback',
         description: 'This is the callback of google login',
         operationId: 'googleLogin',
     })
     @ApiExtraModels(HttpResponseDto, ExceptionDto)
-    @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
+    @ApiFoundResponse()
     @ApiForbiddenResponse({ content: htmlSwaggerContent() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
@@ -214,7 +215,7 @@ export class AuthenticationController {
     googleLogin(
         @Res({ passthrough: true }) response: Response,
         @OauthCurrentUser() user: IOauthCurrentUser,
-    ): Promise<boolean> {
+    ): Promise<void> {
         return this.authenticationService.oauthLogin(response, user);
     }
 }

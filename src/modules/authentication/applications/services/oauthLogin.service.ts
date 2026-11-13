@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { CommandBus } from '@nestjs/cqrs';
 
 import { AccessTokenService } from '@/core/features/accessToken/accessToken.service';
@@ -16,13 +17,14 @@ interface IInput {
 }
 
 @Injectable()
-export class OauthLoginService implements IService<IInput, boolean> {
+export class OauthLoginService implements IService<IInput, void> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly accessTokenService: AccessTokenService,
+        private readonly configService: ConfigService,
     ) {}
 
-    async execute(input: IInput): Promise<boolean> {
+    async execute(input: IInput): Promise<void> {
         {
             const token = this.accessTokenService.sign({
                 id: input.user.id,
@@ -42,6 +44,9 @@ export class OauthLoginService implements IService<IInput, boolean> {
             );
         }
 
-        return true;
+        input.response.redirect(
+            HttpStatus.FOUND,
+            this.configService.getOrThrow<string>('CLIENT_URL'),
+        );
     }
 }
