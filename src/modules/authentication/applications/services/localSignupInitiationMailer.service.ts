@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { MailerService } from '@nestjs-modules/mailer';
 
 import type { IService } from '@/core/interfaces/service.interface';
@@ -10,7 +11,10 @@ interface IInput {
 
 @Injectable()
 export class LocalSignupInitiationMailerService implements IService<IInput, void> {
-    constructor(private readonly mailerService: MailerService) {}
+    constructor(
+        private readonly mailerService: MailerService,
+        private readonly configService: ConfigService,
+    ) {}
 
     async execute(input: IInput): Promise<void> {
         await this.mailerService.sendMail({
@@ -21,7 +25,7 @@ export class LocalSignupInitiationMailerService implements IService<IInput, void
                     <p>Hello <strong>${input.email}</strong>,</p>
                     <p>Thank you for registering! Please click on this link.</p>
                     <p>
-                        <a href="${process.env.APP_URL}/authentication/signup/initiation?token=${input.token}" style="font-weight: bold; color: #0066cc;">
+                        <a href="${this.configService.getOrThrow<string>('CLIENT_URL')}/authentication/signup?token=${input.token}" style="font-weight: bold; color: #0066cc;">
                             Go to the signup page
                         </a>
                     </p>
