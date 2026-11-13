@@ -9,6 +9,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
+    app.enableCors({ origin: '*' });
+
     app.get(AppInstanceService).set(app);
     app.get(ApiVersioningService).set();
 
