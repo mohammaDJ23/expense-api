@@ -54,7 +54,7 @@ export class AuthenticationService {
         return this.localResetPasswordService.execute(body);
     }
 
-    oauthLogin(response: Response, user: IOauthCurrentUser): Promise<boolean> {
+    oauthLogin(response: Response, user: IOauthCurrentUser): Promise<void> {
         return this.oauthLoginService.execute({ response, user });
     }
 
