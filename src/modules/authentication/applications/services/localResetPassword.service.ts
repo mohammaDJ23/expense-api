@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    InternalServerErrorException,
+    UnprocessableEntityException,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 import { v4 as uuid } from 'uuid';
@@ -70,7 +75,7 @@ export class LocalResetPasswordService implements IService<LocalResetPasswordReq
         );
 
         if (!localAccount) {
-            throw new BadRequestException();
+            throw new UnprocessableEntityException();
         }
 
         const creationTime = getCurrentUTCTimestamp();

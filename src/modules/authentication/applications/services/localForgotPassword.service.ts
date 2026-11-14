@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { v4 as uuid } from 'uuid';
 
@@ -53,7 +53,7 @@ export class LocalForgotPasswordService implements IService<
             );
 
             if (!localAccount) {
-                throw new BadRequestException();
+                throw new UnprocessableEntityException();
             }
         }
 

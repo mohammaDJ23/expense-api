@@ -125,6 +125,7 @@ export class AuthenticationController {
     @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiUnprocessableEntityResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localForgotPassword(@Body() body: LocalForgotPasswordRequestDto): Promise<boolean> {
@@ -143,6 +144,7 @@ export class AuthenticationController {
     @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiUnprocessableEntityResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
     localResetPassword(@Body() body: LocalResetPasswordRequestDto): Promise<boolean> {
