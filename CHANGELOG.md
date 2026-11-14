@@ -1,3 +1,9 @@
+## [5.3.11](https://github.com/mohammaDJ23/expense-api/compare/v5.3.10...v5.3.11) (2026-11-14)
+
+### 🔧 Chores
+
+- 775643 add UnprocessableEntityException when local account does not exists ([e3d027e](https://github.com/mohammaDJ23/expense-api/commit/e3d027ed39c2817cd11ed8afb5f6f854ea84747f))
+
 ## [5.3.10](https://github.com/mohammaDJ23/expense-api/compare/v5.3.9...v5.3.10) (2026-11-13)
 
 ### 🔧 Chores
