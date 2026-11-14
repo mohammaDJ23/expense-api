@@ -2,7 +2,7 @@ import {
     BadRequestException,
     ForbiddenException,
     Injectable,
-    NotFoundException,
+    UnprocessableEntityException,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
@@ -63,7 +63,7 @@ export class LocalLoginService implements IService<IInput, boolean> {
         );
 
         if (!localAccount) {
-            throw new NotFoundException();
+            throw new UnprocessableEntityException();
         }
 
         {

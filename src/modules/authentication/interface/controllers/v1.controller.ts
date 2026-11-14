@@ -13,6 +13,7 @@ import {
     ApiTags,
     ApiTooManyRequestsResponse,
     ApiUnauthorizedResponse,
+    ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 
@@ -101,6 +102,7 @@ export class AuthenticationController {
     @ApiOkResponse({ schema: httpBooleanResponseSwaggerSchema() })
     @ApiInternalServerErrorResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiBadRequestResponse({ schema: httpExceptionResponseSwaggerSchema() })
+    @ApiUnprocessableEntityResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiNotFoundResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiForbiddenResponse({ schema: httpExceptionResponseSwaggerSchema() })
     @ApiTooManyRequestsResponse({ schema: httpExceptionResponseSwaggerSchema() })
