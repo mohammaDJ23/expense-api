@@ -25,7 +25,7 @@ export class LocalAccountInitiationMailerService implements IService<IInput, voi
                     <p>Hello <strong>${input.email}</strong>,</p>
                     <p>For creating a local account click on the below link.</p>
                     <p>
-                        <a href="${this.configService.getOrThrow<string>('CLIENT_URL')}/authentication/local-account-creation?token=${input.token}" style="font-weight: bold; color: #0066cc;">
+                        <a href="${this.configService.getOrThrow<string>('CLIENT_URL')}/authentication/local-account?token=${input.token}" style="font-weight: bold; color: #0066cc;">
                             Go to the local account creation page
                         </a>
                     </p>
