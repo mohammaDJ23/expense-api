@@ -1,3 +1,10 @@
+## [5.3.12](https://github.com/mohammaDJ23/expense-api/compare/v5.3.11...v5.3.12) (2026-11-15)
+
+### 🔧 Chores
+
+- 495470 update the path of local account ([aa7be44](https://github.com/mohammaDJ23/expense-api/commit/aa7be4459219aef7a9d5543286acf994b8b8f268))
+- 495470 use a guard for the sent header ([5482eae](https://github.com/mohammaDJ23/expense-api/commit/5482eae8fc12759c625c325e84b9f268ce1b147f))
+
 ## [5.3.11](https://github.com/mohammaDJ23/expense-api/compare/v5.3.10...v5.3.11) (2026-11-14)
 
 ### 🔧 Chores
