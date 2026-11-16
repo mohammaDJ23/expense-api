@@ -1,3 +1,9 @@
+## [5.3.13](https://github.com/mohammaDJ23/expense-api/compare/v5.3.12...v5.3.13) (2026-11-16)
+
+### 🔧 Chores
+
+- 805540 add the credentials option ([aaea35b](https://github.com/mohammaDJ23/expense-api/commit/aaea35ba59377f6e5a7b73dd1384b4fd5ebc2ef7))
+
 ## [5.3.12](https://github.com/mohammaDJ23/expense-api/compare/v5.3.11...v5.3.12) (2026-11-15)
 
 ### 🔧 Chores
