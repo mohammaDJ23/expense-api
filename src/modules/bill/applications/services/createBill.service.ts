@@ -2,17 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from '@nestjs-cls/transactional';
 
+import { ProjectionService } from '@/core/services/projection.service';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { CreateBillCommand } from '@/modules/bill/applications/commands/createBill/createBill.command';
 import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/createBillsConsumersSynchronization.service';
-import { BillResource } from '@/modules/bill/domain/enums/bill.enum';
-import { BillMessageEvent } from '@/modules/bill/domain/enums/billMessageEvent.enum';
+import { BillCacheInvalidatorService } from '@/modules/bill/infrastructure/cache/billCacheInvalidator.service';
+import { BillElasticsearchIndexerService } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearchIndexer.service';
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
 import { LocationExistenceValidatorService } from '@/modules/location/applications/services/validators/locationExistenceValidator.service';
-import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
-
-import { FindBillByUserIdAndIdOrThrowService } from './findBillByUserIdAndIdOrThrow.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -28,16 +26,30 @@ interface IInput {
 export class CreateBillService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
-        private readonly findBillByUserIdAndIdOrThrowService: FindBillByUserIdAndIdOrThrowService,
         private readonly consumersExistenceValidatorService: ConsumersExistenceValidatorService,
         private readonly locationExistenceValidatorService: LocationExistenceValidatorService,
         private readonly receiverExistenceValidatorService: ReceiverExistenceValidatorService,
         private readonly createBillsConsumerSynchronizationService: CreateBillsConsumersSynchronizationService,
-        private readonly outboxEventPublisherService: OutboxEventPublisherService,
+        private readonly projectionService: ProjectionService,
+        private readonly billElasticsearchIndexerService: BillElasticsearchIndexerService,
+        private readonly billCacheInvalidatorService: BillCacheInvalidatorService,
     ) {}
 
-    @Transactional()
     async execute(input: IInput): Promise<IId> {
+        const createdBill = await this.create(input);
+
+        await this.projectionService.execute([
+            this.billCacheInvalidatorService.execute({ userId: input.userId }),
+            this.billElasticsearchIndexerService.execute(createdBill),
+        ]);
+
+        return {
+            id: createdBill.id,
+        };
+    }
+
+    @Transactional()
+    async create(input: IInput): Promise<ISelectBill> {
         await Promise.all([
             this.receiverExistenceValidatorService.validate({
                 userId: input.userId,
@@ -73,23 +85,6 @@ export class CreateBillService implements IService<IInput, IId> {
             consumerIds: input.body.consumerIds,
         });
 
-        {
-            const bill = await this.findBillByUserIdAndIdOrThrowService.execute({
-                userId: input.userId,
-                billId: createdBill.id,
-            });
-
-            await this.outboxEventPublisherService.publish({
-                aggregateId: bill.id,
-                aggregateType: BillResource.BILL,
-                eventType: BillMessageEvent.CREATED_BILL,
-                payload: bill,
-                createdAt: creationTime,
-            });
-        }
-
-        return {
-            id: createdBill.id,
-        };
+        return createdBill;
     }
 }

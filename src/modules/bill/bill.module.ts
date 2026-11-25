@@ -4,22 +4,15 @@ import { JWTModule } from '@/core/features/jwt/jwt.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryCacheModule } from '@/core/features/queryCache/queryCache.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
+import { ProjectionService } from '@/core/services/projection.service';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { AuthenticationModule } from '@/modules/authentication/authentication.module';
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
 import { DeleteBillHandler } from '@/modules/bill/applications/commands/deleteBill/deleteBill.handler';
 import { UpdateBillHandler } from '@/modules/bill/applications/commands/updateBill/updateBill.handler';
-import { BillCacheInvalidatorProcessor } from '@/modules/bill/applications/messages/billCacheInvalidator.processor';
-import { BillElasticsearchIndexerProcessor } from '@/modules/bill/applications/messages/billElasticsearchIndexer.processor';
-import { CreatedBillCacheInvalidatorHandler } from '@/modules/bill/applications/messages/createdBill/createdBillCacheInvalidator.handler';
-import { CreatedBillElasticsearchIndexerHandler } from '@/modules/bill/applications/messages/createdBill/createdBillElasticsearchIndexer.handler';
-import { DeletedBillCacheInvalidatorHandler } from '@/modules/bill/applications/messages/deletedBill/deletedBillCacheInvalidator.handler';
-import { DeletedBillElasticsearchRemoverHandler } from '@/modules/bill/applications/messages/deletedBill/deletedBillElasticsearchRemover.handler';
 import { DeletedUserBillCacheInvalidatorHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserBillCacheInvalidator.handler';
 import { DeletedUserBillElasticsearchRemoverHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserBillElasticsearchRemover.handler';
-import { UpdatedBillCacheInvalidatorHandler } from '@/modules/bill/applications/messages/updatedBill/updatedBillCacheInvalidator.handler';
-import { UpdatedBillElasticsearchIndexerHandler } from '@/modules/bill/applications/messages/updatedBill/updatedBillElasticsearchIndexer.handler';
 import { BillListCursorPaginationDefinition } from '@/modules/bill/applications/pagination/cursor/billListCursorPagination.definition';
 import { ExistsBillByUserIdAndIdHandler } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.handler';
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
@@ -63,7 +56,10 @@ import { CreateBillsConsumersSynchronizationService } from '@/modules/bill/appli
 import { DeleteBillsConsumersSynchronizationService } from '@/modules/bill/applications/services/synchronizations/deleteBillsConsumersSynchronization.service';
 import { UpdateBillService } from '@/modules/bill/applications/services/updateBill.service';
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
+import { BillCacheInvalidatorService } from '@/modules/bill/infrastructure/cache/billCacheInvalidator.service';
 import { BillElasticsearchIndex } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearch.index';
+import { BillElasticsearchIndexerService } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearchIndexer.service';
+import { BillElasticsearchRemoverService } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearchRemove.service';
 import { DeleteBillsElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/deleteBillsElasticsearch.query';
 import { FindBillListElasticsearchQuery } from '@/modules/bill/infrastructure/elasticsearch/findBillListElasticsearch.query';
 import { BillRepository } from '@/modules/bill/infrastructure/repositories/bill.repository';
@@ -109,9 +105,6 @@ import { UserModule } from '@/modules/user/user.module';
         FindMostUsedConsumersHandler,
         FindBillsPeriodByPurchasedAtHandler,
         FindBillsTimelineByPurchasedAtHandler,
-        CreatedBillElasticsearchIndexerHandler,
-        UpdatedBillElasticsearchIndexerHandler,
-        DeletedBillElasticsearchRemoverHandler,
         DeletedUserBillElasticsearchRemoverHandler,
         CreateBillHandler,
         UpdateBillHandler,
@@ -142,14 +135,13 @@ import { UserModule } from '@/modules/user/user.module';
         BillsExportJob,
         BillsExportMailerService,
         BillSearchSyncService,
-        CreatedBillCacheInvalidatorHandler,
-        DeletedBillCacheInvalidatorHandler,
         DeletedUserBillCacheInvalidatorHandler,
-        UpdatedBillCacheInvalidatorHandler,
-        BillCacheInvalidatorProcessor,
-        BillElasticsearchIndexerProcessor,
         BillListCursorPaginationDefinition,
         FindBillsTotalAmountByUserIdOrThrowHandler,
+        BillCacheInvalidatorService,
+        BillElasticsearchIndexerService,
+        BillElasticsearchRemoverService,
+        ProjectionService,
     ],
     controllers: [BillController],
     exports: [BillSearchService, BillSearchAggregateService, BillSearchSyncService],
