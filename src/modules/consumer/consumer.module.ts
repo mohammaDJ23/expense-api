@@ -4,6 +4,7 @@ import { JWTModule } from '@/core/features/jwt/jwt.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryCacheModule } from '@/core/features/queryCache/queryCache.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
+import { ProjectionService } from '@/core/services/projection.service';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { CreateConsumerHandler } from '@/modules/consumer/applications/commands/createConsumer/createConsumer.handler';
@@ -11,16 +12,8 @@ import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications
 import { DeleteConsumerHandler } from '@/modules/consumer/applications/commands/deleteConsumer/deleteConsumer.handler';
 import { DeleteManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.handler';
 import { UpdateConsumerHandler } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.handler';
-import { ConsumerCacheInvalidatorProcessor } from '@/modules/consumer/applications/messages/consumerCacheInvalidator.processor';
-import { ConsumerElasticsearchIndexerProcessor } from '@/modules/consumer/applications/messages/consumerElasticsearchIIndexer.processor';
-import { CreatedConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/createdConsumer/createdConsumerCacheInvalidator.handler';
-import { CreatedConsumerElasticsearchIndexerHandler } from '@/modules/consumer/applications/messages/createdConsumer/createdConsumerElasticsearchIndexer.handler';
-import { DeletedConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/deletedConsumer/deletedConsumerCacheInvalidator.handler';
-import { DeletedConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/deletedConsumer/deletedConsumerElasticsearchRemover.handler';
 import { DeletedUserConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/deletedUser/deletedUserConsumerCacheInvalidator.handler';
 import { DeletedUserConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/deletedUser/deletedUserConsumerElasticsearchRemover.handler';
-import { UpdatedConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/updatedConsumer/updatedConsumerCacheInvalidator.handler';
-import { UpdatedConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/updatedConsumer/updatedConsumerElasticsearchRemover.handler';
 import { ConsumerListCursorPaginationDefinition } from '@/modules/consumer/applications/pagination/cursor/consumerListCursorPagination.definition';
 import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
 import { ExistsConsumerByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.handler';
@@ -47,7 +40,10 @@ import { ConsumerExistenceValidatorService } from '@/modules/consumer/applicatio
 import { ConsumerNameAvailableValidatorService } from '@/modules/consumer/applications/services/validators/consumerNameAvailableValidator.service';
 import { ConsumersExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumersExistenceValidator.service';
 import { ConsumerUniqueNameValidatorService } from '@/modules/consumer/applications/services/validators/consumerUniqueNameValidator.service';
+import { ConsumerCacheInvalidatorService } from '@/modules/consumer/infrastructure/cache/consumerCacheInvalidator.service';
 import { ConsumerElasticsearchIndex } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearch.index';
+import { ConsumerElasticsearchIndexerService } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearchIndexer.service';
+import { ConsumerElasticsearchRemoverService } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearchRemove.service';
 import { DeleteConsumersElasticsearchQuery } from '@/modules/consumer/infrastructure/elasticsearch/deleteConsumersElasticsearch.query';
 import { FindConsumerListElasticsearchQuery } from '@/modules/consumer/infrastructure/elasticsearch/findConsumerListElasticsearch.query';
 import { BillConsumerRepository } from '@/modules/consumer/infrastructure/repositories/billConsumer.repository';
@@ -88,9 +84,6 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         FindManyBillConsumerTargetsByRefIdsHandler,
         ExistsConsumerByUserIdAndExcludingIdAndNameHandler,
         FindManyBillsConsumersByRefIdHandler,
-        CreatedConsumerElasticsearchIndexerHandler,
-        UpdatedConsumerElasticsearchRemoverHandler,
-        DeletedConsumerElasticsearchRemoverHandler,
         DeletedUserConsumerElasticsearchRemoverHandler,
         ConsumerRepository,
         BillConsumerRepository,
@@ -105,14 +98,13 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ConsumerUniqueNameValidatorService,
         ConsumerNameAvailableValidatorService,
         ConsumerSearchSyncService,
-        ConsumerElasticsearchIndexerProcessor,
-        CreatedConsumerCacheInvalidatorHandler,
-        DeletedConsumerCacheInvalidatorHandler,
         DeletedUserConsumerCacheInvalidatorHandler,
-        UpdatedConsumerCacheInvalidatorHandler,
-        ConsumerCacheInvalidatorProcessor,
         ConsumerListCursorPaginationDefinition,
         ConsumerSearchQueryService,
+        ConsumerCacheInvalidatorService,
+        ConsumerElasticsearchIndexerService,
+        ConsumerElasticsearchRemoverService,
+        ProjectionService,
     ],
     exports: [
         ConsumerSearchService,

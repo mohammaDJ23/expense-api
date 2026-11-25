@@ -1,5 +1,6 @@
 import { MessageHandler } from '@/core/features/message/messageHandler.decorator';
-import { ConsumerCacheInvalidatorProcessor } from '@/modules/consumer/applications/messages/consumerCacheInvalidator.processor';
+import { concurrency } from '@/core/utils/concurrency.util';
+import { ConsumerCacheInvalidatorService } from '@/modules/consumer/infrastructure/cache/consumerCacheInvalidator.service';
 import { UserMessageEvent } from '@/modules/user/domain/enums/userMessageEvent.enum';
 
 import type { IMessageBatch } from '@/core/features/message/messageBatch.type';
@@ -9,12 +10,16 @@ import type { ISelectUser } from '@/modules/user/infrastructure/schemas/user.sch
 @MessageHandler(UserMessageEvent.DELETED_USER)
 export class DeletedUserConsumerCacheInvalidatorHandler implements IMessageHandler<ISelectUser> {
     constructor(
-        private readonly consumerCacheInvalidatorProcessor: ConsumerCacheInvalidatorProcessor,
+        private readonly consumerCacheInvalidatorService: ConsumerCacheInvalidatorService,
     ) {}
 
     async execute(batch: IMessageBatch<ISelectUser>[]): Promise<void> {
-        await this.consumerCacheInvalidatorProcessor.process({
-            userIds: batch.map((item) => item.payload.id),
-        });
+        await Promise.all(
+            batch.map((item) =>
+                concurrency(() =>
+                    this.consumerCacheInvalidatorService.execute({ userId: item.payload.id }),
+                ),
+            ),
+        );
     }
 }

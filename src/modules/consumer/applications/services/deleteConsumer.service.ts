@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { Transactional } from '@nestjs-cls/transactional';
 
-import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
+import { ProjectionService } from '@/core/services/projection.service';
 import { DeleteConsumerCommand } from '@/modules/consumer/applications/commands/deleteConsumer/deleteConsumer.command';
 import { ConsumerExistenceValidatorService } from '@/modules/consumer/applications/services/validators/consumerExistenceValidator.service';
-import { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
-import { ConsumerMessageEvent } from '@/modules/consumer/domain/enums/consumerMessageEvent.enum';
-import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
+import { ConsumerCacheInvalidatorService } from '@/modules/consumer/infrastructure/cache/consumerCacheInvalidator.service';
+import { ConsumerElasticsearchRemoverService } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearchRemove.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -22,37 +20,36 @@ interface IInput {
 export class DeleteConsumerService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
-        private readonly outboxEventPublisherService: OutboxEventPublisherService,
         private readonly consumerExistenceValidatorService: ConsumerExistenceValidatorService,
+        private readonly consumerCacheInvalidatorService: ConsumerCacheInvalidatorService,
+        private readonly consumerElasticsearchRemoverService: ConsumerElasticsearchRemoverService,
+        private readonly projectionService: ProjectionService,
     ) {}
 
-    @Transactional()
     async execute(input: IInput): Promise<IId> {
+        const deletedConsumer = await this.delete(input);
+
+        await this.projectionService.execute([
+            this.consumerCacheInvalidatorService.execute({ userId: input.userId }),
+            this.consumerElasticsearchRemoverService.execute(deletedConsumer),
+        ]);
+
+        return {
+            id: deletedConsumer.id,
+        };
+    }
+
+    async delete(input: IInput): Promise<ISelectConsumer> {
         await this.consumerExistenceValidatorService.validate({
             userId: input.userId,
             id: input.consumerId,
         });
 
-        const deletedConsumer = await this.commandBus.execute<
-            DeleteConsumerCommand,
-            ISelectConsumer
-        >(
+        return this.commandBus.execute<DeleteConsumerCommand, ISelectConsumer>(
             new DeleteConsumerCommand({
                 userId: input.userId,
                 id: input.consumerId,
             }),
         );
-
-        await this.outboxEventPublisherService.publish({
-            aggregateId: deletedConsumer.id,
-            aggregateType: ConsumerResource.CONSUMER,
-            eventType: ConsumerMessageEvent.DELETED_CONSUMER,
-            payload: deletedConsumer,
-            createdAt: getCurrentUTCTimestamp(),
-        });
-
-        return {
-            id: deletedConsumer.id,
-        };
     }
 }
