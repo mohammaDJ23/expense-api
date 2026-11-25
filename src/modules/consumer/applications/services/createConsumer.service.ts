@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { Transactional } from '@nestjs-cls/transactional';
 
+import { ProjectionService } from '@/core/services/projection.service';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { CreateConsumerCommand } from '@/modules/consumer/applications/commands/createConsumer/createConsumer.command';
 import { ConsumerNameAvailableValidatorService } from '@/modules/consumer/applications/services/validators/consumerNameAvailableValidator.service';
-import { ConsumerResource } from '@/modules/consumer/domain/enums/consumer.enum';
-import { ConsumerMessageEvent } from '@/modules/consumer/domain/enums/consumerMessageEvent.enum';
-import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
+import { ConsumerCacheInvalidatorService } from '@/modules/consumer/infrastructure/cache/consumerCacheInvalidator.service';
+import { ConsumerElasticsearchIndexerService } from '@/modules/consumer/infrastructure/elasticsearch/consumerElasticsearchIndexer.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -22,12 +21,26 @@ interface IInput {
 export class CreateConsumerService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
-        private readonly outboxEventPublisherService: OutboxEventPublisherService,
         private readonly consumerNameAvailableValidatorService: ConsumerNameAvailableValidatorService,
+        private readonly projectionService: ProjectionService,
+        private readonly consumerCacheInvalidatorService: ConsumerCacheInvalidatorService,
+        private readonly consumerElasticsearchIndexerService: ConsumerElasticsearchIndexerService,
     ) {}
 
-    @Transactional()
     async execute(input: IInput): Promise<IId> {
+        const createdConsumer = await this.create(input);
+
+        await this.projectionService.execute([
+            this.consumerCacheInvalidatorService.execute({ userId: input.userId }),
+            this.consumerElasticsearchIndexerService.execute(createdConsumer),
+        ]);
+
+        return {
+            id: createdConsumer.id,
+        };
+    }
+
+    async create(input: IInput): Promise<ISelectConsumer> {
         await this.consumerNameAvailableValidatorService.validate({
             userId: input.userId,
             name: input.name,
@@ -35,10 +48,7 @@ export class CreateConsumerService implements IService<IInput, IId> {
 
         const creationTime = getCurrentUTCTimestamp();
 
-        const createdConsumer = await this.commandBus.execute<
-            CreateConsumerCommand,
-            ISelectConsumer
-        >(
+        return this.commandBus.execute<CreateConsumerCommand, ISelectConsumer>(
             new CreateConsumerCommand({
                 name: input.name,
                 userId: input.userId,
@@ -46,17 +56,5 @@ export class CreateConsumerService implements IService<IInput, IId> {
                 updatedAt: creationTime,
             }),
         );
-
-        await this.outboxEventPublisherService.publish({
-            aggregateId: createdConsumer.id,
-            aggregateType: ConsumerResource.CONSUMER,
-            eventType: ConsumerMessageEvent.CREATED_CONSUMER,
-            payload: createdConsumer,
-            createdAt: creationTime,
-        });
-
-        return {
-            id: createdConsumer.id,
-        };
     }
 }
