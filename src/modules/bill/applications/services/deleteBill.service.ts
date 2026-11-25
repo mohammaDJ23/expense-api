@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { Transactional } from '@nestjs-cls/transactional';
 
-import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
+import { ProjectionService } from '@/core/services/projection.service';
 import { DeleteBillCommand } from '@/modules/bill/applications/commands/deleteBill/deleteBill.command';
 import { BillExistenceValidatorService } from '@/modules/bill/applications/services/validators/billExistenceValidator.service';
-import { BillResource } from '@/modules/bill/domain/enums/bill.enum';
-import { BillMessageEvent } from '@/modules/bill/domain/enums/billMessageEvent.enum';
-import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
+import { BillCacheInvalidatorService } from '@/modules/bill/infrastructure/cache/billCacheInvalidator.service';
+import { BillElasticsearchRemoverService } from '@/modules/bill/infrastructure/elasticsearch/billElasticsearchRemove.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -23,33 +21,35 @@ export class DeleteBillService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly billExistenceValidatorService: BillExistenceValidatorService,
-        private readonly outboxEventPublisherService: OutboxEventPublisherService,
+        private readonly projectionService: ProjectionService,
+        private readonly billElasticsearchRemoverService: BillElasticsearchRemoverService,
+        private readonly billCacheInvalidatorService: BillCacheInvalidatorService,
     ) {}
 
-    @Transactional()
     async execute(input: IInput): Promise<IId> {
+        const deletedBill = await this.delete(input);
+
+        await this.projectionService.execute([
+            this.billCacheInvalidatorService.execute({ userId: input.userId }),
+            this.billElasticsearchRemoverService.execute(deletedBill),
+        ]);
+
+        return {
+            id: deletedBill.id,
+        };
+    }
+
+    async delete(input: IInput): Promise<ISelectBill> {
         await this.billExistenceValidatorService.validate({
             userId: input.userId,
             id: input.billId,
         });
 
-        const deletedBill = await this.commandBus.execute<DeleteBillCommand, ISelectBill>(
+        return this.commandBus.execute<DeleteBillCommand, ISelectBill>(
             new DeleteBillCommand({
                 userId: input.userId,
                 id: input.billId,
             }),
         );
-
-        await this.outboxEventPublisherService.publish({
-            aggregateId: deletedBill.id,
-            aggregateType: BillResource.BILL,
-            eventType: BillMessageEvent.DELETED_BILL,
-            payload: deletedBill,
-            createdAt: getCurrentUTCTimestamp(),
-        });
-
-        return {
-            id: deletedBill.id,
-        };
     }
 }
