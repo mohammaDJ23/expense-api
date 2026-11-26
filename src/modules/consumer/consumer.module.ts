@@ -12,8 +12,6 @@ import { CreateManyBillsConsumersHandler } from '@/modules/consumer/applications
 import { DeleteConsumerHandler } from '@/modules/consumer/applications/commands/deleteConsumer/deleteConsumer.handler';
 import { DeleteManyBillsConsumersHandler } from '@/modules/consumer/applications/commands/deleteManyBillsConsumers/deleteManyBillsConsumers.handler';
 import { UpdateConsumerHandler } from '@/modules/consumer/applications/commands/updateConsumer/updateConsumer.handler';
-import { DeletedUserConsumerCacheInvalidatorHandler } from '@/modules/consumer/applications/messages/deletedUser/deletedUserConsumerCacheInvalidator.handler';
-import { DeletedUserConsumerElasticsearchRemoverHandler } from '@/modules/consumer/applications/messages/deletedUser/deletedUserConsumerElasticsearchRemover.handler';
 import { ConsumerListCursorPaginationDefinition } from '@/modules/consumer/applications/pagination/cursor/consumerListCursorPagination.definition';
 import { ExistsConsumerByUserIdAndExcludingIdAndNameHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndExcludingIdAndName/existsConsumerByUserIdAndExcludingIdAndName.handler';
 import { ExistsConsumerByUserIdAndIdHandler } from '@/modules/consumer/applications/queries/existsConsumerByUserIdAndId/existsConsumerByUserIdAndId.handler';
@@ -84,7 +82,6 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         FindManyBillConsumerTargetsByRefIdsHandler,
         ExistsConsumerByUserIdAndExcludingIdAndNameHandler,
         FindManyBillsConsumersByRefIdHandler,
-        DeletedUserConsumerElasticsearchRemoverHandler,
         ConsumerRepository,
         BillConsumerRepository,
         ConsumerElasticsearchIndex,
@@ -98,7 +95,6 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ConsumerUniqueNameValidatorService,
         ConsumerNameAvailableValidatorService,
         ConsumerSearchSyncService,
-        DeletedUserConsumerCacheInvalidatorHandler,
         ConsumerListCursorPaginationDefinition,
         ConsumerSearchQueryService,
         ConsumerCacheInvalidatorService,
@@ -111,6 +107,8 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ConsumerSearchAggregateService,
         ConsumersExistenceValidatorService,
         ConsumerSearchSyncService,
+        ConsumerCacheInvalidatorService,
+        DeleteConsumersElasticsearchQuery,
     ],
 })
 export class ConsumerModule {}

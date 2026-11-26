@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 import { JWTModule } from '@/core/features/jwt/jwt.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
@@ -11,8 +11,6 @@ import { AuthenticationModule } from '@/modules/authentication/authentication.mo
 import { CreateBillHandler } from '@/modules/bill/applications/commands/createBill/createBill.handler';
 import { DeleteBillHandler } from '@/modules/bill/applications/commands/deleteBill/deleteBill.handler';
 import { UpdateBillHandler } from '@/modules/bill/applications/commands/updateBill/updateBill.handler';
-import { DeletedUserBillCacheInvalidatorHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserBillCacheInvalidator.handler';
-import { DeletedUserBillElasticsearchRemoverHandler } from '@/modules/bill/applications/messages/deletedUser/deletedUserBillElasticsearchRemover.handler';
 import { BillListCursorPaginationDefinition } from '@/modules/bill/applications/pagination/cursor/billListCursorPagination.definition';
 import { ExistsBillByUserIdAndIdHandler } from '@/modules/bill/applications/queries/existsBillByUserIdAndId/existsBillByUserIdAndId.handler';
 import { FindBillByUserIdAndIdOrThrowHandler } from '@/modules/bill/applications/queries/findBillByUserIdAndIdOrThrow/findBillByUserIdAndIdOrThrow.handler';
@@ -78,11 +76,11 @@ import { UserModule } from '@/modules/user/user.module';
         ConsumerModule,
         ReceiverModule,
         OutboxModule,
-        UserModule,
+        forwardRef(() => UserModule),
         QueryDispatcherModule,
         QueryCacheModule,
         CursorPaginationModule,
-        AuthenticationModule,
+        forwardRef(() => AuthenticationModule),
         JWTModule,
     ],
     providers: [
@@ -105,7 +103,6 @@ import { UserModule } from '@/modules/user/user.module';
         FindMostUsedConsumersHandler,
         FindBillsPeriodByPurchasedAtHandler,
         FindBillsTimelineByPurchasedAtHandler,
-        DeletedUserBillElasticsearchRemoverHandler,
         CreateBillHandler,
         UpdateBillHandler,
         DeleteBillHandler,
@@ -135,7 +132,6 @@ import { UserModule } from '@/modules/user/user.module';
         BillsExportJob,
         BillsExportMailerService,
         BillSearchSyncService,
-        DeletedUserBillCacheInvalidatorHandler,
         BillListCursorPaginationDefinition,
         FindBillsTotalAmountByUserIdOrThrowHandler,
         BillCacheInvalidatorService,
@@ -144,6 +140,12 @@ import { UserModule } from '@/modules/user/user.module';
         ProjectionService,
     ],
     controllers: [BillController],
-    exports: [BillSearchService, BillSearchAggregateService, BillSearchSyncService],
+    exports: [
+        BillSearchService,
+        BillSearchAggregateService,
+        BillSearchSyncService,
+        BillCacheInvalidatorService,
+        DeleteBillsElasticsearchQuery,
+    ],
 })
 export class BillModule {}
