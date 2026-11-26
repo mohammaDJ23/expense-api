@@ -4,22 +4,15 @@ import { JWTModule } from '@/core/features/jwt/jwt.module';
 import { CursorPaginationModule } from '@/core/features/pagination/cursor/cursorPagination.module';
 import { QueryCacheModule } from '@/core/features/queryCache/queryCache.module';
 import { QueryDispatcherModule } from '@/core/features/queryDispatcher/queryDispatcher.module';
+import { ProjectionService } from '@/core/services/projection.service';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
 import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearch.module';
 import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { CreateReceiverHandler } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.handler';
 import { DeleteReceiverHandler } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.handler';
 import { UpdateReceiverHandler } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.handler';
-import { CreatedReceiverCacheInvalidatorHandler } from '@/modules/receiver/applications/messages/createdReceiver/createdReceiverCacheInvalidator.handler';
-import { CreatedReceiverElasticsearchIndexerHandler } from '@/modules/receiver/applications/messages/createdReceiver/createdReceiverElasticsearchIndexer.handler';
-import { DeletedReceiverCacheInvalidatorHandler } from '@/modules/receiver/applications/messages/deletedReceiver/deletedReceiverCacheInvalidator.handler';
-import { DeletedReceiverElasticsearchRemoverHandler } from '@/modules/receiver/applications/messages/deletedReceiver/deletedReceiverElasticearchRemover.handler';
 import { DeletedUserReceiverCacheInvalidatorHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserReceiverCacheInvalidator.handler';
 import { DeletedUserReceiverElasticsearchRemoverHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserReceiverMessageElasticsearchRemover.handler';
-import { ReceiverCacheInvalidatorProcessor } from '@/modules/receiver/applications/messages/receiverCacheInvalidator.processor';
-import { ReceiverElasticsearchIndexerProcessor } from '@/modules/receiver/applications/messages/receiverElasticsearchIndexer.processor';
-import { UpdatedReceiverCacheInvalidatorHandler } from '@/modules/receiver/applications/messages/updatedReceiver/updatedReceiverCacheInvalidator.handler';
-import { UpdatedReceiverElasticsearchIndexerHandler } from '@/modules/receiver/applications/messages/updatedReceiver/updatedReceiverElasticsearchIndexer.handler';
 import { ReceiverListCursorPaginationDefinition } from '@/modules/receiver/applications/pagination/cursor/receiverListCursorPagination.definition';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
 import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.handler';
@@ -42,9 +35,12 @@ import { UpdateReceiverService } from '@/modules/receiver/applications/services/
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
 import { ReceiverNameAvailableValidatorService } from '@/modules/receiver/applications/services/validators/receiverNameAvailableValidator.service';
 import { ReceiverUniqueNameValidatorService } from '@/modules/receiver/applications/services/validators/receiverUniqueNameValidator.service';
+import { ReceiverCacheInvalidatorService } from '@/modules/receiver/infrastructure/cache/receiverCacheInvalidator.service';
 import { DeleteReceiversElasticsearchQuery } from '@/modules/receiver/infrastructure/elasticsearch/deleteReceiversElasticsearch.query';
 import { FindReceiverListElasticsearchQuery } from '@/modules/receiver/infrastructure/elasticsearch/findReceiverListElasticsearch.query';
 import { ReceiverElasticsearchIndex } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearch.index';
+import { ReceiverElasticsearchIndexerService } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearchIndexer.service';
+import { ReceiverElasticsearchRemoverService } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearchRemover.service';
 import { ReceiverRepository } from '@/modules/receiver/infrastructure/repositories/receiver.repository';
 import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1.controller';
 
@@ -72,10 +68,7 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ExistsReceiverByUserIdAndIdHandler,
         ExistsReceiverByUserIdAndExcludingIdAndNameHandler,
         ExistsReceiverByUserIdAndNameHandler,
-        CreatedReceiverElasticsearchIndexerHandler,
-        DeletedReceiverElasticsearchRemoverHandler,
         DeletedUserReceiverElasticsearchRemoverHandler,
-        UpdatedReceiverElasticsearchIndexerHandler,
         ReceiverService,
         CreateReceiverService,
         UpdateReceiverService,
@@ -91,14 +84,13 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ReceiverUniqueNameValidatorService,
         ReceiverNameAvailableValidatorService,
         ReceiverSearchSyncService,
-        ReceiverElasticsearchIndexerProcessor,
-        ReceiverCacheInvalidatorProcessor,
-        CreatedReceiverCacheInvalidatorHandler,
-        DeletedReceiverCacheInvalidatorHandler,
         DeletedUserReceiverCacheInvalidatorHandler,
-        UpdatedReceiverCacheInvalidatorHandler,
         ReceiverListCursorPaginationDefinition,
         ReceiverSearchQueryService,
+        ReceiverCacheInvalidatorService,
+        ReceiverElasticsearchIndexerService,
+        ReceiverElasticsearchRemoverService,
+        ProjectionService,
     ],
     exports: [
         ReceiverSearchService,

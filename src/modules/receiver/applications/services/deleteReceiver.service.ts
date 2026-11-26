@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { Transactional } from '@nestjs-cls/transactional';
 
-import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
-import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
+import { ProjectionService } from '@/core/services/projection.service';
 import { DeleteReceiverCommand } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.command';
 import { ReceiverExistenceValidatorService } from '@/modules/receiver/applications/services/validators/receiverExistenceValidator.service';
-import { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
-import { ReceiverMessageEvent } from '@/modules/receiver/domain/enums/receiverMessageEvent.enum';
+import { ReceiverCacheInvalidatorService } from '@/modules/receiver/infrastructure/cache/receiverCacheInvalidator.service';
+import { ReceiverElasticsearchRemoverService } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearchRemover.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -22,37 +20,36 @@ interface IInput {
 export class DeleteReceiverService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
-        private readonly outboxEventPublisherService: OutboxEventPublisherService,
         private readonly receiverExistenceValidatorService: ReceiverExistenceValidatorService,
+        private readonly receiverCacheInvalidatorService: ReceiverCacheInvalidatorService,
+        private readonly receiverElasticsearchRemoverService: ReceiverElasticsearchRemoverService,
+        private readonly projectionService: ProjectionService,
     ) {}
 
-    @Transactional()
     async execute(input: IInput): Promise<IId> {
+        const deletedReceiver = await this.delete(input);
+
+        await this.projectionService.execute([
+            this.receiverCacheInvalidatorService.execute({ userId: input.userId }),
+            this.receiverElasticsearchRemoverService.execute(deletedReceiver),
+        ]);
+
+        return {
+            id: deletedReceiver.id,
+        };
+    }
+
+    async delete(input: IInput): Promise<ISelectReceiver> {
         await this.receiverExistenceValidatorService.validate({
             userId: input.userId,
             id: input.receiverId,
         });
 
-        const deletedReceiver = await this.commandBus.execute<
-            DeleteReceiverCommand,
-            ISelectReceiver
-        >(
+        return this.commandBus.execute<DeleteReceiverCommand, ISelectReceiver>(
             new DeleteReceiverCommand({
                 userId: input.userId,
                 id: input.receiverId,
             }),
         );
-
-        await this.outboxEventPublisherService.publish({
-            aggregateId: deletedReceiver.id,
-            aggregateType: ReceiverResource.RECEIVER,
-            eventType: ReceiverMessageEvent.DELETED_RECEIVER,
-            payload: deletedReceiver,
-            createdAt: getCurrentUTCTimestamp(),
-        });
-
-        return {
-            id: deletedReceiver.id,
-        };
     }
 }
