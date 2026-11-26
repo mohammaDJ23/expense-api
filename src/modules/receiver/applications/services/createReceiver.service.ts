@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { Transactional } from '@nestjs-cls/transactional';
 
+import { ProjectionService } from '@/core/services/projection.service';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
-import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
 import { CreateReceiverCommand } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.command';
 import { ReceiverNameAvailableValidatorService } from '@/modules/receiver/applications/services/validators/receiverNameAvailableValidator.service';
-import { ReceiverResource } from '@/modules/receiver/domain/enums/receiver.enum';
-import { ReceiverMessageEvent } from '@/modules/receiver/domain/enums/receiverMessageEvent.enum';
+import { ReceiverCacheInvalidatorService } from '@/modules/receiver/infrastructure/cache/receiverCacheInvalidator.service';
+import { ReceiverElasticsearchIndexerService } from '@/modules/receiver/infrastructure/elasticsearch/receiverElasticsearchIndexer.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -22,12 +21,26 @@ interface IInput {
 export class CreateReceiverService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
-        private readonly outboxEventPublisherService: OutboxEventPublisherService,
         private readonly receiverNameAvailableValidatorService: ReceiverNameAvailableValidatorService,
+        private readonly receiverCacheInvalidatorService: ReceiverCacheInvalidatorService,
+        private readonly receiverElasticsearchIndexerService: ReceiverElasticsearchIndexerService,
+        private readonly projectionService: ProjectionService,
     ) {}
 
-    @Transactional()
     async execute(input: IInput): Promise<IId> {
+        const createdRecevier = await this.create(input);
+
+        await this.projectionService.execute([
+            this.receiverCacheInvalidatorService.execute({ userId: input.userId }),
+            this.receiverElasticsearchIndexerService.execute(createdRecevier),
+        ]);
+
+        return {
+            id: createdRecevier.id,
+        };
+    }
+
+    async create(input: IInput): Promise<ISelectReceiver> {
         await this.receiverNameAvailableValidatorService.validate({
             userId: input.userId,
             name: input.name,
@@ -35,10 +48,7 @@ export class CreateReceiverService implements IService<IInput, IId> {
 
         const creationTime = getCurrentUTCTimestamp();
 
-        const createdReceiver = await this.commandBus.execute<
-            CreateReceiverCommand,
-            ISelectReceiver
-        >(
+        return this.commandBus.execute<CreateReceiverCommand, ISelectReceiver>(
             new CreateReceiverCommand({
                 name: input.name,
                 userId: input.userId,
@@ -46,17 +56,5 @@ export class CreateReceiverService implements IService<IInput, IId> {
                 updatedAt: creationTime,
             }),
         );
-
-        await this.outboxEventPublisherService.publish({
-            aggregateId: createdReceiver.id,
-            aggregateType: ReceiverResource.RECEIVER,
-            eventType: ReceiverMessageEvent.CREATED_RECEIVER,
-            payload: createdReceiver,
-            createdAt: creationTime,
-        });
-
-        return {
-            id: createdReceiver.id,
-        };
     }
 }
