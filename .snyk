@@ -23,3 +23,13 @@ ignore:
         - '*':
               reason: 'No verified patched version is available for this ReDoS vulnerability in picomatch.'
               expires: 2027-08-25
+
+    SNYK-JS-PARSE5-22742152:
+        - '*':
+              reason: >-
+                Parse5 8.x is not compatible with the legacy
+                parse5-htmlparser2-tree-adapter@6.0.1 used by cli-highlight.
+                Forcing Parse5 8.x globally causes ERR_PACKAGE_PATH_NOT_EXPORTED.
+                The affected transitive dependency is retained until its parent
+                dependency supports a compatible patched version.
+              expires: 2027-08-25
