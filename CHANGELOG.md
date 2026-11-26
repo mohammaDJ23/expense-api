@@ -1,3 +1,19 @@
+## [5.3.14](https://github.com/mohammaDJ23/expense-api/compare/v5.3.13...v5.3.14) (2026-11-26)
+
+### 🐛 Bug Fixes
+
+- 161680 ignore parse5 ([ca4c1a7](https://github.com/mohammaDJ23/expense-api/commit/ca4c1a7d91f1a8ba10a9d1ad928e27a8571f7b77))
+- 161680 remove the message of create, update and delete of bill and use the projection for syncing the infrastructure level data ([aacb7c9](https://github.com/mohammaDJ23/expense-api/commit/aacb7c99d16a0dae335d705b33d3c5eb71e978d0))
+- 161680 remove the message of create, update and delete of consumer and use the projection for syncing the infrastructure level data ([c919270](https://github.com/mohammaDJ23/expense-api/commit/c919270793aa20862b9de2a0c668777b3b4ed105))
+- 161680 remove the message of create, update and delete of location and use the projection for syncing the infrastructure level data ([6309794](https://github.com/mohammaDJ23/expense-api/commit/6309794cf65af0b4426e0b8f7967f84d834d555f))
+- 161680 remove the message of create, update and delete of receiver and use the projection for syncing the infrastructure level data ([cf3c72c](https://github.com/mohammaDJ23/expense-api/commit/cf3c72cf32fdd4ea888c8376e02241774cec0c49))
+- 161680 remove the message of create, update and delete of user and use the projection for syncing the infrastructure level data ([bcafeb6](https://github.com/mohammaDJ23/expense-api/commit/bcafeb6bb9ccfa6c6a4f559ae4363981032a1323))
+- 161680 update the merging of the most used logics ([057c7c3](https://github.com/mohammaDJ23/expense-api/commit/057c7c37bf29060e33895777cddd9913e56908b4))
+
+### 🔧 Chores
+
+- 161680 update the parse5 package ([1ac4578](https://github.com/mohammaDJ23/expense-api/commit/1ac4578235b16cdd670e5ebb07f92ad908818440))
+
 ## [5.3.13](https://github.com/mohammaDJ23/expense-api/compare/v5.3.12...v5.3.13) (2026-11-16)
 
 ### 🔧 Chores
