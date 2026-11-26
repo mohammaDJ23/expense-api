@@ -10,8 +10,6 @@ import { ElasticsearchModule } from '@/infrastructure/elasticsearch/elasticsearc
 import { CreateLocationHandler } from '@/modules/location/applications/commands/createLocation/createLocation.handler';
 import { DeleteLocationHandler } from '@/modules/location/applications/commands/deleteLocation/deleteLocation.handler';
 import { UpdateLocationHandler } from '@/modules/location/applications/commands/updateLocation/updateLocation.handler';
-import { DeletedUserLocationCacheInvalidatorHandler } from '@/modules/location/applications/messages/deletedUser/deletedUserLocationCacheInvalidator.handler';
-import { DeletedUserLocationElasticsearchRemoverHandler } from '@/modules/location/applications/messages/deletedUser/deletedUserLocationElasticsearchRemover.handler';
 import { LocationListCursorPaginationDefinition } from '@/modules/location/applications/pagination/cursor/locationListCursorPagination.definition';
 import { ExistsLocationByUserIdAndExcludingIdAndNameHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndExcludingIdAndName/existsLocationByUserIdAndExcludingIdAndName.handler';
 import { ExistsLocationByUserIdAndIdHandler } from '@/modules/location/applications/queries/existsLocationByUserIdAndId/existsLocationByUserIdAndId.handler';
@@ -72,7 +70,6 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         ExistsLocationByUserIdAndIdHandler,
         ExistsLocationByUserIdAndExcludingIdAndNameHandler,
         ExistsLocationByUserIdAndNameHandler,
-        DeletedUserLocationElasticsearchRemoverHandler,
         CreateLocationHandler,
         LocationRepository,
         LocationElasticsearchIndex,
@@ -85,7 +82,6 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         LocationUniqueNameValidatorService,
         LocationNameAvailableValidatorService,
         LocationSearchSyncService,
-        DeletedUserLocationCacheInvalidatorHandler,
         LocationListCursorPaginationDefinition,
         LocationSearchQueryService,
         LocationCacheInvalidatorService,
@@ -98,6 +94,8 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
         LocationSearchAggregateService,
         LocationExistenceValidatorService,
         LocationSearchSyncService,
+        LocationCacheInvalidatorService,
+        DeleteLocationsElasticsearchQuery,
     ],
 })
 export class LocationModule {}

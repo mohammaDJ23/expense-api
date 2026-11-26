@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { Transactional } from '@nestjs-cls/transactional';
 
-import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
+import { ProjectionService } from '@/core/services/projection.service';
 import { UpdateUserCommand } from '@/modules/user/applications/commands/updateUser/updateUser.command';
 import { UserExistenceValidatorService } from '@/modules/user/applications/services/validators/userExistenceValidator.service';
-import { UserResource } from '@/modules/user/domain/enums/user.enum';
-import { UserMessageEvent } from '@/modules/user/domain/enums/userMessageEvent.enum';
+import { UserCacheInvalidatorService } from '@/modules/user/infrastructure/cache/userCacheInvalidator.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { TUpdateUser } from '@/modules/user/domain/types/updateUser.type';
@@ -17,25 +15,23 @@ export class UpdateUserService implements IService<TUpdateUser, ISelectUser> {
     constructor(
         private readonly commandBus: CommandBus,
         private readonly userExistenceValidatorService: UserExistenceValidatorService,
-        private readonly outboxEventPublisherService: OutboxEventPublisherService,
+        private readonly userCacheInvalidatorService: UserCacheInvalidatorService,
+        private readonly projectionService: ProjectionService,
     ) {}
 
-    @Transactional()
     async execute(input: TUpdateUser): Promise<ISelectUser> {
-        await this.userExistenceValidatorService.validate({ userId: input.id });
+        const updatedUser = await this.update(input);
 
-        const updatedUser = await this.commandBus.execute<UpdateUserCommand, ISelectUser>(
-            new UpdateUserCommand(input),
-        );
-
-        await this.outboxEventPublisherService.publish({
-            aggregateId: updatedUser.id,
-            aggregateType: UserResource.USER,
-            eventType: UserMessageEvent.UPDATED_USER,
-            payload: updatedUser,
-            createdAt: input.updatedAt,
-        });
+        await this.projectionService.execute([this.userCacheInvalidatorService.execute()]);
 
         return updatedUser;
+    }
+
+    async update(input: TUpdateUser): Promise<ISelectUser> {
+        await this.userExistenceValidatorService.validate({ userId: input.id });
+
+        return this.commandBus.execute<UpdateUserCommand, ISelectUser>(
+            new UpdateUserCommand(input),
+        );
     }
 }

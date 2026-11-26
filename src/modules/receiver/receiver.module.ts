@@ -11,8 +11,6 @@ import { OutboxModule } from '@/modules/outbox/outbox.module';
 import { CreateReceiverHandler } from '@/modules/receiver/applications/commands/createReceiver/createReceiver.handler';
 import { DeleteReceiverHandler } from '@/modules/receiver/applications/commands/deleteReceiver/deleteReceiver.handler';
 import { UpdateReceiverHandler } from '@/modules/receiver/applications/commands/updateReceiver/updateReceiver.handler';
-import { DeletedUserReceiverCacheInvalidatorHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserReceiverCacheInvalidator.handler';
-import { DeletedUserReceiverElasticsearchRemoverHandler } from '@/modules/receiver/applications/messages/deletedUser/deletedUserReceiverMessageElasticsearchRemover.handler';
 import { ReceiverListCursorPaginationDefinition } from '@/modules/receiver/applications/pagination/cursor/receiverListCursorPagination.definition';
 import { ExistsReceiverByUserIdAndExcludingIdAndNameHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndExcludingIdAndName/existsReceiverByUserIdAndExcludingIdAndName.handler';
 import { ExistsReceiverByUserIdAndIdHandler } from '@/modules/receiver/applications/queries/existsReceiverByUserIdAndId/existsReceiverByUserIdAndId.handler';
@@ -68,7 +66,6 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ExistsReceiverByUserIdAndIdHandler,
         ExistsReceiverByUserIdAndExcludingIdAndNameHandler,
         ExistsReceiverByUserIdAndNameHandler,
-        DeletedUserReceiverElasticsearchRemoverHandler,
         ReceiverService,
         CreateReceiverService,
         UpdateReceiverService,
@@ -84,7 +81,6 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ReceiverUniqueNameValidatorService,
         ReceiverNameAvailableValidatorService,
         ReceiverSearchSyncService,
-        DeletedUserReceiverCacheInvalidatorHandler,
         ReceiverListCursorPaginationDefinition,
         ReceiverSearchQueryService,
         ReceiverCacheInvalidatorService,
@@ -97,6 +93,8 @@ import { ReceiverController } from '@/modules/receiver/interfaces/controllers/v1
         ReceiverSearchAggregateService,
         ReceiverExistenceValidatorService,
         ReceiverSearchSyncService,
+        ReceiverCacheInvalidatorService,
+        DeleteReceiversElasticsearchQuery,
     ],
 })
 export class ReceiverModule {}
