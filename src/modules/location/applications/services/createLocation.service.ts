@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { Transactional } from '@nestjs-cls/transactional';
 
+import { ProjectionService } from '@/core/services/projection.service';
 import { getCurrentUTCTimestamp } from '@/core/utils/getCurrentUTCTimestamp.util';
 import { CreateLocationCommand } from '@/modules/location/applications/commands/createLocation/createLocation.command';
 import { LocationNameAvailableValidatorService } from '@/modules/location/applications/services/validators/locationNameAvailableValidator.service';
-import { LocationResource } from '@/modules/location/domain/enums/location.enum';
-import { LocationMessageEvent } from '@/modules/location/domain/enums/locationMessageEvent.enum';
-import { OutboxEventPublisherService } from '@/modules/outbox/applications/services/outboxEventPublisher.service';
+import { LocationCacheInvalidatorService } from '@/modules/location/infrastructure/cache/locationCacheInvalidator.service';
+import { LocationElasticsearchIndexerService } from '@/modules/location/infrastructure/elasticsearch/locationElasticsearchIndexer.service';
 
 import type { IService } from '@/core/interfaces/service.interface';
 import type { IId } from '@/core/types/id.type';
@@ -22,12 +21,26 @@ interface IInput {
 export class CreateLocationService implements IService<IInput, IId> {
     constructor(
         private readonly commandBus: CommandBus,
-        private readonly outboxEventPublisherService: OutboxEventPublisherService,
         private readonly locationNameAvailableValidatorService: LocationNameAvailableValidatorService,
+        private readonly locationCacheInvalidatorService: LocationCacheInvalidatorService,
+        private readonly locationElasticsearchIndexerService: LocationElasticsearchIndexerService,
+        private readonly projectionService: ProjectionService,
     ) {}
 
-    @Transactional()
     async execute(input: IInput): Promise<IId> {
+        const createdLocation = await this.create(input);
+
+        await this.projectionService.execute([
+            this.locationCacheInvalidatorService.execute({ userId: input.userId }),
+            this.locationElasticsearchIndexerService.execute(createdLocation),
+        ]);
+
+        return {
+            id: createdLocation.id,
+        };
+    }
+
+    async create(input: IInput): Promise<ISelectLocation> {
         await this.locationNameAvailableValidatorService.validate({
             userId: input.userId,
             name: input.name,
@@ -35,10 +48,7 @@ export class CreateLocationService implements IService<IInput, IId> {
 
         const creationTime = getCurrentUTCTimestamp();
 
-        const createdLocation = await this.commandBus.execute<
-            CreateLocationCommand,
-            ISelectLocation
-        >(
+        return this.commandBus.execute<CreateLocationCommand, ISelectLocation>(
             new CreateLocationCommand({
                 name: input.name,
                 userId: input.userId,
@@ -46,17 +56,5 @@ export class CreateLocationService implements IService<IInput, IId> {
                 updatedAt: creationTime,
             }),
         );
-
-        await this.outboxEventPublisherService.publish({
-            aggregateId: createdLocation.id,
-            aggregateType: LocationResource.LOCATION,
-            eventType: LocationMessageEvent.CREATED_LOCATION,
-            payload: createdLocation,
-            createdAt: creationTime,
-        });
-
-        return {
-            id: createdLocation.id,
-        };
     }
 }
