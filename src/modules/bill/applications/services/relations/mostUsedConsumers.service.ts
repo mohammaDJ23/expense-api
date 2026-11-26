@@ -31,18 +31,14 @@ export class MostUsedConsumersService implements IService<IProps, IMostUsedConsu
                 limit: input.limit,
             }),
         );
-        const consumerIds = mostUsed.map((item) => item.id);
         const consumers = await this.consumersRelationLoaderService.load({
             userId: input.userId,
-            consumerIds,
+            consumerIds: mostUsed.map(({ id }) => id),
         });
-        const mostUsedMap = new Map(mostUsed.map((item) => [item.id, item.total]));
-        return consumers.reduce<IMostUsedConsumer[]>((acc, val) => {
-            acc.push({
-                ...val,
-                total: mostUsedMap.get(val.id)!,
-            });
-            return acc;
-        }, []);
+        const consumersMap = new Map(consumers.map((consumer) => [consumer.id, consumer]));
+        return mostUsed.flatMap(({ id, total }) => {
+            const consumer = consumersMap.get(id);
+            return consumer ? [{ ...consumer, total }] : [];
+        });
     }
 }
