@@ -31,18 +31,14 @@ export class MostUsedReceiversService implements IService<IProps, IMostUsedRecei
                 limit: input.limit,
             }),
         );
-        const receiverIds = mostUsed.map((item) => item.id);
         const receivers = await this.receiversRelationLoaderService.load({
             userId: input.userId,
-            receiverIds,
+            receiverIds: mostUsed.map(({ id }) => id),
         });
-        const mostUsedMap = new Map(mostUsed.map((item) => [item.id, item.total]));
-        return receivers.reduce<IMostUsedReceiver[]>((acc, val) => {
-            acc.push({
-                ...val,
-                total: mostUsedMap.get(val.id)!,
-            });
-            return acc;
-        }, []);
+        const receiversMap = new Map(receivers.map((receiver) => [receiver.id, receiver]));
+        return mostUsed.flatMap(({ id, total }) => {
+            const receiver = receiversMap.get(id);
+            return receiver ? [{ ...receiver, total }] : [];
+        });
     }
 }

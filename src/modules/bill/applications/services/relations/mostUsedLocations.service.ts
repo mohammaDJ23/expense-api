@@ -31,18 +31,14 @@ export class MostUsedLocationsService implements IService<IProps, IMostUsedLocat
                 limit: input.limit,
             }),
         );
-        const locationIds = mostUsed.map((item) => item.id);
         const locations = await this.locationsRelationLoaderService.load({
             userId: input.userId,
-            locationIds,
+            locationIds: mostUsed.map(({ id }) => id),
         });
-        const mostUsedMap = new Map(mostUsed.map((item) => [item.id, item.total]));
-        return locations.reduce<IMostUsedLocation[]>((acc, val) => {
-            acc.push({
-                ...val,
-                total: mostUsedMap.get(val.id)!,
-            });
-            return acc;
-        }, []);
+        const locationsMap = new Map(locations.map((location) => [location.id, location]));
+        return mostUsed.flatMap(({ id, total }) => {
+            const location = locationsMap.get(id);
+            return location ? [{ ...location, total }] : [];
+        });
     }
 }
