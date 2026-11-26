@@ -47,15 +47,14 @@
             "follow-redirects": ">=1.16.2",
             "body-parser": ">=2.4.0",
             "zod": ">=4.6.6",
-            "open": ">=11.0.0",
-            "parse5": ">=8.1.1"
+            "open": ">=11.0.0"
         }
     },
     "scripts": {
         "prepare": "husky",
         "build": "nest build",
         "format:check": "prettier --check .",
-        "format": "prettier --write .",
+        "format": "prettier --write ./pnpm-lock.yaml",
         "lint:fix": "eslint . --fix",
         "lint:ci": "eslint . --max-warnings=0",
         "format:ci": "prettier --check .",
